@@ -1,0 +1,12 @@
+---
+App\Entity\Patient:
+    patient_{1..10}:
+        firstname: <firstname()>
+        lastname: <lastname()>
+        birtdate: <immutableDateTimeBetween("-50 years", "-3 years")>
+        contact: '<firstname()> <lastname()>'
+        phone: <phoneNumber()>
+        mobilePhone: <mobileNumber()>
+        email: <email()>
+        variableSchedule: false
+        availability: []
