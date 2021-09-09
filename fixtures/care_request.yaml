@@ -1,0 +1,80 @@
+---
+App\Entity\CareRequest:
+    care_request_1:
+        patient: '@patient_1'
+        doctorCreator: '@doctor_joelle'
+        creationDate: <immutableDateTimeBetween("-6 month", "now")>
+        priority: false
+        complaint: '@complaint_orilite'
+        customComplaint: ~
+        acceptedByDoctor: ~
+        acceptDate: ~
+        abandonDate: ~
+        abandonReason: ~
+    care_request_2:
+        patient: '@patient_2'
+        doctorCreator: '@doctor_joelle'
+        creationDate: <immutableDateTimeBetween("-6 month", "now")>
+        priority: false
+        complaint: '@complaint_aa'
+        customComplaint: ~
+        acceptedByDoctor: ~
+        acceptDate: ~
+        abandonDate: ~
+        abandonReason: ~
+    care_request_3:
+        patient: '@patient_3'
+        doctorCreator: '@doctor_laurence'
+        creationDate: <immutableDateTimeBetween("-6 month", "now")>
+        priority: false
+        complaint: '@complaint_aa'
+        customComplaint: ~
+        acceptedByDoctor: ~
+        acceptDate: ~
+        abandonDate: ~
+        abandonReason: ~
+    care_request_4:
+        patient: '@patient_1'
+        doctorCreator: '@doctor_joelle'
+        creationDate: <immutableDateTimeBetween("-6 month", "now")>
+        priority: true
+        complaint: '@complaint_aa'
+        customComplaint: ~
+        acceptedByDoctor: ~
+        acceptDate: ~
+        abandonDate: ~
+        abandonReason: ~
+    care_request_5:
+        patient: '@patient_4'
+        doctorCreator: '@doctor_joelle'
+        creationDate: <immutableDateTimeBetween("-6 month", "now")>
+        priority: false
+        complaint: ~
+        customComplaint: 'bave beaucoup'
+        acceptedByDoctor: ~
+        acceptDate: ~
+        abandonDate: ~
+        abandonReason: ~
+    care_request_6:
+        patient: '@patient_1'
+        doctorCreator: '@doctor_joelle'
+        creationDate: <immutableDateTimeBetween("-6 month", "-1 month")>
+        priority: false
+        complaint: '@complaint_orilite'
+        customComplaint: ~
+        acceptedByDoctor: '@doctor_joelle'
+        acceptDate: <immutableDateTimeBetween("-1 month", "now")>
+        abandonDate: ~
+        abandonReason: ~
+    care_request_7:
+        patient: '@patient_1'
+        doctorCreator: '@doctor_joelle'
+        creationDate: <immutableDateTimeBetween("-1 year", "-6 month")>
+        priority: false
+        complaint: '@complaint_orilite'
+        customComplaint: ~
+        acceptedByDoctor: ~
+        acceptDate: ~
+        abandonDate: <immutableDateTimeBetween("-6 month", "-3 month")>
+        abandonReason: 'no_answer'
+

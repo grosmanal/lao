@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Patient {{ patient.firstname }} {{ patient.lastname}}{% endblock %}
+
+{% block body %}
+
+<section>
+    <h1>Patient</h1>
+    {{ form(form) }}
+</section>
+
+{% endblock %}

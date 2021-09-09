@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\PatientRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -30,7 +32,7 @@ class Patient
     /**
      * @ORM\Column(type="date_immutable", nullable=true)
      */
-    private $birtdate;
+    private $birthdate;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -62,6 +64,22 @@ class Patient
      */
     private $availability = [];
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Office::class, inversedBy="patients")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $office;
+
+    /**
+     * @ORM\OneToMany(targetEntity=CareRequest::class, mappedBy="patient")
+     */
+    private $careRequests;
+
+    public function __construct()
+    {
+        $this->careRequests = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -91,14 +109,14 @@ class Patient
         return $this;
     }
 
-    public function getBirtdate(): ?\DateTimeImmutable
+    public function getBirthdate(): ?\DateTimeImmutable
     {
-        return $this->birtdate;
+        return $this->birthdate;
     }
 
-    public function setBirtdate(?\DateTimeImmutable $birtdate): self
+    public function setBirthdate(?\DateTimeImmutable $birthdate): self
     {
-        $this->birtdate = $birtdate;
+        $this->birthdate = $birthdate;
 
         return $this;
     }
@@ -171,6 +189,48 @@ class Patient
     public function setAvailability(array $availability): self
     {
         $this->availability = $availability;
+
+        return $this;
+    }
+
+    public function getOffice(): ?Office
+    {
+        return $this->office;
+    }
+
+    public function setOffice(?Office $office): self
+    {
+        $this->office = $office;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|CareRequest[]
+     */
+    public function getCareRequests(): Collection
+    {
+        return $this->careRequests;
+    }
+
+    public function addCareRequest(CareRequest $careRequest): self
+    {
+        if (!$this->careRequests->contains($careRequest)) {
+            $this->careRequests[] = $careRequest;
+            $careRequest->setPatient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCareRequest(CareRequest $careRequest): self
+    {
+        if ($this->careRequests->removeElement($careRequest)) {
+            // set the owning side to null (unless already changed)
+            if ($careRequest->getPatient() === $this) {
+                $careRequest->setPatient(null);
+            }
+        }
 
         return $this;
     }

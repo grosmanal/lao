@@ -1,0 +1,14 @@
+---
+App\Entity\Office:
+    office_1:
+        name: Cabinet d’orthophonie des buttes
+        address: Chemin des buttes
+        zipCode: 44470
+        city: Vallet
+        country: France
+    office_2:
+        name: Cabinet de Nantes
+        address: 5 boulevard des poilus
+        zipCode: 44000
+        city: Nantes
+        country: France

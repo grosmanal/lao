@@ -1,0 +1,11 @@
+---
+App\Entity\User:
+    user_emmanuel:
+        email: emmanuel.averty@free.fr
+        password: password
+    user_joelle:
+        email: joelle.terrien@free.fr
+        password: password
+    user_laurence:
+        email: laurence.chaillet@free.fr
+        password: password

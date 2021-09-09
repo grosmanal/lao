@@ -1,0 +1,8 @@
+---
+App\Entity\Complaint:
+    complaint_orilite:
+        label: oralité
+    complaint_aa:
+        label: aa
+    complaint_bb:
+        label: bb

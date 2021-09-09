@@ -3,10 +3,44 @@ App\Entity\Patient:
     patient_{1..10}:
         firstname: <firstname()>
         lastname: <lastname()>
-        birtdate: <immutableDateTimeBetween("-50 years", "-3 years")>
+        birthdate: <immutableDateTimeBetween("-50 years", "-3 years")>
         contact: '<firstname()> <lastname()>'
         phone: <phoneNumber()>
         mobilePhone: <mobileNumber()>
         email: <email()>
+        office: '@office_1'
         variableSchedule: false
-        availability: []
+        availability:
+            1:
+                - [ 1000, 1200 ]
+                - [ 1530, 1700 ]
+            2:
+                - [ 1000, 1200 ]
+                - [ 1530, 1700 ]
+            3:
+                - [ 900, 1800 ]
+            4:
+                - [ 900, 1800 ]
+            5:
+                - [ 900, 1800 ]
+            6:
+                - [ 900, 1800 ]
+    patient_{11..16}:
+        firstname: <firstname()>
+        lastname: <lastname()>
+        birthdate: <immutableDateTimeBetween("-50 years", "-3 years")>
+        contact: '<firstname()> <lastname()>'
+        phone: <phoneNumber()>
+        mobilePhone: <mobileNumber()>
+        email: <email()>
+        office: '@office_2'
+        variableSchedule: false
+        availability: 
+            1:
+                - [ 1000, 1200 ]
+                - [ 1530, 1700 ]
+            2:
+                - [ 1000, 1200 ]
+                - [ 1530, 1700 ]
+            3:
+                - [ 900, 1800 ]
