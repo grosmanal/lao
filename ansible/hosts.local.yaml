@@ -1,0 +1,19 @@
+---
+all:
+    hosts:
+        lao.local:
+            fpm_user: eaverty
+            fpm_user_password: !vault |
+                $ANSIBLE_VAULT;1.1;AES256
+                37333539333038396130313334336431383664316264643161646661383633616333393538616633
+                3332396563373666343364326265356433646163656539360a663461373463373565333362383062
+                62343733356233393335616266306533313265336538643362343637326230383761656661313139
+                6465326233303037340a663435383064323966613333633739306230353033346463636130613937
+                3232
+            ansible_python_interpreter: /usr/bin/python3
+            mysql_root_password: root
+            mysql_host: localhost
+            mysql_password: lao
+            symfony_env: dev
+            apache_http_only: true
+

@@ -1,0 +1,3 @@
+[submodule "ansible/roles"]
+	path = ansible/roles
+	url = file:///home/manal/Workspace/fry/

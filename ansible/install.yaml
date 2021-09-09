@@ -1,0 +1,34 @@
+---
+- name: Installation du serveur
+  hosts: all
+  remote_user: root
+  vars_files:
+      - vars.yaml
+  tasks:
+  - include_role:
+      name: server_user
+  - include_role:
+      name: tools
+  - include_role:
+      name: php_sury
+  - include_role:
+      name: apache
+  - include_role:
+      name: fpm_composer
+  - include_role:
+      name: mysql_server
+
+  ## Répertoire de l'application
+  - name: Lao | Répertoire
+    file:
+        path: "{{ application_path }}"
+        state: directory
+        owner: localadmin
+
+  ## PHP ##
+  - name: PHP | Composants supplémentaires
+    apt:
+        update_cache: yes
+        name:
+            - php-mysql
+        state: present

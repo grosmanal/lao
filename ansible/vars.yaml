@@ -1,0 +1,17 @@
+---
+application: lao
+php_version: 8.0
+debian_version: bullseye
+
+application_path: /opt/lao
+
+apache_domain: "{{ inventory_hostname }}"
+apache_site: "{{ application }}"
+symfony_app_path: .
+symfony_app_fullpath: "{{ application_path }}/current/{{ symfony_app_path }}"
+apache_document_root: "{{ symfony_app_fullpath }}/public"
+apache_site_configuration: symfony.conf
+
+mysql_database: lao
+mysql_user: lao
+#mysql_password défini dans host
