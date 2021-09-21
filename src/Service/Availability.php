@@ -2,17 +2,56 @@
 
 namespace App\Service;
 
+use DateInterval;
+use DatePeriod;
+use DateTime;
+use DateTimeImmutable;
 use Interval\Interval;
 
 class Availability
 {
+    public function intervalsToRaw($intervaledAvailabilities) {
+        $rawAvailabilities = [];
+        foreach ($intervaledAvailabilities as $weekDay => $availabilities) {
+            $dayAvailabilities = [];
+            foreach ($availabilities as $availability) {
+                $dayAvailabilities[] = [
+                    $availability->getStart()->getValue(),
+                    $availability->getEnd()->getValue()
+                ];
+            }
+
+            if (!empty($dayAvailabilities)) {
+                $rawAvailabilities[$weekDay] = $dayAvailabilities;
+            }
+        }
+
+        return $rawAvailabilities;
+    }
+
+    public function rawToIntervals($rawAvailabilities) {
+        $intervaledAvailabilities = [];
+        foreach($rawAvailabilities as $weekDay => $availabilities) {
+            $dayAvailabilities = [];
+            foreach($availabilities as $availability) {
+                $dayAvailabilities[] = new Interval((int) $availability[0], (int) $availability[1]);
+            }
+
+            if (!empty($dayAvailabilities)) {
+                $intervaledAvailabilities[$weekDay] = $dayAvailabilities;
+            }
+        }
+
+        return $intervaledAvailabilities;
+    }
+
     /**
      * Ajoute une disponibilité à celles déjà existantes
      *
-     * @param array $current Disponibilités précédentes
+     * @param array $current Disponibilités précédentes (tableau de jours contenant une liste d'Interval)
      * @param int $weekDay Jour de la semaine sur lequel ajouter un intervalle
      * @param Interval $newInterval Intervalle à ajouter
-     * @return array Nouvelles disponibilités
+     * @return array Nouvelles disponibilités (tableau de jours contenant une liste d'Interval)
      */
     public function addAvailability(array $current, int $weekDay, Interval $newInterval)
     {
@@ -60,8 +99,10 @@ class Availability
         // Suppression des intervalles nulles
         $current[$weekDay] = array_filter($current[$weekDay]);
 
-        // Ré-indexation des intervalles
-        $current[$weekDay] = array_values($current[$weekDay]);
+        // tri des intervalles
+        usort($current[$weekDay], function($interval1, $interval2) {
+            return $interval1->getStart()->getValue() <=> $interval2->getStart()->getValue();
+        });
 
         return $current;
     }
@@ -115,9 +156,9 @@ class Availability
         // Suppression des intervalles nulles
         $current[$weekDay] = array_filter($current[$weekDay]);
 
-        // Tri des intervalles
-        usort($current[$weekDay], function($a, $b) {
-            $a->getStart()->getValue() <=> $b->getStart()->getValue();
+        // tri des intervalles
+        usort($current[$weekDay], function($interval1, $interval2) {
+            return $interval1->getStart()->getValue() <=> $interval2->getStart()->getValue();
         });
 
         // Suppression des jours vides
@@ -139,6 +180,103 @@ class Availability
             $interval->getStart()->getValue(),
             $interval->getEnd()->getValue()
         );
+    }
+
+    /**
+     * Transforme une heure sous la forme 900 pour 09:00 en DateTimeImmutable
+     *
+     * @param integer $time
+     * @return DateTimeImmutable
+     */
+    private function intToDateTimeImmutable(int $time): DateTimeImmutable
+    {
+        $timeAsString = (string) $time;
+        if (strlen($timeAsString) < 4) {
+            $timeAsString = '0' . $timeAsString;
+        }
+        return new DateTimeImmutable($timeAsString);
+    }
+
+    /**
+     * Transforme l'identifiant d'un crénaux ("0900-0930") en Interval
+     *
+     * @param string $slotKey
+     * @return Interval
+     */
+    private function intervaleFromSlotKey($slotKey): Interval
+    {
+        list($startTimeAsString, $endTimeAsString) = explode('-', $slotKey);
+        return new Interval((int) $startTimeAsString, (int) $endTimeAsString);
+    }
+
+    /**
+     * Retourne la liste de toutes les intervales (disponibles ou non) de la semaine
+     * en fonction du paramétrage du début et fin de journée ainsi que du pas
+     *
+     * @param array $weekIntervals Liste des interavalles de disponibilités par jour
+     * @return array
+     */
+    public function weekAvailabilities(
+        array $daysOfWeek,
+        string $startTime,
+        string $endTime,
+        string $interval,
+        array $availabilities
+    ) {
+        $start = new DateTimeImmutable($startTime);
+        $end = new DateTimeImmutable($endTime);
+        $interval = new DateInterval($interval);
+        $period = new DatePeriod(
+            $start,
+            $interval,
+            $end
+        );
+
+        $oneDaySlots = [];
+        $startTimeAsString = null;
+        /** @var DateTimeInterface $currentPeriod */
+        foreach ($period as $currentPeriod) {
+            $endTimeAsString = $currentPeriod->format('Hi');
+            if (!empty($startTimeAsString)) {
+                $oneDaySlots[$startTimeAsString . '-' . $endTimeAsString] = false;
+            }
+            
+            $startTimeAsString = $endTimeAsString;
+        }
+
+        if (!empty($startTimeAsString)) {
+            // La date de fin est exclue de la DatePeriod
+            if ($currentPeriod->add($interval) == $end) {
+                $oneDaySlots[$startTimeAsString . '-' . $end->format('Hi')] = false;
+            }
+        }
+
+        $weekAvailabilities = [];
+        foreach ($daysOfWeek as $dayOfWeek) {
+            // Pour chaque jour, alimentation des disponibilités
+            if ($dayAvailabilities = $availabilities[$dayOfWeek] ?? null) {
+                // Parcours de toutes les intervalles du jour pour déterminer si on doit les marquer à «disponible»
+                $daySlotsWithAvailabilities = [];
+                foreach (array_keys($oneDaySlots) as $slotKey) {
+                    $slotInterval = $this->intervaleFromSlotKey($slotKey);
+
+                    // Parcours de tous les disponibilités pour rechercher si une correspond à cette période
+                    $daySlotsWithAvailabilities[$slotKey] = false;
+                    foreach ($dayAvailabilities as $availability) {
+                        $availabilityInterval = new Interval($availability[0], $availability[1], true, true);
+                        if ($availabilityInterval->overlaps($slotInterval)) {
+                            $daySlotsWithAvailabilities[$slotKey] = true;
+                            break;
+                        }
+                    }
+                }
+                $weekAvailabilities[$dayOfWeek] = $daySlotsWithAvailabilities;
+            } else {
+                $weekAvailabilities[$dayOfWeek] = $oneDaySlots;
+            }
+        }
+        
+        return $weekAvailabilities;
     }
 
 }

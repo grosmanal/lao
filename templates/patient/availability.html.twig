@@ -1,0 +1,9 @@
+<div
+    data-patient-id="{{ patient.id }}"
+    data-start-of-day="{{ startOfDay }}"
+    data-middle-of-day="{{ middleOfDay }}"
+    data-end-of-day="{{ endOfDay }}"
+    data-availability="{{ availability|json_encode|e('html_attr') }}"
+>
+    <div id="week-availability"></div>
+</div>

@@ -1,0 +1,5 @@
+{% for careRequest in patient.careRequests %}
+<pre>
+    {{ dump(careRequest.doctorCreator.firstname) }}
+</pre>
+{% endfor %}

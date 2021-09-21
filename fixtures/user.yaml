@@ -2,10 +2,17 @@
 App\Entity\User:
     user_emmanuel:
         email: emmanuel.averty@free.fr
-        password: $2y$13$N1dxqPx7LdFWDvwrZAA1Q.deK2FjoxzkhNHzOOeJTbsuDvMY3GU36
+        password: '\$2y\$13\$N1dxqPx7LdFWDvwrZAA1Q.deK2FjoxzkhNHzOOeJTbsuDvMY3GU36'
+        roles: [ ROLE_ADMIN ]
     user_joelle:
         email: joelle.terrien@free.fr
-        password: $2y$13$N1dxqPx7LdFWDvwrZAA1Q.deK2FjoxzkhNHzOOeJTbsuDvMY3GU36
+        password: '\$2y\$13\$N1dxqPx7LdFWDvwrZAA1Q.deK2FjoxzkhNHzOOeJTbsuDvMY3GU36'
+        roles: [ ROLE_DOCTOR ]
     user_laurence:
         email: laurence.chaillet@free.fr
-        password: $2y$13$N1dxqPx7LdFWDvwrZAA1Q.deK2FjoxzkhNHzOOeJTbsuDvMY3GU36
+        password: '\$2y\$13\$N1dxqPx7LdFWDvwrZAA1Q.deK2FjoxzkhNHzOOeJTbsuDvMY3GU36'
+        roles: [ ROLE_DOCTOR ]
+    user_julie:
+        email: julie.doe@free.fr
+        password: '\$2y\$13\$N1dxqPx7LdFWDvwrZAA1Q.deK2FjoxzkhNHzOOeJTbsuDvMY3GU36'
+        roles: [ ROLE_DOCTOR ]

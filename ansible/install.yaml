@@ -17,6 +17,8 @@
       name: fpm_composer
   - include_role:
       name: mysql_server
+  - include_role:
+      name: yarn
 
   ## Répertoire de l'application
   - name: Lao | Répertoire

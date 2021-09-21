@@ -2,15 +2,31 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
+use App\Controller\PatientPatchAvailabilityController;
 use App\Repository\PatientRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=PatientRepository::class)
  */
-class Patient
+#[ApiResource(
+    normalizationContext: ['groups' => ['patient:read']],
+    itemOperations: [
+        'put',
+        'delete',
+        'get',
+        'availability' => [
+            'method' => 'PUT',
+            'path' => '/patients/{id}/availability',
+            'controller' => PatientPatchAvailabilityController::class,
+        ]
+    ],
+)]
+class Patient implements OfficeOwnedInterface
 {
     /**
      * @ORM\Id
@@ -22,46 +38,55 @@ class Patient
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
+    #[Groups(['patient:read'])]
     private $firstname;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
+    #[Groups(['patient:read'])]
     private $lastname;
 
     /**
      * @ORM\Column(type="date_immutable", nullable=true)
      */
+    #[Groups(['patient:read'])]
     private $birthdate;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
+    #[Groups(['patient:read'])]
     private $contact;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
+    #[Groups(['patient:read'])]
     private $phone;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
+    #[Groups(['patient:read'])]
     private $mobilePhone;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
+    #[Groups(['patient:read'])]
     private $email;
 
     /**
      * @ORM\Column(type="boolean")
      */
+    #[Groups(['patient:read'])]
     private $variableSchedule;
 
     /**
      * @ORM\Column(type="json")
      */
+    #[Groups(['patient:read'])]
     private $availability = [];
 
     /**

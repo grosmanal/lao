@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello HomeController!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    .day-slot {
+        border: solid 1px;
+        max-width: 100px;
+    }
+</style>
+
+<h1>Hello {{ controller_name }}! ✅</h1>
+<div data-availability="{{ availability|json_encode|e('html_attr') }}">
+    <div id="week-availability"></div>
+</div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    {{ encore_entry_link_tags('home') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    
+    {{ encore_entry_script_tags('home') }}
+{% endblock %}

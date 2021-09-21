@@ -16,6 +16,78 @@ class AvailabilityTest extends TestCase
         $this->availability = new Availability();
     }
 
+    public function dataProviderIntervalsToRaw()
+    {
+        return [
+            [
+                // intervaled availabilities
+                [
+                    1 => [
+                        new Interval(900, 930),
+                        new Interval(1000, 1200),
+                    ],
+                    3 => [
+                        new Interval(1000, 1200),
+                    ],
+                ],
+                // expected
+                [
+                    1 => [
+                        [900, 930],
+                        [1000, 1200],
+                    ],
+                    3 => [
+                        [1000, 1200],
+                    ],
+                ]
+            ]
+        ];
+    }
+    
+    /**
+     * @dataProvider dataProviderIntervalsToRaw
+     */
+    public function testIntervalsToRaw($intervaledAvailabilities, $expected)
+    {
+        $this->assertEquals($expected, $this->availability->intervalsToRaw($intervaledAvailabilities));
+    }
+
+    public function dataProviderRawToIntervals()
+    {
+        return [
+            [
+                // raw availabilities
+                [
+                    1 => [
+                        [900, 930],
+                        [1000, 1200],
+                    ],
+                    3 => [
+                        [1000, 1200]
+                    ]
+                    ],
+                // Expected
+                [
+                    1 => [
+                        new Interval(900, 930),
+                        new Interval(1000, 1200),
+                    ],
+                    3 => [
+                        new Interval(1000, 1200),
+                    ],
+                ],
+            ]
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderRawToIntervals
+     */
+    public function testRawToIntervals($rawAvailabilities, $expected)
+    {
+        $this->assertEquals($expected, $this->availability->rawToIntervals($rawAvailabilities));
+    }
+
     public function dataProviderAddAvailability()
     {
         return [
@@ -42,6 +114,19 @@ class AvailabilityTest extends TestCase
                     2 => [ new Interval(1000, 1100), ],
                 ]
             ],
+            'Ajout où le jour est vide avec un jour postérieur' => [
+                // current
+                [
+                    2 => [ new Interval(1000, 1100), ],
+                ],
+                // new
+                1, new Interval(900, 1000),
+                // expected
+                [
+                    1 => [ new Interval(900, 1000), ],
+                    2 => [ new Interval(1000, 1100), ],
+                ]
+            ],
             'Ajout où les intervalles ne se touchent pas' => [
                 // current
                 [
@@ -54,6 +139,21 @@ class AvailabilityTest extends TestCase
                     1 => [
                         new Interval(1000, 1100),
                         new Interval(1500, 1600),
+                    ],
+                ]
+            ],
+            'Ajout d’intervalles avant l’existante' => [
+                // current
+                [
+                    1 => [ new Interval(1000, 1100), ],
+                ],
+                // new
+                1, new Interval(900, 930),
+                // expected
+                [
+                    1 => [
+                        new Interval(900, 930),
+                        new Interval(1000, 1100),
                     ],
                 ]
             ],
@@ -442,6 +542,103 @@ class AvailabilityTest extends TestCase
         $this->assertEquals(
             $expected,
             $this->availability->removeAvailability($current, $weekDay, $oldInterval)
+        );
+    }
+
+    public function dataProviderWeekAvailability()
+    {
+        return [
+            'Un jour, pas de dispo' => [
+                [1], '0900', '1300', 'PT1H', [],
+                // expected
+                [
+                    1 => [ '0900-1000' => false, '1000-1100' => false, '1100-1200' => false, '1200-1300' => false ],
+                ]
+            ],
+            'Un jour, pas de dispo intervalle demi-heure' => [
+                [1], '0900', '1300', 'PT30M', [],
+                // expected
+                [
+                    1 => [
+                        '0900-0930' => false,
+                        '0930-1000' => false,
+                        '1000-1030' => false,
+                        '1030-1100' => false,
+                        '1100-1130' => false,
+                        '1130-1200' => false,
+                        '1200-1230' => false,
+                        '1230-1300' => false,
+                    ]
+                ]
+            ],
+            'Un jour, pas de dispo, intervalle à cheval' => [
+                [1], '0900', '1315', 'PT1H', [],
+                // expected
+                [
+                    1 => [ '0900-1000' => false, '1000-1100' => false, '1100-1200' => false, '1200-1300' => false ],
+                ]
+            ],
+            'Plusieurs jours, pas de dispo' => [
+                [1, 2, 3, 4], '0900', '1300', 'PT1H', [],
+                // expected
+                [
+                    1 => [ '0900-1000' => false, '1000-1100' => false, '1100-1200' => false, '1200-1300' => false ],
+                    2 => [ '0900-1000' => false, '1000-1100' => false, '1100-1200' => false, '1200-1300' => false ],
+                    3 => [ '0900-1000' => false, '1000-1100' => false, '1100-1200' => false, '1200-1300' => false ],
+                    4 => [ '0900-1000' => false, '1000-1100' => false, '1100-1200' => false, '1200-1300' => false ],
+                ]
+            ],
+            'Plusieurs jours, dispos un jour' => [
+                [1, 2, 3, 4], '0900', '1300', 'PT1H', [
+                    2 => [ [900, 1100], [1200, 1300] ],
+                ],
+                // expected
+                [
+                    1 => [ '0900-1000' => false, '1000-1100' => false, '1100-1200' => false, '1200-1300' => false ],
+                    2 => [ '0900-1000' => true, '1000-1100' => true, '1100-1200' => false, '1200-1300' => true ],
+                    3 => [ '0900-1000' => false, '1000-1100' => false, '1100-1200' => false, '1200-1300' => false ],
+                    4 => [ '0900-1000' => false, '1000-1100' => false, '1100-1200' => false, '1200-1300' => false ],
+                ]
+            ],
+            'Plusieurs jours, dispos plusieurs jours' => [
+                [1, 2, 3, 4], '0900', '1300', 'PT1H', [
+                    2 => [ [900, 1100], [1200, 1300] ],
+                    4 => [ [900, 1000], [1200, 1300] ],
+                ],
+                // expected
+                [
+                    1 => [ '0900-1000' => false, '1000-1100' => false, '1100-1200' => false, '1200-1300' => false ],
+                    2 => [ '0900-1000' => true, '1000-1100' => true, '1100-1200' => false, '1200-1300' => true ],
+                    3 => [ '0900-1000' => false, '1000-1100' => false, '1100-1200' => false, '1200-1300' => false ],
+                    4 => [ '0900-1000' => true, '1000-1100' => false, '1100-1200' => false, '1200-1300' => true ],
+                ]
+            ],
+            'Un jour, dispos à cheval' => [
+                [1], '0900', '1300', 'PT1H', [
+                    1 => [ [930, 1030] ]
+                ],
+                // expected
+                [
+                    1 => [ '0900-1000' => true, '1000-1100' => true, '1100-1200' => false, '1200-1300' => false ],
+                ]
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderWeekAvailability
+     */
+    public function testWeekAvailability($daysOfWeek, $startTime, $endTime, $interval, $availability, $expected)
+    {
+        $this->assertEquals(
+            $expected,
+            $this->availability->weekAvailabilities(
+                $daysOfWeek,
+                $startTime,
+                $endTime,
+                $interval,
+                $availability
+            )
         );
     }
 }

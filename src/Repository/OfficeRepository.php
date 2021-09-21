@@ -2,9 +2,12 @@
 
 namespace App\Repository;
 
+use App\Entity\User;
 use App\Entity\Office;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+
+use function PHPUnit\Framework\returnSelf;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @method Office|null find($id, $lockMode = null, $lockVersion = null)
@@ -18,6 +21,17 @@ class OfficeRepository extends ServiceEntityRepository
     {
         $registry->getManagerNames();
         parent::__construct($registry, Office::class);
+    }
+
+    public function findOneByUser(User $user): ?Office
+    {
+        return $this->createQueryBuilder('o')
+            ->innerJoin('o.doctors', 'd')
+            ->andWhere('d.user = :user_id')
+            ->setParameter('user_id', $user->getId())
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
     }
 
     // /**
