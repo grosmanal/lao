@@ -4,6 +4,8 @@
 
 {% block body %}
 
+<div id="message" class="alert" style="display: none;"></div>
+
 <h1>Patient {{ patient.firstname }} {{ patient.lastname}}</h1>
 
 <section>
@@ -19,16 +21,16 @@
     <p>
         <a data-bs-toggle="collapse" href="#availability-content"><h2>Disponibilités</h2></a>
     </p>
-    <div class="collapse show" id="availability-content">
+    <div class="collapse" id="availability-content">
         {% include "patient/availability.html.twig" %}
     </div>
 </section>
 
 <section>
     <p>
-        <a data-bs-toggle="collapse" href="#care-requests-content"><h2>Demandes</h2></a> <!-- TODO ne pas collapser chaque demande doit l'être -->
+        <h2>Demandes</h2>
     </p>
-    <div class="collapse" id="care-requests-content">
+    <div>
         {% include "patient/care_requests.html.twig" %}
     </div>
 </section>

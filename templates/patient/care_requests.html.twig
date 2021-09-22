@@ -1,5 +1,7 @@
-{% for careRequest in patient.careRequests %}
-<pre>
-    {{ dump(careRequest.doctorCreator.firstname) }}
-</pre>
+<div id="care-requests-accordion" class="accordion">
+{% for careRequest in careRequests %}
+    {% set careRequestForm = careRequestForms[careRequest.id] %}
+    {% set showCareRequest = careRequest.active %}
+    {% include "patient/parts/care_request_form.html.twig" %}
 {% endfor %}
+</div>

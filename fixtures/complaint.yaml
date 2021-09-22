@@ -1,6 +1,6 @@
 ---
 App\Entity\Complaint:
-    complaint_orilite:
+    complaint_oralite:
         label: oralité
     complaint_aa:
         label: aa

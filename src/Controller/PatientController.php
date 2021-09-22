@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Patient;
 use App\Form\PatientType;
+use App\Form\CareRequestType;
 use App\Service\Availability;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,19 +13,26 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class PatientController extends AbstractController
 {
-    /**
-     * @Route("/patients/{id}", name="patient")
-     */
+    #[Route('/patients/{id}', name: 'patient')]
     public function patient(Patient $patient, Availability $availability): Response
     {
         $this->denyAccessUnlessGranted('edit', $patient);
 
         $paramsAvailability = $this->getParameter('app.availability');
 
-        $form = $this->createForm(PatientType::class, $patient);
+        $pationtForm = $this->createForm(PatientType::class, $patient);
+
+        $careRequests = [];
+        $careRequestForms = [];
+        // TODO utiliser un repository pour pouvoir classer les care request par …
+        foreach ($patient->getCareRequests() as $careRequest) {
+            $careRequests[$careRequest->getId()] = $careRequest;
+            $careRequestForms[$careRequest->getId()] = $this->createForm(CareRequestType::class, $careRequest);
+        }
+
         return $this->render('patient/patient.html.twig', [
             'patient' => $patient,
-            'form' => $form->createView(),
+            'patientForm' => $pationtForm->createView(),
             'startOfDay' => $paramsAvailability['startOfDay'],
             'middleOfDay' => $paramsAvailability['middleOfDay'],
             'endOfDay' => $paramsAvailability['endOfDay'],
@@ -35,6 +43,8 @@ class PatientController extends AbstractController
                 $paramsAvailability['interval'],
                 $patient->getAvailability()
             ),
+            'careRequests' => $careRequests,
+            'careRequestForms' => array_map(function($careRequestForm) {return $careRequestForm->createView();}, $careRequestForms),
         ]);
     }
 }

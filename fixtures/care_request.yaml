@@ -4,8 +4,8 @@ App\Entity\CareRequest:
         patient: '@patient_1'
         doctorCreator: '@doctor_joelle'
         creationDate: <immutableDateTimeBetween("-6 month", "now")>
-        priority: false
-        complaint: '@complaint_orilite'
+        priority: true
+        complaint: '@complaint_oralite'
         customComplaint: ~
         acceptedByDoctor: ~
         acceptDate: ~
@@ -42,7 +42,7 @@ App\Entity\CareRequest:
         customComplaint: ~
         acceptedByDoctor: ~
         acceptDate: ~
-        abandonDate: ~
+        acceptDate: <immutableDateTimeBetween("-1 month", "now")>
         abandonReason: ~
     care_request_5:
         patient: '@patient_4'
@@ -60,7 +60,7 @@ App\Entity\CareRequest:
         doctorCreator: '@doctor_joelle'
         creationDate: <immutableDateTimeBetween("-6 month", "-1 month")>
         priority: false
-        complaint: '@complaint_orilite'
+        complaint: '@complaint_oralite'
         customComplaint: ~
         acceptedByDoctor: '@doctor_joelle'
         acceptDate: <immutableDateTimeBetween("-1 month", "now")>
@@ -71,7 +71,7 @@ App\Entity\CareRequest:
         doctorCreator: '@doctor_joelle'
         creationDate: <immutableDateTimeBetween("-1 year", "-6 month")>
         priority: false
-        complaint: '@complaint_orilite'
+        complaint: '@complaint_oralite'
         customComplaint: ~
         acceptedByDoctor: ~
         acceptDate: ~

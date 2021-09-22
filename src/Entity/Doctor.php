@@ -2,12 +2,19 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\DoctorRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=DoctorRepository::class)
  */
+#[ApiResource(
+    normalizationContext: [
+        'groups' => ['doctor:read'],
+    ],
+)]
 class Doctor
 {
     /**
@@ -20,11 +27,13 @@ class Doctor
     /**
      * @ORM\Column(type="string", length=255)
      */
+    #[Groups(['doctor:read', 'careRequest:read'])]
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
+    #[Groups(['doctor:read', 'careRequest:read'])]
     private $lastName;
 
     /**
@@ -90,5 +99,10 @@ class Doctor
         $this->office = $office;
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->getFirstName() . ' ' . $this->getLastName();
     }
 }
