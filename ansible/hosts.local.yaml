@@ -15,5 +15,6 @@ all:
             mysql_host: localhost
             mysql_password: lao
             symfony_env: dev
-            apache_http_only: true
+            apache_http_only: false
+            apache_ssl_wildcard: lao.local
 
