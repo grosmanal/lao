@@ -20,7 +20,7 @@ class PatientController extends AbstractController
 
         $paramsAvailability = $this->getParameter('app.availability');
 
-        $pationtForm = $this->createForm(PatientType::class, $patient);
+        $patientForm = $this->createForm(PatientType::class, $patient);
 
         $careRequests = [];
         $careRequestForms = [];
@@ -32,7 +32,7 @@ class PatientController extends AbstractController
 
         return $this->render('patient/patient.html.twig', [
             'patient' => $patient,
-            'patientForm' => $pationtForm->createView(),
+            'patientForm' => $patientForm->createView(),
             'startOfDay' => $paramsAvailability['startOfDay'],
             'middleOfDay' => $paramsAvailability['middleOfDay'],
             'endOfDay' => $paramsAvailability['endOfDay'],

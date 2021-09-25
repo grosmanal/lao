@@ -1,1 +1,4 @@
-{{ form(patientForm) }}
+{{ form_start(patientForm, {
+    'attr': {'onsubmit': 'submitPatient(event);'}
+}) }}
+{{ form_end(patientForm) }}

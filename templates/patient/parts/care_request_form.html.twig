@@ -25,16 +25,21 @@
         aria-labelledby="care-request-heading-{{ careRequest.id }}" 
     >
         <div class="accordion-body">
-            {{ form_start(careRequestForm, {'id': 'care-request-form-' ~ careRequest.id}) }}
+            {{ form_start(careRequestForm, {
+                'id': 'care-request-form-' ~ careRequest.id,
+                'attr': {'onsubmit': 'submitCareRequest(event);'}
+            }) }}
             <input type="hidden" name="care-request-id" value="{{ careRequest.id }}" />
             {{ form_row(careRequestForm.creationDate, {'id': 'care-request-creationDate-' ~ careRequest.id }) }}
-            {{ form_row(careRequestForm.customComplaint, {'id': 'care-request-customComplaint-' ~ careRequest.id }) }}
-            {{ form_row(careRequestForm.acceptDate, {'id': 'care-request-acceptDate-' ~ careRequest.id }) }}
-            {{ form_row(careRequestForm.abandonDate, {'id': 'care-request-abandonDate-' ~ careRequest.id }) }}
-            {{ form_row(careRequestForm.abandonReason, {'id': 'care-request-abandonReason-' ~ careRequest.id }) }}
             {{ form_row(careRequestForm.doctorCreator, {'id': 'care-request-doctorCreator-' ~ careRequest.id }) }}
             {{ form_row(careRequestForm.complaint, {'id': 'care-request-complaint-' ~ careRequest.id }) }}
+            {{ form_row(careRequestForm.customComplaint, {'id': 'care-request-customComplaint-' ~ careRequest.id }) }}
             {{ form_row(careRequestForm.acceptedByDoctor, {'id': 'care-request-acceptedByDoctor-' ~ careRequest.id }) }}
+            {{ form_row(careRequestForm.acceptDate, {'id': 'care-request-acceptDate-' ~ careRequest.id }) }}
+            {{ form_row(careRequestForm.acceptAction, {'id': 'care-request-acceptAction' ~ careRequest.id }) }}
+            {{ form_row(careRequestForm.abandonReason, {'id': 'care-request-abandonReason-' ~ careRequest.id }) }}
+            {{ form_row(careRequestForm.abandonDate, {'id': 'care-request-abandonDate-' ~ careRequest.id }) }}
+            {{ form_row(careRequestForm.abandonAction, {'id': 'care-request-abandonAction' ~ careRequest.id }) }}
             {{ form_row(careRequestForm.validate, {'id': 'care-request-validate-' ~ careRequest.id }) }}
             {{ form_end(careRequestForm) }}
         </div>

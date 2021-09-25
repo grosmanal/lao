@@ -18,16 +18,24 @@ const vm = new Vue({
 /**
  * Enregistrement des infos du patient
  */
-$('#patient_validate').on('click', function() {
-    const url = '/api/patients/' + $('#patient_id').val();
+//$('#patient_validate').on('click', function() {
+
+function submitPatient(event) {
+    event.preventDefault();
+
+    const form = event.target;
+    const patientId = form['patient[id]'].value;
+
+    const url = '/api/patients/' + patientId;
+
     const data = {
-        firstname: $('#patient_firstname').val(),
-        lastname: $('#patient_lastname').val(),
-        birthdate: $('#patient_birthdate').val(),
-        contact: $('#patient_contact').val(),
-        phone: $('#patient_phone').val(),
-        mobilePhone: $('#patient_mobilePhone').val(),
-        email: $('#patient_email').val()
+        firstname: nullFieldConverter(form['patient[firstname]'].value),
+        lastname: nullFieldConverter(form['patient[lastname]'].value),
+        birthdate: nullFieldConverter(form['patient[birthdate]'].value),
+        contact: nullFieldConverter(form['patient[contact]'].value),
+        phone: nullFieldConverter(form['patient[phone]'].value),
+        mobilePhone: nullFieldConverter(form['patient[mobilePhone]'].value),
+        email: nullFieldConverter(form['patient[email]'].value),
     };
     httpClient({
         method: 'put',
@@ -41,13 +49,14 @@ $('#patient_validate').on('click', function() {
     });
 
     return false;
-});
+};
 
 /**
  * Modification d'une demande
  */
-function submitCareRequest() {
-    const form = this;
+function submitCareRequest(event) {
+    const form = event.target;
+    
     const careRequestId = form['care-request-id'].value;
     
     const url = '/api/care_requests/' + careRequestId;
@@ -74,10 +83,6 @@ function submitCareRequest() {
                 let formParent = $(form).parentsUntil('.accordion-item').parent();
                 // Injection du nouveau HTML
                 formParent.html(response.data);
-                
-                // Recherche de la nouvelle form dans le nouveau HTML
-                // pour ré affectation de cette fonction en tant que submit
-                let newFrom = $(formParent).find('form').on('submit', submitCareRequest);
             }).catch(function(error) {
                 modal('Erreur lors du ré-affichage de la demande') // TODO traduction
             });
@@ -89,4 +94,24 @@ function submitCareRequest() {
     return false;
 };
 
-$('#care-requests-accordion form').on('submit', submitCareRequest);
+
+/**
+ * Annulation de l'abandon de la demande de prise en charge
+ */
+function abandonCareRequest() {
+    alert('in func abandon');
+}
+
+/**
+ * Annulation de l'acceptation de la demande de prise en charge
+ */
+ function acceptCareRequest() {
+    alert('in func accept');
+ }
+
+// Ces fonctions sont appelées depuis les forms care request.
+// Elles doivent donc être globale
+window.submitPatient = submitPatient;
+window.submitCareRequest = submitCareRequest;
+window.abandonCareRequest = abandonCareRequest;
+window.acceptCareRequest = acceptCareRequest;
