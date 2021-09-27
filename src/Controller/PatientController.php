@@ -13,7 +13,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class PatientController extends AbstractController
 {
-    // TODO faire des tests de ce controller
     #[Route('/patients/{id}', name: 'patient')]
     public function patient(Patient $patient, Availability $availability): Response
     {

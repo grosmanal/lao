@@ -54,6 +54,7 @@ class PatientPatchAvailabilityControllerTest extends AbstractApiTest
             [ 'user2@example.com', Response::HTTP_FORBIDDEN ],
         ];
     }
+
     /**
      * @dataProvider dataProviderTestPatchAsDoctor
      */
