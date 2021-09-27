@@ -24,7 +24,6 @@ class PatientController extends AbstractController
 
         $careRequests = [];
         $careRequestForms = [];
-        // TODO utiliser un repository pour pouvoir classer les care request par …
         foreach ($patient->getCareRequests() as $careRequest) {
             $careRequests[$careRequest->getId()] = $careRequest;
             $careRequestForms[$careRequest->getId()] = $this->createForm(CareRequestType::class, $careRequest);

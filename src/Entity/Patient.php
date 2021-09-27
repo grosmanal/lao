@@ -97,6 +97,7 @@ class Patient implements OfficeOwnedInterface
 
     /**
      * @ORM\OneToMany(targetEntity=CareRequest::class, mappedBy="patient")
+     * @ORM\OrderBy({"creationDate" = "DESC"})
      */
     private $careRequests;
 
