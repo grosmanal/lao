@@ -13,7 +13,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiResource(
     normalizationContext: ['groups' => ['careRequest:read']],
 )]
-class CareRequest
+class CareRequest implements OfficeOwnedInterface
 {
     const STATE_ACTIVE = 'active';
     const STATE_ARCHIVED = 'archived';
@@ -243,5 +243,10 @@ class CareRequest
         $this->abandonReason = $abandonReason;
 
         return $this;
+    }
+
+    public function getOffice(): ?Office
+    {
+        return $this->getPatient()->getOffice();
     }
 }

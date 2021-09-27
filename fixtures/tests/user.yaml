@@ -1,0 +1,14 @@
+---
+App\Entity\User:
+    user_admin:
+        email: admin@example.com
+        password: '\$2y\$13\$N1dxqPx7LdFWDvwrZAA1Q.deK2FjoxzkhNHzOOeJTbsuDvMY3GU36'
+        roles: [ ROLE_ADMIN ]
+    user_1:
+        email: user1@example.com
+        password: '\$2y\$13\$N1dxqPx7LdFWDvwrZAA1Q.deK2FjoxzkhNHzOOeJTbsuDvMY3GU36'
+        roles: [ ROLE_DOCTOR ]
+    user_2:
+        email: user2@example.com
+        password: '\$2y\$13\$N1dxqPx7LdFWDvwrZAA1Q.deK2FjoxzkhNHzOOeJTbsuDvMY3GU36'
+        roles: [ ROLE_DOCTOR ]

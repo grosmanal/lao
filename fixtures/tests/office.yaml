@@ -1,0 +1,14 @@
+---
+App\Entity\Office:
+    office_1:
+        name: office_1_name
+        address: office_1_address
+        zipCode: office_1_zipcode
+        city: office_1_city
+        country: France
+    office_2:
+        name: office_2_name
+        address: office_2_address
+        zipCode: office_2_zipcode
+        city: office_2_city
+        country: France

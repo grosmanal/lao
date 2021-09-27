@@ -1,0 +1,6 @@
+---
+App\Entity\Complaint:
+    complaint_1:
+        label: Plainte 1
+    complaint_2:
+        label: Plainte 2

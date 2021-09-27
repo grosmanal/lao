@@ -5,33 +5,53 @@ namespace App\Controller;
 use Interval\Interval;
 use App\Entity\Patient;
 use App\Service\Availability;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Config\Definition\Processor;
+use App\Input\PatientPatchAvailabilityInput;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
+use Symfony\Component\Serializer\SerializerInterface;
+
+//use Symfony\Component\Config\Definition\Processor;
 
 class PatientPatchAvailabilityController extends AbstractController
 {
     public function __construct(
-        private Availability $availability
-    ) {
-    }
+        private Availability $availability,
+        private SerializerInterface $serializer,
+        private ValidatorInterface $validator
+    ) {}
     
-    // TODO écrire des tests unitaires pour ce controller
     public function __invoke(Patient $data): Patient
     {
-        $contentAsJson = json_decode($this->get('request_stack')->getCurrentRequest()->getContent(), true);
+        $this->denyAccessUnlessGranted('edit', $data);
+        
+        $requestContent = $this->get('request_stack')->getCurrentRequest()->getContent();
+        
+        /** @var PatientPatchAvailabilityInput */
+        $input = $this->serializer->deserialize($requestContent, PatientPatchAvailabilityInput::class, 'json');
+        $errors = $this->validator->validate($input);
+        
+        if (count($errors) > 0) {
+            throw new BadRequestException(sprintf("%s : %s", 
+                $errors->get(0)->getPropertyPath(),
+                $errors->get(0)->getMessage()
+            ));
+        }
 
+        // Conversion de la disponibilité du patient en objets Interval
         $intervaledAvailabilities = $this->availability->rawToIntervals($data->getAvailability());
-        if ($contentAsJson['available']) {
+        if ($input->getAvailable()) {
             $newAvailabilities = $this->availability->addAvailability(
                 $intervaledAvailabilities,
-                $contentAsJson['weekDay'],
-                new Interval((int) $contentAsJson['start'], (int) $contentAsJson['end'])
+                $input->getWeekDay(),
+                new Interval((int) $input->getStart(), (int) $input->getEnd())
             );
         } else {
             $newAvailabilities = $this->availability->removeAvailability(
                 $intervaledAvailabilities,
-                $contentAsJson['weekDay'],
-                new Interval((int) $contentAsJson['start'], (int) $contentAsJson['end'])
+                $input->getWeekDay(),
+                new Interval((int) $input->getStart(), (int) $input->getEnd())
             );
         }
 

@@ -8,6 +8,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * Controller utilisé par API Platform pour définir l'opération 'availability'
+ * de la ressource Patient
+ */
 class CareRequestController extends AbstractController
 {
     #[Route('/care_request_form/{id}', name: 'care_request_form', methods: [ 'GET' ] )]
@@ -18,10 +22,11 @@ class CareRequestController extends AbstractController
             ->find($id)
             ;
         if (!$careRequest) {
-            $this->createNotFoundException();
+            throw $this->createNotFoundException();
         }
-        $careRequestForm = $this->createForm(CareRequestType::class, $careRequest);
+        $this->denyAccessUnlessGranted('edit', $careRequest);
 
+        $careRequestForm = $this->createForm(CareRequestType::class, $careRequest);
         return $this->render('patient/parts/care_request_form.html.twig', [
             'careRequest' => $careRequest,
             'careRequestForm' => $careRequestForm->createView(),

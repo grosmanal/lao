@@ -1,0 +1,17 @@
+---
+include:
+    - office.yaml
+App\Entity\Patient:
+    patient_1:
+        firstname: patient_1_firstname
+        lastname: patient_1_lastname
+        birthdate: <(new DateTimeImmutable("2011-02-05"))>
+        contact: patient_1_contact
+        phone: patient_1_phone
+        mobilePhone: patient_1_mobilePhone
+        email: patient_1_email
+        office: '@office_1'
+        variableSchedule: false
+        availability:
+            1:
+                - [ 1000, 1200 ]
