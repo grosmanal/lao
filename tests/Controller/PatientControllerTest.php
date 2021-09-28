@@ -9,8 +9,8 @@ class PatientControllerTest extends AbstractControllerTest
     public function setUp(): void
     {
         $this->setUpTestController([
-            __DIR__ . '/../../fixtures/tests/doctor.yaml',
             __DIR__ . '/../../fixtures/tests/patient.yaml',
+            __DIR__ . '/../../fixtures/tests/care_request.yaml',
         ]);
     }    
 
@@ -37,6 +37,14 @@ class PatientControllerTest extends AbstractControllerTest
         $this->loginUser('admin@example.com');
         $crawler = $this->client->request('GET', "/patients/$patientId");
         $this->assertResponseStatusCodeSame($expected);
+    }
+
+
+    public function testGetExistingPatient()
+    {
+        $this->loginUser('admin@example.com');
+        $crawler = $this->client->request('GET', "/patients/1");
+        $this->assertResponseIsSuccessful();
         $this->assertPageTitleSame('Patient patient_1_firstname patient_1_lastname');
         $this->assertCount(3, $crawler->filter('#care-requests-accordion h3')); // Nombre de care requests du patient
     }

@@ -74,7 +74,7 @@ class CareRequestControllerTest extends AbstractControllerTest
         $this->loginUser('user1@example.com');
         $crawler = $this->client->request('GET', "/care_request_form/2");
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextSame('h3 button', 'Demande du 27/09/2021 archived'); // TODO traduction
+        $this->assertSelectorTextSame('h3 button', 'Demande du 26/09/2021 archived'); // TODO traduction
         $this->assertSelectorExists('form');
         $this->assertSelectorExists('form button[name~="care_request[acceptAction]"][disabled]');
         $this->assertSelectorExists('form button[name~="care_request[abandonAction]"][disabled]');
@@ -86,7 +86,7 @@ class CareRequestControllerTest extends AbstractControllerTest
         $this->loginUser('user1@example.com');
         $crawler = $this->client->request('GET', "/care_request_form/3");
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextSame('h3 button', 'Demande du 27/09/2021 abandoned'); // TODO traduction
+        $this->assertSelectorTextSame('h3 button', 'Demande du 25/09/2021 abandoned'); // TODO traduction
         $this->assertSelectorExists('form');
         $this->assertSelectorExists('form button[name~="care_request[acceptAction]"][disabled]');
         $this->assertSelectorExists('form button[name~="care_request[abandonAction]"][disabled]');
