@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20210909144922 extends AbstractMigration
+final class Version20210928143221 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -22,7 +22,7 @@ final class Version20210909144922 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('CREATE TABLE care_request (id INT AUTO_INCREMENT NOT NULL, patient_id INT NOT NULL, doctor_creator_id INT DEFAULT NULL, complaint_id INT DEFAULT NULL, accepted_by_doctor_id INT DEFAULT NULL, creation_date DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', priority TINYINT(1) NOT NULL, custom_complaint VARCHAR(255) CHARACTER SET utf8mb4 DEFAULT NULL COLLATE `utf8mb4_unicode_ci`, accept_date DATE DEFAULT NULL COMMENT \'(DC2Type:date_immutable)\', abandon_date DATE DEFAULT NULL COMMENT \'(DC2Type:date_immutable)\', abandon_reason VARCHAR(10) CHARACTER SET utf8mb4 DEFAULT NULL COLLATE `utf8mb4_unicode_ci`, INDEX IDX_7BF611AAEDAE188E (complaint_id), INDEX IDX_7BF611AA3B84A2A7 (accepted_by_doctor_id), INDEX IDX_7BF611AA6B899279 (patient_id), INDEX IDX_7BF611AA56352737 (doctor_creator_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE `utf8_unicode_ci` ENGINE = InnoDB COMMENT = \'\' ');
+        $this->addSql('CREATE TABLE care_request (id INT AUTO_INCREMENT NOT NULL, patient_id INT NOT NULL, doctor_creator_id INT DEFAULT NULL, complaint_id INT DEFAULT NULL, accepted_by_doctor_id INT DEFAULT NULL, creation_date DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', priority TINYINT(1) NOT NULL, custom_complaint VARCHAR(255) CHARACTER SET utf8mb4 DEFAULT NULL COLLATE `utf8mb4_unicode_ci`, accept_date DATE DEFAULT NULL COMMENT \'(DC2Type:date_immutable)\', abandon_date DATE DEFAULT NULL COMMENT \'(DC2Type:date_immutable)\', abandon_reason VARCHAR(10) CHARACTER SET utf8mb4 DEFAULT NULL COLLATE `utf8mb4_unicode_ci`, INDEX IDX_7BF611AA6B899279 (patient_id), INDEX IDX_7BF611AA56352737 (doctor_creator_id), INDEX IDX_7BF611AAEDAE188E (complaint_id), INDEX IDX_7BF611AA3B84A2A7 (accepted_by_doctor_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE `utf8_unicode_ci` ENGINE = InnoDB COMMENT = \'\' ');
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('CREATE TABLE complaint (id INT AUTO_INCREMENT NOT NULL, label VARCHAR(255) CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_unicode_ci`, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE `utf8_unicode_ci` ENGINE = InnoDB COMMENT = \'\' ');
