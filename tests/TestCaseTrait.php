@@ -1,16 +1,16 @@
 <?php
-namespace App\Tests\Controller;
+namespace App\Tests;
 
 use App\Repository\UserRepository;
 
-trait TestTrait
+trait TestCaseTrait
 {
     protected function loadFixtures(array $fixtureFiles)
     {
         // Injection des données de test
         $loader = self::getContainer()->get('fidry_alice_data_fixtures.loader.doctrine');
         $objects = $loader->load(array_merge($fixtureFiles, [
-            __DIR__ . '/../../fixtures/tests/user.yaml'
+            __DIR__ . '/../fixtures/tests/user.yaml'
         ]));
         
         // très important : https://github.com/theofidry/AliceDataFixtures/issues/84

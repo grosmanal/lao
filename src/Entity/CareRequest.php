@@ -2,16 +2,25 @@
 
 namespace App\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
 use App\Repository\CareRequestRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
-use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @ORM\Entity(repositoryClass=CareRequestRepository::class)
  */
 #[ApiResource(
     normalizationContext: ['groups' => ['careRequest:read']],
+    collectionOperations: [
+        'get',
+        'post' => ['security_post_denormalize' => "is_granted('edit', object)"],
+    ],
+    itemOperations: [
+        'get' => ['security' => "is_granted('view', object)"],
+    ],
 )]
 class CareRequest implements OfficeOwnedInterface
 {
@@ -23,8 +32,6 @@ class CareRequest implements OfficeOwnedInterface
     const ABANDONED_OTHER_DOCTOR = 'other_doc';
     const ABANDONED_TOO_OLD = '';
     
-    // TODO Validation de l'entité. Par exemple ne pas avoir un docteur qui accepte et une date d'abandon
-
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -35,23 +42,27 @@ class CareRequest implements OfficeOwnedInterface
     /**
      * @ORM\ManyToOne(targetEntity=Patient::class, inversedBy="careRequests")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotBlank
      */
+    #[Groups(['careRequest:read'])]
     private $patient;
 
     /**
      * @ORM\ManyToOne(targetEntity=Doctor::class)
+     * @Assert\NotBlank
      */
     #[Groups(['careRequest:read'])]
     private $doctorCreator;
 
     /**
      * @ORM\Column(type="datetime_immutable")
+     * @Assert\NotBlank
      */
     #[Groups(['careRequest:read'])]
     private $creationDate;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=true)
      */
     #[Groups(['careRequest:read'])]
     private $priority;
@@ -166,6 +177,11 @@ class CareRequest implements OfficeOwnedInterface
         return $this->priority;
     }
 
+    public function isPriority(): bool
+    {
+        return $this->getPriority() === true;
+    }
+
     public function setPriority(bool $priority): self
     {
         $this->priority = $priority;
@@ -248,5 +264,20 @@ class CareRequest implements OfficeOwnedInterface
     public function getOffice(): ?Office
     {
         return $this->getPatient()->getOffice();
+    }
+
+    /**
+     * @Assert\Callback
+     */
+    public function validate(ExecutionContextInterface $context, $payload)
+    {
+        // Une demande ne peut pas être à la fois abandonnée et archivée (acceptée)
+        if ($this->getAcceptDate() != null && $this->getAbandonDate() != null) {
+            $context
+                ->buildViolation('Care request cannot be both accepetd and abandonned')
+                ->atPath('acceptDate')
+                ->addViolation()
+                ;
+        }
     }
 }

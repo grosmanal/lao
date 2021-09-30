@@ -5,14 +5,11 @@ namespace App\Controller;
 use Interval\Interval;
 use App\Entity\Patient;
 use App\Service\Availability;
-use Symfony\Component\Config\Definition\Processor;
 use App\Input\PatientPatchAvailabilityInput;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\Serializer\SerializerInterface;
-
-//use Symfony\Component\Config\Definition\Processor;
 
 class PatientPatchAvailabilityController extends AbstractController
 {

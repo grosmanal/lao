@@ -1,13 +1,15 @@
 <?php
 namespace App\Tests\Controller;
 
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use App\Tests\TestCaseTrait;
 
-abstract class AbstractControllerTest extends WebTestCase
+abstract class AbstractControllerTestCase extends WebTestCase
 {
-    use TestTrait;
+    use TestCaseTrait;
 
-    protected $client;
+    protected KernelBrowser $client;
 
     protected function setUpTestController($fixtureFiles = []): void
     {

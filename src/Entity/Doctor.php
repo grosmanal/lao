@@ -7,14 +7,13 @@ use App\Repository\DoctorRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
+// TODO assertions
+// TODO test qui peut lire / poster un docteur
+
 /**
  * @ORM\Entity(repositoryClass=DoctorRepository::class)
  */
-#[ApiResource(
-    normalizationContext: [
-        'groups' => ['doctor:read'],
-    ],
-)]
+#[ApiResource()]
 class Doctor
 {
     /**
@@ -27,17 +26,17 @@ class Doctor
     /**
      * @ORM\Column(type="string", length=255)
      */
-    #[Groups(['doctor:read', 'careRequest:read'])]
-    private $firstName;
+    #[Groups(['careRequest:read'])]
+    private $firstname;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    #[Groups(['doctor:read', 'careRequest:read'])]
-    private $lastName;
+    #[Groups(['careRequest:read'])]
+    private $lastname;
 
     /**
-     * @ORM\OneToOne(targetEntity=User::class, cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=User::class, inversedBy="doctor", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
@@ -53,26 +52,26 @@ class Doctor
         return $this->id;
     }
 
-    public function getFirstName(): ?string
+    public function getFirstname(): ?string
     {
-        return $this->firstName;
+        return $this->firstname;
     }
 
-    public function setFirstName(string $firstName): self
+    public function setFirstname(string $firstname): self
     {
-        $this->firstName = $firstName;
+        $this->firstname = $firstname;
 
         return $this;
     }
 
-    public function getLastName(): ?string
+    public function getLastname(): ?string
     {
-        return $this->lastName;
+        return $this->lastname;
     }
 
-    public function setLastName(string $lastName): self
+    public function setLastname(string $lastname): self
     {
-        $this->lastName = $lastName;
+        $this->lastname = $lastname;
 
         return $this;
     }
@@ -103,6 +102,6 @@ class Doctor
 
     public function __toString()
     {
-        return $this->getFirstName() . ' ' . $this->getLastName();
+        return $this->getFirstname() . ' ' . $this->getLastname();
     }
 }

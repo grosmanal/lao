@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Security;
+namespace App\Security\Voter;
 
 use App\Entity\User;
 use App\Entity\Patient;
@@ -12,8 +12,8 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 class OfficeOwnedVoter extends Voter
 {
-    const VIEW = 'view';
-    const EDIT = 'edit';
+    public const VIEW = 'view';
+    public const EDIT = 'edit';
 
     public function __construct(private DoctorRepository $doctorRepository, private Security $security)
     {
@@ -30,8 +30,7 @@ class OfficeOwnedVoter extends Voter
            return false;
         }
 
-    return true;
-
+        return true;
     }
 
     protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool

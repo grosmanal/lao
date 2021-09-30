@@ -1,16 +1,16 @@
 <?php
-namespace App\Tests\Controller;
+
+namespace App\Tests\Api;
 
 use Symfony\Component\HttpFoundation\Response;
 
-class PatientPatchAvailabilityControllerTest extends AbstractApiTest
+class PatientPatchAvailabilityTest extends AbstractApiTestCase
 {
     const AVAILABILITY_PATCH = [
         'weekDay' => 1,
         'start' => '0900',
         'end' => '0930',
         'available' => true,
-
     ];
 
     public function setUp(): void
@@ -72,7 +72,7 @@ class PatientPatchAvailabilityControllerTest extends AbstractApiTest
         $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
     }
 
-    public function dataProviderTestMissingArg()
+    public function dataProviderTestMissingContent()
     {
         return [
             [ 'weekDay' ],
@@ -83,13 +83,13 @@ class PatientPatchAvailabilityControllerTest extends AbstractApiTest
     }
     
     /**
-     * @dataProvider dataProviderTestMissingArg
+     * @dataProvider dataProviderTestMissingContent
      */
-    public function testMissingArg($arg)
+    public function testMissingContent($content)
     {
         $this->loginUser('user1@example.com');
 
-        $data = array_diff_key(self::AVAILABILITY_PATCH, [$arg => null]);
+        $data = array_diff_key(self::AVAILABILITY_PATCH, [$content => null]);
         $crawler = $this->client->request('PUT', "/api/patients/1/availability", ['json' => $data]);
         $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
     }

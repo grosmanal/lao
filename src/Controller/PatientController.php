@@ -10,6 +10,7 @@ use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Translation\TranslatableMessage;
 
 class PatientController extends AbstractController
 {
@@ -31,6 +32,12 @@ class PatientController extends AbstractController
 
         return $this->render('patient/patient.html.twig', [
             'patient' => $patient,
+            'content' => [
+                'title' => new TranslatableMessage('patient.title', [
+                    '%firstname%' => $patient->getFirstname(),
+                    '%lastname%' => $patient->getLastname(),
+                ])
+            ],
             'patientForm' => $patientForm->createView(),
             'startOfDay' => $paramsAvailability['startOfDay'],
             'middleOfDay' => $paramsAvailability['middleOfDay'],

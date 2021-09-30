@@ -4,12 +4,12 @@ include:
     - office.yaml
 App\Entity\Doctor:
     doctor_1:
-        firstName: doctor_1_firstname
-        lastName: doctor_1_lastname
+        firstname: doctor_1_firstname
+        lastname: doctor_1_lastname
         user: '@user_1'
         office: '@office_1'
     doctor_2:
-        firstName: doctor_2_firstname
-        lastName: doctor_2_lastname
+        firstname: doctor_2_firstname
+        lastname: doctor_2_lastname
         user: '@user_2'
         office: '@office_2'

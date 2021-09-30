@@ -7,6 +7,8 @@ use App\Repository\ComplaintRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
+// TODO restreindre l'accès + test
+
 /**
  * @ORM\Entity(repositoryClass=ComplaintRepository::class)
  */

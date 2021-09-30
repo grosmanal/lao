@@ -37,3 +37,14 @@ App\Entity\CareRequest:
         acceptDate:
         abandonDate: <(new DateTimeImmutable("2021-09-28"))>
         abandonReason: Dummy
+    care_request_4:
+        patient: '@patient_3'
+        doctorCreator: '@doctor_2'
+        creationDate: <(new DateTimeImmutable("2021-09-27"))>
+        priority: true
+        complaint: '@complaint_1'
+        customComplaint: ~
+        acceptedByDoctor: ~
+        acceptDate: ~
+        abandonDate: ~
+        abandonReason: ~

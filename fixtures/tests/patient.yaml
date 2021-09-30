@@ -28,3 +28,16 @@ App\Entity\Patient:
         availability:
             1:
                 - [ 1000, 1200 ]
+    patient_3:
+        firstname: patient_3_firstname
+        lastname: patient_3_lastname
+        birthdate: <(new DateTimeImmutable("2011-02-07"))>
+        contact: patient_3_contact
+        phone: patient_3_phone
+        mobilePhone: patient_3_mobilePhone
+        email: patient_3_email
+        office: '@office_2'
+        variableSchedule: false
+        availability:
+            1:
+                - [ 1000, 1200 ]

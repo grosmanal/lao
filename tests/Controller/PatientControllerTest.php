@@ -4,7 +4,7 @@ namespace App\Tests\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
 
-class PatientControllerTest extends AbstractControllerTest
+class PatientControllerTest extends AbstractControllerTestCase
 {
     public function setUp(): void
     {
@@ -50,7 +50,7 @@ class PatientControllerTest extends AbstractControllerTest
     }
 
     
-    public function dataProviderGetPatientAsDoctor()
+    public function dataProviderGetAsDoctor()
     {
         return [
             [ 'user1@example.com', Response::HTTP_OK ],
@@ -59,13 +59,12 @@ class PatientControllerTest extends AbstractControllerTest
     }
 
     /**
-     * @dataProvider dataProviderGetPatientAsDoctor
+     * @dataProvider dataProviderGetAsDoctor
      */
-    public function testGetPatientAsDoctor($doctorEmail, $expected)
+    public function testGetAsDoctor($doctorEmail, $expected)
     {
         $this->loginUser($doctorEmail);
         $crawler = $this->client->request('GET', "/patients/1");
         $this->assertResponseStatusCodeSame($expected);
     }
-    
 }

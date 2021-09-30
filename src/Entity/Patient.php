@@ -10,6 +10,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
+// TODO test qui peut lire / poster un patient
+
 /**
  * @ORM\Entity(repositoryClass=PatientRepository::class)
  */
@@ -38,13 +40,13 @@ class Patient implements OfficeOwnedInterface
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    #[Groups(['patient:read'])]
+    #[Groups(['patient:read', 'careRequest:read'])]
     private $firstname;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    #[Groups(['patient:read'])]
+    #[Groups(['patient:read', 'careRequest:read'])]
     private $lastname;
 
     /**

@@ -1,17 +1,17 @@
 ---
 App\Entity\Doctor:
     doctor_joelle:
-        firstName: Joëlle
-        lastName: Terrien
+        firstname: Joëlle
+        lastname: Terrien
         user: '@user_joelle'
         office: '@office_1'
     doctor_laurence:
-        firstName: Laurence
-        lastName: Chaillet
+        firstname: Laurence
+        lastname: Chaillet
         user: '@user_laurence'
         office: '@office_1'
     doctor_julie:
-        firstName: Julie
-        lastName: Doe
+        firstname: Julie
+        lastname: Doe
         user: '@user_julie'
         office: '@office_2'

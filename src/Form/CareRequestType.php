@@ -51,7 +51,7 @@ class CareRequestType extends AbstractType
                 'attr' => $fieldsAttributes,
                 ])
             ->add('acceptAction', ButtonType::class, [
-                'label' => 'Prendre en charge', // TODO traduction
+                'label' => 'take.charge',
                 'attr' => array_merge($buttonsAttributes, [
                     'class' => 'btn btn-primary',
                     'onclick' => "acceptCareRequest()",
@@ -66,7 +66,7 @@ class CareRequestType extends AbstractType
                 'attr' => $fieldsAttributes,
             ])
             ->add('abandonAction', ButtonType::class, [
-                'label' => 'Abandonner', // TODO traduction
+                'label' => 'abandon',
                 'attr' => array_merge($buttonsAttributes, [
                     'class' => 'btn btn-primary',
                     'onclick' => "abandonCareRequest()",
@@ -74,7 +74,7 @@ class CareRequestType extends AbstractType
             ])
             ->add('state', HiddenType::class)
             ->add('validate', SubmitType::class, [
-                'label' => $careRequest->isActive() ? 'Enregistrer' : 'Réactiver', // TODO traduction
+                'label' => $careRequest->isActive() ? 'save' : 'reactivate',
             ])
         ;
     }
