@@ -1,0 +1,40 @@
+modal.close: Close
+
+# Page get patient
+patient.title: Patient %firstname% %lastname%
+Informations: Informations
+Availabilities: Availabilities   
+Care requests: Care requests
+
+# Form patient
+Firstname: Firstname
+Lastname: Lastname
+Birthdate: Birthdate
+Contact: Contact
+Phone: Phone
+Mobile phone: Mobile phone
+Email: Email
+Validate: Validate
+Creation date: Creation date
+Doctor creator: Doctor creator
+Complaint: Complaint
+Custom complaint: Custom complaint
+Accepted by doctor: Accepted by doctor
+Accept date: Accept date
+Abandon reason: Abandon reason
+Abandon date: Abandon date
+patient_error:
+    updating: Error while updating patient
+
+# Form care request
+Care request from %creationDate%: Care request from %creationDate%
+take.charge: Take charge
+abandon: Abandon
+save: Save
+reactivate: Reactivate
+active: Active
+archived: Archived
+abandoned: Abandoned
+care_request_error:
+    reread: Error while reading care request
+    update: Error while updating care request

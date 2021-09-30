@@ -15,7 +15,7 @@
             aria-expanded="{% if showCareRequest %}true{% else %}false{% endif %}"
             aria-controls="care-request-form-{{ careRequest.id }}"
         >
-            Demande du {{ careRequest.creationDate|date('d/m/Y') }} <span class="badge rounded-pill {{ badgeClass }}">{{ careRequest.state }}</span>
+            {% trans with {'%creationDate%': careRequest.creationDate|date('d/m/Y')} %}Care request from %creationDate%{% endtrans %}<span class="badge rounded-pill {{ badgeClass }}">{{ careRequest.state|trans }}</span>
         </button>
     </h3>
     <div

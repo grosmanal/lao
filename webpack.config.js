@@ -77,3 +77,6 @@ Encore
 ;
 
 module.exports = Encore.getWebpackConfig();
+module.exports.externals = [{
+    'bazinga-translator': 'Translator'
+}];

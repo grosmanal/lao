@@ -45,7 +45,7 @@ function submitPatient(event) {
         // TODO voir quoi faire
         // on pourrait mettre un check dans le bouton de validation qui s'effacerait après un timer
     }).catch(function (error) {
-        modal('Erreur lors de la mise à jour du patient'); // TODO traduction
+        modal('patient_error.updating)');
     });
 
     return false;
@@ -55,8 +55,9 @@ function submitPatient(event) {
  * Modification d'une demande
  */
 function submitCareRequest(event) {
+    event.preventDefault();
+
     const form = event.target;
-    
     const careRequestId = form['care-request-id'].value;
     
     const url = '/api/care_requests/' + careRequestId;
@@ -84,11 +85,10 @@ function submitCareRequest(event) {
                 // Injection du nouveau HTML
                 formParent.html(response.data);
             }).catch(function(error) {
-                modal('Erreur lors du ré-affichage de la demande') // TODO traduction
+                modal('care_request_error.reread');
             });
-
     }).catch(function(error) {
-        modal('Erreur lors de la mise à jour de la demande de soin'); // TODO traduction
+        modal('care_request_error.update');
     });
     
     return false;
