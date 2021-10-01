@@ -10,10 +10,17 @@ import apiFieldConverter from './components/apiFieldConverter';
 import Vue from 'vue';
 import Weekvailability from './components/availability/weekAvailability.vue';
 
-const vm = new Vue({
-    el: '#week-availability',
-    render: h => h(Weekvailability)
-});
+new Vue({
+    render(h) {
+        return h(Weekvailability, {
+            props: {
+                patientId: this.$el.getAttribute('data-patient-id'),
+                middleOfDay: this.$el.getAttribute('data-middle-of-day'),
+                initAvailability: JSON.parse(this.$el.getAttribute('data-availability')),
+            }
+        });
+    }
+}).$mount('#week-availability')
 
 /**
  * Enregistrement des infos du patient

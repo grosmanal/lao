@@ -39,9 +39,7 @@ class PatientController extends AbstractController
                 ])
             ],
             'patientForm' => $patientForm->createView(),
-            'startOfDay' => $paramsAvailability['startOfDay'],
             'middleOfDay' => $paramsAvailability['middleOfDay'],
-            'endOfDay' => $paramsAvailability['endOfDay'],
             'availability' => $availability->weekAvailabilities(
                 $paramsAvailability['daysOfWeek'],
                 $paramsAvailability['startOfDay'],

@@ -30,21 +30,19 @@ export default {
         };
     },
     props: {
+        patientId: Number,
+        middleOfDay: String,
         initAvailability: Object,
     },
     mounted: function() {
-        this.$patientId = this.$el.parentElement.attributes['data-patient-id'].value;
-        this.$startOfDay = this.$el.parentElement.attributes['data-start-of-day'].value;
-        this.$middleOfDay = this.$el.parentElement.attributes['data-middle-of-day'].value;
-        this.$endOfDay = this.$el.parentElement.attributes['data-end-of-day'].value;
-        this.availability = JSON.parse(this.$el.parentElement.attributes['data-availability'].value);
+        this.availability = this.initAvailability;
     },
     methods: {
         updateWeekDayAvailability: function(weekDay, timeSlotStart, timeSlotEnd, available) {
             let startEdges = timeSlotStart.split('-');
             let endEdges = timeSlotEnd.split('-');
             axios.put(
-                '/api/patients/' + this.$patientId + '/availability',
+                '/api/patients/' + this.patientId + '/availability',
                 {
                     weekDay: weekDay,
                     start: startEdges[0],
@@ -83,7 +81,7 @@ export default {
             for (const timeSlot of Object.keys(this.availability[1])) {
                 const edges = timeSlot.split('-');
                 
-                if (edges[middleOfDayIsEndingEdge === true ? 1 : 0] === this.$middleOfDay) {
+                if (edges[middleOfDayIsEndingEdge === true ? 1 : 0] === this.middleOfDay) {
                     return timeSlot;
                 }
             }
