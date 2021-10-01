@@ -4,23 +4,20 @@ namespace App\Tests\Api;
 
 use Symfony\Component\HttpFoundation\Response;
 
-class OfficeApiTest extends AbstractApiTestCase
+class DoctorApiTest extends AbstractApiTestCase
 {
 
-    const OFFICE_DATA = [
-        'name' => 'office',
-        'address' => 'address',
-        'addressComplement1' => 'addressComplement1',
-        'addressComplement2' => 'addressComplement2',
-        'zipCode' => 'zipCode',
-        'city' => 'city',
-        'country' => 'country',
+    const DOCTOR_DATA = [
+        'firstname' => 'firstname',
+        'lastname' => 'lastname',
+        'user' => '/api/users/4',
+        'office' => '/api/offices/1',
     ];
 
     public function setUp(): void
     {
         $this->setUpTestController([
-            __DIR__ . '/../../fixtures/tests/office.yaml',
+            __DIR__ . '/../../fixtures/tests/doctor.yaml',
         ]);
     }  
 
@@ -38,7 +35,7 @@ class OfficeApiTest extends AbstractApiTestCase
     public function testGetAs($userEmail, $expected)
     {
         $this->loginUser($userEmail);
-        $this->client->request('GET', '/api/offices/1');
+        $this->client->request('GET', '/api/doctors/1');
         $this->assertResponseStatusCodeSame($expected);
 
     }
@@ -58,15 +55,15 @@ class OfficeApiTest extends AbstractApiTestCase
     public function testPostAs($userEmail, $expected)
     {
         $this->loginUser($userEmail);
-        $this->client->request('POST', '/api/offices', [
-            'json' => self::OFFICE_DATA,
+        $this->client->request('POST', '/api/doctors', [
+            'json' => self::DOCTOR_DATA,
         ]);
         $this->assertResponseStatusCodeSame($expected);
         
         if ($this->client->getResponse()->getStatusCode() == Response::HTTP_CREATED) {
-            // Vérification que l'office est bien créé
-            $officeApiId = json_decode($this->client->getResponse()->getContent(), true)['@id'];
-            $this->client->request('GET', $officeApiId);
+            // Vérification que le docteur est bien créé
+            $doctorApiId = json_decode($this->client->getResponse()->getContent(), true)['@id'];
+            $this->client->request('GET', $doctorApiId);
             $this->assertResponseIsSuccessful();
         }
     }
@@ -87,14 +84,14 @@ class OfficeApiTest extends AbstractApiTestCase
     {
         // Création d'une entité pour pouvoir la supprimer
         $this->loginUser('admin@example.com');
-        $this->client->request('POST', '/api/offices', [
-            'json' => self::OFFICE_DATA,
+        $this->client->request('POST', '/api/doctors', [
+            'json' => self::DOCTOR_DATA,
         ]);
         $this->assertResponseIsSuccessful();
 
-        $officeApiId = json_decode($this->client->getResponse()->getContent(), true)['@id'];
+        $doctorApiId = json_decode($this->client->getResponse()->getContent(), true)['@id'];
         $this->loginUser($userEmail);
-        $this->client->request('DELETE', $officeApiId);
+        $this->client->request('DELETE', $doctorApiId);
         $this->assertResponseStatusCodeSame($expected);
     }
     
@@ -112,22 +109,22 @@ class OfficeApiTest extends AbstractApiTestCase
      */
     public function testPutAs($userEmail, $expected)
     {
-        $newOfficeName = 'nom modifié';
+        $newDoctorName = 'nom modifié';
 
         $this->loginUser($userEmail);
-        $this->client->request('PUT', '/api/offices/1', [
+        $this->client->request('PUT', '/api/doctors/1', [
             'json' => [
-                'name' => $newOfficeName,
+                'firstname' => $newDoctorName,
             ],
         ]);
         $this->assertResponseStatusCodeSame($expected);
 
         if ($this->client->getResponse()->getStatusCode() == Response::HTTP_OK) {
-            // Vérification que l'office est bien modifiée
-            $officeApiId = json_decode($this->client->getResponse()->getContent(), true)['@id'];
-            $this->client->request('GET', $officeApiId);
+            // Vérification que le docteur est bien modifiée
+            $doctorApiId = json_decode($this->client->getResponse()->getContent(), true)['@id'];
+            $this->client->request('GET', $doctorApiId);
             $this->assertResponseIsSuccessful();
-            $this->assertJsonContains([ 'name' => $newOfficeName]);
+            $this->assertJsonContains([ 'firstname' => $newDoctorName]);
         }
     }
     
@@ -135,13 +132,10 @@ class OfficeApiTest extends AbstractApiTestCase
     public function dataProviderPostMissingContent()
     {
         return [
-            [ 'name', Response::HTTP_UNPROCESSABLE_ENTITY, ],
-            [ 'address', Response::HTTP_UNPROCESSABLE_ENTITY, ],
-            [ 'addressComplement1', Response::HTTP_CREATED, ],
-            [ 'addressComplement2', Response::HTTP_CREATED, ],
-            [ 'zipCode', Response::HTTP_UNPROCESSABLE_ENTITY, ],
-            [ 'city', Response::HTTP_UNPROCESSABLE_ENTITY, ],
-            [ 'country', Response::HTTP_UNPROCESSABLE_ENTITY, ],
+            [ 'firstname', Response::HTTP_UNPROCESSABLE_ENTITY, ],
+            [ 'lastname', Response::HTTP_UNPROCESSABLE_ENTITY, ],
+            [ 'user', Response::HTTP_UNPROCESSABLE_ENTITY, ],
+            [ 'office', Response::HTTP_UNPROCESSABLE_ENTITY, ],
         ];
     }
     
@@ -152,8 +146,8 @@ class OfficeApiTest extends AbstractApiTestCase
     {
         $this->loginUser('admin@example.com');
 
-        $data = array_diff_key(self::OFFICE_DATA, [$content => null]);
-        $this->client->request('POST', "/api/offices", [
+        $data = array_diff_key(self::DOCTOR_DATA, [$content => null]);
+        $this->client->request('POST', "/api/doctors", [
             'json' => $data,
         ]);
         $this->assertResponseStatusCodeSame($expected);

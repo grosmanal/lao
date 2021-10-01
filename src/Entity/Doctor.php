@@ -6,14 +6,15 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\DoctorRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
-
-// TODO assertions
-// TODO test qui peut lire / poster un docteur
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=DoctorRepository::class)
  */
-#[ApiResource()]
+#[ApiResource(
+    security: "is_granted('ROLE_ADMIN')"
+    // TODO dans le futur les docteurs pourront créer d'autres docteurs du même cabinet
+)]
 class Doctor
 {
     /**
@@ -25,12 +26,16 @@ class Doctor
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
+     * @Assert\Length(max=255)
      */
     #[Groups(['careRequest:read'])]
     private $firstname;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
+     * @Assert\Length(max=255)
      */
     #[Groups(['careRequest:read'])]
     private $lastname;
@@ -38,12 +43,14 @@ class Doctor
     /**
      * @ORM\OneToOne(targetEntity=User::class, inversedBy="doctor", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotBlank
      */
     private $user;
 
     /**
      * @ORM\ManyToOne(targetEntity=Office::class, inversedBy="doctors")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotBlank
      */
     private $office;
 

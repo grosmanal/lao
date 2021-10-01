@@ -20,6 +20,8 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
     ],
     itemOperations: [
         'get' => ['security' => "is_granted('view', object)"],
+        'delete' => ['security' => "is_granted('edit', object)"],
+        'put' => ['security' => "is_granted('view', object)"],
     ],
 )]
 class CareRequest implements OfficeOwnedInterface

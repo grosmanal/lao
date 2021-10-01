@@ -6,13 +6,14 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\ComplaintRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
-
-// TODO restreindre l'accès + test
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ComplaintRepository::class)
  */
-#[ApiResource()]
+#[ApiResource(
+    security: "is_granted('ROLE_ADMIN')"
+)]
 class Complaint
 {
     /**
@@ -24,6 +25,8 @@ class Complaint
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
+     * @Assert\Length(max=255)
      */
     #[Groups(['careRequest:read'])]
     private $label;

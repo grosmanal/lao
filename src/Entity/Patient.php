@@ -9,22 +9,26 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
-
-// TODO test qui peut lire / poster un patient
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=PatientRepository::class)
  */
 #[ApiResource(
     normalizationContext: ['groups' => ['patient:read']],
-    itemOperations: [
-        'put',
-        'delete',
+    collectionOperations: [
         'get',
+        'post' => ['security' => "is_granted('ROLE_ADMIN')"], // TODO à l'avenir autoriser les docteurs à poster un patient via API (?)
+    ],
+    itemOperations: [
+        'get' => ['security' => "is_granted('view', object)"],
+        'delete' => ['security' => "is_granted('edit', object)"],
+        'put' => ['security' => "is_granted('edit', object)"],
         'availability' => [
             'method' => 'PUT',
             'path' => '/patients/{id}/availability',
             'controller' => PatientPatchAvailabilityController::class,
+            'security' => "is_granted('edit', object)",
         ]
     ],
 )]
@@ -38,13 +42,16 @@ class Patient implements OfficeOwnedInterface
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
+     * @Assert\Length(max=255)
      */
     #[Groups(['patient:read', 'careRequest:read'])]
     private $firstname;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Length(max=255)
      */
     #[Groups(['patient:read', 'careRequest:read'])]
     private $lastname;
@@ -57,30 +64,35 @@ class Patient implements OfficeOwnedInterface
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Length(max=255)
      */
     #[Groups(['patient:read'])]
     private $contact;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Length(max=255)
      */
     #[Groups(['patient:read'])]
     private $phone;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Length(max=255)
      */
     #[Groups(['patient:read'])]
     private $mobilePhone;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Length(max=255)
      */
     #[Groups(['patient:read'])]
     private $email;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=true)
+     * @Assert\Type("bool")
      */
     #[Groups(['patient:read'])]
     private $variableSchedule;
@@ -94,6 +106,7 @@ class Patient implements OfficeOwnedInterface
     /**
      * @ORM\ManyToOne(targetEntity=Office::class, inversedBy="patients")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotBlank
      */
     private $office;
 
@@ -200,6 +213,11 @@ class Patient implements OfficeOwnedInterface
     public function getVariableSchedule(): ?bool
     {
         return $this->variableSchedule;
+    }
+    
+    public function isVariableSchedule(): bool
+    {
+        return $this->variableSchedule === true;
     }
 
     public function setVariableSchedule(bool $variableSchedule): self

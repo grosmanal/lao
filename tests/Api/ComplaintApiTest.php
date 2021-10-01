@@ -4,23 +4,17 @@ namespace App\Tests\Api;
 
 use Symfony\Component\HttpFoundation\Response;
 
-class OfficeApiTest extends AbstractApiTestCase
+class ComplaintApiTest extends AbstractApiTestCase
 {
 
-    const OFFICE_DATA = [
-        'name' => 'office',
-        'address' => 'address',
-        'addressComplement1' => 'addressComplement1',
-        'addressComplement2' => 'addressComplement2',
-        'zipCode' => 'zipCode',
-        'city' => 'city',
-        'country' => 'country',
+    const COMPLAINT_DATA = [
+        'label' => 'label',
     ];
 
     public function setUp(): void
     {
         $this->setUpTestController([
-            __DIR__ . '/../../fixtures/tests/office.yaml',
+            __DIR__ . '/../../fixtures/tests/complaint.yaml',
         ]);
     }  
 
@@ -38,7 +32,7 @@ class OfficeApiTest extends AbstractApiTestCase
     public function testGetAs($userEmail, $expected)
     {
         $this->loginUser($userEmail);
-        $this->client->request('GET', '/api/offices/1');
+        $this->client->request('GET', '/api/complaints/1');
         $this->assertResponseStatusCodeSame($expected);
 
     }
@@ -58,15 +52,15 @@ class OfficeApiTest extends AbstractApiTestCase
     public function testPostAs($userEmail, $expected)
     {
         $this->loginUser($userEmail);
-        $this->client->request('POST', '/api/offices', [
-            'json' => self::OFFICE_DATA,
+        $this->client->request('POST', '/api/complaints', [
+            'json' => self::COMPLAINT_DATA,
         ]);
         $this->assertResponseStatusCodeSame($expected);
         
         if ($this->client->getResponse()->getStatusCode() == Response::HTTP_CREATED) {
             // Vérification que l'office est bien créé
-            $officeApiId = json_decode($this->client->getResponse()->getContent(), true)['@id'];
-            $this->client->request('GET', $officeApiId);
+            $complaintApiId = json_decode($this->client->getResponse()->getContent(), true)['@id'];
+            $this->client->request('GET', $complaintApiId);
             $this->assertResponseIsSuccessful();
         }
     }
@@ -87,8 +81,8 @@ class OfficeApiTest extends AbstractApiTestCase
     {
         // Création d'une entité pour pouvoir la supprimer
         $this->loginUser('admin@example.com');
-        $this->client->request('POST', '/api/offices', [
-            'json' => self::OFFICE_DATA,
+        $this->client->request('POST', '/api/complaints', [
+            'json' => self::COMPLAINT_DATA,
         ]);
         $this->assertResponseIsSuccessful();
 
@@ -112,22 +106,22 @@ class OfficeApiTest extends AbstractApiTestCase
      */
     public function testPutAs($userEmail, $expected)
     {
-        $newOfficeName = 'nom modifié';
+        $newComplaintLabel = 'label modifié';
 
         $this->loginUser($userEmail);
-        $this->client->request('PUT', '/api/offices/1', [
+        $this->client->request('PUT', '/api/complaints/1', [
             'json' => [
-                'name' => $newOfficeName,
+                'label' => $newComplaintLabel,
             ],
         ]);
         $this->assertResponseStatusCodeSame($expected);
 
         if ($this->client->getResponse()->getStatusCode() == Response::HTTP_OK) {
-            // Vérification que l'office est bien modifiée
-            $officeApiId = json_decode($this->client->getResponse()->getContent(), true)['@id'];
-            $this->client->request('GET', $officeApiId);
+            // Vérification que la complaint est bien modifiée
+            $complaintApiId = json_decode($this->client->getResponse()->getContent(), true)['@id'];
+            $this->client->request('GET', $complaintApiId);
             $this->assertResponseIsSuccessful();
-            $this->assertJsonContains([ 'name' => $newOfficeName]);
+            $this->assertJsonContains([ 'label' => $newComplaintLabel]);
         }
     }
     
@@ -135,13 +129,7 @@ class OfficeApiTest extends AbstractApiTestCase
     public function dataProviderPostMissingContent()
     {
         return [
-            [ 'name', Response::HTTP_UNPROCESSABLE_ENTITY, ],
-            [ 'address', Response::HTTP_UNPROCESSABLE_ENTITY, ],
-            [ 'addressComplement1', Response::HTTP_CREATED, ],
-            [ 'addressComplement2', Response::HTTP_CREATED, ],
-            [ 'zipCode', Response::HTTP_UNPROCESSABLE_ENTITY, ],
-            [ 'city', Response::HTTP_UNPROCESSABLE_ENTITY, ],
-            [ 'country', Response::HTTP_UNPROCESSABLE_ENTITY, ],
+            [ 'label', Response::HTTP_UNPROCESSABLE_ENTITY, ],
         ];
     }
     
@@ -152,8 +140,8 @@ class OfficeApiTest extends AbstractApiTestCase
     {
         $this->loginUser('admin@example.com');
 
-        $data = array_diff_key(self::OFFICE_DATA, [$content => null]);
-        $this->client->request('POST', "/api/offices", [
+        $data = array_diff_key(self::COMPLAINT_DATA, [$content => null]);
+        $this->client->request('POST', "/api/complaints", [
             'json' => $data,
         ]);
         $this->assertResponseStatusCodeSame($expected);

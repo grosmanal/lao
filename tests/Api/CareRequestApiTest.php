@@ -23,6 +23,47 @@ class CareRequestApiTest extends AbstractApiTestCase
         ]);
     }  
 
+
+    public function dataProviderGetAllAsDoctor()
+    {
+        return [
+            ['admin@example.com', [
+                '/api/care_requests/1',
+                '/api/care_requests/2',
+                '/api/care_requests/3',
+                '/api/care_requests/4',
+            ]],
+            ['user1@example.com', [
+                '/api/care_requests/1',
+                '/api/care_requests/2',
+                '/api/care_requests/3',
+            ]],
+            ['user2@example.com', [
+                '/api/care_requests/4',
+            ]],
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderGetAllAsDoctor
+     */
+    public function testGetAllAsDoctor($userEmail, $careRequestApiIds)
+    {
+        $this->loginUser($userEmail);
+        $this->client->getKernelBrowser()->followRedirects();
+        $this->client->request('GET', "/api/care_requests/");
+        $this->assertResponseIsSuccessful();
+        $this->assertJsonContains(['hydra:totalItems' => count($careRequestApiIds)]);
+
+        // Constitution de la liste des care requests récupérées
+        $gotCareRequestsApiIds = [];
+        foreach (json_decode($this->client->getResponse()->getContent(), true)['hydra:member'] as $gotCareRequest) {
+            $gotCareRequestsApiIds[] = $gotCareRequest['@id'];
+        }
+        $this->assertSame($careRequestApiIds, $gotCareRequestsApiIds);
+    }
+
+
     public function testGetCareRequest()
     {
         $this->loginUser('admin@example.com');
@@ -69,46 +110,6 @@ class CareRequestApiTest extends AbstractApiTestCase
         $this->client->request('GET', "/api/care_requests/1");
         $this->assertResponseStatusCodeSame($expected);
     }
-
-
-    public function dataProviderGetAllAsDoctor()
-    {
-        return [
-            ['admin@example.com', [
-                '/api/care_requests/1',
-                '/api/care_requests/2',
-                '/api/care_requests/3',
-                '/api/care_requests/4',
-            ]],
-            ['user1@example.com', [
-                '/api/care_requests/1',
-                '/api/care_requests/2',
-                '/api/care_requests/3',
-            ]],
-            ['user2@example.com', [
-                '/api/care_requests/4',
-            ]],
-        ];
-    }
-
-    /**
-     * @dataProvider dataProviderGetAllAsDoctor
-     */
-    public function testGetAllAsDoctor($userEmail, $careRequestApiIds)
-    {
-        $this->loginUser($userEmail);
-        $this->client->getKernelBrowser()->followRedirects();
-        $this->client->request('GET', "/api/care_requests/");
-        $this->assertResponseIsSuccessful();
-        $this->assertJsonContains(['hydra:totalItems' => count($careRequestApiIds)]);
-
-        // Constitution de la liste des care requests récupérées
-        $gotCareRequestsApiIds = [];
-        foreach (json_decode($this->client->getResponse()->getContent(), true)['hydra:member'] as $gotCareRequest) {
-            $gotCareRequestsApiIds[] = $gotCareRequest['@id'];
-        }
-        $this->assertSame($careRequestApiIds, $gotCareRequestsApiIds);
-    }
     
 
     public function testPostCareRequest()
@@ -124,7 +125,7 @@ class CareRequestApiTest extends AbstractApiTestCase
     }
 
 
-    public function dataProviderMissingContent()
+    public function dataProviderPostMissingContent()
     {
         return [
             ['patient', Response::HTTP_UNPROCESSABLE_ENTITY],
@@ -137,7 +138,7 @@ class CareRequestApiTest extends AbstractApiTestCase
     }
 
     /**
-     * @dataProvider dataProviderMissingContent
+     * @dataProvider dataProviderPostMissingContent
      */
     public function testPostMissingContent($content, $expected)
     {
@@ -174,5 +175,59 @@ class CareRequestApiTest extends AbstractApiTestCase
             'json' => $data,
         ]);
         $this->assertResponseStatusCodeSame($expected);
+    }
+    
+
+    public function dataProviderDeleteAs()
+    {
+        return [
+            [ 'admin@example.com', '/api/care_requests/1', Response::HTTP_NO_CONTENT ],
+            [ 'user1@example.com', '/api/care_requests/1', Response::HTTP_NO_CONTENT ],
+            [ 'user2@example.com', '/api/care_requests/1', Response::HTTP_FORBIDDEN ],
+        ];
+    }
+    
+    /**
+     * @dataProvider dataProviderDeleteAs
+     */
+    public function testDeleteAs($userEmail, $careRequestApiId, $expected)
+    {
+        $this->loginUser($userEmail);
+        $this->client->request('DELETE', $careRequestApiId);
+        $this->assertResponseStatusCodeSame($expected);
+    }
+    
+
+    public function dataProviderPutAs()
+    {
+        return [
+            [ 'admin@example.com', '/api/care_requests/1', Response::HTTP_OK ],
+            [ 'user1@example.com', '/api/care_requests/1', Response::HTTP_OK ],
+            [ 'user2@example.com', '/api/care_requests/1', Response::HTTP_FORBIDDEN ],
+        ];
+    }
+    
+    /**
+     * @dataProvider dataProviderPutAs
+     */
+    public function testPutAs($userEmail, $careRequestApiId, $expected)
+    {
+        $newCustomComplaint = 'custom complaint modifiée';
+
+        $this->loginUser($userEmail);
+        $this->client->request('PUT', $careRequestApiId, [
+            'json' => [
+                'customComplaint' => $newCustomComplaint,
+            ],
+        ]);
+        $this->assertResponseStatusCodeSame($expected);
+
+        if ($this->client->getResponse()->getStatusCode() == Response::HTTP_OK) {
+            // Vérification que la care request est bien modifiée
+            $careRequestApiId = json_decode($this->client->getResponse()->getContent(), true)['@id'];
+            $this->client->request('GET', $careRequestApiId);
+            $this->assertResponseIsSuccessful();
+            $this->assertJsonContains([ 'customComplaint' => $newCustomComplaint]);
+        }
     }
 }

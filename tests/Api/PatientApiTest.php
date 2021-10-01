@@ -9,13 +9,14 @@ class PatientApiTest extends AbstractApiTestCase
     const PATIENT_DATA = [
         'firstname' => 'firstname',
         'lastname' => 'lastname',
-        'birthdate' => 'birthdate',
+        'birthdate' => '2011-05-30',
         'contact' => 'contact',
         'phone' => 'phone',
         'mobile_phone' => 'mobile_phone',
         'email' => 'email',
         'variable_schedule' => true,
         'availability' => [ 1 => [900, 1000] ],
+        'office' => '/api/offices/1',
     ];
 
     public function setUp(): void
@@ -25,8 +26,6 @@ class PatientApiTest extends AbstractApiTestCase
             __DIR__ . '/../../fixtures/tests/patient.yaml',
         ]);
     }  
-
-    // TODO plein de tests à faire
 
     
     public function dataProviderGetAllAsDoctor()
@@ -65,6 +64,141 @@ class PatientApiTest extends AbstractApiTestCase
         }
         $this->assertSame($patientsApiIds, $gotPatientsApiIds);
     }
+
+
+    public function testGetPatient()
+    {
+        $this->loginUser('admin@example.com');
+        $this->client->request('GET', "/api/patients/1");
+        $this->assertResponseIsSuccessful();
+        $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
+        $this->assertJsonContains([
+            '@id' => '/api/patients/1',
+            '@type' => 'Patient',
+            'firstname' => 'patient_1_firstname',
+            'lastname' => 'patient_1_lastname',
+        ]);
+    }
     
 
+    public function dataProviderGetAsDoctor()
+    {
+        return [
+            [ 'admin@example.com', '/api/patients/1', Response::HTTP_OK ],
+            [ 'admin@example.com', '/api/patients/2', Response::HTTP_OK ],
+            [ 'admin@example.com', '/api/patients/3', Response::HTTP_OK ],
+            [ 'user1@example.com', '/api/patients/1', Response::HTTP_OK ],
+            [ 'user1@example.com', '/api/patients/3', Response::HTTP_FORBIDDEN ],
+            [ 'user2@example.com', '/api/patients/1', Response::HTTP_FORBIDDEN ],
+            [ 'user2@example.com', '/api/patients/3', Response::HTTP_OK ],
+        ];
+    }
+    
+    /**
+     * @dataProvider dataProviderGetAsDoctor
+     */
+    public function testGetAsDoctor($userEmail, $patientsApiId, $expected)
+    {
+        $this->loginUser($userEmail);
+        $this->client->request('GET', $patientsApiId);
+        $this->assertResponseStatusCodeSame($expected);
+    }
+
+
+    public function testPostPatient()
+    {
+        $this->loginUser('admin@example.com');
+        $crawler = $this->client->request('POST', "/api/patients", [
+            'json' => self::PATIENT_DATA,
+        ]);
+        $this->assertResponseIsSuccessful();
+        $patientApiId = json_decode($crawler->getContent(), true)['@id'];
+        $this->client->request('GET', $patientApiId);
+        $this->assertResponseIsSuccessful();
+    }
+
+
+    public function dataProviderPostMissingContent()
+    {
+        return [
+            ['firstname', Response::HTTP_UNPROCESSABLE_ENTITY],
+            ['lastname', Response::HTTP_CREATED],
+            ['birthdate', Response::HTTP_CREATED],
+            ['contact', Response::HTTP_CREATED],
+            ['phone', Response::HTTP_CREATED],
+            ['mobile_phone', Response::HTTP_CREATED],
+            ['email', Response::HTTP_CREATED],
+            ['variable_schedule', Response::HTTP_CREATED],
+            ['availability', Response::HTTP_CREATED],
+            ['office', Response::HTTP_UNPROCESSABLE_ENTITY],
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderPostMissingContent
+     */
+    public function testPostMissingContent($content, $expected)
+    {
+        $this->loginUser('admin@example.com');
+
+        $data = array_diff_key(self::PATIENT_DATA, [$content => null]);
+        $this->client->request('POST', "/api/patients", [
+            'json' => $data,
+        ]);
+        $this->assertResponseStatusCodeSame($expected);
+    }
+    
+
+    public function dataProviderDeleteAs()
+    {
+        return [
+            [ 'admin@example.com', '/api/patients/1', Response::HTTP_NO_CONTENT ],
+            [ 'user1@example.com', '/api/patients/1', Response::HTTP_NO_CONTENT ],
+            [ 'user2@example.com', '/api/patients/1', Response::HTTP_FORBIDDEN ],
+        ];
+    }
+    
+    /**
+     * @dataProvider dataProviderDeleteAs
+     */
+    public function testDeleteAs($userEmail, $patientApiId, $expected)
+    {
+        $this->loginUser($userEmail);
+        $this->client->request('DELETE', $patientApiId);
+        $this->assertResponseStatusCodeSame($expected);
+    }
+    
+
+    public function dataProviderPutAs()
+    {
+        return [
+            [ 'admin@example.com', '/api/patients/1', Response::HTTP_OK ],
+            [ 'user1@example.com', '/api/patients/1', Response::HTTP_OK ],
+            [ 'user2@example.com', '/api/patients/1', Response::HTTP_FORBIDDEN ],
+        ];
+    }
+    
+    /**
+     * @dataProvider dataProviderPutAs
+     */
+    public function testPutAs($userEmail, $patientApiId, $expected)
+    {
+        $newPatientFirstname = 'firstname modifié';
+
+        $this->loginUser($userEmail);
+        $this->client->request('PUT', $patientApiId, [
+            'json' => [
+                'firstname' => $newPatientFirstname,
+            ],
+        ]);
+        $this->assertResponseStatusCodeSame($expected);
+
+        if ($this->client->getResponse()->getStatusCode() == Response::HTTP_OK) {
+            // Vérification que le patient est bien modifié
+            $patientApiId = json_decode($this->client->getResponse()->getContent(), true)['@id'];
+            $this->client->request('GET', $patientApiId);
+            $this->assertResponseIsSuccessful();
+            $this->assertJsonContains([ 'firstname' => $newPatientFirstname]);
+        }
+    }
 }
