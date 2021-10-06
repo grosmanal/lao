@@ -47,15 +47,15 @@ Encore
     // enables hashed filenames (e.g. app.abc123.css)
     .enableVersioning(Encore.isProduction())
 
-    .configureBabel((config) => {
-        config.plugins.push('@babel/plugin-proposal-class-properties');
-    })
+    //.configureBabel((config) => {
+    //    config.plugins.push('@babel/plugin-proposal-class-properties');
+    //})
 
-    // enables @babel/preset-env polyfills
-    .configureBabelPresetEnv((config) => {
-        config.useBuiltIns = 'usage';
-        config.corejs = 3;
-    })
+    //// enables @babel/preset-env polyfills
+    //.configureBabelPresetEnv((config) => {
+    //    config.useBuiltIns = 'usage';
+    //    config.corejs = 3;
+    //})
 
     // enables Sass/SCSS support
     .enableSassLoader()
@@ -76,7 +76,10 @@ Encore
     .autoProvidejQuery()
 ;
 
-module.exports = Encore.getWebpackConfig();
-module.exports.externals = [{
+const config = Encore.getWebpackConfig();
+
+config.externals = [{
     'bazinga-translator': 'Translator'
 }];
+
+module.exports = config;

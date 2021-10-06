@@ -1,6 +1,7 @@
 <template>
     <div>
         <div id="availability-error-message" class="alert alert-danger" v-if="errorMessage.length > 0" >{{ errorMessage }}</div>
+        <div>##{{ availability }}##</div>
         <ol>
             <week-day-availability
                 v-for="(weekDayAvailability, weekDay) in availability"
@@ -32,10 +33,10 @@ export default {
     props: {
         patientId: Number,
         middleOfDay: String,
-        initAvailability: Object,
+        initAvailability: String,
     },
     mounted: function() {
-        this.availability = this.initAvailability;
+        this.availability = JSON.parse(this.initAvailability);
     },
     methods: {
         updateWeekDayAvailability: function(weekDay, timeSlotStart, timeSlotEnd, available) {
