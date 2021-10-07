@@ -2,7 +2,7 @@ import $ from 'jquery';
 import {Modal as bootstrapModal} from 'bootstrap';
 import Translator from 'bazinga-translator';
 
-export default function(message, title = 'Alert') {
+export default function(message, title = 'modal.title.alert') {
     // Alimentation du titre
     $('#modal-window .modal-title').html(Translator.trans(title));
     

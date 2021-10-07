@@ -14,7 +14,7 @@ new Vue({
     render(h) {
         return h(Weekvailability, {
             props: {
-                patientId: this.$el.getAttribute('data-patient-id'),
+                patientId: new Number(this.$el.getAttribute('data-patient-id')),
                 middleOfDay: this.$el.getAttribute('data-middle-of-day'),
                 initAvailability: JSON.parse(this.$el.getAttribute('data-availability')),
             }
@@ -25,8 +25,6 @@ new Vue({
 /**
  * Enregistrement des infos du patient
  */
-//$('#patient_validate').on('click', function() {
-
 function submitPatient(event) {
     event.preventDefault();
 

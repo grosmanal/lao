@@ -25,6 +25,7 @@
         "vue-jest": "^3.0.7",
         "vue-loader": "^15.9.5",
         "vue-template-compiler": "^2.6.14",
+        "vuex": "^3.6.2",
         "webpack-notifier": "^1.6.0"
     },
     "license": "UNLICENSED",

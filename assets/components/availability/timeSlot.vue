@@ -7,19 +7,33 @@
 </template>
 
 <script>
+import Vuex from 'vuex';
+
 export default {
     name: 'time-slot',
     props: {
+        weekDay: { type: Number },
         timeSlot: { type: String },
-        available: { type: Boolean },
-        isHead: { type: Boolean},
+    },
+    computed: {
+        available: function() { 
+            return this.$store.getters.timeSlotAvailability(this.weekDay, this.timeSlot)
+        },
+        isHead: function() {
+            return this.$store.getters.isHeadAvailableTimeSlot(this.weekDay, this.timeSlot)
+        },
     },
     methods: {
+        ...Vuex.mapActions({
+            storeToggleTimeSlot: 'toggleTimeSlot',
+            storeDeleteTimeSlotAndNext: 'deleteTimeSlotAndNext',
+        }),
+
         toggle: function() {
-            this.$emit('update', this.timeSlot, !this.available);
+            this.storeToggleTimeSlot({weekDay: this.weekDay, timeSlot: this.timeSlot});
         },
         deleteSlotAndNext: function() {
-            this.$emit('delete-time-slot-and-next', this.timeSlot);
+            this.storeDeleteTimeSlotAndNext({weekDay: this.weekDay, timeSlot: this.timeSlot});
         },
     },
 }

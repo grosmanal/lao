@@ -1,4 +1,9 @@
+# Modal content
 modal.close: Fermer
+modal:
+    title:
+        error: Erreur
+        alert: Alerte
 
 # Page get patient
 patient.title: Patient %firstname% %lastname%
@@ -25,6 +30,10 @@ Abandon reason: Raison d'abandon
 Abandon date: Date d'abandon
 patient_error:
     updating: Erreur lors de la mise à jour du patient
+
+# Availability
+availability_error:
+    update: Erreur lors de la mise à jour des disponibilités
 
 # Form care request
 Care request from %creationDate%: Demande du %creationDate%

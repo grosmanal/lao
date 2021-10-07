@@ -213,7 +213,6 @@ class Availability
      * Retourne la liste de toutes les intervales (disponibles ou non) de la semaine
      * en fonction du paramétrage du début et fin de journée ainsi que du pas
      *
-     * @param array $weekIntervals Liste des interavalles de disponibilités par jour
      * @return array
      */
     public function weekAvailabilities(
