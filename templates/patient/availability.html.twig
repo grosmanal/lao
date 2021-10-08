@@ -1,6 +1,6 @@
 <div id="week-availability"
-    data-patient-id="{{ patient.id }}"
     data-middle-of-day="{{ middleOfDay }}"
+    data-url-put-patient-availability="{{ path('api_patients_availability_item', {'id': patient.id }) }}"
     data-availability="{{ availability|json_encode|e('html_attr') }}"
 >
 </div>

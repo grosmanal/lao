@@ -15,7 +15,6 @@
 
 <script>
 import TimeSlot from './timeSlot.vue';
-import store from './availabilityStore';
 import Vuex from 'vuex';
 
 export default {

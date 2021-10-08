@@ -32,9 +32,9 @@ export const mutations = {
 };
 
 export const getters = {
-    patientId: state => Vuex._patientId,
-
     middleOfDay: state => Vuex._middleOfDay,
+
+    urlPutPatientAvailability: state => Vuex._urlPutPatientAvailability,
 
     availability: state => state.availability,
 
@@ -91,18 +91,18 @@ export const actions = {
         context.commit('INIT_AVAILABILITY', payload);
     },
     
-    initPrivateValues: (context, payload) => {
+    initPrivateValues: (context, {middleOfDay, urlPutPatientAvailability}) => {
         // Initialisation d'attributs privés provenant des 
         // propriétés du composant Vue
-        Vuex._patientId = payload.patientId;
-        Vuex._middleOfDay = payload.middleOfDay;
+        Vuex._middleOfDay = middleOfDay;
+        Vuex._urlPutPatientAvailability = urlPutPatientAvailability;
     },
     
     updateWeekDayAvailability: async (context, { weekDay, timeSlotStart, timeSlotEnd, available }) => {
         let startEdges = timeSlotStart.split('-');
         let endEdges = timeSlotEnd.split('-');
         return axios.put(
-            '/api/patients/' + context.getters.patientId + '/availability', // FIXME paramétrer l'URL (via twig ?)
+            context.getters.urlPutPatientAvailability,
             {
                 weekDay: weekDay,
                 start: startEdges[0],

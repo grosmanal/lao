@@ -1,6 +1,5 @@
 <template>
     <div>
-        <div id="availability-error-message" class="alert alert-danger" v-if="false" >Error message</div> <!-- TODO -->
         <ol>
             <week-day-availability
                 v-for="(weekDayAvailability, weekDay) in availability"
@@ -24,13 +23,16 @@ export default {
         ...Vuex.mapGetters(['availability']),
     },
     props: {
-        patientId: { type: Number, required: true },
         middleOfDay: { type: String, required: true },
         initAvailability: { type: Object, required: true },
+        urlPutPatientAvailability: { type: String, required: true},
     },
     beforeMount: function() {
         this.initStoreAvailability({initAvailability: this.initAvailability});
-        this.initPrivateValues({patientId: this.patientId, middleOfDay: this.middleOfDay});
+        this.initPrivateValues({
+            middleOfDay: this.middleOfDay,
+            urlPutPatientAvailability: this.urlPutPatientAvailability,
+        });
     },
     methods: {
         ...Vuex.mapActions([

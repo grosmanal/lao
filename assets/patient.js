@@ -14,9 +14,9 @@ new Vue({
     render(h) {
         return h(Weekvailability, {
             props: {
-                patientId: new Number(this.$el.getAttribute('data-patient-id')),
                 middleOfDay: this.$el.getAttribute('data-middle-of-day'),
                 initAvailability: JSON.parse(this.$el.getAttribute('data-availability')),
+                urlPutPatientAvailability: this.$el.getAttribute('data-url-put-patient-availability'),
             }
         });
     }
