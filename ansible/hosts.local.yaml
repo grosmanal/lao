@@ -17,4 +17,5 @@ all:
             symfony_env: dev
             apache_http_only: false
             apache_ssl_wildcard: lao.local
+            apache_certificate_path: '../../certificate/'
 

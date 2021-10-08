@@ -1,3 +1,3 @@
 [submodule "ansible/roles"]
 	path = ansible/roles
-	url = file:///home/manal/Workspace/fry/
+	url = gitea@manal.xyz:origami_informatique/fry.git
