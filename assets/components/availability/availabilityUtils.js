@@ -3,7 +3,7 @@
  * @param {Array} weekDayAvailability 
  * @returns Array
  */
-function weekDayHeadSlots(weekDayAvailability) {
+export function weekDayHeadSlots(weekDayAvailability) {
     // Liste des premiers timeSlot d'une série contigue
     let firstTimeSlots = new Array();
     let firstAvailableTimeSlot = undefined;
@@ -22,5 +22,3 @@ function weekDayHeadSlots(weekDayAvailability) {
     }
     return firstTimeSlots;
 }
-
-export {weekDayHeadSlots}

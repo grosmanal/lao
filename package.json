@@ -34,6 +34,7 @@
         "dev-server": "encore dev-server",
         "dev": "encore dev",
         "watch": "encore dev --watch",
+        "test": "jest --silent",
         "build": "encore production --progress"
     },
     "jest": {

@@ -7,7 +7,7 @@ parameters:
     app.availability:
         daysOfWeek: [ 1, 2, 3, 4, 5, 6 ]
         startOfDay: '0800'
-        middleOfDay: '1300'
+        middleOfDay: '1300' # Doit être un des intervals entre startOfDay et endOfDay (à vérifier si paramétrable)
         endOfDay: '2000'
         interval: 'PT30M'
 
