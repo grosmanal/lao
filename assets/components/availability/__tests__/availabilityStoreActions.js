@@ -12,7 +12,7 @@ describe('Availability store actions', () => {
 
         const context = {
             getters: {
-                patientId: 1,
+                urlPutPatientAvailability: '/mockedUrl',
             },
             commit: jest.fn()
         }
@@ -26,7 +26,7 @@ describe('Availability store actions', () => {
 
         actions.updateWeekDayAvailability(context, payload).then(() => {
             expect(axios.put).toHaveBeenCalledWith(
-                '/api/patients/1/availability', {
+                '/mockedUrl', {
                     weekDay: 1,
                     start: "0800",
                     end: "0900",
@@ -44,7 +44,7 @@ describe('Availability store actions', () => {
 
         const context = {
             getters: {
-                patientId: 99,
+                urlPutPatientAvailability: '/mockedUrl',
             }
         }
 
@@ -57,7 +57,7 @@ describe('Availability store actions', () => {
 
         actions.updateWeekDayAvailability(context, payload).then(() => {
             expect(axios.put).toHaveBeenCalledWith(
-                '/api/patients/99/availability', {
+                '/mockedUrl', {
                     weekDay: 1,
                     start: "0800",
                     end: "0900",
