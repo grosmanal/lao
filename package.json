@@ -1,6 +1,7 @@
 {
     "devDependencies": {
         "@babel/core": "^7.15.5",
+        "@babel/preset-env": "^7.15.8",
         "@popperjs/core": "^2.10.1",
         "@symfony/stimulus-bridge": "^2.0.0",
         "@symfony/webpack-encore": "^1.0.0",
@@ -38,6 +39,23 @@
         "build": "encore production --progress"
     },
     "jest": {
-        "testEnvironment": "jest-environment-jsdom"
+        "verbose": true,
+        "roots": ["<rootDir>/assets/components/"],
+        "testEnvironment": "jest-environment-jsdom",
+        "moduleFileExtensions": [
+            "js",
+            "vue"
+        ],
+        "transform": {
+            "^.+\\.js$": "babel-jest",
+            "^.+\\.vue$": "vue-jest"
+        }
+    },
+    "babel": {
+        "presets": [
+            [ "@babel/preset-env", {
+                "targets": { "node": "current" }
+            }]
+        ]
     }
 }
