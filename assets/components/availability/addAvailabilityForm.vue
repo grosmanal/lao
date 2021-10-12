@@ -1,7 +1,7 @@
 <template>
     <form class="add-availability-form" >
         <div class="mb-3">
-            <select v-model="weekDay" class="form-select" required> <!-- TODO multi select -->
+            <select v-model="weekDay" class="form-select" required>
                 <option :value="undefined" disabled selected hidden>{{ _dayWeekLabel }}</option>
                 <option
                     v-for="option in weekDayOptions"

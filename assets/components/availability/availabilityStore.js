@@ -38,6 +38,10 @@ export const getters = {
 
     availability: state => state.availability,
 
+    weekDays: state => Object.keys(state.availability).map(weekDay => parseInt(weekDay)),
+
+    timeSlots: state => Object.keys(state.availability[Object.keys(state.availability)[0]]),
+
     startOfDaySlot: state => {
         const firstWeekDay = Object.keys(state.availability)[0];
         return Object.keys(state.availability[firstWeekDay])[0];
@@ -138,13 +142,21 @@ export const actions = {
         });
     },
 
-    toggleTimeSlot: (context, {weekDay, timeSlot}) => {
-        const available = context.state.availability[weekDay][timeSlot];
-        
+    addAvailabilityTimeslot: (context, {weekDay, timeSlot, available}) => {
         context.dispatch('updateWeekDayAvailability', {
             weekDay: weekDay,
             timeSlotStart: timeSlot,
             timeSlotEnd: timeSlot,
+            available: available,
+        });
+    },
+
+    toggleTimeSlot: (context, {weekDay, timeSlot}) => {
+        const available = context.state.availability[weekDay][timeSlot];
+        
+        context.dispatch('addAvailabilityTimeslot', {
+            weekDay: weekDay,
+            timeSlot: timeSlot,
             available: !available,
         });
     },

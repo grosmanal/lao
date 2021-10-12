@@ -91,6 +91,34 @@ describe('Availability store actions', () => {
         })
     });
 
+    test('addAvailabilityTimeslot', () => {
+        const context = {
+            state: {
+                availability: {
+                    "1": {
+                        "0900-0930": true,
+                        "0930-1000": false,
+                        "1000-1030": false,
+                    },
+                    "2": {
+                        "0900-0930": false,
+                        "0930-1000": true,
+                        "1000-1030": false,
+                    }
+                },
+            },
+            dispatch: jest.fn(),
+        };
+
+        actions.addAvailabilityTimeslot(context, {weekDay: 1, timeSlot: "0930-1000", available: true});
+        expect(context.dispatch).toHaveBeenCalledWith('updateWeekDayAvailability', {
+            weekDay: 1,
+            timeSlotStart: "0930-1000",
+            timeSlotEnd: "0930-1000",
+            available: true,
+        })
+    });
+
     test('toggleTimeSlot', () => {
         const context = {
             state: {
@@ -106,10 +134,9 @@ describe('Availability store actions', () => {
         };
 
         actions.toggleTimeSlot(context, {weekDay: 1, timeSlot: "0930-1000"});
-        expect(context.dispatch).toHaveBeenCalledWith('updateWeekDayAvailability', {
+        expect(context.dispatch).toHaveBeenCalledWith('addAvailabilityTimeslot', {
             weekDay: 1,
-            timeSlotStart: "0930-1000",
-            timeSlotEnd: "0930-1000",
+            timeSlot: "0930-1000",
             available: true,
         })
     });

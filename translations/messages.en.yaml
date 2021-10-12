@@ -36,6 +36,9 @@ add_availability_form:
     day_select_placeholder: Choose day
     everyday_option: Everyday
     add_button_label: Add
+week_time_slot_shortcuts:
+    omega_button_label: Always
+    add_button_title: Add availability from %periodBegin% to %periodEnd% everyday
 
 availability_error:
     update: Error while updating patient availability

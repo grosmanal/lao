@@ -33,13 +33,13 @@ describe('weekAvailability vue component', () => {
         expect(wrapper.find('p.week-day-label').text()).toStrictEqual('Monday');
 
         // Nombre de jours dans la semaine
-        expect(wrapper.findAll('li.week-day-availability').length).toBe(2);
+        expect(wrapper.findAll('.week-day-availability').length).toBe(2);
 
         // Nombre de slots au total
         expect(wrapper.findAll('div.slot').length).toBe(8);
 
         // Nombre de slot pour le premier jour
-        expect(wrapper.find('li.week-day-availability').findAll('div.slot').length).toBe(4);
+        expect(wrapper.find('.week-day-availability').findAll('div.slot').length).toBe(4);
 
         // Nombre de slots available au total
         expect(wrapper.findAll('div.slot-available').length).toBe(1);
@@ -172,7 +172,7 @@ describe('weekAvailability vue component', () => {
         await button.trigger('click');
 
         // Les deux premiers slots de lundi sont availables
-        expect(wrapper.find('li.week-day-availability').findAll('div.slot-available').length).toBe(2);
+        expect(wrapper.find('.week-day-availability').findAll('div.slot-available').length).toBe(2);
         
         // tous les jours de 09:30 à 10:00
         await weekDayOptions.at(1).setSelected();
@@ -181,9 +181,9 @@ describe('weekAvailability vue component', () => {
         await button.trigger('click');
 
         // Le dernier slot de lundi est available
-        expect(wrapper.findAll('li.week-day-availability').at(0).findAll('div.slot').at(3).classes('slot-available')).toBe(true);
+        expect(wrapper.findAll('.week-day-availability').at(0).findAll('div.slot').at(3).classes('slot-available')).toBe(true);
         // Le dernier slot de mardi est available
-        expect(wrapper.findAll('li.week-day-availability').at(1).findAll('div.slot').at(3).classes('slot-available')).toBe(true);
+        expect(wrapper.findAll('.week-day-availability').at(1).findAll('div.slot').at(3).classes('slot-available')).toBe(true);
 
 
         wrapper.destroy();
@@ -248,7 +248,7 @@ describe('weekAvailability vue component', () => {
         // Mock du put vers l'API
         axios.put.mockResolvedValue({foo: 'bar'});
 
-        const morningButton = wrapper.find('li.week-day-availability > button.btn');
+        const morningButton = wrapper.find('.week-day-availability > button.btn');
 
         // Tous les slots sont standard
         expect(wrapper.findAll('div.slot.slot-standard').length).toBe(5);
@@ -286,7 +286,7 @@ describe('weekAvailability vue component', () => {
         // Mock du put vers l'API
         axios.put.mockResolvedValue({foo: 'bar'});
 
-        const afternoonButton = wrapper.findAll('li.week-day-availability > button.btn').at(1);
+        const afternoonButton = wrapper.findAll('.week-day-availability > button.btn').at(1);
 
         // Tous les slots sont standard
         expect(wrapper.findAll('div.slot.slot-standard').length).toBe(5);
@@ -298,6 +298,86 @@ describe('weekAvailability vue component', () => {
         // Les slots du matins sont availables
         expect(wrapper.findAll('div.slot.slot-available').length).toBe(3);
         expect(wrapper.findAll('div.slot.slot-standard').length).toBe(2);
+
+        wrapper.destroy();
+    });
+
+    test('omega shortcut', async () => {
+        const initAvailability = {
+            "1": {
+                "0800-0830": false,
+                "0830-0900": false,
+                "0900-0930": false,
+                "0930-1000": false,
+            },
+            "2": {
+                "0800-0830": false,
+                "0830-0900": false,
+                "0900-0930": true,
+                "0930-1000": false,
+            },
+        };
+
+        const wrapper = mount(WeekAvailability, {
+            propsData: {
+                middleOfDay: "0900",
+                initAvailability: initAvailability,
+                urlPutPatientAvailability: "/mockedUrl",
+            },
+        });
+
+        // Mock du put vers l'API
+        axios.put.mockResolvedValue({foo: 'bar'});
+
+        // Tous les slots sont standard sauf un
+        expect(wrapper.findAll('div.slot.slot-standard').length).toBe(7);
+        expect(wrapper.findAll('div.slot.slot-available').length).toBe(1);
+
+        const omegaButton = wrapper.findAll('.week-time-slot-shortcuts > button.btn').at(0);
+        await omegaButton.trigger('click');
+
+        expect(wrapper.find('div.slot.slot-standard').exists()).toBe(false);
+        expect(wrapper.findAll('div.slot.slot-available').length).toBe(8);
+
+        wrapper.destroy();
+    });
+
+    test('time slot for whole week button', async () => {
+        const initAvailability = {
+            "1": {
+                "0800-0830": false,
+                "0830-0900": false,
+                "0900-0930": false,
+                "0930-1000": false,
+            },
+            "2": {
+                "0800-0830": false,
+                "0830-0900": false,
+                "0900-0930": true,
+                "0930-1000": false,
+            },
+        };
+
+        const wrapper = mount(WeekAvailability, {
+            propsData: {
+                middleOfDay: "0900",
+                initAvailability: initAvailability,
+                urlPutPatientAvailability: "/mockedUrl",
+            },
+        });
+
+        // Mock du put vers l'API
+        axios.put.mockResolvedValue({foo: 'bar'});
+
+        // Sélection du troisième bouton (le premier est le bouton oméga)
+        const addButton = wrapper.findAll('.week-time-slot-shortcuts > button.btn').at(2);
+        await addButton.trigger('click');
+
+        // Le premier jour, il y a un slot available
+        expect(wrapper.findAll('.week-day-availability').at(0).findAll('div.slot.slot-available').length).toBe(1);
+        
+        // Le second jour, il y a deux slots available
+        expect(wrapper.findAll('.week-day-availability').at(1).findAll('div.slot.slot-available').length).toBe(2);
 
         wrapper.destroy();
     });

@@ -36,6 +36,9 @@ add_availability_form:
     day_select_placeholder: Choisissez un jour
     everyday_option: Tous les jours
     add_button_label: Ajouter
+week_time_slot_shortcuts:
+    omega_button_label: Tout
+    add_button_title: Disponible de %periodBegin% à %periodEnd% tous les jours
 
 availability_error:
     update: Erreur lors de la mise à jour des disponibilités

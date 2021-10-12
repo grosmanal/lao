@@ -2,7 +2,58 @@ import { describe } from 'jest-circus';
 import { getters }  from '../availabilityStore';
 
 describe('Availability store getters', () => {
-    // Aucun slot
+
+    test('weekDays', () => {
+        const state = {
+            availability: {
+                "1": {
+                    "0800-0830": false,
+                    "0830-0900": false,
+                },
+                "2": {
+                    "0800-0830": false,
+                    "0830-0900": true,
+                },
+                "4": {
+                    "0800-0830": false,
+                    "0830-0900": true,
+                },
+            }
+        }
+
+        const expected = [1, 2, 4];
+
+        expect(getters.weekDays(state)).toStrictEqual(expected);        
+    });
+
+    test('timeSlots', () => {
+        const state = {
+            availability: {
+                "1": {
+                    "0800-0830": false,
+                    "0830-0900": false,
+                    "0900-0930": false,
+                    "0930-1000": false,   
+                },
+                "2": {
+                    "0800-0830": false,
+                    "0830-0900": true,
+                    "0900-0930": false,
+                    "0930-1000": false,   
+                },
+            }
+        }
+
+        const expected = [
+            "0800-0830",
+            "0830-0900",
+            "0900-0930",
+            "0930-1000",
+        ];
+
+        expect(getters.timeSlots(state)).toStrictEqual(expected); 
+    });
+
     test('startOfDaySlot', () => {
         const state = {
             availability: {

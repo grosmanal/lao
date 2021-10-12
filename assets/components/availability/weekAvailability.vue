@@ -7,6 +7,9 @@
                 v-bind:key="weekDay"
                 v-bind:week-day="parseInt(weekDay)"
             ></week-day-availability>
+            <li>
+                <week-time-slot-shortcuts></week-time-slot-shortcuts>
+            </li>
         </ol>
     </div>
 </template>
@@ -14,13 +17,18 @@
 <script>
 import WeekDayAvailability from './weekDayAvailability.vue';
 import AddAvailabilityForm from './addAvailabilityForm.vue';
+import WeekTimeSlotShortcuts from './weekTimeSlotShortcuts.vue';
 import store from './availabilityStore';
 import Vuex from 'vuex';
 
 export default {
     name: 'week-availability',
     store,
-    components: { WeekDayAvailability, AddAvailabilityForm },
+    components: {
+        WeekDayAvailability,
+        AddAvailabilityForm,
+        WeekTimeSlotShortcuts
+    },
     computed: {
         ...Vuex.mapGetters(['availability']),
     },
