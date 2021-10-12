@@ -70,6 +70,27 @@ describe('Availability store actions', () => {
 
     });
 
+    test('addAvailabilityPeriod', () => {
+        const context = {
+            getters: {
+                weekDayAvailability: jest.fn().mockReturnValue({
+                    "0900-0930": true,
+                    "0930-1000": false,
+                    "1000-1030": false,
+                })
+            },
+            dispatch: jest.fn(),
+        };
+
+        actions.addAvailabilityPeriod(context, {weekDay: 1, periodStart: "0930", periodEnd: "1030"});
+        expect(context.dispatch).toHaveBeenCalledWith('updateWeekDayAvailability', {
+            weekDay: 1,
+            timeSlotStart: "0930-1000",
+            timeSlotEnd: "1000-1030",
+            available: true,
+        })
+    });
+
     test('toggleTimeSlot', () => {
         const context = {
             state: {

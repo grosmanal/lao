@@ -1,5 +1,6 @@
 <template>
     <div>
+        <add-availability-form></add-availability-form>
         <ol>
             <week-day-availability
                 v-for="(weekDayAvailability, weekDay) in availability"
@@ -12,13 +13,14 @@
 
 <script>
 import WeekDayAvailability from './weekDayAvailability.vue';
+import AddAvailabilityForm from './addAvailabilityForm.vue';
 import store from './availabilityStore';
 import Vuex from 'vuex';
 
 export default {
     name: 'week-availability',
     store,
-    components: { WeekDayAvailability },
+    components: { WeekDayAvailability, AddAvailabilityForm },
     computed: {
         ...Vuex.mapGetters(['availability']),
     },

@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
-import { weekDayHeadSlots } from './availabilityUtils';
+import { weekDayHeadSlots, timeSlotFromPeriodEdge } from './availabilityUtils';
 import modal from '../modal';
 
 Vue.use(Vuex);
@@ -120,6 +120,21 @@ export const actions = {
         })
         .catch((error) => {
             modal('availability_error.update', 'modal.title.error');
+        });
+    },
+
+
+    addAvailabilityPeriod: (context, {weekDay, periodStart, periodEnd}) => {
+        // Recherche des slots correspondant à periodStart et periodEnd
+        const weekDayAvailability = context.getters.weekDayAvailability(weekDay);
+        const timeSlotStart = timeSlotFromPeriodEdge(Object.keys(weekDayAvailability), periodStart);
+        const timeSlotEnd = timeSlotFromPeriodEdge(Object.keys(weekDayAvailability), periodEnd, true);
+        
+        context.dispatch('updateWeekDayAvailability', {
+            weekDay: weekDay,
+            timeSlotStart: timeSlotStart,
+            timeSlotEnd: timeSlotEnd,
+            available: true,
         });
     },
 

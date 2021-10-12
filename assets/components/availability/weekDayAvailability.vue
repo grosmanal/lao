@@ -16,6 +16,7 @@
 <script>
 import TimeSlot from './timeSlot.vue';
 import Vuex from 'vuex';
+import { weekDayLabel as utilsWeekDayLabel } from './availabilityUtils';
 
 export default {
     name: 'week-day-availability',
@@ -29,8 +30,7 @@ export default {
         },
         
         weekDayLabel: function () {
-            let date = new Date(1979, 8, 2 + this.weekDay); // Le 02/09/1979 est un dimanche
-            return date.toLocaleDateString(undefined, { weekday : 'long'} );
+            return utilsWeekDayLabel(this.weekDay);
         },
     },
     methods: {

@@ -1,7 +1,7 @@
 import { describe } from 'jest-circus';
-import { weekDayHeadSlots } from '../availabilityUtils';
+import { weekDayHeadSlots, timeSlotFromPeriodEdge } from '../availabilityUtils';
 
-describe('Availability : head slots', () => {
+describe('availabilityUtils : weekDayHeadSlots', () => {
     // Aucun slot
     test('no time slot', () => {
         const a = {};
@@ -66,5 +66,28 @@ describe('Availability : head slots', () => {
             "0930-1000": true,
         };
         expect(weekDayHeadSlots(a)).toStrictEqual(["0800-0830"]);
+    });
+});
+
+
+describe('availabilityUtils : timeSlotFromPeriodEdge', () => {
+    test('timeSlotFromPeriodEdge', () => {
+        const timeSlots = [
+            "0800-0830",
+            "0830-0900",
+            "0900-0930",
+            "0930-1000",
+        ];
+    
+        expect(timeSlotFromPeriodEdge(timeSlots, "0700")).toBeUndefined();
+        expect(timeSlotFromPeriodEdge(timeSlots, "0759")).toBeUndefined();
+        expect(timeSlotFromPeriodEdge(timeSlots, "0800", true)).toBeUndefined();
+        expect(timeSlotFromPeriodEdge(timeSlots, "0800", false)).toStrictEqual("0800-0830");
+        expect(timeSlotFromPeriodEdge(timeSlots, "0815")).toStrictEqual("0800-0830");
+        expect(timeSlotFromPeriodEdge(timeSlots, "0900", true)).toStrictEqual("0830-0900");
+        expect(timeSlotFromPeriodEdge(timeSlots, "0900", false)).toStrictEqual("0900-0930");
+        expect(timeSlotFromPeriodEdge(timeSlots, "1000", true)).toStrictEqual("0930-1000");
+        expect(timeSlotFromPeriodEdge(timeSlots, "1000", false)).toBeUndefined();
+        expect(timeSlotFromPeriodEdge(timeSlots, "1001")).toBeUndefined();
     });
 });

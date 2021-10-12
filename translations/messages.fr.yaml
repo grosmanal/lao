@@ -32,6 +32,11 @@ patient_error:
     updating: Erreur lors de la mise à jour du patient
 
 # Availability
+add_availability_form:
+    day_select_placeholder: Choisissez un jour
+    everyday_option: Tous les jours
+    add_button_label: Ajouter
+
 availability_error:
     update: Erreur lors de la mise à jour des disponibilités
 

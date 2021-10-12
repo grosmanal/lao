@@ -124,6 +124,71 @@ describe('weekAvailability vue component', () => {
         wrapper.destroy();
     });
 
+    test('add availability form', async () => {
+        const initAvailability = {
+            "1": {
+                "0800-0830": false,
+                "0830-0900": false,
+                "0900-0930": false,
+                "0930-1000": false,
+            },
+            "2": {
+                "0800-0830": false,
+                "0830-0900": false,
+                "0900-0930": false,
+                "0930-1000": false,
+            },
+        };
+
+        // Élément sur lequel atacher le composant
+        // nécessaire car la validation du formulaire fait appel à document.getElements…
+        const elem = document.createElement('div')
+        if (document.body) {
+            document.body.appendChild(elem)
+        }
+
+        const wrapper = mount(WeekAvailability, {
+            propsData: {
+                middleOfDay: "0900",
+                initAvailability: initAvailability,
+                urlPutPatientAvailability: "/mockedUrl",
+            },
+            attachTo: elem
+        });
+
+        // Mock du put vers l'API
+        axios.put.mockResolvedValue({foo: 'bar'});
+
+        const form = wrapper.find('form.add-availability-form');
+        const weekDayOptions = form.find('select').findAll('option');
+        const periodStart = form.findAll('input').at(0);
+        const periodEnd = form.findAll('input').at(1);
+        const button = form.find('button');
+
+        // lundi de 08:00 à 09:00
+        await weekDayOptions.at(2).setSelected();
+        await periodStart.setValue('08:00');
+        await periodEnd.setValue('09:00');
+        await button.trigger('click');
+
+        // Les deux premiers slots de lundi sont availables
+        expect(wrapper.find('li.week-day-availability').findAll('div.slot-available').length).toBe(2);
+        
+        // tous les jours de 09:30 à 10:00
+        await weekDayOptions.at(1).setSelected();
+        await periodStart.setValue('09:30');
+        await periodEnd.setValue('10:00');
+        await button.trigger('click');
+
+        // Le dernier slot de lundi est available
+        expect(wrapper.findAll('li.week-day-availability').at(0).findAll('div.slot').at(3).classes('slot-available')).toBe(true);
+        // Le dernier slot de mardi est available
+        expect(wrapper.findAll('li.week-day-availability').at(1).findAll('div.slot').at(3).classes('slot-available')).toBe(true);
+
+
+        wrapper.destroy();
+    });
+
     test('whole day available shortcut', async () => {
         const initAvailability = {
             "1": {
