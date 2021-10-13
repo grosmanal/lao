@@ -29,9 +29,6 @@ function submitPatient(event) {
     event.preventDefault();
 
     const form = event.target;
-    const patientId = form['patient[id]'].value;
-
-    const url = '/api/patients/' + patientId;
 
     const data = {
         firstname: nullFieldConverter(form['patient[firstname]'].value),
@@ -44,7 +41,7 @@ function submitPatient(event) {
     };
     httpClient({
         method: 'put',
-        url: url,
+        url: patientParams.urlApiPatientPut,
         data: data
     }).then(function (response) {
         // TODO voir quoi faire
@@ -64,8 +61,7 @@ function submitCareRequest(event) {
 
     const form = event.target;
     const careRequestId = form['care-request-id'].value;
-    
-    const url = '/api/care_requests/' + careRequestId;
+
     const data = {
         creationDate: nullFieldConverter(form['care_request[creationDate]'].value),
         customComplaint: nullFieldConverter(form['care_request[customComplaint]'].value),
@@ -79,11 +75,11 @@ function submitCareRequest(event) {
 
     httpClient({
         method: 'put',
-        url: url,
+        url: patientParams.urlApiCareRequestPut.replace('%id%', careRequestId),
         data: data
     }).then(function (response) {
         httpClient
-            .get('/care_request_form/' + careRequestId)
+            .get(patientParams.urlCareRequestForm.replace('%id%', careRequestId))
             .then(function (response) {
                 // Recherche du parent de la form pour y injecter le nouveau HTML
                 let formParent = $(form).parentsUntil('.accordion-item').parent();
@@ -104,14 +100,14 @@ function submitCareRequest(event) {
  * Annulation de l'abandon de la demande de prise en charge
  */
 function abandonCareRequest() {
-    alert('in func abandon');
+    alert('in func abandon');  // TODO
 }
 
 /**
  * Annulation de l'acceptation de la demande de prise en charge
  */
  function acceptCareRequest() {
-    alert('in func accept');
+    alert('in func accept');  // TODO
  }
 
 // Ces fonctions sont appelées depuis les forms care request.

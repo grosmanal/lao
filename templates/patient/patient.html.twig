@@ -45,6 +45,14 @@
 
 {% block javascripts %}
     {{ parent() }}
+
+    <script>
+        const patientParams = {
+            urlApiPatientPut = "{{ path('api_patients_put_item', {'id': patient.id }) }}",
+            urlApiCareRequestPut = "{{ path('api_care_requests_put_item', {'id': '%id%'}) }}",
+            urlCareRequestForm = "{{ path('care_request_form', {'id': '%id%'}) }}",
+        };
+    </script>
     
     {{ encore_entry_script_tags('patient') }}
 {% endblock %}
