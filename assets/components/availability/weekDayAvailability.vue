@@ -2,8 +2,10 @@
 <template>
 <li class="week-day-availability">
     <p class="week-day-label" @click="setWholeDayAvailable"> {{ weekDayLabel }}</p>
-    <button class="btn btn-primary btn-sm" @click="setMorningAvailable">matin</button> <!-- FIXME traduction -->
-    <button class="btn btn-primary btn-sm" @click="setAfternoonAvailable">ap.-midi</button> <!-- FIXME traduction -->
+    <ul class="week-day-buttons">
+        <li><button class="btn btn-primary btn-sm" @click="setMorningAvailable">{{ setMorningButtonLabel }}</button></li>
+        <li><button class="btn btn-primary btn-sm" @click="setAfternoonAvailable">{{ setAfternoonButtonLabel }}</button></li>
+    </ul>
     <time-slot
         v-for="(slotAvailable, timeSlot) in weekDayAvailability"
         v-bind:key="timeSlot"
@@ -16,6 +18,7 @@
 <script>
 import TimeSlot from './timeSlot.vue';
 import Vuex from 'vuex';
+import Translator from 'bazinga-translator';
 import { weekDayLabel as utilsWeekDayLabel } from './availabilityUtils';
 
 export default {
@@ -28,6 +31,10 @@ export default {
         weekDayAvailability: function() {
             return this.$store.getters.weekDayAvailability(this.weekDay);
         },
+        
+        setMorningButtonLabel: () => Translator.trans('week_day_availability.set_morning_button_label'),
+
+        setAfternoonButtonLabel: () => Translator.trans('week_day_availability.set_afternoon_button_label'),
         
         weekDayLabel: function () {
             return utilsWeekDayLabel(this.weekDay);
@@ -56,7 +63,26 @@ export default {
 </script>
 
 <style>
-    .week-day-label {
-        background: silver;
-    }
+.week-day-availability {
+    min-width: 130px;
+}
+
+.week-day-label {
+    text-align: center;
+    margin-bottom: 5px;
+    cursor: default;
+}
+
+.week-day-buttons {
+    margin-bottom: 5px;
+    list-style: none;
+    display: flex;
+    justify-content: space-evenly;
+    padding: 0;
+}
+
+.week-day-buttons .btn-sm {
+    padding: 2px 4px;
+}
+
 </style>

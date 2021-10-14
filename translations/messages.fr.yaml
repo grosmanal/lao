@@ -33,12 +33,19 @@ patient_error:
 
 # Availability
 add_availability_form:
-    day_select_placeholder: Choisissez un jour
+    day_select_placeholder: Jour…
     everyday_option: Tous les jours
+    from_label: de
+    to_label: à
     add_button_label: Ajouter
+week_day_availability:
+    set_morning_button_label: mat.
+    set_afternoon_button_label: ap.-m.
 week_time_slot_shortcuts:
     omega_button_label: Tout
     add_button_title: Disponible de %periodBegin% à %periodEnd% tous les jours
+time_slot:
+    title: '%weekDayLabel% de %periodBegin% à %periodEnd%'
 
 availability_error:
     update: Erreur lors de la mise à jour des disponibilités

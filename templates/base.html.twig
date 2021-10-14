@@ -14,8 +14,10 @@
             {{ encore_entry_script_tags('app') }}
         {% endblock %}
     </head>
-    <body class="container">
+    <body>
         {% include "parts/modal.html.twig" %}
+        <div class="container">
         {% block body %}{% endblock %}
+        </div>
     </body>
 </html>

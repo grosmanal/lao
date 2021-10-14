@@ -1,22 +1,18 @@
 <template>
     <form class="add-availability-form" >
-        <div class="mb-3">
-            <select v-model="weekDay" class="form-select" required>
-                <option :value="undefined" disabled selected hidden>{{ _dayWeekLabel }}</option>
-                <option
-                    v-for="option in weekDayOptions"
-                    v-bind:key="option.weekDay"
-                    v-bind:value="option.weekDay"
-                >{{ option.label }}</option>
-            </select>
-        </div>
-        <div class="mb-3">
-            <input type="time" v-model="periodStart" class="form-control" required />
-        </div>
-        <div class="mb-3">
-            <input type="time" v-model="periodEnd" class="form-control" required />
-        </div>
-        <button class="btn btn-primary" @click="addAvailabilityPeriod($event)" type="submit">{{ _addLabel }}</button>
+        <select v-model="weekDay" class="form-select form-select-sm" required>
+            <option :value="undefined" disabled selected hidden>{{ _dayWeekLabel }}</option>
+            <option
+                v-for="option in weekDayOptions"
+                v-bind:key="option.weekDay"
+                v-bind:value="option.weekDay"
+            >{{ option.label }}</option>
+        </select>
+        <span class="form-separator">{{ _fromLabel }}</span>
+        <input type="time" v-model="periodStart" class="form-control form-control-sm" required />
+        <span class="form-separator">{{ _toLabel }}</span>
+        <input type="time" v-model="periodEnd" class="form-control form-control-sm" required />
+        <button class="btn btn-primary btn-sm" @click="addAvailabilityPeriod($event)" type="submit">{{ _addLabel }}</button>
     </form>
 </template>
 
@@ -30,6 +26,8 @@ export default {
     created: function() {
         this._dayWeekLabel = Translator.trans('add_availability_form.day_select_placeholder');
         this._addLabel = Translator.trans('add_availability_form.add_button_label');
+        this._fromLabel = Translator.trans('add_availability_form.from_label');
+        this._toLabel = Translator.trans('add_availability_form.to_label');
     },
 
     data: () => {
@@ -80,6 +78,8 @@ export default {
                 weekDaysToProceed = [ this.weekDay ];
             }
 
+            // TODO tester que periodStart et periodEnd sont dans les limites du tableau
+            
             weekDaysToProceed.forEach(currentWeekDay => {
                 this.storeAddAvailabilityPeriod({
                     weekDay: parseInt(currentWeekDay, 10),
@@ -99,6 +99,25 @@ export default {
 <style>
     .add-availability-form {
         margin-bottom: 25px;
-        padding-left: 50px;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    .add-availability-form .form-separator {
+        margin: 0 10px;
+        padding-top: 5px;
+    }
+
+    .add-availability-form select {
+        width: 150px;
+    }
+
+    .add-availability-form input[type="time"] {
+        width: 100px;
+    }
+
+    .add-availability-form button[type="submit"] {
+        margin-left: 10px;
     }
 </style>>

@@ -4,6 +4,8 @@ import modal from './components/modal';
 import nullFieldConverter from './components/nullFieldConverter';
 import apiFieldConverter from './components/apiFieldConverter';
 
+import './styles/patient.scss'
+
 /**
  * Composant Vue des disponibilités
  */

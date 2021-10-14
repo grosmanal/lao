@@ -21,7 +21,7 @@
     <p>
         <a data-bs-toggle="collapse" href="#availability-content"><h2>{% trans %}Availabilities{% endtrans %}</h2></a>
     </p>
-    <div class="collapse show" id="availability-content">
+    <div class="collapse" id="availability-content">
         {% include "patient/availability.html.twig" %}
     </div>
 </section>
@@ -48,9 +48,9 @@
 
     <script>
         const patientParams = {
-            urlApiPatientPut = "{{ path('api_patients_put_item', {'id': patient.id }) }}",
-            urlApiCareRequestPut = "{{ path('api_care_requests_put_item', {'id': '%id%'}) }}",
-            urlCareRequestForm = "{{ path('care_request_form', {'id': '%id%'}) }}",
+            urlApiPatientPut: "{{ path('api_patients_put_item', {'id': patient.id }) }}",
+            urlApiCareRequestPut: "{{ path('api_care_requests_put_item', {'id': '%id%'}) }}",
+            urlCareRequestForm: "{{ path('care_request_form', {'id': '%id%'}) }}",
         };
     </script>
     

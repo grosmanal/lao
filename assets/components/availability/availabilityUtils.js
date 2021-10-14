@@ -3,6 +3,30 @@ export function weekDayLabel(weekDay) {
     return date.toLocaleDateString(undefined, { weekday : 'long'} );
 }
 
+export function timeSlotToHours(timeSlot) {
+    return timeSlot.split('-')
+}
+
+export function toReadableHour(str) {
+    return str.replace(/(\d{2})(\d{2})/, '$1:$2');
+}
+
+export function firstHour(timeSlot) {
+    return timeSlotToHours(timeSlot)[0];
+}
+
+export function lastHour(timeSlot) {
+    return timeSlotToHours(timeSlot)[1];
+}
+
+export function firstHourReadable(timeSlot) {
+    return toReadableHour(firstHour(timeSlot))
+}
+
+export function lastHourReadable(timeSlot) {
+    return toReadableHour(lastHour(timeSlot))
+}
+
 /**
  * Liste des premiers timeSlot d'une série contigue
  * @param {Array} weekDayAvailability 

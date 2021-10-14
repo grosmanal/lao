@@ -69,10 +69,9 @@ describe('weekAvailability vue component', () => {
         axios.put.mockResolvedValue({foo: 'bar'});
 
         const slot = wrapper.find('div.slot-standard');
-        const slotCheckbox = slot.find('input[type="checkbox"]');
 
-        // Click sur un slot (change d'une checkbox)
-        await slotCheckbox.trigger('change');
+        // Click sur un slot
+        await slot.trigger('click');
         
         // Le slot doit être available
         expect(slot.classes()).toContain('slot-available');
@@ -105,21 +104,20 @@ describe('weekAvailability vue component', () => {
         axios.put.mockResolvedValue({foo: 'bar'});
 
         // Présence du bouton de suppression
-        expect(wrapper.findAll('button.btn-close').length).toBe(1);
-        const closeButton = wrapper.find('button.btn-close');
+        expect(wrapper.findAll('.delete-availability').length).toBe(1);
+        const deleteButton = wrapper.find('.delete-availability');
 
         // Click sur le bouton de suppression
-        await closeButton.trigger('click');
+        await deleteButton.trigger('click');
 
         // Le bouton de suppression a dû disparaître
-        expect(wrapper.findAll('button.btn-close').length).toBe(0);
+        expect(wrapper.findAll('.delete-availability').length).toBe(0);
 
         // Click sur un slot standard
         const slot = wrapper.find('div.slot-standard');
-        const slotCheckbox = slot.find('input[type="checkbox"]');
-        await slotCheckbox.trigger('change');
+        await slot.trigger('click');
         // Un nouveau bouton de suppression a dû apparaître
-        expect(slot.find('button.btn-close').exists()).toBe(true);
+        expect(slot.find('.delete-availability').exists()).toBe(true);
 
         wrapper.destroy();
     });
@@ -248,7 +246,7 @@ describe('weekAvailability vue component', () => {
         // Mock du put vers l'API
         axios.put.mockResolvedValue({foo: 'bar'});
 
-        const morningButton = wrapper.find('.week-day-availability > button.btn');
+        const morningButton = wrapper.find('.week-day-buttons > button.btn');
 
         // Tous les slots sont standard
         expect(wrapper.findAll('div.slot.slot-standard').length).toBe(5);
@@ -286,7 +284,7 @@ describe('weekAvailability vue component', () => {
         // Mock du put vers l'API
         axios.put.mockResolvedValue({foo: 'bar'});
 
-        const afternoonButton = wrapper.findAll('.week-day-availability > button.btn').at(1);
+        const afternoonButton = wrapper.findAll('.week-day-buttons > button.btn').at(1);
 
         // Tous les slots sont standard
         expect(wrapper.findAll('div.slot.slot-standard').length).toBe(5);
@@ -369,8 +367,8 @@ describe('weekAvailability vue component', () => {
         // Mock du put vers l'API
         axios.put.mockResolvedValue({foo: 'bar'});
 
-        // Sélection du troisième bouton (le premier est le bouton oméga)
-        const addButton = wrapper.findAll('.week-time-slot-shortcuts > button.btn').at(2);
+        // Sélection du deuxième bouton
+        const addButton = wrapper.findAll('.week-time-slot-shortcuts .add-time-slot-btn').at(1);
         await addButton.trigger('click');
 
         // Le premier jour, il y a un slot available

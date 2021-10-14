@@ -35,10 +35,17 @@ patient_error:
 add_availability_form:
     day_select_placeholder: Choose day
     everyday_option: Everyday
+    from_label: from
+    to_label: to
     add_button_label: Add
+week_day_availability:
+    set_morning_button_label: am
+    set_afternoon_button_label: pm
 week_time_slot_shortcuts:
     omega_button_label: Always
     add_button_title: Add availability from %periodBegin% to %periodEnd% everyday
+time_slot:
+    title: '%weekDayLabel% from %periodBegin% to %periodEnd%'
 
 availability_error:
     update: Error while updating patient availability

@@ -1,7 +1,13 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
-import { weekDayHeadSlots, timeSlotFromPeriodEdge } from './availabilityUtils';
+import {
+    weekDayHeadSlots,
+    timeSlotFromPeriodEdge,
+    timeSlotToHours,
+    firstHour,
+    lastHour,
+} from './availabilityUtils';
 import modal from '../modal';
 
 Vue.use(Vuex);
@@ -56,7 +62,7 @@ export const getters = {
     middleOfDaySlot: (state, getters) => ( middleOfDayIsEndingEdge ) => {
         const firstWeekDay = Object.keys(state.availability)[0];
         for (const timeSlot of Object.keys(state.availability[firstWeekDay])) {
-            const edges = timeSlot.split('-');
+            const edges = timeSlotToHours(timeSlot);
             
             if (edges[middleOfDayIsEndingEdge === true ? 1 : 0] === getters.middleOfDay) {
                 return timeSlot;
@@ -103,14 +109,12 @@ export const actions = {
     },
     
     updateWeekDayAvailability: async (context, { weekDay, timeSlotStart, timeSlotEnd, available }) => {
-        let startEdges = timeSlotStart.split('-');
-        let endEdges = timeSlotEnd.split('-');
         return axios.put(
             context.getters.urlPutPatientAvailability,
             {
                 weekDay: weekDay,
-                start: startEdges[0],
-                end: endEdges[1],
+                start: firstHour(timeSlotStart),
+                end: lastHour(timeSlotEnd),
                 available: available,
             }
         ).then((response) => {
