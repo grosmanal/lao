@@ -1,0 +1,13 @@
+#patient-accordion > section > h2.accordion-header > .accordion-button {
+    font-size: 2rem;
+    font-variant: small-caps;
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem;
+    color: #000;
+    background-color: lightgrey;
+
+    &:not(.collapsed) {
+        color: #000; // TODO body-color
+        background-color: lightgrey;
+    }
+}

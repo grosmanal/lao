@@ -8,32 +8,40 @@
 
 <h1>{{ content.title|trans }}</h1>
 
-<section>
-    <p>
-        <a data-bs-toggle="collapse" href="#info-content"><h2>{% trans %}Informations{% endtrans %}</h2></a>
-    </p>
-    <div class="collapse" id="info-content">
-        {% include "patient/info.html.twig" %}
-    </div>
-</section>
+<div id="patient-accordion" class="accordion">
 
-<section>
-    <p>
-        <a data-bs-toggle="collapse" href="#availability-content"><h2>{% trans %}Availabilities{% endtrans %}</h2></a>
-    </p>
-    <div class="collapse" id="availability-content">
-        {% include "patient/availability.html.twig" %}
-    </div>
-</section>
+    <section class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#info-content">
+            {% trans %}Informations{% endtrans %}
 
-<section>
-    <p>
-        <h2>{% trans %}Care requests{% endtrans %}</h2>
-    </p>
-    <div>
-        {% include "patient/care_requests.html.twig" %}
-    </div>
-</section>
+        </h2>
+        <div class="accordion-body accordion-collapse collapse show" id="info-content">
+            {% include "patient/info.html.twig" %}
+        </div>
+    </section>
+
+    <section class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#availability-content">
+            {% trans %}Availabilities{% endtrans %}
+        </h2>
+        <div class="accordion-body accordion-collapse collapse show" id="availability-content">
+            {% include "patient/availability.html.twig" %}
+        </div>
+    </section>
+
+    <section class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#care-request-content">
+            {% trans %}Care requests{% endtrans %}
+        </h2>
+        <div class="accordion-body accordion-collapse collapse show" id="care-request-content">
+            {% include "patient/care_requests.html.twig" %}
+        </div>
+    </section>
+
+</div>
 
 {% endblock %}
 
