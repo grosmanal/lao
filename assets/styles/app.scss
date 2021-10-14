@@ -3,4 +3,8 @@ $body-bg: rgb(241, 241, 241);
 
 $accordion-icon-active-color: #000;
 
+.container {
+    padding-top: 75px;
+}
+
 @import '~bootstrap/scss/bootstrap';
