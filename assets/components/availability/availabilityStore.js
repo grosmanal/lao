@@ -17,7 +17,7 @@ export const mutations = {
         state.availability = initAvailability;
     },
     
-    UPDATE_WEEKDAY_AVAILABILITY: (state, {weekDay, timeSlotStart, timeSlotEnd, available}) => {
+    UPDATE_WEEKDAY_AVAILABILITY: (state, { weekDay, timeSlotStart, timeSlotEnd, available }) => {
         let newAvailability = new Object();
         Object.assign(newAvailability, state.availability)
         
@@ -35,6 +35,17 @@ export const mutations = {
         }
         state.availability = newAvailability;
     },
+
+    UPDATE_TIME_SLOT_SHOWING_CLOSE_BUTTON: (state, timeSlotIdentifier) => {
+        if (timeSlotIdentifier == null) {
+            state.timeSlotShowingCloseButton = null;    
+        } else {
+            state.timeSlotShowingCloseButton = { 
+                weekDay: timeSlotIdentifier.weekDay,
+                timeSlot: timeSlotIdentifier.timeSlot
+            }
+        }
+    }
 };
 
 export const getters = {
@@ -47,6 +58,8 @@ export const getters = {
     weekDays: state => Object.keys(state.availability).map(weekDay => parseInt(weekDay)),
 
     timeSlots: state => Object.keys(state.availability[Object.keys(state.availability)[0]]),
+
+    timeSlotShowingCloseButton: state => state.timeSlotShowingCloseButton,
 
     startOfDaySlot: state => {
         const firstWeekDay = Object.keys(state.availability)[0];
@@ -90,10 +103,26 @@ export const getters = {
         return weekHeadSlots;
     },
 
+    /**
+     * Détermine si un slot est en tête d'une série de slots disponibles
+     * @returns { boolean }
+     */
     isHeadAvailableTimeSlot: (state, getters) => (weekDay, timeSlot) => {
         return (getters.headSlots[weekDay]).includes(timeSlot)
     },
     
+    /**
+     * Recherche le premier slot d'une série de slots disponibles
+     * pour un slot 
+     * @returns { String }
+     */
+    // FIXME les tests retournent un warning (weekAvailability.js : 'change slot availability')
+    headSlotForTimeSlot: (state, getters) => (weekDay, timeSlot) => {
+        return getters.headSlots[weekDay] // liste des timeSlots de tête disponibles du jour
+            .filter(currentTimeSlot => currentTimeSlot <= timeSlot) // suppression des timeSlots postérieurs à celui demandé
+            .at(-1) // dernier élément : timeSolt de tête le plus proche de celui demandé
+            ;
+    },
 };
 
 export const actions = {
@@ -146,8 +175,8 @@ export const actions = {
         });
     },
 
-    addAvailabilityTimeslot: (context, {weekDay, timeSlot, available}) => {
-        context.dispatch('updateWeekDayAvailability', {
+    addAvailabilityTimeslot: async (context, {weekDay, timeSlot, available}) => {
+        await context.dispatch('updateWeekDayAvailability', {
             weekDay: weekDay,
             timeSlotStart: timeSlot,
             timeSlotEnd: timeSlot,
@@ -155,17 +184,25 @@ export const actions = {
         });
     },
 
-    toggleTimeSlot: (context, {weekDay, timeSlot}) => {
-        const available = context.state.availability[weekDay][timeSlot];
+    toggleTimeSlot: async (context, {weekDay, timeSlot}) => {
+        const available = ! context.getters.timeSlotAvailability(weekDay, timeSlot);
         
-        context.dispatch('addAvailabilityTimeslot', {
+        await context.dispatch('addAvailabilityTimeslot', {
             weekDay: weekDay,
             timeSlot: timeSlot,
-            available: !available,
+            available: available,
         });
+
+        if (available) {
+            // affichage du bouton close sur le timeSlot de tête
+            context.dispatch('updateTimeSlotShowingCloseButton', { weekDay, timeSlot });
+        } else {
+            // masquage du bouton close
+            context.dispatch('resetTimeSlotShowingCloseButton');
+        }
     },
     
-    deleteTimeSlotAndNext: (context, {weekDay, timeSlot}) => {
+    deleteTimeSlotAndNext: async (context, {weekDay, timeSlot}) => {
         // Recherche du time slot de fin (le dernier available en partant du time slot en paramètre)
         let startingTimeSlotFound = false;
         let endingTimeSlot = undefined;
@@ -190,12 +227,14 @@ export const actions = {
             }
         }
         
-        context.dispatch('updateWeekDayAvailability', {
+        await context.dispatch('updateWeekDayAvailability', {
             weekDay: weekDay,
             timeSlotStart: timeSlot,
             timeSlotEnd: endingTimeSlot,
             available: false,
         });
+
+        context.dispatch('resetTimeSlotShowingCloseButton');
     },
     
     setWholeDayAvailable: (context, {weekDay, available}) => {
@@ -223,13 +262,35 @@ export const actions = {
             timeSlotEnd: context.getters.endOfDaySlot,
             available: available,
         });
-    }
+    },
+
+    resetTimeSlotShowingCloseButton: (context) => {
+        context.commit('UPDATE_TIME_SLOT_SHOWING_CLOSE_BUTTON', null);
+    },
+
+    updateTimeSlotShowingCloseButton: (context, {weekDay, timeSlot}) => {
+        // Le timeSlot survolé est-il available ?
+        if (context.getters.timeSlotAvailability(weekDay, timeSlot) == false) {
+            // Auncun close button ne doit apparaître
+            context.dispatch('resetTimeSlotShowingCloseButton');
+            return;
+        }
+
+        // Affichage du close button sur le timeSlot de tête du timeSlot demandé
+        const headTimeSlot = context.getters.headSlotForTimeSlot(weekDay, timeSlot);
+        context.commit('UPDATE_TIME_SLOT_SHOWING_CLOSE_BUTTON', {
+            weekDay,
+            timeSlot: headTimeSlot,
+        })
+    },
+
 };
 
 // Les autres export des objets mutations, getters et actions servent à les tester
 export default new Vuex.Store({
     state: {
         availability: null,
+        timeSlotShowingCloseButton: null,
     },
     mutations: mutations,
     getters: getters,

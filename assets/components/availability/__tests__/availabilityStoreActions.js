@@ -119,21 +119,15 @@ describe('Availability store actions', () => {
         })
     });
 
-    test('toggleTimeSlot', () => {
+    test('toggleTimeSlot', async () => {
         const context = {
-            state: {
-                availability: {
-                    "1": {
-                        "0900-0930": true,
-                        "0930-1000": false,
-                        "1000-1030": false,
-                    }
-                },
-            },
             dispatch: jest.fn(),
+            getters: {
+                timeSlotAvailability: jest.fn().mockReturnValue(false),
+            }
         };
 
-        actions.toggleTimeSlot(context, {weekDay: 1, timeSlot: "0930-1000"});
+        await actions.toggleTimeSlot(context, {weekDay: 1, timeSlot: "0930-1000"});
         expect(context.dispatch).toHaveBeenCalledWith('addAvailabilityTimeslot', {
             weekDay: 1,
             timeSlot: "0930-1000",

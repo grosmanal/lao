@@ -6,12 +6,17 @@
         <li><button class="btn btn-primary btn-sm" @click="setMorningAvailable">{{ setMorningButtonLabel }}</button></li>
         <li><button class="btn btn-primary btn-sm" @click="setAfternoonAvailable">{{ setAfternoonButtonLabel }}</button></li>
     </ul>
-    <time-slot
-        v-for="(slotAvailable, timeSlot) in weekDayAvailability"
-        v-bind:key="timeSlot"
-        v-bind:week-day="weekDay"
-        v-bind:time-slot="timeSlot"
-    ></time-slot>
+    <ul class="week-day-slots" @mouseleave="hideCloseButton">
+        <li>
+            <time-slot
+                v-for="(slotAvailable, timeSlot) in weekDayAvailability"
+                v-bind:key="timeSlot"
+                v-bind:week-day="weekDay"
+                v-bind:time-slot="timeSlot"
+            ></time-slot>
+        </li>
+    </ul>
+    
 </li>
 </template>
 
@@ -45,6 +50,8 @@ export default {
             storeSetWholeDayAvailable: 'setWholeDayAvailable',
             storeSetMorningAvailable: 'setMorningAvailable',
             storeSetAfternoonAvailable: 'setAfternoonAvailable',
+            resetTimeSlotShowingCloseButton: 'resetTimeSlotShowingCloseButton',
+            
         }),
 
         setWholeDayAvailable: function() {
@@ -57,6 +64,9 @@ export default {
   
         setAfternoonAvailable: function() {
             this.storeSetAfternoonAvailable({weekDay: this.weekDay, available: true});
+        },
+        hideCloseButton: function() {
+            this.resetTimeSlotShowingCloseButton();
         },
     },
 }
@@ -83,6 +93,11 @@ export default {
 
 .week-day-buttons .btn-sm {
     padding: 2px 4px;
+}
+
+.week-day-slots {
+    list-style: none;
+    padding: 0;
 }
 
 </style>

@@ -101,7 +101,10 @@ describe('Availability store getters', () => {
     });
 
 
-    test('middleOfDaySlot', () => {
+    test.each([
+        [ true, "0830-0900" ],
+        [ false, "0900-0930" ]
+    ])('middleOfDaySlot', (edgeIsPeriodEnding, expected) => {
         const state = {
             availability: {
                 "1": {
@@ -121,8 +124,7 @@ describe('Availability store getters', () => {
 
         const getterFunction = getters.middleOfDaySlot(state, { middleOfDay: "0900" });
 
-        expect(getterFunction(true)).toStrictEqual("0830-0900");
-        expect(getterFunction(false)).toStrictEqual("0900-0930");
+        expect(getterFunction(edgeIsPeriodEnding)).toStrictEqual(expected);
     });
 
     test('weekDayAvailability', () => {
@@ -159,7 +161,10 @@ describe('Availability store getters', () => {
         });
     });
 
-    test('timeSlotAvailability', () => {
+    test.each([
+        ["2", "0800-0830", false],
+        ["2", "0830-0900", true]
+    ])('timeSlotAvailability', (weekDay, timeSlot, expected) => {
         const state = {
             availability: {
                 "1": {
@@ -179,8 +184,7 @@ describe('Availability store getters', () => {
 
         const getterFunction = getters.timeSlotAvailability(state);
 
-        expect(getterFunction("2", "0800-0830")).toStrictEqual(false);
-        expect(getterFunction("2", "0830-0900")).toStrictEqual(true);
+        expect(getterFunction(weekDay, timeSlot)).toStrictEqual(expected);
     });
 
     test('headSlots', () => {
@@ -222,7 +226,13 @@ describe('Availability store getters', () => {
     });
 
 
-    test('isHeadAvailableTimeSlot', () => {
+    test.each([
+        ["1", "0800-0830", false],
+        ["1", "0900-0930", true],
+        ["2", "0830-0900", true],
+        ["3", "0830-0900", true],
+        ["3", "0900-0930", false],
+    ])('isHeadAvailableTimeSlot', (weekDay, timeSlot, expected) => {
         const state = {
             availability: {
                 "1": {
@@ -254,12 +264,7 @@ describe('Availability store getters', () => {
 
         const getterFunction = getters.isHeadAvailableTimeSlot(state, {headSlots: getters.headSlots(state)} );
 
-        expect(getterFunction("1", "0800-0830")).toStrictEqual(false);
-        expect(getterFunction("1", "0830-0900")).toStrictEqual(false);
-        expect(getterFunction("1", "0900-0930")).toStrictEqual(true);
-        expect(getterFunction("2", "0830-0900")).toStrictEqual(true);
-        expect(getterFunction("3", "0830-0900")).toStrictEqual(true);
-        expect(getterFunction("3", "0900-0930")).toStrictEqual(false);
+        expect(getterFunction(weekDay, timeSlot)).toStrictEqual(expected);
     });
 
 });

@@ -1,10 +1,17 @@
 <template>
     <div class="slot"
         :class="{'slot-available': available, 'slot-right-edge': isLastDay}"
-        @click="toggle"
         :title="timeSlotTitle"
+        @click="toggle"
+        @mouseenter="showCloseButton"
     >
-        <img class="delete-availability" src="../../images/close_button.svg" alt="delete availability" v-if="isHead" @click.stop="deleteSlotAndNext" />
+        <img
+            class="delete-availability"
+            src="../../images/close_button.svg"
+            alt="delete availability"
+            v-if="isCloseButtonShown"
+            @click.stop="deleteSlotAndNext"
+        />
     </div>
 </template>
 
@@ -23,8 +30,13 @@ export default {
         available: function() { 
             return this.$store.getters.timeSlotAvailability(this.weekDay, this.timeSlot);
         },
-        isHead: function() {
-            return this.$store.getters.isHeadAvailableTimeSlot(this.weekDay, this.timeSlot);
+        isCloseButtonShown: function() {
+            const timeSlotShowingCloseButton = this.$store.getters.timeSlotShowingCloseButton;
+            if (timeSlotShowingCloseButton == null) {
+                return false;
+            }
+
+            return timeSlotShowingCloseButton.weekDay == this.weekDay && timeSlotShowingCloseButton.timeSlot == this.timeSlot;
         },
         isLastDay: function() {
             const weekDays = this.$store.getters.weekDays;
@@ -42,6 +54,7 @@ export default {
         ...Vuex.mapActions({
             storeToggleTimeSlot: 'toggleTimeSlot',
             storeDeleteTimeSlotAndNext: 'deleteTimeSlotAndNext',
+            updateTimeSlotShowingCloseButton: 'updateTimeSlotShowingCloseButton',
         }),
 
         toggle: function() {
@@ -49,6 +62,9 @@ export default {
         },
         deleteSlotAndNext: function() {
             this.storeDeleteTimeSlotAndNext({weekDay: this.weekDay, timeSlot: this.timeSlot});
+        },
+        showCloseButton: function() {
+            this.updateTimeSlotShowingCloseButton({weekDay: this.weekDay, timeSlot: this.timeSlot})
         },
     },
 }
@@ -76,7 +92,7 @@ export default {
     }
 
     .slot-available {
-        background-color: #509b50;
+        background-color: #c1da86;
         border-bottom-color: green;
         border-top-color: green;
     }
