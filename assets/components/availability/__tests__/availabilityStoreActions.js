@@ -121,7 +121,7 @@ describe('Availability store actions', () => {
 
     test('toggleTimeSlot', async () => {
         const context = {
-            dispatch: jest.fn(),
+            dispatch: jest.fn().mockResolvedValue(null),
             getters: {
                 timeSlotAvailability: jest.fn().mockReturnValue(false),
             }
@@ -132,6 +132,11 @@ describe('Availability store actions', () => {
             weekDay: 1,
             timeSlot: "0930-1000",
             available: true,
+        })
+
+        expect(context.dispatch).toHaveBeenCalledWith('updateTimeSlotShowingCloseButton', {
+            weekDay: 1,
+            timeSlot: "0930-1000",
         })
     });
 

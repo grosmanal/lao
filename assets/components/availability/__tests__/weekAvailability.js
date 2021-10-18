@@ -47,9 +47,7 @@ describe('weekAvailability vue component', () => {
         wrapper.destroy();
     });
 
-    // FIXME un warning apparaît
-    // FIXME problème de fonctions asynchrones
-    test.skip('change slot availability', async () => {
+    test('change slot availability', () => {
         const initAvailability = {
             "1": {
                 "0800-0830": false,
@@ -70,20 +68,20 @@ describe('weekAvailability vue component', () => {
         // Mock du put vers l'API
         axios.put.mockResolvedValue({foo: 'bar'});
 
-        const slot = wrapper.find('div.slot:not(.slot-available)');
+        const timeSlots = wrapper.findAll('div.slot:not(.slot-available)');
+        expect.assertions(1);
 
         // Click sur un slot
-        await slot.trigger('click');
-        
-        // Le slot doit être available
-        expect(slot.classes()).toContain('slot-available');
-
-        wrapper.destroy();
+        timeSlots.at(0).trigger('click')
+        .then(() => {
+            // Le slot doit être available
+            expect(timeSlots.at(0).classes()).toContain('slot-available');
+        }).finally(() => {
+            wrapper.destroy();
+        });
     });
 
-    // FIXME désormais le delete button ne s'affiche qu'en survol
-    // FIXME problème de fonctions asynchrones
-    test.skip('delete button', async () => {
+    test('delete button', () => {
         const initAvailability = {
             "1": {
                 "0800-0830": false,
@@ -104,28 +102,37 @@ describe('weekAvailability vue component', () => {
         // Mock du put vers l'API
         axios.put.mockResolvedValue({foo: 'bar'});
 
+        expect.assertions(3);
+
+        // timeSlot sur lequel on va faire les tests
+        let slot;
+
         // Entrée de la souris sur le slot disponible
         const availableSlot = wrapper.find('div.slot-available');
-        await availableSlot.trigger('mouseenter');
+        availableSlot.trigger('mouseenter').then(() => {
+            // Présence du bouton de suppression
+            expect(wrapper.findAll('.delete-availability').length).toBe(1);
+        
+            // Click sur le bouton de suppression
+            const deleteButton = wrapper.find('.delete-availability');
+            deleteButton.trigger('click');
+        }).then(() => {
+            // Le bouton de suppression a dû disparaître
+            expect(wrapper.findAll('.delete-availability').exists()).toBe(false);
 
-        // Présence du bouton de suppression
-        expect(wrapper.findAll('.delete-availability').length).toBe(1);
-        const deleteButton = wrapper.find('.delete-availability');
-
-        // Click sur le bouton de suppression
-        await deleteButton.trigger('click');
-
-        // Le bouton de suppression a dû disparaître
-        expect(wrapper.findAll('.delete-availability').length).toBe(0);
-
-        // Click sur un slot standard
-        const slot = wrapper.find('div.slot:not(.slot-available)');
-        await slot.trigger('mouseenter');
-        await slot.trigger('click');
-        // Un nouveau bouton de suppression a dû apparaître
-        expect(slot.find('.delete-availability').exists()).toBe(true);
-
-        wrapper.destroy();
+            // Click sur un slot standard
+            slot = wrapper.find('div.slot:not(.slot-available)');
+            slot.trigger('mouseenter')
+        }).then(() => {
+            slot.trigger('click')
+        }).then(() => {
+            slot.trigger('mouseenter')
+        }).then(() => {
+            // Un nouveau bouton de suppression a dû apparaître
+            expect(slot.find('.delete-availability').exists()).toBe(true);
+        }).finally(() => {
+            wrapper.destroy();
+        });
     });
 
     test('add availability form', async () => {

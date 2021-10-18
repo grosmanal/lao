@@ -55,13 +55,18 @@ export default {
             storeToggleTimeSlot: 'toggleTimeSlot',
             storeDeleteTimeSlotAndNext: 'deleteTimeSlotAndNext',
             updateTimeSlotShowingCloseButton: 'updateTimeSlotShowingCloseButton',
+            resetTimeSlotShowingCloseButton: 'resetTimeSlotShowingCloseButton',
         }),
 
-        toggle: function() {
+        toggle: async function() {
             this.storeToggleTimeSlot({weekDay: this.weekDay, timeSlot: this.timeSlot});
+
         },
         deleteSlotAndNext: function() {
-            this.storeDeleteTimeSlotAndNext({weekDay: this.weekDay, timeSlot: this.timeSlot});
+            Promise.all([
+                this.storeDeleteTimeSlotAndNext({weekDay: this.weekDay, timeSlot: this.timeSlot}),
+                this.resetTimeSlotShowingCloseButton(),
+            ]);
         },
         showCloseButton: function() {
             this.updateTimeSlotShowingCloseButton({weekDay: this.weekDay, timeSlot: this.timeSlot})
