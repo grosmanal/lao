@@ -1,6 +1,6 @@
 {{ form_start(careRequestForm, {
     'id': 'care-request-form-' ~ careRequest.id,
-    'attr': {'onsubmit': 'submitCareRequest(event);'}
+    'attr': {'onsubmit': careRequest.isActive ? 'submitCareRequest(event)' : 'reactivateCareRequest(event)'}
 }) }}
 <input type="hidden" name="care-request-id" value="{{ careRequest.id }}" />
 {{ form_row(careRequestForm.creationDate, {'id': 'care-request-creationDate-' ~ careRequest.id }) }}

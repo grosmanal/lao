@@ -55,6 +55,29 @@ function submitPatient(event) {
     return false;
 };
 
+
+function doSubmitCareRequest(form, careRequestId, data) {
+    httpClient({
+        method: 'put',
+        url: patientParams.urlApiCareRequestPut.replace('%id%', careRequestId),
+        data: data
+    }).then(function(response) {
+        httpClient
+            .get(patientParams.urlCareRequestForm.replace('%id%', careRequestId))
+            .then(function(response) {
+                // Recherche du parent de la form pour y injecter le nouveau HTML
+                let formParent = $(form).parentsUntil('#care-requests-accordion', '.accordion-item');
+
+                // Injection du nouveau HTML
+                formParent.html(response.data);
+            }).catch(function(error) {
+                modal('care_request_error.reread');
+            });
+    }).catch(function(error) {
+        modal('care_request_error.update');
+    });
+}
+
 /**
  * Modification d'une demande
  */
@@ -74,29 +97,33 @@ function submitCareRequest(event) {
         complaint: apiFieldConverter(form['care_request[complaint]'].value, 'complaints'),
         acceptedByDoctor: apiFieldConverter(form['care_request[acceptedByDoctor]'].value, 'doctors'),
     };
-
-    httpClient({
-        method: 'put',
-        url: patientParams.urlApiCareRequestPut.replace('%id%', careRequestId),
-        data: data
-    }).then(function (response) {
-        httpClient
-            .get(patientParams.urlCareRequestForm.replace('%id%', careRequestId))
-            .then(function (response) {
-                // Recherche du parent de la form pour y injecter le nouveau HTML
-                let formParent = $(form).parentsUntil('#care-requests-accordion', '.accordion-item');
-
-                // Injection du nouveau HTML
-                formParent.html(response.data);
-            }).catch(function(error) {
-                modal('care_request_error.reread');
-            });
-    }).catch(function(error) {
-        modal('care_request_error.update');
-    });
     
+    doSubmitCareRequest(form, careRequestId, data);
+
     return false;
 };
+
+
+/**
+ * Réactivation d'une care request
+ */
+function reactivateCareRequest(event) {
+    event.preventDefault();
+
+    const form = event.target;
+    const careRequestId = form['care-request-id'].value;
+
+    const data = {
+        acceptDate: null,
+        abandonDate: null,
+        abandonReason: null,
+        acceptedByDoctor: null,
+    };
+    
+    doSubmitCareRequest(form, careRequestId, data);
+    
+    return false;
+}
 
 
 /**
@@ -118,14 +145,16 @@ function abandonCareRequest() {
  * Permettre de valider le formulaire de création de commentaire
  * avec Ctrl + Entrée
  */
-const formComment = document.querySelector('.comment-form');
-formComment.addEventListener('keydown', function(event) {
-    if (event.getModifierState('Control') && event.key == 'Enter') {
-        formComment.dispatchEvent(new Event('submit', {
-            'bubbles': true,
-            'cancelable': true,
-        }));
-    }
+const formsComment = document.querySelectorAll('.comment-form');
+formsComment.forEach(function(element) {
+    element.addEventListener('keydown', function(event) {
+        if (event.getModifierState('Control') && event.key == 'Enter') {
+            element.dispatchEvent(new Event('submit', {
+                'bubbles': true,
+                'cancelable': true,
+            }));
+        }
+    });
 });
 
 /**
@@ -158,8 +187,6 @@ function submitComment(event) {
                 // Recherche de l'élément liste
                 let listElement = $(`#care-request-body-${careRequestId} ul.comments`);
                 
-                console.log(response.data);
-                
                 // Injection du nouveau HTML
                 listElement.prepend(response.data);
                 
@@ -184,6 +211,7 @@ function submitComment(event) {
 // Elles doivent donc être globale
 window.submitPatient = submitPatient;
 window.submitCareRequest = submitCareRequest;
+window.reactivateCareRequest = reactivateCareRequest;
 window.submitComment = submitComment;
 window.abandonCareRequest = abandonCareRequest;
 window.acceptCareRequest = acceptCareRequest;
