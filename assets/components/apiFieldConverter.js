@@ -1,7 +1,8 @@
+// FIXME utiliser les paramètres uri… de patientParams
 export default function (value, entity) {
     if (value === "") {
         return null;
     } else {
-        return '/api/' + entity + '/' + value;
+        return apiUri[entity].replace('%id%', value);
     }
 }

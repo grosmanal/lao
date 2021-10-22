@@ -52,7 +52,7 @@ availability_error:
 
 # Form care request
 Care request from %creationDate%: Demande du %creationDate%
-take.charge: Prendre en charge
+take.charge: Je prends en charge
 abandon: Abandonner
 save: Enregistrer
 reactivate: Réactiver

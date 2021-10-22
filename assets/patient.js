@@ -93,9 +93,9 @@ function submitCareRequest(event) {
         acceptDate: nullFieldConverter(form['care_request[acceptDate]'].value),
         abandonDate: nullFieldConverter(form['care_request[abandonDate]'].value),
         abandonReason: nullFieldConverter(form['care_request[abandonReason]'].value),
-        doctorCreator: apiFieldConverter(form['care_request[doctorCreator]'].value, 'doctors'),
-        complaint: apiFieldConverter(form['care_request[complaint]'].value, 'complaints'),
-        acceptedByDoctor: apiFieldConverter(form['care_request[acceptedByDoctor]'].value, 'doctors'),
+        doctorCreator: apiFieldConverter(form['care_request[doctorCreator]'].value, 'Doctor'),
+        complaint: apiFieldConverter(form['care_request[complaint]'].value, 'Complaint'),
+        acceptedByDoctor: apiFieldConverter(form['care_request[acceptedByDoctor]'].value, 'Doctor'),
     };
     
     doSubmitCareRequest(form, careRequestId, data);
@@ -136,8 +136,16 @@ function abandonCareRequest() {
 /**
  * Annulation de l'acceptation de la demande de prise en charge
  */
- function acceptCareRequest() {
-    alert('in func accept');  // TODO
+ function acceptCareRequest(event) {
+    const form = event.target.form
+    const careRequestId = form['care-request-id'].value;
+
+    const data = {
+        acceptDate: 'now',
+        acceptedByDoctor: patientParams.currentDoctorId ? apiFieldConverter(patientParams.currentDoctorId, 'Doctor') : null,
+    };
+    
+    doSubmitCareRequest(form, careRequestId, data);
  }
 
 
@@ -170,9 +178,9 @@ function submitComment(event) {
     const comment = nullFieldConverter(form['comment'].value);
     
     const data = {
-        author: patientParams.uriApiDoctor.replace('%id%', doctorId),
-        creationDate: new Date().toISOString(),
-        careRequest: patientParams.uriApiCareRequest.replace('%id%', careRequestId),
+        author: apiFieldConverter(doctorId, 'Doctor'),
+        creationDate: 'now',
+        careRequest: apiFieldConverter(careRequestId, 'CareRequest'),
         content: comment,
     }
     

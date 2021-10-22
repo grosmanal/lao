@@ -40,6 +40,7 @@ class CareRequestType extends AbstractType
                 'attr' => $fieldsAttributes,
             ])
             ->add('customComplaint', TextType::class, [
+                'required' => false,
                 'attr' => $fieldsAttributes,
             ])
             ->add('acceptedByDoctor', $careRequest->isActive() ? null : TextType::class, [
@@ -54,7 +55,7 @@ class CareRequestType extends AbstractType
                 'label' => 'take.charge',
                 'attr' => array_merge($buttonsAttributes, [
                     'class' => 'btn btn-primary',
-                    'onclick' => "acceptCareRequest()",
+                    'onclick' => "acceptCareRequest(event)",
                 ]),
             ])
             ->add('abandonReason', $careRequest->isActive() ? null : TextType::class, [

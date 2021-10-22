@@ -54,13 +54,12 @@
 
     <script>
         const patientParams = {
+            currentDoctorId: {{ currentDoctor.id ?? 'null' }},
             urlApiPatientPut: "{{ url('api_patients_put_item', {id: patient.id }) }}",
             urlApiCareRequestPut: "{{ url('api_care_requests_put_item', {id: '%id%'})|replace({'%25': '%'}) }}",
-            uriApiCareRequest: "{{ path('api_care_requests_get_item', {id: '%id%'})|replace({'%25': '%'}) }}",
             urlCareRequestForm: "{{ url('care_request_form', {id: '%id%'})|replace({'%25': '%'}) }}",
             urlCommentPart: "{{ url('comment_part', {id: '%id%'})|replace({'%25': '%'}) }}",
             urlApiCommentPost: "{{ url('api_comments_post_collection') }}",
-            uriApiDoctor: "{{ path('api_doctors_get_item', {id: '%id%'})|replace({'%25': '%'}) }}",
         };
     </script>
     

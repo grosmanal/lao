@@ -10,6 +10,16 @@
         {% block javascripts %}
             <script src="{{ asset('bundles/bazingajstranslation/js/translator.min.js') }}"></script>
             <script src="{{ url('bazinga_jstranslation_js') }}"></script>
+            
+            <script>
+                // constante globale contenant les Uri des entités de l'API pour utilisation dans les javascript
+                // TODO voir si on peut faire mieux (comme bazingajstranslation)
+                const apiUri = {
+                    'Doctor': "{{ path('api_doctors_get_item', {id: '%id%'})|replace({'%25': '%'}) }}",
+                    'Complaint': "{{ path('api_complaints_get_item', {id: '%id%'})|replace({'%25': '%'}) }}",
+                    'CareRequest': "{{ path('api_care_requests_get_item', {id: '%id%'})|replace({'%25': '%'}) }}",
+                };
+            </script>
 
             {{ encore_entry_script_tags('app') }}
         {% endblock %}
@@ -29,7 +39,7 @@
                         <a class="nav-link active" aria-current="page" href="{{ url('patient', {id: 1}) }}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
+                        <a class="nav-link active" href="{{ url('app_logout') }}">Logout</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -42,9 +52,11 @@
                             <li><a class="dropdown-item" href="#">Something else here</a></li>
                         </ul>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link disabled">Disabled</a>
-                    </li>
+                    {% if app.user %}
+                        <li class="nav-item">
+                            <a class="nav-link disabled">Logged as {{ app.user.email }}</a>
+                        </li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
