@@ -27,7 +27,7 @@ class CareRequestController extends AbstractController
         $this->denyAccessUnlessGranted('edit', $careRequest);
 
         $careRequestForm = $this->createForm(CareRequestType::class, $careRequest);
-        return $this->render('patient/parts/care_request_form.html.twig', [
+        return $this->render('patient/care_request.html.twig', [
             'careRequest' => $careRequest,
             'careRequestForm' => $careRequestForm->createView(),
             'showCareRequest' => true,

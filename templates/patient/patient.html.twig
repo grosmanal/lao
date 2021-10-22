@@ -4,7 +4,7 @@
 
 {% block body %}
 
-<div id="patient-accordion" class="patient-content">
+<div id="patient-content" class="patient-content">
     <section class="identity-section card">
         <h3 class="card-header">
             {% trans %}Patient{% endtrans %}
@@ -28,7 +28,15 @@
             {% trans %}Care requests{% endtrans %}
         </h3>
         <div class="card-body" id="care-request-content">
-            {% include "patient/care_requests.html.twig" %}
+            <div id="care-requests-accordion" class="accordion">
+            {% for careRequest in careRequests %}
+                <div class="accordion-item">
+                    {% set careRequestForm = careRequestForms[careRequest.id] %}
+                    {% set showCareRequest = careRequest.active %}
+                    {% include "patient/care_request.html.twig" %}
+                </div>
+            {% endfor %}
+            </div>
         </div>
     </section>
 </div>

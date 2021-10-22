@@ -84,7 +84,8 @@ function submitCareRequest(event) {
             .get(patientParams.urlCareRequestForm.replace('%id%', careRequestId))
             .then(function (response) {
                 // Recherche du parent de la form pour y injecter le nouveau HTML
-                let formParent = $(form).parentsUntil('.accordion-item').parent();
+                let formParent = $(form).parentsUntil('#care-requests-accordion', '.accordion-item');
+
                 // Injection du nouveau HTML
                 formParent.html(response.data);
             }).catch(function(error) {
