@@ -6,7 +6,6 @@ use App\Entity\Patient;
 use App\Form\PatientType;
 use App\Form\CareRequestType;
 use App\Service\Availability;
-use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

@@ -6,14 +6,11 @@
 
 <div id="message" class="alert" style="display: none;"></div>
 
-<h1>{{ content.title|trans }}</h1>
-
-<div id="patient-accordion" class="accordion">
-
-    <section class="accordion-item">
+<div id="patient-accordion" class="patient-content accordion">
+    <section class="identity-section accordion-item">
         <h2 class="accordion-header">
             <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#info-content">
-            {% trans %}Informations{% endtrans %}
+            {% trans %}Patient{% endtrans %}
 
         </h2>
         <div class="accordion-body accordion-collapse collapse show" id="info-content">
@@ -21,7 +18,7 @@
         </div>
     </section>
 
-    <section class="accordion-item">
+    <section class="availability-section accordion-item">
         <h2 class="accordion-header">
             <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#availability-content">
             {% trans %}Availabilities{% endtrans %}
@@ -31,7 +28,7 @@
         </div>
     </section>
 
-    <section class="accordion-item">
+    <section class="care-request-section accordion-item">
         <h2 class="accordion-header">
             <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#care-request-content">
             {% trans %}Care requests{% endtrans %}
@@ -40,7 +37,6 @@
             {% include "patient/care_requests.html.twig" %}
         </div>
     </section>
-
 </div>
 
 {% endblock %}
@@ -56,9 +52,13 @@
 
     <script>
         const patientParams = {
-            urlApiPatientPut: "{{ path('api_patients_put_item', {'id': patient.id }) }}",
-            urlApiCareRequestPut: "{{ path('api_care_requests_put_item', {'id': '%id%'}) }}",
-            urlCareRequestForm: "{{ path('care_request_form', {'id': '%id%'}) }}",
+            urlApiPatientPut: "{{ url('api_patients_put_item', {id: patient.id }) }}",
+            urlApiCareRequestPut: "{{ url('api_care_requests_put_item', {id: '%id%'})|replace({'%25': '%'}) }}",
+            uriApiCareRequest: "{{ path('api_care_requests_get_item', {id: '%id%'})|replace({'%25': '%'}) }}",
+            urlCareRequestForm: "{{ url('care_request_form', {id: '%id%'})|replace({'%25': '%'}) }}",
+            urlCommentPart: "{{ url('comment_part', {id: '%id%'})|replace({'%25': '%'}) }}",
+            urlApiCommentPost: "{{ url('api_comments_post_collection') }}",
+            uriApiDoctor: "{{ path('api_doctors_get_item', {id: '%id%'})|replace({'%25': '%'}) }}",
         };
     </script>
     

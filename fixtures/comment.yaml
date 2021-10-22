@@ -1,0 +1,17 @@
+---
+App\Entity\Comment:
+    comment_1:
+        author: '@doctor_joelle'
+        creationDate: <immutableDateTimeBetween("-1 years", "-2 weeks")> 
+        careRequest: '@care_request_1'
+        content: lorem ipsum
+    comment_2:
+        author: '@doctor_laurence'
+        creationDate: <immutableDateTimeBetween("-1 years", "-2 weeks")> 
+        careRequest: '@care_request_1'
+        content: ipsum lorem
+    comment_3:
+        author: '@doctor_joelle'
+        creationDate: <immutableDateTimeBetween("-1 years", "-2 weeks")> 
+        careRequest: '@care_request_4'
+        content: ipsum lorem

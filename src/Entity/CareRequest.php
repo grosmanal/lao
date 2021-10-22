@@ -2,9 +2,12 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\CareRequestRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
@@ -104,6 +107,18 @@ class CareRequest implements OfficeOwnedInterface
      */
     #[Groups(['careRequest:read'])]
     private $abandonReason;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="careRequest", orphanRemoval=true)
+     * @ORM\OrderBy({"creationDate" = "DESC"})
+     */
+    #[ApiSubresource()]
+    private $comments;
+
+    public function __construct()
+    {
+        $this->comments = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -281,5 +296,35 @@ class CareRequest implements OfficeOwnedInterface
                 ->addViolation()
                 ;
         }
+    }
+
+    /**
+     * @return Collection|Comment[]
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comment $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+            $comment->setCareRequest($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): self
+    {
+        if ($this->comments->removeElement($comment)) {
+            // set the owning side to null (unless already changed)
+            if ($comment->getCareRequest() === $this) {
+                $comment->setCareRequest(null);
+            }
+        }
+
+        return $this;
     }
 }

@@ -1,0 +1,16 @@
+<li class="{{ html_classes('comment', { 'opacity-0': commentHidden ?? false } ) }}">
+    <article class="d-flex border border-2">
+        <div class="flex-shrink-0 {{ app.user.doctor == comment.author ? 'order-0' : 'order-1' }}">
+            <img src="https://via.placeholder.com/100" alt="{{ comment.author.firstname }}">
+        </div>
+        <div class="flex-grow-1 ms-3 p-2 comment-body">
+            <time class="d-block mb-2 fw-lighter" datetime="{{ comment.creationDate|date('c') }}">
+                {{ comment.getCreationDateNonImmutable|ago() }}
+            </time>
+
+            <p>
+                {{ comment.content }}
+            </p>
+        </div>
+    </article>
+</li>

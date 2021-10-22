@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a4f1a5ae5cd61f007fe131b56ae3aad3",
+    "content-hash": "bd2ad1f3b7ba604b5b2236b90a499269",
     "packages": [
         {
             "name": "api-platform/core",
@@ -1664,6 +1664,58 @@
                 }
             ],
             "time": "2021-04-01T18:37:14+00:00"
+        },
+        {
+            "name": "eschmar/time-ago-bundle",
+            "version": "v2.0.0",
+            "target-dir": "Eschmar/TimeAgoBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/eschmar/time-ago-bundle.git",
+                "reference": "ca9332e20dd59951422b43c02d0d22757a68ea08"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/eschmar/time-ago-bundle/zipball/ca9332e20dd59951422b43c02d0d22757a68ea08",
+                "reference": "ca9332e20dd59951422b43c02d0d22757a68ea08",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1.0",
+                "symfony/flex": "*",
+                "twig/twig": "^3.0.0"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-0": {
+                    "Eschmar\\TimeAgoBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Marcel Eschmann",
+                    "homepage": "https://github.com/eschmar",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Provides a simple twig filter for expressing time difference in words.",
+            "homepage": "https://github.com/eschmar/time-ago-bundle",
+            "keywords": [
+                "ago",
+                "bundle",
+                "symfony",
+                "time",
+                "twig"
+            ],
+            "support": {
+                "issues": "https://github.com/eschmar/time-ago-bundle/issues",
+                "source": "https://github.com/eschmar/time-ago-bundle/tree/v2.0.0"
+            },
+            "time": "2020-06-04T12:24:24+00:00"
         },
         {
             "name": "fig/link-util",
@@ -7850,26 +7902,26 @@
         },
         {
             "name": "twig/extra-bundle",
-            "version": "v3.3.1",
+            "version": "v3.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/twig-extra-bundle.git",
-                "reference": "e12a8ee63387abb83fb7e4c897663bfb94ac22b6"
+                "reference": "fa92b8301ff8878e45fe9f54ab7ad99872e080f3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/twig-extra-bundle/zipball/e12a8ee63387abb83fb7e4c897663bfb94ac22b6",
-                "reference": "e12a8ee63387abb83fb7e4c897663bfb94ac22b6",
+                "url": "https://api.github.com/repos/twigphp/twig-extra-bundle/zipball/fa92b8301ff8878e45fe9f54ab7ad99872e080f3",
+                "reference": "fa92b8301ff8878e45fe9f54ab7ad99872e080f3",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.1.3|^8.0",
-                "symfony/framework-bundle": "^4.3|^5.0",
-                "symfony/twig-bundle": "^4.3|^5.0",
+                "symfony/framework-bundle": "^4.3|^5.0|^6.0",
+                "symfony/twig-bundle": "^4.3|^5.0|^6.0",
                 "twig/twig": "^2.4|^3.0"
             },
             "require-dev": {
-                "symfony/phpunit-bridge": "^4.4.9|^5.0.9",
+                "symfony/phpunit-bridge": "^4.4.9|^5.0.9|^6.0",
                 "twig/cache-extra": "^3.0",
                 "twig/cssinliner-extra": "^2.12|^3.0",
                 "twig/html-extra": "^2.12|^3.0",
@@ -7912,7 +7964,7 @@
                 "twig"
             ],
             "support": {
-                "source": "https://github.com/twigphp/twig-extra-bundle/tree/v3.3.1"
+                "source": "https://github.com/twigphp/twig-extra-bundle/tree/v3.3.3"
             },
             "funding": [
                 {
@@ -7924,7 +7976,76 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-05-12T07:47:40+00:00"
+            "time": "2021-05-20T14:28:34+00:00"
+        },
+        {
+            "name": "twig/html-extra",
+            "version": "v3.3.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/twigphp/html-extra.git",
+                "reference": "e22ec1a8f2509364877333cb1ebd9518ddf06dcf"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/twigphp/html-extra/zipball/e22ec1a8f2509364877333cb1ebd9518ddf06dcf",
+                "reference": "e22ec1a8f2509364877333cb1ebd9518ddf06dcf",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1.3",
+                "symfony/mime": "^4.3|^5.0|^6.0",
+                "twig/twig": "^2.4|^3.0"
+            },
+            "require-dev": {
+                "symfony/phpunit-bridge": "^4.4.9|^5.0.9|^6.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.2-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Twig\\Extra\\Html\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com",
+                    "homepage": "http://fabien.potencier.org",
+                    "role": "Lead Developer"
+                }
+            ],
+            "description": "A Twig extension for HTML",
+            "homepage": "https://twig.symfony.com",
+            "keywords": [
+                "html",
+                "twig"
+            ],
+            "support": {
+                "source": "https://github.com/twigphp/html-extra/tree/v3.3.3"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/twig/twig",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2021-05-20T14:28:34+00:00"
         },
         {
             "name": "twig/twig",
@@ -8059,6 +8180,74 @@
                 "source": "https://github.com/webmozarts/assert/tree/1.10.0"
             },
             "time": "2021-03-09T10:59:23+00:00"
+        },
+        {
+            "name": "willdurand/js-translation-bundle",
+            "version": "4.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/willdurand/BazingaJsTranslationBundle.git",
+                "reference": "6cbaa477f5b76c9208b3c28145777481b734ccf6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/willdurand/BazingaJsTranslationBundle/zipball/6cbaa477f5b76c9208b3c28145777481b734ccf6",
+                "reference": "6cbaa477f5b76c9208b3c28145777481b734ccf6",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2.5",
+                "symfony/console": "~4.4|~5.0",
+                "symfony/finder": "~4.4|~5.0",
+                "symfony/framework-bundle": "~4.4|~5.0",
+                "symfony/intl": "~4.4|~5.0",
+                "symfony/translation": "~4.4|~5.0",
+                "symfony/twig-bundle": "~4.4|~5.0"
+            },
+            "replace": {
+                "willdurand/expose-translation-bundle": "2.5.*"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.8|~5.7|~6.5|~8",
+                "symfony/asset": "~4.4|~5.0",
+                "symfony/browser-kit": "~4.4|~5.0",
+                "symfony/filesystem": "~4.4|~5.0",
+                "symfony/phpunit-bridge": "^5.0",
+                "symfony/twig-bundle": "~4.4|~5.0",
+                "symfony/yaml": "~4.4|~5.0"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.7-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Bazinga\\Bundle\\JsTranslationBundle\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "William Durand",
+                    "email": "will+git@drnd.me"
+                }
+            ],
+            "description": "A pretty nice way to expose your translation messages to your JavaScript.",
+            "keywords": [
+                "javascript",
+                "symfony",
+                "translation"
+            ],
+            "support": {
+                "issues": "https://github.com/willdurand/BazingaJsTranslationBundle/issues",
+                "source": "https://github.com/willdurand/BazingaJsTranslationBundle/tree/4.0.2"
+            },
+            "time": "2021-08-04T14:51:10+00:00"
         },
         {
             "name": "willdurand/negotiation",

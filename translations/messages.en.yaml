@@ -7,7 +7,7 @@ modal:
 
 # Page get patient
 patient.title: Patient %firstname% %lastname%
-Informations: Informations
+Patient: Patient
 Availabilities: Availabilities   
 Care requests: Care requests
 
@@ -62,3 +62,8 @@ abandoned: Abandoned
 care_request_error:
     reread: Error while reading care request
     update: Error while updating care request
+      
+# Form comment
+comment_error:
+    reread: Error while reading new comment
+    add: Error while adding new comment

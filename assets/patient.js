@@ -112,9 +112,77 @@ function abandonCareRequest() {
     alert('in func accept');  // TODO
  }
 
+
+/**
+ * Permettre de valider le formulaire de création de commentaire
+ * avec Ctrl + Entrée
+ */
+const formComment = document.querySelector('.comment-form');
+formComment.addEventListener('keydown', function(event) {
+    if (event.getModifierState('Control') && event.key == 'Enter') {
+        formComment.dispatchEvent(new Event('submit', {
+            'bubbles': true,
+            'cancelable': true,
+        }));
+    }
+});
+
+/**
+ * Ajout d'un commentaire une care request
+ */
+function submitComment(event) {
+    event.preventDefault();
+
+    const form = event.target;
+    const careRequestId = form['care-request-id'].value;
+    const doctorId = form['doctor-id'].value;
+
+    const comment = nullFieldConverter(form['comment'].value);
+    
+    const data = {
+        author: patientParams.uriApiDoctor.replace('%id%', doctorId),
+        creationDate: new Date().toISOString(),
+        careRequest: patientParams.uriApiCareRequest.replace('%id%', careRequestId),
+        content: comment,
+    }
+    
+    httpClient({
+        method: 'post',
+        url: patientParams.urlApiCommentPost,
+        data: data
+    }).then(function (response) {
+        httpClient
+            .get(patientParams.urlCommentPart.replace('%id%', response.data.id))
+            .then(function(response) {
+                // Recherche de l'élément liste
+                let listElement = $(`#care-request-body-${careRequestId} ul.comments`);
+                
+                console.log(response.data);
+                
+                // Injection du nouveau HTML
+                listElement.prepend(response.data);
+                
+                // Vidage du contenu de formulaire
+                form['comment'].value = '';
+
+                setTimeout(function() {
+                    listElement.find('li').first().removeClass('opacity-0');
+                }, 100)
+            })
+            .catch(function(error) {
+                modal('comment_error.reread');
+            })
+    }).catch(function(error) {
+        modal('comment_error.add');
+    });
+    
+    return false;
+ }
+
 // Ces fonctions sont appelées depuis les forms care request.
 // Elles doivent donc être globale
 window.submitPatient = submitPatient;
 window.submitCareRequest = submitCareRequest;
+window.submitComment = submitComment;
 window.abandonCareRequest = abandonCareRequest;
 window.acceptCareRequest = acceptCareRequest;
