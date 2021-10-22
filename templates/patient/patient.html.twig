@@ -4,36 +4,30 @@
 
 {% block body %}
 
-<div id="message" class="alert" style="display: none;"></div>
-
-<div id="patient-accordion" class="patient-content accordion">
-    <section class="identity-section accordion-item">
-        <h2 class="accordion-header">
-            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#info-content">
+<div id="patient-accordion" class="patient-content">
+    <section class="identity-section card">
+        <h3 class="card-header">
             {% trans %}Patient{% endtrans %}
-
-        </h2>
-        <div class="accordion-body accordion-collapse collapse show" id="info-content">
+        </h3>
+        <div class="card-body" id="info-content">
             {% include "patient/info.html.twig" %}
         </div>
     </section>
 
-    <section class="availability-section accordion-item">
-        <h2 class="accordion-header">
-            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#availability-content">
+    <section class="availability-section card mt-3">
+        <h3 class="card-header">
             {% trans %}Availabilities{% endtrans %}
-        </h2>
-        <div class="accordion-body accordion-collapse collapse show" id="availability-content">
+        </h3>
+        <div class="card-body" id="availability-content">
             {% include "patient/availability.html.twig" %}
         </div>
     </section>
 
-    <section class="care-request-section accordion-item">
-        <h2 class="accordion-header">
-            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#care-request-content">
+    <section class="care-request-section card mt-3">
+        <h3 class="card-header">
             {% trans %}Care requests{% endtrans %}
-        </h2>
-        <div class="accordion-body accordion-collapse collapse show" id="care-request-content">
+        </h3>
+        <div class="card-body" id="care-request-content">
             {% include "patient/care_requests.html.twig" %}
         </div>
     </section>
