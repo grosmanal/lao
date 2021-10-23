@@ -33,7 +33,9 @@ class PatientController extends AbstractController
         $careRequestForms = [];
         foreach ($patient->getCareRequests() as $careRequest) {
             $careRequests[$careRequest->getId()] = $careRequest;
-            $careRequestForms[$careRequest->getId()] = $this->createForm(CareRequestType::class, $careRequest);
+            $careRequestForms[$careRequest->getId()] = $this->createForm(CareRequestType::class, $careRequest, [
+                'current_office' => $patient->getOffice()
+            ]);
         }
 
         return $this->render('patient/patient.html.twig', [

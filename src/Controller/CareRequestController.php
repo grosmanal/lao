@@ -25,8 +25,10 @@ class CareRequestController extends AbstractController
             throw $this->createNotFoundException();
         }
         $this->denyAccessUnlessGranted('edit', $careRequest);
-
-        $careRequestForm = $this->createForm(CareRequestType::class, $careRequest);
+        
+        $careRequestForm = $this->createForm(CareRequestType::class, $careRequest, [
+            'current_office' => $careRequest->getOffice()
+        ]);
         return $this->render('patient/care_request.html.twig', [
             'careRequest' => $careRequest,
             'careRequestForm' => $careRequestForm->createView(),

@@ -3,11 +3,15 @@
 namespace App\Form;
 
 use App\Entity\CareRequest;
+use App\Entity\Doctor;
+use App\Entity\Office;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -28,13 +32,23 @@ class CareRequestType extends AbstractType
             $buttonsAttributes['disabled'] = null;
         }
         
+        $doctorQueryBuilder = function (EntityRepository $er) use ($options) {
+            return $er->createQueryBuilder('d')
+                ->andWhere('d.office = :office')
+                ->setParameter(':office', $options['current_office'])
+                ;
+        };
+
+        
         $builder
             ->add('creationDate', DateType::class, [
                 'widget' => 'single_text',
                 'attr' => $fieldsAttributes,
             ])
-            ->add('doctorCreator', $careRequest->isActive() ? null : TextType::class, [
+            ->add('doctorCreator', $careRequest->isActive() ? null : EntityType::class, [
                 'attr' => $fieldsAttributes,
+                'class' => Doctor::class,
+                'query_builder' => $doctorQueryBuilder,
             ])
             ->add('complaint', $careRequest->isActive() ? null : TextType::class, [
                 'attr' => $fieldsAttributes,
@@ -43,8 +57,10 @@ class CareRequestType extends AbstractType
                 'required' => false,
                 'attr' => $fieldsAttributes,
             ])
-            ->add('acceptedByDoctor', $careRequest->isActive() ? null : TextType::class, [
+            ->add('acceptedByDoctor', $careRequest->isActive() ? null : EntityType::class, [
                 'attr' => $fieldsAttributes,
+                'class' => Doctor::class,
+                'query_builder' => $doctorQueryBuilder,
             ])
             ->add('acceptDate', DateType::class, [
                 'widget' => 'single_text',
@@ -84,6 +100,9 @@ class CareRequestType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => CareRequest::class,
+            'current_office' => null,
         ]);
+
+        $resolver->setAllowedTypes('current_office', Office::class);
     }
 }
