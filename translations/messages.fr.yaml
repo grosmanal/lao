@@ -67,3 +67,4 @@ care_request_error:
 comment_error:
     reread: Erreur lors du ré-affichage du commentaire
     add: Erreur lors de l'ajout du commentaire
+    delete: Erreur lors de la suppression du commentaire

@@ -178,7 +178,7 @@ function submitComment(event) {
     const comment = nullFieldConverter(form['comment'].value);
     
     const data = {
-        author: apiFieldConverter(doctorId, 'Doctor'),
+        author: apiFieldConverter(doctorId, 'Doctor'), // FIXME bug doit être le l'utilisateur connecté
         creationDate: 'now',
         careRequest: apiFieldConverter(careRequestId, 'CareRequest'),
         content: comment,
@@ -215,11 +215,53 @@ function submitComment(event) {
     return false;
  }
 
+function submitCommentMenu(event) {
+    event.preventDefault();
+    
+    const form = event.target;
+    const commentId = form['comment-id'].value;
+    
+    switch(event.submitter.name) {
+        case 'delete':
+            deleteComment(commentId, form);
+            break;
+    }
+
+    return false;
+}
+
+
+function deleteComment(commentId, form)
+{
+    httpClient({
+        method: 'delete',
+        url: patientParams.urlApiCommentDelete.replace('%id%', commentId),
+    }).then(function (response) {
+        const comment = $(form).parent();
+        const commentElement = comment[0];
+        
+        commentElement.addEventListener('transitionend', function(event) {
+            if (event.target !== commentElement) {
+                return;
+            }
+
+            this.remove();
+        });
+
+        // Visibility pour transition jolie
+        comment.addClass('opacity-0');
+    }).catch(function(error) {
+        modal('comment_error.delete');
+    });
+}
+
+
 // Ces fonctions sont appelées depuis les forms care request.
 // Elles doivent donc être globale
 window.submitPatient = submitPatient;
 window.submitCareRequest = submitCareRequest;
 window.reactivateCareRequest = reactivateCareRequest;
 window.submitComment = submitComment;
+window.submitCommentMenu = submitCommentMenu;
 window.abandonCareRequest = abandonCareRequest;
 window.acceptCareRequest = acceptCareRequest;

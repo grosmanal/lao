@@ -67,3 +67,4 @@ care_request_error:
 comment_error:
     reread: Error while reading new comment
     add: Error while adding new comment
+    delete: Error while deleting comment
