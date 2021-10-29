@@ -49,6 +49,17 @@ class OfficeOwnedExtension implements QueryCollectionExtensionInterface
             // Il faut ajouter une jointure sur cette table
             $officeFieldAlias = 'officeOwnedExtension_alias_patient';
             $queryBuilder->innerJoin(sprintf('%s.patient', $rootAlias), $officeFieldAlias);
+        } elseif($reflectionClass->hasProperty('careRequest')) {
+            // L'entité possède une propriété careRequest
+            // Il faut ajouter une jointure sur la table care_request
+            // puis sur la table patient
+            $officeFieldAliasCareRequest = 'officeOwnedExtension_alias_care_request';
+            $officeFieldAliasPatient = 'officeOwnedExtension_alias_patient';
+            $officeFieldAlias = $officeFieldAliasPatient;
+            $queryBuilder
+                ->innerJoin(sprintf('%s.careRequest', $rootAlias), $officeFieldAliasCareRequest)
+                ->innerJoin(sprintf('%s.patient', $officeFieldAliasCareRequest), $officeFieldAliasPatient)
+                ;
         } else {
             throw new \LogicException('Should not be here');
         }

@@ -24,7 +24,10 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
     itemOperations: [
         'get' => ['security' => "is_granted('view', object)"],
         'delete' => ['security' => "is_granted('edit', object)"],
-        'put' => ['security' => "is_granted('view', object)"],
+        'put' => [
+            'security' => "is_granted('edit', object)",
+            'denormalization_context' => ['groups' => ['careRequest:put']],
+        ],
     ],
 )]
 class CareRequest implements OfficeOwnedInterface
@@ -49,63 +52,63 @@ class CareRequest implements OfficeOwnedInterface
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotBlank
      */
-    #[Groups(['careRequest:read'])]
+    #[Groups(['careRequest:read', 'comment:read'])]
     private $patient;
 
     /**
      * @ORM\ManyToOne(targetEntity=Doctor::class)
      * @Assert\NotBlank
      */
-    #[Groups(['careRequest:read'])]
+    #[Groups(['careRequest:read', 'careRequest:put'])]
     private $doctorCreator;
 
     /**
      * @ORM\Column(type="datetime_immutable")
      * @Assert\NotBlank
      */
-    #[Groups(['careRequest:read'])]
+    #[Groups(['careRequest:read', 'careRequest:put', 'comment:read'])]
     private $creationDate;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
-    #[Groups(['careRequest:read'])]
+    #[Groups(['careRequest:read', 'careRequest:put'])]
     private $priority;
 
     /**
      * @ORM\ManyToOne(targetEntity=Complaint::class)
      */
-    #[Groups(['careRequest:read'])]
+    #[Groups(['careRequest:read', 'careRequest:put'])]
     private $complaint;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    #[Groups(['careRequest:read'])]
+    #[Groups(['careRequest:read', 'careRequest:put'])]
     private $customComplaint;
 
     /**
      * @ORM\ManyToOne(targetEntity=Doctor::class)
      */
-    #[Groups(['careRequest:read'])]
+    #[Groups(['careRequest:read', 'careRequest:put'])]
     private $acceptedByDoctor;
 
     /**
      * @ORM\Column(type="date_immutable", nullable=true)
      */
-    #[Groups(['careRequest:read'])]
+    #[Groups(['careRequest:read', 'careRequest:put'])]
     private $acceptDate;
 
     /**
      * @ORM\Column(type="date_immutable", nullable=true)
      */
-    #[Groups(['careRequest:read'])]
+    #[Groups(['careRequest:read', 'careRequest:put'])]
     private $abandonDate;
 
     /**
      * @ORM\Column(type="string", length=10, nullable=true)
      */
-    #[Groups(['careRequest:read'])]
+    #[Groups(['careRequest:read', 'careRequest:put'])]
     private $abandonReason;
 
     /**
@@ -115,16 +118,56 @@ class CareRequest implements OfficeOwnedInterface
     #[ApiSubresource()]
     private $comments;
 
+    /**
+     * @Assert\Callback
+     */
+    public function validate(ExecutionContextInterface $context, $payload)
+    {
+        // Une demande ne peut pas être à la fois abandonnée et archivée (acceptée)
+        if ($this->getAcceptDate() != null && $this->getAbandonDate() != null) {
+            $context
+                ->buildViolation('Care request cannot be both accepetd and abandonned')
+                ->atPath('acceptDate')
+                ->addViolation()
+                ;
+        }
+        
+        // Cohérence office. Le cabinet du patient doit être le même que :
+        // - le docteur créateur
+        if ($this->getDoctorCreator()) {
+            if ($this->getOffice() != $this->getDoctorCreator()->getOffice()) {
+                $context
+                    ->buildViolation('Doctor creating care request must belong to the patient’s office')
+                    ->atPath('doctorCreator')
+                    ->addViolation()
+                    ;
+            }
+        }
+
+        // - le docteur prenant en charge
+        if ($this->getAcceptedByDoctor()) {
+            if ($this->getOffice() != $this->getAcceptedByDoctor()->getOffice()) {
+                $context
+                    ->buildViolation('Doctor accepting care request must belong to the patient’s office')
+                    ->atPath('doctorCreator')
+                    ->addViolation()
+                    ;
+            }
+        }
+    }
+
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
     }
-
+    
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    #[Groups(['careRequest:read', 'comment:read'])]
     public function getState(): string
     {
         if (!empty($this->getAbandonDate())) {
@@ -280,22 +323,11 @@ class CareRequest implements OfficeOwnedInterface
 
     public function getOffice(): ?Office
     {
-        return $this->getPatient()->getOffice();
-    }
-
-    /**
-     * @Assert\Callback
-     */
-    public function validate(ExecutionContextInterface $context, $payload)
-    {
-        // Une demande ne peut pas être à la fois abandonnée et archivée (acceptée)
-        if ($this->getAcceptDate() != null && $this->getAbandonDate() != null) {
-            $context
-                ->buildViolation('Care request cannot be both accepetd and abandonned')
-                ->atPath('acceptDate')
-                ->addViolation()
-                ;
+        if ($this->getPatient() == null) {
+            return null;
         }
+
+        return $this->getPatient()->getOffice();
     }
 
     /**

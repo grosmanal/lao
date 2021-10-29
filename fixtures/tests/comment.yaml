@@ -1,0 +1,25 @@
+---
+include:
+    - care_request.yaml
+    - doctor.yaml
+App\Entity\Comment:
+    comment_1:
+        author: '@doctor_1'
+        creationDate: <(new DateTimeImmutable("2021-09-27"))>
+        careRequest: '@care_request_1'
+        content: lorem ipsum comment_1
+    comment_2:
+        author: '@doctor_1'
+        creationDate: <(new DateTimeImmutable("2021-09-28"))>
+        careRequest: '@care_request_1'
+        content: lorem ipsum comment_2
+    comment_3:
+        author: '@doctor_3'
+        creationDate: <(new DateTimeImmutable("2021-09-28"))>
+        careRequest: '@care_request_1'
+        content: lorem ipsum comment_3
+    comment_4:
+        author: '@doctor_2'
+        creationDate: <(new DateTimeImmutable("2021-09-28"))>
+        careRequest: '@care_request_4'
+        content: lorem ipsum comment_4

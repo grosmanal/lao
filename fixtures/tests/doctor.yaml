@@ -13,3 +13,8 @@ App\Entity\Doctor:
         lastname: doctor_2_lastname
         user: '@user_2'
         office: '@office_2'
+    doctor_3:
+        firstname: doctor_3_firstname
+        lastname: doctor_3_lastname
+        user: '@user_5'
+        office: '@office_1'

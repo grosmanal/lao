@@ -16,3 +16,7 @@ App\Entity\User:
         email: user3@example.com
         password: '\$2y\$13\$N1dxqPx7LdFWDvwrZAA1Q.deK2FjoxzkhNHzOOeJTbsuDvMY3GU36'
         roles: [ ROLE_DOCTOR ]
+    user_5:
+        email: user5@example.com
+        password: '\$2y\$13\$N1dxqPx7LdFWDvwrZAA1Q.deK2FjoxzkhNHzOOeJTbsuDvMY3GU36'
+        roles: [ ROLE_DOCTOR ]

@@ -29,7 +29,7 @@ class Doctor
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      */
-    #[Groups(['careRequest:read'])]
+    #[Groups(['careRequest:read', 'comment:read'])]
     private $firstname;
 
     /**
@@ -37,7 +37,7 @@ class Doctor
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      */
-    #[Groups(['careRequest:read'])]
+    #[Groups(['careRequest:read', 'comment:read'])]
     private $lastname;
 
     /**

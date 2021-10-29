@@ -46,14 +46,14 @@ class Patient implements OfficeOwnedInterface
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      */
-    #[Groups(['patient:read', 'careRequest:read'])]
+    #[Groups(['patient:read', 'careRequest:read', 'comment:read'])]
     private $firstname;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Assert\Length(max=255)
      */
-    #[Groups(['patient:read', 'careRequest:read'])]
+    #[Groups(['patient:read', 'careRequest:read', 'comment:read'])]
     private $lastname;
 
     /**
