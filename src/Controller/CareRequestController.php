@@ -17,6 +17,10 @@ class CareRequestController extends AbstractController
     #[Route('/care_request_form/{id}', name: 'care_request_form', methods: [ 'GET' ] )]
     public function care_request_form($id): Response
     {
+        // FIXME ce controller n'est pas sécurisé
+        // il faut passer par une route dans l'API
+        // ou ajouter de la sécurité sur la route
+
         $careRequest = $this->getDoctrine()
             ->getRepository(CareRequest::class)
             ->find($id)

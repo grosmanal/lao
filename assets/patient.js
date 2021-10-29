@@ -173,12 +173,12 @@ function submitComment(event) {
 
     const form = event.target;
     const careRequestId = form['care-request-id'].value;
-    const doctorId = form['doctor-id'].value;
+    const authorId = form['user-doctor-id'].value;
 
     const comment = nullFieldConverter(form['comment'].value);
     
     const data = {
-        author: apiFieldConverter(doctorId, 'Doctor'), // FIXME bug doit être le l'utilisateur connecté
+        author: apiFieldConverter(authorId, 'Doctor'),
         creationDate: 'now',
         careRequest: apiFieldConverter(careRequestId, 'CareRequest'),
         content: comment,

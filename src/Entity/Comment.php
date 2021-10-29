@@ -34,6 +34,7 @@ class Comment implements OfficeOwnedInterface
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
+    #[Groups(['comment:read'])]
     private $id;
 
     /**
