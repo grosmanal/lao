@@ -18,6 +18,16 @@ class DoctorRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Doctor::class);
     }
+    
+    public function findOneByUserIdentifier($userIdentifier)
+    {
+        return $this->createQueryBuilder('d')
+            ->andWhere('d.email = :val')
+            ->setParameter('val', $userIdentifier)
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
 
     // /**
     //  * @return Doctor[] Returns an array of Doctor objects

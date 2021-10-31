@@ -71,6 +71,17 @@ class CareRequestControllerFormTest extends AbstractControllerTestCase
         $this->assertSelectorTextSame('form button[type="submit"]', 'Enregistrer');
     }
 
+    public function testGetCareRequestContentActiveAsNonDoctor()
+    {
+        $this->loginUser('admin@example.com');
+        $crawler = $this->client->request('GET', "/care_request_forms/1");
+        $this->assertResponseIsSuccessful();
+        $this->assertSelectorTextSame('h3 button', 'Demande du 27/09/2021Active');
+        $this->assertSelectorExists('form');
+        $this->assertSelectorExists('form button[name~="care_request[acceptAction]"][disabled]');
+        $this->assertSelectorExists('form button[name~="care_request[abandonAction]"][disabled]');
+    }
+
     public function testGetCareRequestContentArchived()
     {
         $this->loginUser('user1@example.com');

@@ -27,10 +27,8 @@ class CareRequestType extends AbstractType
         $fieldsAttributes = [];
         $buttonsAttributes = [];
 
-        if (!$careRequest->isActive()) {
-            $fieldsAttributes['readonly'] = null;
-            $buttonsAttributes['disabled'] = null;
-        }
+        $buttonsAttributes['disabled'] = !($careRequest->isActive() && $options['user_is_doctor']);
+        $fieldsAttributes['readonly'] = null;
         
         $doctorQueryBuilder = function (EntityRepository $er) use ($options) {
             return $er->createQueryBuilder('d')
@@ -101,8 +99,10 @@ class CareRequestType extends AbstractType
         $resolver->setDefaults([
             'data_class' => CareRequest::class,
             'current_office' => null,
+            'user_is_doctor' => null,
         ]);
 
         $resolver->setAllowedTypes('current_office', Office::class);
+        $resolver->setAllowedTypes('user_is_doctor', 'boolean');
     }
 }

@@ -7,6 +7,7 @@ use App\Form\PatientType;
 use App\Form\CareRequestType;
 use App\Repository\DoctorRepository;
 use App\Service\Availability;
+use App\Service\UserProfile;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,8 +20,7 @@ class PatientController extends AbstractController
     public function patient(
         Patient $patient,
         Availability $availability,
-        DoctorRepository $doctorRepository,
-        Security $security
+        UserProfile $userProfile,
     ): Response
     {
         $this->denyAccessUnlessGranted('edit', $patient);
@@ -34,12 +34,14 @@ class PatientController extends AbstractController
         foreach ($patient->getCareRequests() as $careRequest) {
             $careRequests[$careRequest->getId()] = $careRequest;
             $careRequestForms[$careRequest->getId()] = $this->createForm(CareRequestType::class, $careRequest, [
-                'current_office' => $patient->getOffice()
+                'current_office' => $patient->getOffice(),
+                'user_is_doctor' => $userProfile->currentUserIsDoctor(),
             ]);
         }
-
+        
         return $this->render('patient/patient.html.twig', [
             'patient' => $patient,
+            'currentDoctorId' => $userProfile->currentUserDoctorId(),
             'content' => [
                 'title' => new TranslatableMessage('patient.title', [
                     '%firstname%' => $patient->getFirstname(),
