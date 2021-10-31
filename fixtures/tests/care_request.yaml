@@ -1,7 +1,6 @@
 ---
 include:
     - patient.yaml
-    - doctor.yaml
     - complaint.yaml
 App\Entity\CareRequest:
     care_request_1:

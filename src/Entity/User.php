@@ -2,15 +2,19 @@
 
 namespace App\Entity;
 
-use App\Entity\Office;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="profil", type="string")
+ * @ORM\DiscriminatorMap({"user" = "User", "doctor" = "Doctor"})
  * @ORM\Table(name="`user`")
  */
 #[ApiResource(
@@ -27,25 +31,38 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Assert\NotBlank
      */
     private $email;
 
     /**
      * @ORM\Column(type="json")
+     * @Assert\NotBlank
      */
     private $roles = [];
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Assert\NotBlank
      */
     private $password;
 
     /**
-     * @ORM\OneToOne(targetEntity=Doctor::class, mappedBy="user")
+     * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
+     * @Assert\Length(max=255)
      */
-    private $doctor;
+    #[Groups(['careRequest:read', 'comment:read'])]
+    private $firstname;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
+     * @Assert\Length(max=255)
+     */
+    #[Groups(['careRequest:read', 'comment:read'])]
+    private $lastname;
 
     public function getId(): ?int
     {
@@ -136,17 +153,32 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    public function getDoctor(): ?Doctor
+    public function getFirstname(): ?string
     {
-        return $this->doctor;
+        return $this->firstname;
     }
 
-    public function getOffice(): ?Office
+    public function setFirstname(string $firstname): self
     {
-        $doctor = $this->getDoctor();
-        if ($doctor !== null) {
-            return $doctor->getOffice();
-        }
-        return null;
+        $this->firstname = $firstname;
+
+        return $this;
+    }
+
+    public function getLastname(): ?string
+    {
+        return $this->lastname;
+    }
+
+    public function setLastname(string $lastname): self
+    {
+        $this->lastname = $lastname;
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->getFirstname() . ' ' . $this->getLastname();
     }
 }

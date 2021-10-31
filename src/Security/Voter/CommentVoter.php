@@ -66,7 +66,7 @@ class CommentVoter extends Voter
         }
         
         // Seul l'auteur d'un commentaire peut le modifier
-        if ($user !== $comment->getAuthor()->getUser()) {
+        if ($user !== $comment->getAuthor()) {
             return false;
         }
         

@@ -38,7 +38,7 @@ class Comment implements OfficeOwnedInterface
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Doctor::class)
+     * @ORM\ManyToOne(targetEntity=User::class)
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotBlank
      */
@@ -72,7 +72,7 @@ class Comment implements OfficeOwnedInterface
      */
     public function validate(ExecutionContextInterface $context, $payload)
     {
-        // Cohérence office. Le cabinet de la care_request le même que :
+        // Cohérence office. Le cabinet de la care_request doit être le même que :
         // - l'auteur
         if ($this->getAuthor()) {
             if ($this->getOffice() != $this->getAuthor()->getOffice()) {
@@ -90,12 +90,12 @@ class Comment implements OfficeOwnedInterface
         return $this->id;
     }
 
-    public function getAuthor(): ?Doctor
+    public function getAuthor(): ?User
     {
         return $this->author;
     }
 
-    public function setAuthor(?Doctor $author): self
+    public function setAuthor(?User $author): self
     {
         $this->author = $author;
 

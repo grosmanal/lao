@@ -8,7 +8,9 @@ class CareRequestControllerFormTest extends AbstractControllerTestCase
 {
     public function setUp(): void
     {
-        $this->setUpTestController([__DIR__ . '/../../fixtures/tests/care_request.yaml']);
+        $this->setUpTestController([
+            __DIR__ . '/../../fixtures/tests/care_request.yaml',
+        ]);
     }    
 
     public function dataProviderGetCareRequest()
@@ -24,14 +26,14 @@ class CareRequestControllerFormTest extends AbstractControllerTestCase
     public function testGetCareRequest(int $id, int $expectedStatus)
     {
         $this->loginUser('admin@example.com');
-        $crawler = $this->client->request('GET', "/care_request_form/$id");
+        $crawler = $this->client->request('GET', "/care_request_forms/$id");
 
         $this->assertResponseStatusCodeSame($expectedStatus);
     }
 
     public function testGetCareRequestAsAnonymous()
     {
-        $crawler = $this->client->request('GET', "/care_request_form/1");
+        $crawler = $this->client->request('GET', "/care_request_forms/1");
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND); // Redirection vers le login
         $this->assertResponseRedirects('/login');
     }
@@ -49,14 +51,14 @@ class CareRequestControllerFormTest extends AbstractControllerTestCase
     public function testGetCareRequestAsDoctor(string $doctorEmail, int $expectedStatus)
     {
         $this->loginUser($doctorEmail);
-        $crawler = $this->client->request('GET', "/care_request_form/1");
+        $crawler = $this->client->request('GET', "/care_request_forms/1");
         $this->assertResponseStatusCodeSame($expectedStatus);
     }
 
     public function testGetCareRequestContentActive()
     {
         $this->loginUser('user1@example.com');
-        $crawler = $this->client->request('GET', "/care_request_form/1");
+        $crawler = $this->client->request('GET', "/care_request_forms/1");
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextSame('h3 button', 'Demande du 27/09/2021Active');
         $this->assertSelectorExists('form');
@@ -72,7 +74,7 @@ class CareRequestControllerFormTest extends AbstractControllerTestCase
     public function testGetCareRequestContentArchived()
     {
         $this->loginUser('user1@example.com');
-        $crawler = $this->client->request('GET', "/care_request_form/2");
+        $crawler = $this->client->request('GET', "/care_request_forms/2");
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextSame('h3 button', 'Demande du 26/09/2021Archivée');
         $this->assertSelectorExists('form');
@@ -84,7 +86,7 @@ class CareRequestControllerFormTest extends AbstractControllerTestCase
     public function testGetCareRequestContentAbandonned()
     {
         $this->loginUser('user1@example.com');
-        $crawler = $this->client->request('GET', "/care_request_form/3");
+        $crawler = $this->client->request('GET', "/care_request_forms/3");
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextSame('h3 button', 'Demande du 25/09/2021Abandonnée');
         $this->assertSelectorExists('form');

@@ -8,17 +8,17 @@ class DoctorApiTest extends AbstractApiTestCase
 {
 
     const DOCTOR_DATA = [
+        'email' => 'new_doctor@example.com',
+        'password' => '\$2y\$13\$N1dxqPx7LdFWDvwrZAA1Q.deK2FjoxzkhNHzOOeJTbsuDvMY3GU36',
+        'roles' => [ 'ROLE_DOCTOR' ],
         'firstname' => 'firstname',
         'lastname' => 'lastname',
-        'user' => '/api/users/4',
         'office' => '/api/offices/1',
     ];
 
     public function setUp(): void
     {
-        $this->setUpTestController([
-            __DIR__ . '/../../fixtures/tests/doctor.yaml',
-        ]);
+        $this->setUpTestController([]);
     }  
 
     public function dataProviderGetAs()
@@ -132,9 +132,11 @@ class DoctorApiTest extends AbstractApiTestCase
     public function dataProviderPostMissingContent()
     {
         return [
+            [ 'email', Response::HTTP_UNPROCESSABLE_ENTITY, ],
+            [ 'password', Response::HTTP_UNPROCESSABLE_ENTITY, ],
+            [ 'roles', Response::HTTP_UNPROCESSABLE_ENTITY, ],
             [ 'firstname', Response::HTTP_UNPROCESSABLE_ENTITY, ],
             [ 'lastname', Response::HTTP_UNPROCESSABLE_ENTITY, ],
-            [ 'user', Response::HTTP_UNPROCESSABLE_ENTITY, ],
             [ 'office', Response::HTTP_UNPROCESSABLE_ENTITY, ],
         ];
     }

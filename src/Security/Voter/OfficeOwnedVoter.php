@@ -68,9 +68,13 @@ class OfficeOwnedVoter extends Voter
 
         if ($this->security->isGranted('ROLE_DOCTOR')) {
             // Recherche de l'Office correspondant au docteur connecté
-            $doctor = $this->doctorRepository->findOneByUser($user);
+            $doctor = $this->doctorRepository->find($user->getId());
+            
+            if (!$doctor) {
+                throw new \LogicException('Should not be here : every entity Doctor must have the ROLE_DOCTOR');
+            }
 
-            if ($ressource->getOffice() == $doctor->getOffice()) {
+            if ($ressource->getOffice() === $doctor->getOffice()) {
                 return true;
             }
         }

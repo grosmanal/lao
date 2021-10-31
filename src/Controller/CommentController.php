@@ -9,12 +9,18 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class CommentController extends AbstractController
 {
-    #[Route('/comments/{id}', name: 'comment_part', methods: [ 'GET' ] )]
-    public function comment(Comment $comment): Response
+    #[Route('/comments/{id}', name: 'comment', methods: [ 'GET' ] )]
+    public function comment($id): Response
     {
-        // FIXME ce controller n'est pas sécurisé
-        // il faut passer par une route dans l'API
-        // ou ajouter de la sécurité sur la route
+        $comment = $this->getDoctrine()
+            ->getRepository(Comment::class)
+            ->find($id)
+            ;
+        if (!$comment) {
+            throw $this->createNotFoundException();
+        }
+        $this->denyAccessUnlessGranted('edit', $comment);
+
         return $this->render('patient/parts/care_request_comment.html.twig', [
             'comment' => $comment,
             'commentHidden' => true,

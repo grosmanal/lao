@@ -23,17 +23,6 @@ class OfficeRepository extends ServiceEntityRepository
         parent::__construct($registry, Office::class);
     }
 
-    public function findOneByUser(User $user): ?Office
-    {
-        return $this->createQueryBuilder('o')
-            ->innerJoin('o.doctors', 'd')
-            ->andWhere('d.user = :user_id')
-            ->setParameter('user_id', $user->getId())
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-
     // /**
     //  * @return Office[] Returns an array of Office objects
     //  */

@@ -54,11 +54,11 @@
 
     <script>
         const patientParams = {
-            currentDoctorId: {{ currentDoctor.id ?? 'null' }},
+            currentDoctorId: {{ app.user.id }}, // TODO comment faire si l'utilisateur n'est pas un docteur ? (voir https://manal.xyz/gitea/origami_informatique/lao/issues/35)
             urlApiPatientPut: "{{ url('api_patients_put_item', {id: patient.id }) }}",
             urlApiCareRequestPut: "{{ url('api_care_requests_put_item', {id: '%id%'})|replace({'%25': '%'}) }}",
             urlCareRequestForm: "{{ url('care_request_form', {id: '%id%'})|replace({'%25': '%'}) }}",
-            urlCommentPart: "{{ url('comment_part', {id: '%id%'})|replace({'%25': '%'}) }}",
+            urlComment: "{{ url('comment', {id: '%id%'})|replace({'%25': '%'}) }}",
             urlApiCommentPost: "{{ url('api_comments_post_collection') }}",
             urlApiCommentDelete: " {{ url('api_comments_delete_item', {id: '%id%'})|replace({'%25': '%'}) }} "
         };

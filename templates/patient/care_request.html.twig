@@ -30,7 +30,7 @@
             {% if careRequest.isActive %}
                 <form class="comment-form clearfix" onsubmit="submitComment(event)">
                     <input type="hidden" name="care-request-id" value="{{ careRequest.id }}">
-                    <input type="hidden" name="user-doctor-id" value="{{ app.user.doctor.id }}" />
+                    <input type="hidden" name="user-id" value="{{ app.user.id }}" />
                     <textarea class="form-control" name="comment"></textarea>
                     <button class="btn btn-primary btn-sm float-end mt-2" type="submit">Ajouter un commentaire</button> <!-- TODO traduction -->
                 </form>

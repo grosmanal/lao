@@ -173,7 +173,7 @@ function submitComment(event) {
 
     const form = event.target;
     const careRequestId = form['care-request-id'].value;
-    const authorId = form['user-doctor-id'].value;
+    const authorId = form['user-id'].value;
 
     const comment = nullFieldConverter(form['comment'].value);
     
@@ -190,7 +190,7 @@ function submitComment(event) {
         data: data
     }).then(function (response) {
         httpClient
-            .get(patientParams.urlCommentPart.replace('%id%', response.data.id))
+            .get(patientParams.urlComment.replace('%id%', response.data.id))
             .then(function(response) {
                 // Recherche de l'élément liste
                 let listElement = $(`#care-request-body-${careRequestId} ul.comments`);

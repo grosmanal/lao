@@ -2,7 +2,7 @@
     <form action="#" onsubmit="submitCommentMenu(event)">
         <input type="hidden" name="comment-id" value="{{ comment.id }}">
         <menu>
-            {% if app.user.doctor == comment.author %}
+            {% if app.user == comment.author %}
             <menuitem>
                 <button class="btn btn-sm btn-outline-danger" name="delete" type="submit">
                     <i class="bi bi-trash"></i>
@@ -13,7 +13,7 @@
         </menu>
     </form>
     <article class="d-flex border border-2">
-        <div class="flex-shrink-0 {{ app.user.doctor == comment.author ? 'order-0' : 'order-1' }}">
+        <div class="flex-shrink-0 {{ app.user == comment.author ? 'order-0' : 'order-1' }}">
             <img src="https://via.placeholder.com/100" alt="{{ comment.author.firstname }}">
         </div>
         <div class="flex-grow-1 ms-3 p-2 comment-body">

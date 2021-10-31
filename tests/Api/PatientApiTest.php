@@ -22,7 +22,6 @@ class PatientApiTest extends AbstractApiTestCase
     public function setUp(): void
     {
         $this->setUpTestController([
-            __DIR__ . '/../../fixtures/tests/doctor.yaml',
             __DIR__ . '/../../fixtures/tests/patient.yaml',
         ]);
     }  

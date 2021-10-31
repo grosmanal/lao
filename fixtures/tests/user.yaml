@@ -1,22 +1,14 @@
 ---
 App\Entity\User:
-    user_admin:
+    user_admin: # id : 4
         email: admin@example.com
         password: '\$2y\$13\$N1dxqPx7LdFWDvwrZAA1Q.deK2FjoxzkhNHzOOeJTbsuDvMY3GU36'
         roles: [ ROLE_ADMIN ]
-    user_1:
-        email: user1@example.com
-        password: '\$2y\$13\$N1dxqPx7LdFWDvwrZAA1Q.deK2FjoxzkhNHzOOeJTbsuDvMY3GU36'
-        roles: [ ROLE_DOCTOR ]
-    user_2:
-        email: user2@example.com
-        password: '\$2y\$13\$N1dxqPx7LdFWDvwrZAA1Q.deK2FjoxzkhNHzOOeJTbsuDvMY3GU36'
-        roles: [ ROLE_DOCTOR ]
-    user_without_doctor:
+        firstname: admin_firstname
+        lastname: admin_lastname
+    user_without_doctor: # id : 5
         email: user3@example.com
         password: '\$2y\$13\$N1dxqPx7LdFWDvwrZAA1Q.deK2FjoxzkhNHzOOeJTbsuDvMY3GU36'
-        roles: [ ROLE_DOCTOR ]
-    user_5:
-        email: user5@example.com
-        password: '\$2y\$13\$N1dxqPx7LdFWDvwrZAA1Q.deK2FjoxzkhNHzOOeJTbsuDvMY3GU36'
-        roles: [ ROLE_DOCTOR ]
+        roles: [ ROLE_PATIENT ]
+        firstname: user_firstname
+        lastname: user_lastname

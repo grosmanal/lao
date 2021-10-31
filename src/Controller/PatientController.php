@@ -39,7 +39,6 @@ class PatientController extends AbstractController
         }
 
         return $this->render('patient/patient.html.twig', [
-            'currentDoctor' => $doctorRepository->findOneByUser($security->getUser()),
             'patient' => $patient,
             'content' => [
                 'title' => new TranslatableMessage('patient.title', [
