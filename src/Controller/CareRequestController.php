@@ -15,15 +15,8 @@ use Symfony\Component\Routing\Annotation\Route;
 class CareRequestController extends AbstractController
 {
     #[Route('/care_request_forms/{id}', name: 'care_request_form', methods: [ 'GET' ] )]
-    public function careRequestForm($id): Response
+    public function careRequestForm(CareRequest $careRequest): Response
     {
-        $careRequest = $this->getDoctrine()
-            ->getRepository(CareRequest::class)
-            ->find($id)
-            ;
-        if (!$careRequest) {
-            throw $this->createNotFoundException();
-        }
         $this->denyAccessUnlessGranted('edit', $careRequest);
         
         $careRequestForm = $this->createForm(CareRequestType::class, $careRequest, [
