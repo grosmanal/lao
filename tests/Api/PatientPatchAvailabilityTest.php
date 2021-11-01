@@ -92,4 +92,29 @@ class PatientPatchAvailabilityTest extends AbstractApiTestCase
         $crawler = $this->client->request('PUT', "/api/patients/1/availability", ['json' => $data]);
         $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
     }
+    
+
+    public function testDeleteAvailability()
+    {
+        $this->loginUser('user1@example.com');
+        $crawler = $this->client->request('PUT', "/api/patients/1/availability", [
+            'json' => [
+                'weekDay' => 1,
+                'start' => '1000',
+                'end' => '1030',
+                'available' => false,
+            ],
+        ]);
+        $this->assertResponseIsSuccessful();
+
+        // Lecture de la disponibilité du patient pour vérification de la suppression
+        $crawler = $this->client->request('GET', "/api/patients/1");
+        $this->assertJsonContains([
+            'availability' => [
+                '1' => [
+                    [1030, 1200], 
+                ],
+            ],
+        ]);
+    }
 }
