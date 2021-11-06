@@ -20,7 +20,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiResource(
     security: "is_granted('ROLE_ADMIN')"
 )]
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serializable
 {
     /**
      * @ORM\Id
@@ -175,6 +175,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->lastname = $lastname;
 
         return $this;
+    }
+    
+    /**
+     * @see \Serializable::serialize()
+     */
+    public function serialize()
+    {
+        return serialize([
+
+            $this->getId(),
+            $this->getUserIdentifier(),
+            $this->getPassword(),
+        ]);
+    }
+
+    /**
+     * @see \Serializable::unserialize()
+     */
+    public function unserialize($serialized)
+    {
+        $unserializedData = unserialize($serialized);
+        $this->id = $unserializedData[0];
+        $this->setEmail($unserializedData[1]);
+        $this->setPassword($unserializedData[2]);
     }
 
     public function __toString()
