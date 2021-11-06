@@ -51,7 +51,7 @@ class CommentVoter extends Voter
         throw new \LogicException('This code should not be reached!');
     }
     
-    private function canView($comment, $user)
+    private function canView(Comment $comment, UserInterface $user)
     {
         // La logique de test des correspondance des office est 
         // déjà faite dans OfficeOwnedVoter
@@ -59,10 +59,16 @@ class CommentVoter extends Voter
         return true;
     }
     
-    private function canEdit($comment, $user)
+    private function canEdit(Comment $comment, UserInterface $user)
     {
         if ($this->security->isGranted('ROLE_ADMIN')) {
             return true;
+        }
+        
+        // On ne peut modifier / supprimer que les commentaire sur les
+        // care request active
+        if (!$comment->getCareRequest()->isActive()) {
+            return false;
         }
         
         // Seul l'auteur d'un commentaire peut le modifier

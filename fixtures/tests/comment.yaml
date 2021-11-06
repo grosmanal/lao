@@ -22,3 +22,14 @@ App\Entity\Comment:
         creationDate: <(new DateTimeImmutable("2021-09-28"))>
         careRequest: '@care_request_4'
         content: lorem ipsum comment_4
+    comment_5:
+        author: '@doctor_1'
+        creationDate: <(new DateTimeImmutable("2021-09-27"))>
+        careRequest: '@care_request_2'
+        content: lorem ipsum comment sur care request archivée
+    comment_6:
+        author: '@doctor_1'
+        creationDate: <(new DateTimeImmutable("2021-09-27"))>
+        careRequest: '@care_request_3'
+        content: lorem ipsum comment sur care request abandonnée
+        

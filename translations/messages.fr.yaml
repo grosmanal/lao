@@ -64,6 +64,9 @@ care_request_error:
     update: Erreur lors de la mise à jour de la demande de soin
       
 # Form comment
+comment:
+    delete: Supprimer
+    
 comment_error:
     reread: Erreur lors du ré-affichage du commentaire
     add: Erreur lors de l'ajout du commentaire

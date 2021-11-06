@@ -10,6 +10,7 @@ class CareRequestControllerFormTest extends AbstractControllerTestCase
     {
         $this->setUpTestController([
             __DIR__ . '/../../fixtures/tests/care_request.yaml',
+            __DIR__ . '/../../fixtures/tests/comment.yaml',
         ]);
     }    
 
@@ -69,6 +70,13 @@ class CareRequestControllerFormTest extends AbstractControllerTestCase
         $this->assertSelectorExists('form button[name~="care_request[abandonAction]"]');
         $this->assertSelectorNotExists('form button[name~="care_request[abandonAction]"][disabled]');
         $this->assertSelectorTextSame('form button[type="submit"]', 'Enregistrer');
+        
+        // Test de l'existence du commentaire
+        $this->assertSelectorExists('section.comments ul.comments li');
+        
+        // Ce commentaire ne doit avoir une form (=> il est modifiable)
+        $firstComment = $crawler->filter('section.comments ul.comments li')->first();
+        $this->assertEquals(1, $firstComment->filter('form')->count());
     }
 
     public function testGetCareRequestContentActiveAsNonDoctor()
@@ -92,6 +100,13 @@ class CareRequestControllerFormTest extends AbstractControllerTestCase
         $this->assertSelectorExists('form button[name~="care_request[acceptAction]"][disabled]');
         $this->assertSelectorExists('form button[name~="care_request[abandonAction]"][disabled]');
         $this->assertSelectorTextSame('form button[type="submit"]', 'Réactiver');
+        
+        // Test de l'existence du commentaire
+        $this->assertSelectorExists('section.comments ul.comments li');
+        
+        // Ce commentaire ne doit pas avoir de form (=> il n'est pas modifiable)
+        $firstComment = $crawler->filter('section.comments ul.comments li')->first();
+        $this->assertEquals(0, $firstComment->filter('form')->count());
     }
 
     public function testGetCareRequestContentAbandonned()
@@ -104,5 +119,12 @@ class CareRequestControllerFormTest extends AbstractControllerTestCase
         $this->assertSelectorExists('form button[name~="care_request[acceptAction]"][disabled]');
         $this->assertSelectorExists('form button[name~="care_request[abandonAction]"][disabled]');
         $this->assertSelectorTextSame('form button[type="submit"]', 'Réactiver');
+        
+        // Test de l'existence du commentaire
+        $this->assertSelectorExists('section.comments ul.comments li');
+        
+        // Ce commentaire ne doit pas avoir de form (=> il n'est pas modifiable)
+        $firstComment = $crawler->filter('section.comments ul.comments li')->first();
+        $this->assertEquals(0, $firstComment->filter('form')->count());
     }
 }

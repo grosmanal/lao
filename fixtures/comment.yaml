@@ -15,3 +15,8 @@ App\Entity\Comment:
         creationDate: <immutableDateTimeBetween("-1 years", "-2 weeks")> 
         careRequest: '@care_request_4'
         content: <sentences(3, true)>
+    comment_4:
+        author: '@doctor_joelle'
+        creationDate: <immutableDateTimeBetween("-1 years", "-2 weeks")> 
+        careRequest: '@care_request_7'
+        content: <sentences(3, true)>

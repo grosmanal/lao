@@ -64,6 +64,9 @@ care_request_error:
     update: Error while updating care request
       
 # Form comment
+comment:
+    delete: Delete
+    
 comment_error:
     reread: Error while reading new comment
     add: Error while adding new comment

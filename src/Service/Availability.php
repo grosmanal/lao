@@ -183,21 +183,6 @@ class Availability
     }
 
     /**
-     * Transforme une heure sous la forme 900 pour 09:00 en DateTimeImmutable
-     *
-     * @param integer $time
-     * @return DateTimeImmutable
-     */
-    private function intToDateTimeImmutable(int $time): DateTimeImmutable
-    {
-        $timeAsString = (string) $time;
-        if (strlen($timeAsString) < 4) {
-            $timeAsString = '0' . $timeAsString;
-        }
-        return new DateTimeImmutable($timeAsString);
-    }
-
-    /**
      * Transforme l'identifiant d'un crénaux ("0900-0930") en Interval
      *
      * @param string $slotKey

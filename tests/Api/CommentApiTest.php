@@ -58,16 +58,22 @@ class CommentApiTest extends AbstractApiTestCase
                 '/api/comments/2',
                 '/api/comments/3',
                 '/api/comments/4',
+                '/api/comments/5',
+                '/api/comments/6',
             ]],
             ['user1@example.com', [
                 '/api/comments/1',
                 '/api/comments/2',
                 '/api/comments/3',
+                '/api/comments/5',
+                '/api/comments/6',
             ]],
             ['user5@example.com', [
                 '/api/comments/1',
                 '/api/comments/2',
                 '/api/comments/3',
+                '/api/comments/5',
+                '/api/comments/6',
             ]],
             ['user2@example.com', [
                 '/api/comments/4',
@@ -114,16 +120,33 @@ class CommentApiTest extends AbstractApiTestCase
     }
     
     
-    public function testPost()
+    public function dataProviderPost()
     {
-        $this->loginUser('admin@example.com');
+        return [
+            ['/api/care_requests/1', Response::HTTP_CREATED],
+            ['/api/care_requests/2', Response::HTTP_FORBIDDEN], // care_request archivée
+            ['/api/care_requests/3', Response::HTTP_FORBIDDEN], // care_request abandonnée
+        ];
+    }
+    
+    /**
+     * @dataProvider dataProviderPost
+     */
+    public function testPost($careRequestUri, $expected)
+    {
+        $this->loginUser('user1@example.com');
         $crawler = $this->client->request('POST', "/api/comments", [
-            'json' => self::COMMENT_DATA,
+            'json' => array_merge(self::COMMENT_DATA, [
+                'careRequest' => $careRequestUri,
+            ])
         ]);
-        $this->assertResponseIsSuccessful();
-        $commentApiId = json_decode($crawler->getContent(), true)['@id'];
-        $this->client->request('GET', $commentApiId);
-        $this->assertResponseIsSuccessful();
+        $this->assertResponseStatusCodeSame($expected);
+        
+        if ($expected == Response::HTTP_OK) {
+            $commentApiId = json_decode($crawler->getContent(), true)['@id'];
+            $this->client->request('GET', $commentApiId);
+            $this->assertResponseIsSuccessful();
+        }
     }
 
 
@@ -154,7 +177,6 @@ class CommentApiTest extends AbstractApiTestCase
     {
         return [
             ['user1@example.com', 'careRequest', '/api/care_requests/1', Response::HTTP_CREATED],
-            ['user1@example.com', 'careRequest', '/api/care_requests/2', Response::HTTP_CREATED],
             ['user1@example.com', 'careRequest', '/api/care_requests/4', Response::HTTP_FORBIDDEN],
         ];
     }
@@ -217,6 +239,28 @@ class CommentApiTest extends AbstractApiTestCase
         $this->assertResponseStatusCodeSame($expected);
     }
     
+
+    public function dataProviderDeleteCareRequestStatus()
+    {
+        return [
+            ['/api/comments/1', Response::HTTP_NO_CONTENT],
+            ['/api/comments/5', Response::HTTP_FORBIDDEN], // care_request archivée
+            ['/api/comments/6', Response::HTTP_FORBIDDEN], // care_request abandonnée
+        ];
+    }
+
+    /**
+     * Teste la suppression de commentaire en fonction du 
+     * statut de la care request
+     * @dataProvider dataProviderDeleteCareRequestStatus
+     */
+    public function testDeleteCareRequestStatus($commentUri, $expected)
+    {
+        $this->loginUser('user1@example.com');
+        $crawler = $this->client->request('DELETE', $commentUri);
+        $this->assertResponseStatusCodeSame($expected);
+    }
+    
     
     public function dataProviderPutAs()
     {
@@ -242,6 +286,33 @@ class CommentApiTest extends AbstractApiTestCase
         ]);
         $this->assertResponseStatusCodeSame($expected);
     }
+    
+    
+    public function dataProviderPutCareRequestStatus()
+    {
+        return [
+            ['/api/comments/1', Response::HTTP_OK],
+            ['/api/comments/5', Response::HTTP_FORBIDDEN], // care_request archivée
+            ['/api/comments/6', Response::HTTP_FORBIDDEN], // care_request abandonnée
+        ];
+    }
+
+    /**
+     * Teste la modification de commentaire en fonction du 
+     * statut de la care request
+     * @dataProvider dataProviderPutCareRequestStatus
+     */
+    public function testPutCareRequestStatus($commentUri, $expected)
+    {
+        $this->loginUser('user1@example.com');
+        $crawler = $this->client->request('PUT', $commentUri, [
+            'json' => [
+                'content' => 'new content',
+            ],
+        ]);
+        $this->assertResponseStatusCodeSame($expected);
+    }
+    
     
     public function dataProviderPutUnupdatableFields()
     {
