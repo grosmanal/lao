@@ -24,11 +24,9 @@ class CareRequestType extends AbstractType
     {
         /** @var CareRequest */
         $careRequest = $builder->getData();
-        $fieldsAttributes = [];
-        $buttonsAttributes = [];
 
-        $buttonsAttributes['disabled'] = !($careRequest->isActive() && $options['user_is_doctor']);
-        $fieldsAttributes['readonly'] = null;
+        $fieldDisabled = !$careRequest->isActive();
+        $buttonDisabled = !($careRequest->isActive() && $options['user_is_doctor']);
         
         $doctorQueryBuilder = function (EntityRepository $er) use ($options) {
             return $er->createQueryBuilder('d')
@@ -41,51 +39,53 @@ class CareRequestType extends AbstractType
         $builder
             ->add('creationDate', DateType::class, [
                 'widget' => 'single_text',
-                'attr' => $fieldsAttributes,
+                'disabled' => $fieldDisabled,
             ])
-            ->add('doctorCreator', $careRequest->isActive() ? null : EntityType::class, [
-                'attr' => $fieldsAttributes,
+            ->add('doctorCreator', EntityType::class, [
                 'class' => Doctor::class,
                 'query_builder' => $doctorQueryBuilder,
+                'disabled' => $fieldDisabled,
             ])
-            ->add('complaint', $careRequest->isActive() ? null : TextType::class, [
-                'attr' => $fieldsAttributes,
+            ->add('complaint', TextType::class, [
+                'disabled' => $fieldDisabled,
             ])
             ->add('customComplaint', TextType::class, [
                 'required' => false,
-                'attr' => $fieldsAttributes,
+                'disabled' => $fieldDisabled,
             ])
-            ->add('acceptedByDoctor', $careRequest->isActive() ? null : EntityType::class, [
-                'attr' => $fieldsAttributes,
+            ->add('acceptedByDoctor', EntityType::class, [
                 'class' => Doctor::class,
                 'query_builder' => $doctorQueryBuilder,
+                'disabled' => $fieldDisabled,
             ])
             ->add('acceptDate', DateType::class, [
                 'widget' => 'single_text',
                 'required' => false,
-                'attr' => $fieldsAttributes,
-                ])
+                'disabled' => $fieldDisabled,
+            ])
             ->add('acceptAction', ButtonType::class, [
                 'label' => 'take.charge',
-                'attr' => array_merge($buttonsAttributes, [
+                'attr' => [
                     'class' => 'btn btn-primary',
                     'onclick' => "acceptCareRequest(event)",
-                ]),
+                ],
+                'disabled' => $buttonDisabled,
             ])
-            ->add('abandonReason', $careRequest->isActive() ? null : TextType::class, [
-                'attr' => $fieldsAttributes,
+            ->add('abandonReason', TextType::class, [
+                'disabled' => $fieldDisabled,
             ])
             ->add('abandonDate', DateType::class, [
                 'widget' => 'single_text',
                 'required' => false,
-                'attr' => $fieldsAttributes,
+                'disabled' => $fieldDisabled,
             ])
-            ->add('abandonAction', ButtonType::class, [
+            ->add('abandonAction', ButtonType::class, [ // TODo
                 'label' => 'abandon',
-                'attr' => array_merge($buttonsAttributes, [
+                'attr' => [
                     'class' => 'btn btn-primary',
                     'onclick' => "abandonCareRequest()",
-                ]),
+                ],
+                'disabled' => $buttonDisabled,
             ])
             ->add('state', HiddenType::class)
             ->add('validate', SubmitType::class, [
