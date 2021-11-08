@@ -1,5 +1,9 @@
 import httpClient from 'axios';
 import $ from 'jquery';
+import 'summernote/dist/summernote-lite';
+import 'summernote/dist/summernote-lite.css';
+//import 'summernote/dist/summernote-bs5';
+//import 'summernote/dist/summernote-bs5.css';
 import modal from './components/modal';
 import nullFieldConverter from './components/nullFieldConverter';
 import apiFieldConverter from './components/apiFieldConverter';
@@ -23,6 +27,22 @@ new Vue({
         });
     }
 }).$mount('#week-availability')
+
+/**
+ * Composant summernote
+ */
+jQuery(function($) {
+    $('.comments textarea').summernote({
+        height: 200,
+        toolbar: [
+            // [groupName, [list of button]]
+            ['style', ['style']],
+            ['character', ['bold', 'italic', 'underline', 'clear']],
+            ['color', ['color']],
+            ['para', ['ul', 'ol', 'paragraph']],
+          ]
+    });
+});
 
 /**
  * Enregistrement des infos du patient
