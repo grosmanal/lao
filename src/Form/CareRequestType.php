@@ -79,11 +79,11 @@ class CareRequestType extends AbstractType
                 'required' => false,
                 'disabled' => $fieldDisabled,
             ])
-            ->add('abandonAction', ButtonType::class, [ // TODo
+            ->add('abandonAction', ButtonType::class, [
                 'label' => 'abandon',
                 'attr' => [
                     'class' => 'btn btn-primary',
-                    'onclick' => "abandonCareRequest()",
+                    'onclick' => "abandonCareRequest(event)",
                 ],
                 'disabled' => $buttonDisabled,
             ])

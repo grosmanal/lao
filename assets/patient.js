@@ -56,6 +56,13 @@ function submitPatient(event) {
 };
 
 
+/**
+ * Appel ajax de la mise à jour (via API) de la care request
+ * puis mise à jour de l'html de la care request avec les nouvelle données
+ * @param {object} form 
+ * @param {int} careRequestId 
+ * @param {object} data 
+ */
 function doSubmitCareRequest(form, careRequestId, data) {
     httpClient({
         method: 'put',
@@ -127,14 +134,22 @@ function reactivateCareRequest(event) {
 
 
 /**
- * Annulation de l'abandon de la demande de prise en charge
+ * Abandon de la demande de prise en charge
  */
-function abandonCareRequest() {
-    alert('in func abandon');  // TODO
+function abandonCareRequest(event) {
+    const form = event.target.form
+    const careRequestId = form['care-request-id'].value;
+    
+
+    const data = {
+        abandonDate: 'now',
+    };
+    
+    doSubmitCareRequest(form, careRequestId, data);
 }
 
 /**
- * Annulation de l'acceptation de la demande de prise en charge
+ * Acceptation de la demande de prise en charge
  */
  function acceptCareRequest(event) {
     const form = event.target.form
