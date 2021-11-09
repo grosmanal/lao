@@ -5,6 +5,7 @@ App\Entity\Comment:
     comment_1:
         author: '@doctor_1'
         creationDate: <(new DateTimeImmutable("2021-09-27"))>
+        modificationDate: <(new DateTimeImmutable("2021-09-30"))>
         careRequest: '@care_request_1'
         content: lorem ipsum comment_1
     comment_2:

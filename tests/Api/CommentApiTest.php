@@ -10,6 +10,7 @@ class CommentApiTest extends AbstractApiTestCase
         'author' => '/api/doctors/1',
         'careRequest' => '/api/care_requests/1',
         'creationDate' => '2021-10-29',
+        'modificationDate' => '2021-10-29',
         'content' => 'content new comment',
     ];
 
@@ -46,6 +47,7 @@ class CommentApiTest extends AbstractApiTestCase
                 
             ],
             'creationDate' => '2021-09-27T00:00:00+00:00',
+            'modificationDate' => '2021-09-30T00:00:00+00:00',
             'content' => 'lorem ipsum comment_1',
         ]);
     }
@@ -155,6 +157,7 @@ class CommentApiTest extends AbstractApiTestCase
         return [
             ['author', Response::HTTP_UNPROCESSABLE_ENTITY],
             ['creationDate', Response::HTTP_UNPROCESSABLE_ENTITY],
+            ['modificationDate', Response::HTTP_CREATED],
             ['careRequest', Response::HTTP_UNPROCESSABLE_ENTITY],
             ['content', Response::HTTP_UNPROCESSABLE_ENTITY],
         ];
@@ -320,6 +323,7 @@ class CommentApiTest extends AbstractApiTestCase
             [ 'author', '/api/doctors/3', [ '@id' => '/api/doctors/1' ] ], // pas modifiable
             [ 'careRequest', '/api/care_requests/2', [ '@id' => '/api/care_requests/1' ] ], // pas modifiable
             [ 'creationDate', '2021-10-01', '2021-09-27T00:00:00+00:00' ], // pas modifiable
+            [ 'modificationDate', '2021-10-01', '2021-10-01T00:00:00+00:00' ], // modifiable
             [ 'content', 'updated content', 'updated content'], // modifiable
         ];
     }

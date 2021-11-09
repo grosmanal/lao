@@ -3,20 +3,24 @@ App\Entity\Comment:
     comment_1:
         author: '@doctor_joelle'
         creationDate: <immutableDateTimeBetween("-1 years", "-2 weeks")> 
+        modificationDate: <immutableDateTimeBetween("-2 weeks", "-1 weeks")> 
         careRequest: '@care_request_1'
         content: '<h1 class="">Titre</h1><p>Texte pouvant être <b>gras</b> ou bien <span style="background-color: rgb(255, 255, 0);">en couleur</span></p><p>À faire :</p><ul><li>truc 1</li><li>truc 2<br></li></ul>'
     comment_2:
         author: '@doctor_laurence'
         creationDate: <immutableDateTimeBetween("-1 years", "-2 weeks")> 
+        modificationDate: ~
         careRequest: '@care_request_1'
         content: '\<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis bibendum nisl quam, venenatis efficitur erat ultrices sit amet.</p>'
     comment_3:
         author: '@doctor_joelle'
         creationDate: <immutableDateTimeBetween("-1 years", "-2 weeks")> 
+        modificationDate: ~
         careRequest: '@care_request_4'
         content: '\<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis bibendum nisl quam, venenatis efficitur erat ultrices sit amet.</p>'
     comment_4:
         author: '@doctor_joelle'
         creationDate: <immutableDateTimeBetween("-1 years", "-2 weeks")> 
+        modificationDate: ~
         careRequest: '@care_request_7'
         content: '\<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis bibendum nisl quam, venenatis efficitur erat ultrices sit amet.</p>'

@@ -1,0 +1,20 @@
+
+<form class="comment-form clearfix" onsubmit="submitComment(event)">
+    <input type="hidden" name="care-request-id" value="{{ careRequest.id }}">
+    <input type="hidden" name="user-id" value="{{ app.user.id }}" />
+    {% if comment is defined %}
+        {# Le commentaire existe : on est dans le cas de la modification d'un commentaire #}
+        <input type="hidden" name="comment-id" value="{{ comment.id }}" />
+    {% endif %}
+    <textarea class="form-control" name="comment">
+        {% if comment is defined %}
+            {# Le commentaire existe : on aliment le textarea #}
+            {{ comment.content|raw }}
+        {% endif %}
+    </textarea>
+    {% if comment is defined %}
+        {# Le commentaire existe : permettre l'annulation de l'édition #}
+        <button class="btn btn-primary btn-sm float-end mt-2 ms-1" name="cancel" type="submit">{{'comment.cancel'|trans}}</button>
+    {% endif %}
+    <button class="btn btn-primary btn-sm float-end mt-2" name="upsert" type="submit">{{ comment is defined ? 'comment.update'|trans : 'comment.add'|trans }}</button>
+</form>

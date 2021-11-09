@@ -59,7 +59,9 @@
             urlApiCareRequestPut: "{{ url('api_care_requests_put_item', {id: '%id%'})|replace({'%25': '%'}) }}",
             urlCareRequestForm: "{{ url('care_request_form', {id: '%id%'})|replace({'%25': '%'}) }}",
             urlComment: "{{ url('comment', {id: '%id%'})|replace({'%25': '%'}) }}",
+            urlCommentForm: "{{ url('comment_form', {id: '%id%'})|replace({'%25': '%'}) }}",
             urlApiCommentPost: "{{ url('api_comments_post_collection') }}",
+            urlApiCommentPut: "{{ url('api_comments_put_item', {id: '%id%'})|replace({'%25': '%'}) }}",
             urlApiCommentDelete: " {{ url('api_comments_delete_item', {id: '%id%'})|replace({'%25': '%'}) }} "
         };
     </script>

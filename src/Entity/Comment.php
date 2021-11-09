@@ -53,6 +53,12 @@ class Comment implements OfficeOwnedInterface
     private $creationDate;
 
     /**
+     * @ORM\Column(type="datetime_immutable", nullable=true)
+     */
+    #[Groups(['comment:read', 'comment:put'])]
+    private $modificationDate;
+
+    /**
      * @ORM\ManyToOne(targetEntity=CareRequest::class, inversedBy="comments")
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotBlank
@@ -115,6 +121,23 @@ class Comment implements OfficeOwnedInterface
     public function setCreationDate(\DateTimeImmutable $creationDate): self
     {
         $this->creationDate = $creationDate;
+
+        return $this;
+    }
+
+    public function getModificationDate(): ?\DateTimeImmutable
+    {
+        return $this->modificationDate;
+    }
+
+    public function getModificationDateNonImmutable(): ?\DateTime
+    {
+        return \DateTime::createFromImmutable($this->modificationDate);
+    }
+
+    public function setModificationDate(?\DateTimeImmutable $modificationDate): self
+    {
+        $this->modificationDate = $modificationDate;
 
         return $this;
     }

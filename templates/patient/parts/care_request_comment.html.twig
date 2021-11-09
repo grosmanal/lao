@@ -4,6 +4,10 @@
         <input type="hidden" name="comment-id" value="{{ comment.id }}">
         <menu>
             <menuitem>
+                <button class="btn btn-sm btn-outline-primary" name="edit" type="submit">
+                    <i class="bi bi-pencil-square"></i>
+                    {% trans %}comment.edit{% endtrans %}
+                </button>
                 <button class="btn btn-sm btn-outline-danger" name="delete" type="submit">
                     <i class="bi bi-trash"></i>
                     {% trans %}comment.delete{% endtrans %}
@@ -17,9 +21,18 @@
             <img src="https://via.placeholder.com/100" alt="{{ comment.author.firstname }}">
         </div>
         <div class="flex-grow-1 ms-3 p-2 comment-body">
-            <time class="d-block mb-2 fw-lighter" datetime="{{ comment.creationDate|date('c') }}">
-                {{ comment.getCreationDateNonImmutable|ago() }}
-            </time>
+            <div class="mb-2">
+                <time class="fw-lighter" datetime="{{ comment.creationDate|date('c') }}">
+                    {{ comment.getCreationDateNonImmutable|ago() }}
+                </time>
+                {% if comment.modificationDate %}
+                <span class="fw-lighter">
+                    &nbsp; (
+                    {{ 'Edited'|trans }} <time datetime="{{ comment.modificationDate|date('c') }}">{{ comment.getModificationDateNonImmutable|ago() }}</time>
+                    )
+                </span>
+                {% endif %}
+            </div>
 
             <p>
                 {{ comment.content|raw }}

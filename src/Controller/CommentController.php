@@ -20,4 +20,16 @@ class CommentController extends AbstractController
         ]);
     }
     
+
+    #[Route('/comment_forms/{id}', name: 'comment_form', methods: [ 'GET' ] )]
+    public function commentForm(Comment $comment): Response
+    {
+        $this->denyAccessUnlessGranted('edit', $comment);
+
+        return $this->render('patient/parts/care_request_comment_form.html.twig', [
+            'comment' => $comment,
+            'careRequest' => $comment->getCareRequest(),
+        ]);
+    }
+    
 }

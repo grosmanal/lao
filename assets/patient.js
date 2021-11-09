@@ -5,8 +5,9 @@ import 'summernote/dist/summernote-lite.css';
 //import 'summernote/dist/summernote-bs5';
 //import 'summernote/dist/summernote-bs5.css';
 import modal from './components/modal';
-import nullFieldConverter from './components/nullFieldConverter';
-import apiFieldConverter from './components/apiFieldConverter';
+import { submitCommentMenu, submitComment, transformToSummernote } from './comment';
+import nullFieldConverter from './utils/nullFieldConverter';
+import apiFieldConverter from './utils/apiFieldConverter';
 
 import './styles/patient.scss'
 
@@ -29,19 +30,12 @@ new Vue({
 }).$mount('#week-availability')
 
 /**
- * Composant summernote
+ * Composant summernote sur chaque textarea d'ajout de commentaire
  */
 jQuery(function($) {
-    $('.comments textarea').summernote({
-        height: 200,
-        toolbar: [
-            // [groupName, [list of button]]
-            ['style', ['style']],
-            ['character', ['bold', 'italic', 'underline', 'clear']],
-            ['color', ['color']],
-            ['para', ['ul', 'ol', 'paragraph']],
-          ]
-    });
+    $('.comments textarea').each(function() {
+        transformToSummernote(this);
+    })
 });
 
 /**
@@ -97,6 +91,9 @@ function doSubmitCareRequest(form, careRequestId, data) {
 
                 // Injection du nouveau HTML
                 formParent.html(response.data);
+                
+                // Transformation de l'éventuel textarea de création de commentaire en summernote
+                transformToSummernote(formParent.find('.comments textarea').get(0));
             }).catch(function(error) {
                 modal('care_request_error.reread');
             });
@@ -199,97 +196,6 @@ formsComment.forEach(function(element) {
         }
     });
 });
-
-/**
- * Ajout d'un commentaire une care request
- */
-function submitComment(event) {
-    event.preventDefault();
-
-    const form = event.target;
-    const careRequestId = form['care-request-id'].value;
-    const authorId = form['user-id'].value;
-
-    const comment = nullFieldConverter(form['comment'].value);
-    
-    const data = {
-        author: apiFieldConverter(authorId, 'Doctor'),
-        creationDate: 'now',
-        careRequest: apiFieldConverter(careRequestId, 'CareRequest'),
-        content: comment,
-    }
-    
-    httpClient({
-        method: 'post',
-        url: patientParams.urlApiCommentPost,
-        data: data
-    }).then(function (response) {
-        httpClient
-            .get(patientParams.urlComment.replace('%id%', response.data.id))
-            .then(function(response) {
-                // Recherche de l'élément liste
-                let listElement = $(`#care-request-body-${careRequestId} ul.comments`);
-                
-                // Injection du nouveau HTML
-                listElement.prepend(response.data);
-                
-                // Vidage du contenu de formulaire
-                form['comment'].value = '';
-
-                setTimeout(function() {
-                    listElement.find('li').first().removeClass('opacity-0');
-                }, 100)
-            })
-            .catch(function(error) {
-                modal('comment_error.reread');
-            })
-    }).catch(function(error) {
-        modal('comment_error.add');
-    });
-    
-    return false;
- }
-
-function submitCommentMenu(event) {
-    event.preventDefault();
-    
-    const form = event.target;
-    const commentId = form['comment-id'].value;
-    
-    switch(event.submitter.name) {
-        case 'delete':
-            deleteComment(commentId, form);
-            break;
-    }
-
-    return false;
-}
-
-
-function deleteComment(commentId, form)
-{
-    httpClient({
-        method: 'delete',
-        url: patientParams.urlApiCommentDelete.replace('%id%', commentId),
-    }).then(function (response) {
-        const comment = $(form).parent();
-        const commentElement = comment[0];
-        
-        commentElement.addEventListener('transitionend', function(event) {
-            if (event.target !== commentElement) {
-                return;
-            }
-
-            this.remove();
-        });
-
-        // Visibility pour transition jolie
-        comment.addClass('opacity-0');
-    }).catch(function(error) {
-        modal('comment_error.delete');
-    });
-}
-
 
 // Ces fonctions sont appelées depuis les forms care request.
 // Elles doivent donc être globale
