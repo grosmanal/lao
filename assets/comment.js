@@ -68,15 +68,14 @@ function transformToSummernote(commentElement)
 
     
 /**
- * Transormation d'un commentaire en textarea éditable via summernote
- * @param {int} commentId Id du commentaire
+ * Transormation d'un commentaire affiché en textarea éditable via summernote
  * @param {HTMLFormElement} form Formulaire contenant le bouton d'édition
  */
-function editComment(commentId, form)
+function editComment(form)
 {
     // Récupération du formulaire de modification
     httpClient
-        .get(patientParams.urlCommentForm.replace('%id%', commentId)) // TODO est-ce que patientParams ou urlCommentForm devrait être injecté plutôt
+        .get(form['url-get-form'].value)
         .then(function(response) {
             // Recherche du parent de la form pour y injecter le nouveau HTML
             let commentListItemJq = $(form).parent();
@@ -98,14 +97,13 @@ function editComment(commentId, form)
 
 /**
  * Suppression d'un commentaire
- * @param {int} commentId Id du commentaire
  * @param {HTMLFormElement} form Formulaire contenant le bouton de suppression
  */
-function deleteComment(commentId, form)
+function deleteComment(form)
 {
     httpClient({
         method: 'delete',
-        url: patientParams.urlApiCommentDelete.replace('%id%', commentId), // TODO est-ce que patientParams ou urlApiCommentDelete devrait être injecté plutôt
+        url: form['url-api-delete'].value,
     }).then(function (response) {
         const comment = $(form).parent();
         const commentListItem = comment.get(0);
@@ -129,14 +127,13 @@ function submitCommentMenu(event) {
     event.preventDefault();
     
     const form = event.target;
-    const commentId = form['comment-id'].value;
     
     switch(event.submitter.name) {
         case 'edit':
-            editComment(commentId, form);
+            editComment(form);
             break;
         case 'delete':
-            deleteComment(commentId, form);
+            deleteComment(form);
             break;
     }
 
@@ -212,15 +209,13 @@ function upsertComment(form)
         data.creationDate = 'now';
     }
     
-    // TODO prévoir une date de modification
-    
     let method, url
     if (updating) {
         method = 'put';
-        url = patientParams.urlApiCommentPut.replace('%id%', commentId);
+        url = form['url-api-put'].value;
     } else {
         method = 'post';
-        url = patientParams.urlApiCommentPost;
+        url = form['url-api-post'].value;
     }
     
     httpClient({
@@ -229,9 +224,9 @@ function upsertComment(form)
         data,
     }).then(function (response) {
         if (updating) {
-            updateCommentInList(form, commentId);
+            updateCommentInList(form);
         } else {
-            prependCommentInList(form, response.data.id);
+            prependCommentInList(form, response.data.relatedUri.getHtmlContent);
         }
     }).catch(function(error) {
         modal('comment_error.add');
@@ -241,7 +236,7 @@ function upsertComment(form)
  }
 
 
-function updateCommentInList(form, commentId)
+function updateCommentInList(form)
 {
     const commentListItem = $(form).parent();
     
@@ -250,7 +245,7 @@ function updateCommentInList(form, commentId)
 
     // Alimentation de la liste avec le nouveau contenu du commentaire
     httpClient
-        .get(patientParams.urlComment.replace('%id%', commentId)) // TODO est-ce que patientParams ou urlComment devrait être injecté plutôt
+        .get(form['url-get-content'].value)
         .then(function(response) {
             // Suppression du li père avec append de chacun de ses enfant
             // Je n'utilise pas replaceWith car cette fonction ne me permet pas
@@ -261,20 +256,20 @@ function updateCommentInList(form, commentId)
             })
         }) 
         .catch(function(error) {
-            modal(error /*'comment_error.reread'*/);
+            modal('comment_error.reread');
         })
         ;
 }
 
 
-function prependCommentInList(form, commentId)
+function prependCommentInList(form, urlHtmlContent)
 {
     // Réinitialisation du summernote
     $(form['comment']).summernote('reset');
 
     // Insertion du commentaire dans la liste des commentaires existants
     httpClient
-        .get('toto' + patientParams.urlComment.replace('%id%', commentId)) // TODO est-ce que patientParams ou urlComment devrait être injecté plutôt
+        .get(urlHtmlContent)
         .then(function(response) {
             // Recherche de l'élément liste
             const listElement = $(form).siblings('ul.comments');

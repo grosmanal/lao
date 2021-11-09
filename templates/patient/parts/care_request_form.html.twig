@@ -3,6 +3,10 @@
     'attr': {'onsubmit': careRequest.isActive ? 'submitCareRequest(event)' : 'reactivateCareRequest(event)'}
 }) }}
 <input type="hidden" name="care-request-id" value="{{ careRequest.id }}" />
+<input type="hidden" name="url-api-put" value="{{ url('api_care_requests_put_item', {id: careRequest.id}) }}" />
+<input type="hidden" name="url-get-form" value="{{ url('care_request_form', {id: careRequest.id}) }}" />
+<input type="hidden" name="doctor-id" value=" {{ currentDoctorId }}" />
+
 {{ form_row(careRequestForm.creationDate, {'id': 'care-request-creationDate-' ~ careRequest.id }) }}
 {{ form_row(careRequestForm.doctorCreator, {'id': 'care-request-doctorCreator-' ~ careRequest.id }) }}
 {{ form_row(careRequestForm.complaint, {'id': 'care-request-complaint-' ~ careRequest.id }) }}

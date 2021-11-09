@@ -57,7 +57,7 @@ function submitPatient(event) {
     };
     httpClient({
         method: 'put',
-        url: patientParams.urlApiPatientPut,
+        url: form['url-api-put'].value,
         data: data
     }).then(function (response) {
         // TODO voir quoi faire
@@ -74,17 +74,16 @@ function submitPatient(event) {
  * Appel ajax de la mise à jour (via API) de la care request
  * puis mise à jour de l'html de la care request avec les nouvelle données
  * @param {object} form 
- * @param {int} careRequestId 
  * @param {object} data 
  */
-function doSubmitCareRequest(form, careRequestId, data) {
+function doSubmitCareRequest(form, data) {
     httpClient({
         method: 'put',
-        url: patientParams.urlApiCareRequestPut.replace('%id%', careRequestId),
+        url: form['url-api-put'].value,
         data: data
     }).then(function(response) {
         httpClient
-            .get(patientParams.urlCareRequestForm.replace('%id%', careRequestId))
+            .get(form['url-get-form'].value)
             .then(function(response) {
                 // Recherche du parent de la form pour y injecter le nouveau HTML
                 let formParent = $(form).parentsUntil('#care-requests-accordion', '.accordion-item');
@@ -109,8 +108,6 @@ function submitCareRequest(event) {
     event.preventDefault();
 
     const form = event.target;
-    const careRequestId = form['care-request-id'].value;
-
     const data = {
         creationDate: nullFieldConverter(form['care_request[creationDate]'].value),
         customComplaint: nullFieldConverter(form['care_request[customComplaint]'].value),
@@ -122,7 +119,7 @@ function submitCareRequest(event) {
         acceptedByDoctor: apiFieldConverter(form['care_request[acceptedByDoctor]'].value, 'Doctor'),
     };
     
-    doSubmitCareRequest(form, careRequestId, data);
+    doSubmitCareRequest(form, data);
 
     return false;
 };
@@ -135,8 +132,6 @@ function reactivateCareRequest(event) {
     event.preventDefault();
 
     const form = event.target;
-    const careRequestId = form['care-request-id'].value;
-
     const data = {
         acceptDate: null,
         abandonDate: null,
@@ -144,7 +139,7 @@ function reactivateCareRequest(event) {
         acceptedByDoctor: null,
     };
     
-    doSubmitCareRequest(form, careRequestId, data);
+    doSubmitCareRequest(form, data);
     
     return false;
 }
@@ -155,29 +150,25 @@ function reactivateCareRequest(event) {
  */
 function abandonCareRequest(event) {
     const form = event.target.form
-    const careRequestId = form['care-request-id'].value;
-    
-
     const data = {
         abandonDate: 'now',
     };
     
-    doSubmitCareRequest(form, careRequestId, data);
+    doSubmitCareRequest(form, data);
 }
 
 /**
  * Acceptation de la demande de prise en charge
  */
  function acceptCareRequest(event) {
-    const form = event.target.form
-    const careRequestId = form['care-request-id'].value;
-
+    const form = event.target.form;
+    const doctorId = form['doctor-id'].value;
     const data = {
         acceptDate: 'now',
-        acceptedByDoctor: patientParams.currentDoctorId ? apiFieldConverter(patientParams.currentDoctorId, 'Doctor') : null,
+        acceptedByDoctor: doctorId ? apiFieldConverter(doctorId, 'Doctor') : null,
     };
     
-    doSubmitCareRequest(form, careRequestId, data);
+    doSubmitCareRequest(form, data);
  }
 
 

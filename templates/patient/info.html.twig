@@ -1,4 +1,5 @@
 {{ form_start(patientForm, {
     'attr': {'onsubmit': 'submitPatient(event);'}
 }) }}
+    <input type="hidden" name="url-api-put" value="{{ url('api_patients_put_item', { id: patient.id }) }}">
 {{ form_end(patientForm) }}

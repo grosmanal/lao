@@ -52,19 +52,5 @@
 {% block javascripts %}
     {{ parent() }}
 
-    <script>
-        const patientParams = {
-            currentDoctorId: {{ currentDoctorId }},
-            urlApiPatientPut: "{{ url('api_patients_put_item', {id: patient.id }) }}",
-            urlApiCareRequestPut: "{{ url('api_care_requests_put_item', {id: '%id%'})|replace({'%25': '%'}) }}",
-            urlCareRequestForm: "{{ url('care_request_form', {id: '%id%'})|replace({'%25': '%'}) }}",
-            urlComment: "{{ url('comment', {id: '%id%'})|replace({'%25': '%'}) }}",
-            urlCommentForm: "{{ url('comment_form', {id: '%id%'})|replace({'%25': '%'}) }}",
-            urlApiCommentPost: "{{ url('api_comments_post_collection') }}",
-            urlApiCommentPut: "{{ url('api_comments_put_item', {id: '%id%'})|replace({'%25': '%'}) }}",
-            urlApiCommentDelete: " {{ url('api_comments_delete_item', {id: '%id%'})|replace({'%25': '%'}) }} "
-        };
-    </script>
-    
     {{ encore_entry_script_tags('patient') }}
 {% endblock %}

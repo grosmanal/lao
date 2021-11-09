@@ -1,7 +1,8 @@
 <li class="{{ html_classes('comment', { 'opacity-0': commentHidden ?? false } ) }}">
     {% if app.user == comment.author and comment.careRequest.active %}
     <form action="#" onsubmit="submitCommentMenu(event)">
-        <input type="hidden" name="comment-id" value="{{ comment.id }}">
+        <input type="hidden" name="url-api-delete" value="{{ url('api_comments_delete_item', {id: comment.id}) }}">
+        <input type="hidden" name="url-get-form" value="{{ url('comment_form', {id: comment.id}) }}">
         <menu>
             <menuitem>
                 <button class="btn btn-sm btn-outline-primary" name="edit" type="submit">

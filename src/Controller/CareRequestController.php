@@ -28,6 +28,7 @@ class CareRequestController extends AbstractController
             'user_is_doctor' => $userProfile->currentUserIsDoctor(),
         ]);
         return $this->render('patient/care_request.html.twig', [
+            'currentDoctorId' => $userProfile->currentUserDoctorId(),
             'careRequest' => $careRequest,
             'careRequestForm' => $careRequestForm->createView(),
             'showCareRequest' => true,
