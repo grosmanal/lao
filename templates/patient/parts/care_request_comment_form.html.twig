@@ -9,12 +9,10 @@
         <input type="hidden" name="comment-id" value="{{ comment.id }}" />
         <input type="hidden" name="url-get-content" value="{{ url('comment', {id: comment.id}) }}" />
     {% endif %}
-    <textarea class="form-control" name="comment">
-        {% if comment is defined %}
-            {# Le commentaire existe : on aliment le textarea #}
-            {{ comment.content|raw }}
-        {% endif %}
-    </textarea>
+
+    {# Si le commentaire existe, on aliment le textarea #}
+    <textarea class="form-control" name="comment">{% if comment is defined %}{{ comment.content|raw }}{% endif %}</textarea>
+
     {% if comment is defined %}
         {# Le commentaire existe : permettre l'annulation de l'édition #}
         <button class="btn btn-primary btn-sm float-end mt-2 ms-1" name="cancel" type="submit">{{'comment.cancel'|trans}}</button>
