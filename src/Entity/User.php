@@ -27,13 +27,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serial
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
+    #[Groups(['mentionsData'])]
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      * @Assert\NotBlank
      */
-    #[Groups(['office:read', 'mentionsData'])]
+    #[Groups(['office:read'])]
     private $email;
 
     /**
@@ -179,12 +180,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serial
     }
     
     #[Groups(['mentionsData'])]
-    public function getFullname(): ?string
+    public function getDisplayName(): ?string
     {
-        return
-            $this->getFirstname() .
-            (empty($this->getFirstname()) ? '' : ' ') .
-            $this->getLastName();
+        return $this->getFirstname();
     }
     
     /**

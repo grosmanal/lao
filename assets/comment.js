@@ -4,6 +4,14 @@ import nullFieldConverter from './utils/nullFieldConverter';
 import apiFieldConverter from './utils/apiFieldConverter';
 import modal from './components/modal';
 
+import 'summernote/dist/summernote-lite';
+import 'summernote/dist/summernote-lite.css';
+//import 'summernote/dist/summernote-bs5';
+//import 'summernote/dist/summernote-bs5.css';
+import 'summernote/dist/lang/summernote-fr-FR';
+
+import './styles/comment.scss'
+
 export {
     submitComment,
     submitCommentMenu,
@@ -30,38 +38,34 @@ function transformToSummernote(commentElement)
     } 
     
     $(commentElement).summernote({
+        lang: 'fr-FR',
         height: 200,
         toolbar: [
-            // [groupName, [list of button]]
             ['style', ['style']],
             ['character', ['bold', 'italic', 'underline', 'clear']],
             ['color', ['color']],
             ['para', ['ul', 'ol', 'paragraph']],
         ],
+        hintSelect: 'next',
         hint: {
-            mentions: doctors.map(doctor => doctor.fullname),
+            mentions: doctors,
             match: /\B@(\w*)$/,
+            placeholder: 'Commentaire', // TODO marche pas ?
             search: function (keyword, callback) {
                 callback($.grep(this.mentions, function(item) {
-                    return item.indexOf(keyword) == 0;
+                    return item.displayName.toLowerCase().indexOf(keyword.toLowerCase()) == 0;
                 }));
             },
             template: function(item) {
-                return item;
+                return item.displayName;
             },
             content: function(item) {
-                // Problème : le curseur est à l'intérieur de l'élément créé
-                // Si l'utilisateur continue de taper, cela agrandit le span
-                // cf https://github.com/summernote/summernote/issues/4178
-                /*
                 return $('<span>')
-                    .attr('data-mention', item)
-                    .css('background-color', 'silver')
-                    .text(this.template(item))
+                    .attr('data-mention-doctor-id', item.id)
+                    .addClass('mention')
+                    .text(item.displayName)
                     .get(0)
                     ;
-                */
-                return '@' + doctors.find(doctor => doctor.fullname === item).email;
             }    
         }
     });

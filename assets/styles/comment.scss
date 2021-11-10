@@ -1,0 +1,13 @@
+$mention-bg: rgb(230, 230, 230);
+
+div.note-editable {
+    span.mention {
+        background-color: $mention-bg;
+    }
+}
+
+.comment-body {
+    span.mention {
+        background-color: $mention-bg;
+    }
+}

@@ -1,9 +1,5 @@
 import httpClient from 'axios';
 import $ from 'jquery';
-import 'summernote/dist/summernote-lite';
-import 'summernote/dist/summernote-lite.css';
-//import 'summernote/dist/summernote-bs5';
-//import 'summernote/dist/summernote-bs5.css';
 import modal from './components/modal';
 import { submitCommentMenu, submitComment, transformToSummernote } from './comment';
 import nullFieldConverter from './utils/nullFieldConverter';
