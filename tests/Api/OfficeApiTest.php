@@ -28,7 +28,8 @@ class OfficeApiTest extends AbstractApiTestCase
     {
         return [
             [ 'admin@example.com', Response::HTTP_OK ],
-            [ 'user1@example.com', Response::HTTP_FORBIDDEN ],
+            [ 'user1@example.com', Response::HTTP_OK ],
+            [ 'user2@example.com', Response::HTTP_FORBIDDEN ],
         ];
     }
 
@@ -43,6 +44,61 @@ class OfficeApiTest extends AbstractApiTestCase
 
     }
     
+    public function dataProviderGetAllAs()
+    {
+        return [
+            [ 'admin@example.com', Response::HTTP_OK, 3 ],
+            [ 'user1@example.com', Response::HTTP_FORBIDDEN, null ],
+            [ 'user2@example.com', Response::HTTP_FORBIDDEN, null ],
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderGetAllAs
+     */
+    public function testGetAllAs($userEmail, $expectedResponse, $expectedItemsCount)
+    {
+        $this->loginUser($userEmail);
+        $this->client->request('GET', '/api/offices');
+        $this->assertResponseStatusCodeSame($expectedResponse);
+
+        if ($expectedResponse == Response::HTTP_OK) {
+            $this->assertJsonContains([
+                'hydra:totalItems' => $expectedItemsCount,
+            ]);
+        }
+    }
+    
+
+    public function testGetContent()
+    {
+        $this->loginUser('admin@example.com');
+        $this->client->request('GET', '/api/offices/1');
+        $this->assertResponseIsSuccessful();
+        $this->assertJsonContains([
+            'name' => 'office_1_name',
+            'address' => 'office_1_address',
+            'addressComplement1' => 'office_1_address_comp1',
+            'addressComplement2' => 'office_1_address_comp2',
+            'zipCode' => 'office_1_zipcode',
+            'city' => 'office_1_city',
+            'country' => 'France',
+            'doctors' => [
+                [
+                    'email' => 'user1@example.com',
+                    'firstname' => 'doctor_1_firstname',
+                    'lastname' => 'doctor_1_lastname',
+                ],
+                [
+                    'email' => 'user5@example.com',
+                    'firstname' => 'doctor_3_firstname',
+                    'lastname' => 'doctor_3_lastname',
+                ],
+                
+            ],
+        ]);
+    }
+
 
     public function dataProviderPostAs()
     {
@@ -86,15 +142,8 @@ class OfficeApiTest extends AbstractApiTestCase
     public function testDeleteAs($userEmail, $expected)
     {
         // Création d'une entité pour pouvoir la supprimer
-        $this->loginUser('admin@example.com');
-        $this->client->request('POST', '/api/offices', [
-            'json' => self::OFFICE_DATA,
-        ]);
-        $this->assertResponseIsSuccessful();
-
-        $officeApiId = json_decode($this->client->getResponse()->getContent(), true)['@id'];
         $this->loginUser($userEmail);
-        $this->client->request('DELETE', $officeApiId);
+        $this->client->request('DELETE', '/api/offices/3');
         $this->assertResponseStatusCodeSame($expected);
     }
     

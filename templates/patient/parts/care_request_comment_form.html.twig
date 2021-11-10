@@ -3,6 +3,7 @@
     <input type="hidden" name="care-request-id" value="{{ careRequest.id }}">
     <input type="hidden" name="user-id" value="{{ app.user.id }}" />
     <input type="hidden" name="url-api-post" value="{{ url('api_comments_post_collection') }}" />
+    <input type="hidden" name="doctors" value="{{ officeDoctors|e }}">
     {% if comment is defined %}
         {# Le commentaire existe : on est dans le cas de la modification d'un commentaire #}
         <input type="hidden" name="url-api-put" value="{{ url('api_comments_put_item', {id: comment.id}) }}" />

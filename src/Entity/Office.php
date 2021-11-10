@@ -7,15 +7,25 @@ use App\Repository\OfficeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=OfficeRepository::class)
  */
 #[ApiResource(
-    security: "is_granted('ROLE_ADMIN')"
+    normalizationContext: ['groups' => ['office:read']],
+    collectionOperations: [
+        'get' => ['security' => "is_granted('ROLE_ADMIN')"],
+        'post' => ['security' => "is_granted('ROLE_ADMIN')"],
+    ],
+    itemOperations: [
+        'get' => ['security' => "is_granted('view', object)"],
+        'delete' => ['security' => "is_granted('ROLE_ADMIN')"],
+        'put' => ['security' => "is_granted('ROLE_ADMIN')"],
+    ],
 )]
-class Office
+class Office implements OfficeOwnedInterface
 {
     /**
      * @ORM\Id
@@ -29,6 +39,7 @@ class Office
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      */
+    #[Groups(['office:read'])]
     private $name;
 
     /**
@@ -36,18 +47,21 @@ class Office
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      */
+    #[Groups(['office:read'])]
     private $address;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Assert\Length(max=255)
      */
+    #[Groups(['office:read'])]
     private $addressComplement1;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Assert\Length(max=255)
      */
+    #[Groups(['office:read'])]
     private $addressComplement2;
 
     /**
@@ -55,6 +69,7 @@ class Office
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      */
+    #[Groups(['office:read'])]
     private $zipCode;
 
     /**
@@ -62,6 +77,7 @@ class Office
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      */
+    #[Groups(['office:read'])]
     private $city;
 
     /**
@@ -69,11 +85,13 @@ class Office
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      */
+    #[Groups(['office:read'])]
     private $country;
 
     /**
      * @ORM\OneToMany(targetEntity=Doctor::class, mappedBy="office")
      */
+    #[Groups(['office:read'])]
     private $doctors;
 
     /**
@@ -233,6 +251,11 @@ class Office
             }
         }
 
+        return $this;
+    }
+
+    public function getOffice(): self
+    {
         return $this;
     }
 }

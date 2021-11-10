@@ -33,6 +33,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serial
      * @ORM\Column(type="string", length=180, unique=true)
      * @Assert\NotBlank
      */
+    #[Groups(['office:read', 'mentionsData'])]
     private $email;
 
     /**
@@ -53,7 +54,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serial
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      */
-    #[Groups(['careRequest:read', 'comment:read'])]
+    #[Groups(['careRequest:read', 'comment:read', 'office:read'])]
     private $firstname;
 
     /**
@@ -61,7 +62,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serial
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      */
-    #[Groups(['careRequest:read', 'comment:read'])]
+    #[Groups(['careRequest:read', 'comment:read', 'office:read'])]
     private $lastname;
 
     public function getId(): ?int
@@ -175,6 +176,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serial
         $this->lastname = $lastname;
 
         return $this;
+    }
+    
+    #[Groups(['mentionsData'])]
+    public function getFullname(): ?string
+    {
+        return
+            $this->getFirstname() .
+            (empty($this->getFirstname()) ? '' : ' ') .
+            $this->getLastName();
     }
     
     /**

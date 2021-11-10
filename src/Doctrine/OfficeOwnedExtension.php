@@ -5,6 +5,7 @@ use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Security\Core\Security;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryCollectionExtensionInterface;
+use App\Entity\Office;
 use App\Entity\OfficeOwnedInterface;
 
 class OfficeOwnedExtension implements QueryCollectionExtensionInterface
@@ -28,6 +29,13 @@ class OfficeOwnedExtension implements QueryCollectionExtensionInterface
         $reflectionClass = new \ReflectionClass($resourceClass);
         if (!$reflectionClass->implementsInterface(OfficeOwnedInterface::class)) {
            return;
+        }
+        
+        // La class App\Entity\Office implémente OfficeOwnedInterface (pour gérer la sécurité du get item)
+        // mais ne doit pas être affectée par ce DoctrineExtension car seul le ROLE_ADMIN
+        // est autorisé à faire un get collection
+        if ($reflectionClass->getName() == Office::class) {
+            return;
         }
 
         // Recherche du office id de l'utilisateur connecté

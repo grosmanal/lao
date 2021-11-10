@@ -17,6 +17,18 @@ export {
  */
 function transformToSummernote(commentElement)
 {
+    const formElement = $(commentElement).parents('form');
+    let doctors
+    try {
+        doctors = JSON.parse(formElement.get(0)['doctors'].value);
+    } catch (e) {
+        if (e instanceof SyntaxError) {
+            doctors = [];
+        } else {
+            throw e;
+        }
+    } 
+    
     $(commentElement).summernote({
         height: 200,
         toolbar: [
@@ -27,7 +39,7 @@ function transformToSummernote(commentElement)
             ['para', ['ul', 'ol', 'paragraph']],
         ],
         hint: {
-            mentions: ['jayden', 'sam', 'alvin', 'david'], // TODO pour tests
+            mentions: doctors.map(doctor => doctor.fullname),
             match: /\B@(\w*)$/,
             search: function (keyword, callback) {
                 callback($.grep(this.mentions, function(item) {
@@ -35,17 +47,7 @@ function transformToSummernote(commentElement)
                 }));
             },
             template: function(item) {
-                // TODO pour test
-                switch(item) {
-                    case 'jayden':
-                        return 'Mr Jayden';
-                    case 'sam':
-                        return 'Ouh Sammy';
-                    case 'alvin':
-                        return 'sans les chimpmunks';
-                    case 'david':
-                        return 'Davina';
-                }
+                return item;
             },
             content: function(item) {
                 // Problème : le curseur est à l'intérieur de l'élément créé
@@ -59,7 +61,7 @@ function transformToSummernote(commentElement)
                     .get(0)
                     ;
                 */
-                return '@' + item;
+                return '@' + doctors.find(doctor => doctor.fullname === item).email;
             }    
         }
     });

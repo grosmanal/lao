@@ -82,16 +82,8 @@ class DoctorApiTest extends AbstractApiTestCase
      */
     public function testDeleteAs($userEmail, $expected)
     {
-        // Création d'une entité pour pouvoir la supprimer
-        $this->loginUser('admin@example.com');
-        $this->client->request('POST', '/api/doctors', [
-            'json' => self::DOCTOR_DATA,
-        ]);
-        $this->assertResponseIsSuccessful();
-
-        $doctorApiId = json_decode($this->client->getResponse()->getContent(), true)['@id'];
         $this->loginUser($userEmail);
-        $this->client->request('DELETE', $doctorApiId);
+        $this->client->request('DELETE', '/api/doctors/3');
         $this->assertResponseStatusCodeSame($expected);
     }
     

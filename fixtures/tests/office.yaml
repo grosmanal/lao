@@ -3,6 +3,8 @@ App\Entity\Office:
     office_1:
         name: office_1_name
         address: office_1_address
+        addressComplement1: office_1_address_comp1
+        addressComplement2: office_1_address_comp2
         zipCode: office_1_zipcode
         city: office_1_city
         country: France
@@ -11,4 +13,10 @@ App\Entity\Office:
         address: office_2_address
         zipCode: office_2_zipcode
         city: office_2_city
+        country: France
+    office_3:
+        name: office_3_name_pour_suppression
+        address: office_3_address
+        zipCode: office_3_zipcode
+        city: office_3_city
         country: France
