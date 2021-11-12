@@ -30,15 +30,18 @@ class NotificationTest extends AbstractServiceTest
     
     public function dataProviderHintMentionData()
     {
+        $allMentionData = [ 'id' => 0, 'displayName' => 'tou·te·s', ];
         return [
             [
                 1, [
+                    $allMentionData,
                     [ 'id' => 1, 'displayName' => 'doctor_1_firstname', ],
                     [ 'id' => 3, 'displayName' => 'doctor_3_firstname', ],
                 ]
             ],
             [
                 2, [
+                    $allMentionData,
                     [ 'id' => 2, 'displayName' => 'doctor_2_firstname', ],
                 ]
             ],
@@ -69,6 +72,7 @@ class NotificationTest extends AbstractServiceTest
             [ 7, [ 1 ], ],
             [ 8, [ 1, 3 ], ],
             [ 10, [ 1 ], ], // Deux mentions au user 1 => une seule notification
+            [ 11, [ 1, 3 ], ], // Mention au user 0 (all) => une notification pour 1 et 3
         ];
     }
 

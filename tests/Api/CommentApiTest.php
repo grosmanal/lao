@@ -66,6 +66,7 @@ class CommentApiTest extends AbstractApiTestCase
                 '/api/comments/8',
                 '/api/comments/9',
                 '/api/comments/10',
+                '/api/comments/11',
             ]],
             ['user1@example.com', [
                 '/api/comments/1',
@@ -77,6 +78,7 @@ class CommentApiTest extends AbstractApiTestCase
                 '/api/comments/8',
                 '/api/comments/9',
                 '/api/comments/10',
+                '/api/comments/11',
             ]],
             ['user5@example.com', [
                 '/api/comments/1',
@@ -88,6 +90,7 @@ class CommentApiTest extends AbstractApiTestCase
                 '/api/comments/8',
                 '/api/comments/9',
                 '/api/comments/10',
+                '/api/comments/11',
             ]],
             ['user2@example.com', [
                 '/api/comments/4',

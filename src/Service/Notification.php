@@ -14,6 +14,9 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class Notification  
 {
+    const ALL_MENTION = 'tou·te·s';
+    const ALL_ID = 0;
+    
     public function __construct(
         private UserRepository $userRepository,
         private NormalizerInterface $normalizer,
@@ -24,25 +27,33 @@ class Notification
 
     public function hintMentionData(Office $office)
     {
-        return $this->normalizer->normalize($office->getDoctors(), null, [
-                'groups' => ['mentionsData'],
-        ]);
+        return array_merge(
+            [ [ 'id' => self::ALL_ID, 'displayName' => self::ALL_MENTION ], ],
+            $this->normalizer->normalize($office->getDoctors(), null, [
+                    'groups' => ['mentionsData'],
+            ])
+        );
     }
 
-    // TODO transformer en private puis inclure le test dans celui de createNotificationForComment
-    private function getUsersMentioned($html)
+    private function getUsersMentioned(Comment $comment)
     {
-        $crawler = new Crawler($html);
+        $crawler = new Crawler($comment->getContent());
         
         $usersId = $crawler->filter('span.mention')->each(function(Crawler $node, $i) {
             return $node->attr('data-mention-doctor-id');
         });
         
-        $usersId = array_unique($usersId);
+        if (in_array(self::ALL_ID, $usersId)) {
+            // On a mentionné «tou·te·s» il faut retourner l'ensemble des docteurs du cabinet
+            $users = iterator_to_array($comment->getOffice()->getDoctors());
+        } else {
+            $usersId = array_unique($usersId);
+            
+            $users = array_map(function($userId) {
+                return $this->userRepository->find($userId);
+            }, $usersId);
+        }
         
-        $users = array_map(function($userId) {
-            return $this->userRepository->find($userId);
-        }, $usersId);
         
         // Ce filter sert lors du chargement des fixtures : les users ne sont 
         // pas encore en bdd (il n'y a pas eu de flush)
@@ -72,7 +83,9 @@ class Notification
     public function generateNotificationsForComment(Comment $comment): array
     {
         // Recherche de la liste des utilisateurs à notifier
-        $users = $this->getUsersMentioned($comment->getContent());
+        $users = $this->getUsersMentioned($comment);
+
+        // TODO ne pas créer de notification pour l'auteur (à paramétrer ?)
 
         if (empty($users)) {
             // Aucune mention dans le commentaire
