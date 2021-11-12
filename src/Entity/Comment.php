@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\CommentRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
@@ -72,6 +74,16 @@ class Comment implements OfficeOwnedInterface
      */
     #[Groups(['comment:read', 'comment:put'])]
     private $content;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Notification::class, mappedBy="comment", orphanRemoval=true, cascade={"persist"})
+     */
+    private $notifications;
+
+    public function __construct()
+    {
+        $this->notifications = new ArrayCollection();
+    }
 
     /**
      * @Assert\Callback
@@ -173,5 +185,35 @@ class Comment implements OfficeOwnedInterface
         }
 
         return $this->getCareRequest()->getOffice();
+    }
+
+    /**
+     * @return Collection|Notification[]
+     */
+    public function getNotifications(): Collection
+    {
+        return $this->notifications;
+    }
+
+    public function addNotification(Notification $notification): self
+    {
+        if (!$this->notifications->contains($notification)) {
+            $this->notifications[] = $notification;
+            $notification->setComment($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotification(Notification $notification): self
+    {
+        if ($this->notifications->removeElement($notification)) {
+            // set the owning side to null (unless already changed)
+            if ($notification->getComment() === $this) {
+                $notification->setComment(null);
+            }
+        }
+
+        return $this;
     }
 }

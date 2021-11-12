@@ -8,11 +8,11 @@ use App\Form\CareRequestType;
 use App\Repository\DoctorRepository;
 use App\Service\Availability;
 use App\Service\UserProfile;
+use App\Service\Notification;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Translation\TranslatableMessage;
-use Symfony\Component\Serializer\SerializerInterface;
 
 class PatientController extends AbstractController
 {
@@ -21,7 +21,7 @@ class PatientController extends AbstractController
         Patient $patient,
         Availability $availability,
         UserProfile $userProfile,
-        SerializerInterface $serializer,
+        Notification $notification,
     ): Response
     {
         $this->denyAccessUnlessGranted('edit', $patient);
@@ -43,9 +43,7 @@ class PatientController extends AbstractController
         return $this->render('patient/patient.html.twig', [
             'patient' => $patient,
             'currentDoctorId' => $userProfile->currentUserDoctorId(),
-            'officeDoctors' => $serializer->serialize($patient->getOffice()->getDoctors(), 'json', [
-                'groups' => ['mentionsData'],
-            ]),
+            'officeDoctors' => $notification->hintMentionData($patient->getOffice()),
             'content' => [
                 'title' => new TranslatableMessage('patient.title', [
                     '%firstname%' => $patient->getFirstname(),

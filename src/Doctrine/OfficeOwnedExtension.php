@@ -28,7 +28,7 @@ class OfficeOwnedExtension implements QueryCollectionExtensionInterface
 
         $reflectionClass = new \ReflectionClass($resourceClass);
         if (!$reflectionClass->implementsInterface(OfficeOwnedInterface::class)) {
-           return;
+           return; // @codeCoverageIgnore
         }
         
         // La class App\Entity\Office implémente OfficeOwnedInterface (pour gérer la sécurité du get item)
@@ -43,7 +43,7 @@ class OfficeOwnedExtension implements QueryCollectionExtensionInterface
         $user = $this->security->getUser();
         $office = $user->getOffice();
         if ($office === null) {
-            throw new \LogicException('Should not be here');
+            throw new \LogicException('Should not be here'); // @codeCoverageIgnore
         }
 
         $rootAlias = $queryBuilder->getRootAliases()[0];
@@ -69,7 +69,7 @@ class OfficeOwnedExtension implements QueryCollectionExtensionInterface
                 ->innerJoin(sprintf('%s.patient', $officeFieldAliasCareRequest), $officeFieldAliasPatient)
                 ;
         } else {
-            throw new \LogicException('Should not be here');
+            throw new \LogicException('Should not be here'); // @codeCoverageIgnore
         }
 
         $queryBuilder

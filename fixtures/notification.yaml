@@ -1,0 +1,9 @@
+---
+include:
+    - doctor.yaml
+    - comment.yaml
+App\Entity\Notification:
+    notification_1:
+        comment: '@comment_5'
+        user: '@doctor_laurence'
+        state: 'viewed'

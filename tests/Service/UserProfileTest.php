@@ -14,8 +14,6 @@ class UserProfileTest extends AbstractServiceTest
         $kernel = self::bootKernel();
         
         $this->setUpTestService([]); // load des fixtures user et doctor
-
-        //dd($this->userProfile);
     }
     
     protected function setupUserProfile($userEmail): UserProfile

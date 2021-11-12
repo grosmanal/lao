@@ -5,10 +5,10 @@ namespace App\Controller;
 use App\Entity\CareRequest;
 use App\Form\CareRequestType;
 use App\Service\UserProfile;
+use App\Service\Notification;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Controller utilisé par API Platform pour définir l'opération 'availability'
@@ -20,7 +20,7 @@ class CareRequestController extends AbstractController
     public function careRequestForm(
         CareRequest $careRequest,
         UserProfile $userProfile,
-        SerializerInterface $serializer
+        Notification $notification,
     ): Response
     {
         $this->denyAccessUnlessGranted('edit', $careRequest);
@@ -32,9 +32,7 @@ class CareRequestController extends AbstractController
         
         return $this->render('patient/care_request.html.twig', [
             'currentDoctorId' => $userProfile->currentUserDoctorId(),
-            'officeDoctors' => $serializer->serialize($careRequest->getOffice()->getDoctors(), 'json', [
-                'groups' => ['mentionsData'],
-            ]),
+            'officeDoctors' => $notification->hintMentionData($careRequest->getOffice()),
             'careRequest' => $careRequest,
             'careRequestForm' => $careRequestForm->createView(),
             'showCareRequest' => true,
