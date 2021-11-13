@@ -21,7 +21,7 @@ class PatientPatchAvailabilityController extends AbstractController
     
     public function __invoke(Patient $data): Patient
     {
-        $this->denyAccessUnlessGranted('edit', $data);
+        $this->denyAccessUnlessGranted('edit', $data); // TODO doublon avec security dans entity ?
         
         $requestContent = $this->get('request_stack')->getCurrentRequest()->getContent();
         

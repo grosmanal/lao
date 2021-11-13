@@ -5,5 +5,5 @@ include:
 App\Entity\Notification:
     notification_1:
         comment: '@comment_9'
-        user: '@doctor_1'
+        doctor: '@doctor_1'
         state: 'viewed'

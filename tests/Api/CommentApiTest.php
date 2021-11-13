@@ -67,6 +67,7 @@ class CommentApiTest extends AbstractApiTestCase
                 '/api/comments/9',
                 '/api/comments/10',
                 '/api/comments/11',
+                '/api/comments/12',
             ]],
             ['user1@example.com', [
                 '/api/comments/1',
@@ -79,6 +80,7 @@ class CommentApiTest extends AbstractApiTestCase
                 '/api/comments/9',
                 '/api/comments/10',
                 '/api/comments/11',
+                '/api/comments/12',
             ]],
             ['user5@example.com', [
                 '/api/comments/1',
@@ -91,6 +93,7 @@ class CommentApiTest extends AbstractApiTestCase
                 '/api/comments/9',
                 '/api/comments/10',
                 '/api/comments/11',
+                '/api/comments/12',
             ]],
             ['user2@example.com', [
                 '/api/comments/4',
@@ -159,7 +162,7 @@ class CommentApiTest extends AbstractApiTestCase
         ]);
         $this->assertResponseStatusCodeSame($expected);
         
-        if ($expected == Response::HTTP_OK) {
+        if ($expected == Response::HTTP_CREATED) {
             $commentApiId = json_decode($crawler->getContent(), true)['@id'];
             $this->client->request('GET', $commentApiId);
             $this->assertResponseIsSuccessful();
@@ -360,5 +363,37 @@ class CommentApiTest extends AbstractApiTestCase
         ]);
         $this->assertResponseIsSuccessful();
         $this->assertJsonContains([ $payloadKey => $expected ]);
+    }
+    
+    
+    private function countNotificationsForDoctor($doctorId)
+    {
+        $crawler = $this->client->request('GET', sprintf("/api/doctors/%d", $doctorId));
+        $this->assertResponseIsSuccessful();
+
+        $doctorData = json_decode($crawler->getContent(), true);
+        return count($doctorData['notifications']);
+    }
+
+    public function testNotificationCreation()
+    {
+        $this->loginUser('admin@example.com');
+        
+        $notifiedDoctorId = 3;
+        // Recherche du nombre de notifications avant création du commentaire
+        $initialNotificationCount = $this->countNotificationsForDoctor($notifiedDoctorId);
+        
+        $commentData = array_merge(
+            self::COMMENT_DATA, [
+                'content' => sprintf('<p>Hello <span class="mention" data-mention-doctor-id="%d">Doctor 3</span></p>', $notifiedDoctorId),
+        ]);
+
+        $crawler = $this->client->request('POST', "/api/comments", [
+            'json' => $commentData,
+        ]);
+        $this->assertResponseIsSuccessful();
+        
+        // Vérification de la création de la notification
+        $this->assertEquals($initialNotificationCount + 1, $this->countNotificationsForDoctor($notifiedDoctorId));
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Tests\Service;
 
+use App\Exception\DifferentOfficeException;
 use App\Repository\OfficeRepository;
 use App\Repository\CommentRepository;
 use App\Service\Notification;
@@ -71,33 +72,33 @@ class NotificationTest extends AbstractServiceTest
         return [
             [ 7, [ 1 ], ],
             [ 8, [ 1, 3 ], ],
-            [ 10, [ 1 ], ], // Deux mentions au user 1 => une seule notification
-            [ 11, [ 1, 3 ], ], // Mention au user 0 (all) => une notification pour 1 et 3
+            [ 10, [ 1 ], ], // Deux mentions au doctor 1 => une seule notification
+            [ 11, [ 1, 3 ], ], // Mention au doctor 0 (all) => une notification pour 1 et 3
         ];
     }
 
     /**
      * @dataProvider dataProviderNotificationGeneration
      */
-    public function testNotificationGeneration($commentId, $expectedUsersId)
+    public function testNotificationGeneration($commentId, $expectedDoctorsId)
     {
         // Instanciation du commentaire à analyser
         $comment = $this->commentRepository->find($commentId);
         
         $notifications = $this->notification->generateNotificationsForComment($comment);
-        $this->assertCount(count($expectedUsersId), $notifications);
+        $this->assertCount(count($expectedDoctorsId), $notifications);
         
-        // Extraction des id des Users des notifications pour comparaison
-        $actualUsersId = [];
+        // Extraction des id des doctors des notifications pour comparaison
+        $actualDoctorsId = [];
         foreach ($notifications as $notification) {
-            $actualUsersId[] = $notification->getUser()->getId();
+            $actualDoctorsId[] = $notification->getDoctor()->getId();
         }
-        $this->assertSame($expectedUsersId, $actualUsersId);
+        $this->assertSame($expectedDoctorsId, $actualDoctorsId);
     }
     
 
     /**
-     * Si une notification existe déjà pour un user,
+     * Si une notification existe déjà pour un doctor,
      * il ne faut pas la recréer
      */
     public function testAlreadyExistingNotification()
@@ -109,4 +110,16 @@ class NotificationTest extends AbstractServiceTest
         $this->assertEmpty($this->notification->generateNotificationsForComment($comment));
     }
     
+    
+    /**
+     * On ne doit pas pouvoir créer de notification pour un autre cabinet
+     */
+    public function testOtherOfficeNotification()
+    {
+        // Instanciation du commentaire à analyser
+        $comment = $this->commentRepository->find(12);
+        
+        $this->expectException(DifferentOfficeException::class);
+        $notifications = $this->notification->generateNotificationsForComment($comment);
+    }
 }
