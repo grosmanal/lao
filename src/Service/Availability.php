@@ -10,6 +10,17 @@ use Interval\Interval;
 
 class Availability
 {
+    const NO_MATCH = 0;
+    const PARTIAL_COVER = 50;
+    const BOTH_EXACT_EDGE = 100;
+    const ONE_EXACT_EDGE = 110;
+    const FULLY_COVERED = 120;
+    
+    /**
+     * Transforme une liste de jours composés d'Interval en un objet serializable
+     * en vue d'écriture en bdd
+     * TODO renommer en normalize (ou faire un normalizer ?)
+     */
     public function intervalsToRaw($intervaledAvailabilities) {
         $rawAvailabilities = [];
         foreach ($intervaledAvailabilities as $weekDay => $availabilities) {
@@ -29,6 +40,11 @@ class Availability
         return $rawAvailabilities;
     }
 
+    /**
+     * Transforme une liste de jours composés d'array [heureDébut, heureFin]
+     * en liste d'Interval (heureDébut et heureFin sont des entiers)
+     * TODO renommer en denormalize (ou faire un denormalizer ?)
+     */
     public function rawToIntervals($rawAvailabilities) {
         $intervaledAvailabilities = [];
         foreach($rawAvailabilities as $weekDay => $availabilities) {
@@ -261,6 +277,93 @@ class Availability
         }
         
         return $weekAvailabilities;
+    }
+    
+
+    private function addCoverMatch(&$matches, $score, $matchInterval)
+    {
+        if (!isset($matches[$score])) {
+            $matches[$score] = [];
+        }
+        
+        $matches[$score][] = $matchInterval;
+    }
+    
+
+    /**
+     * Calcul un score de couverture en fonction de la disponibilité pour un jour et une période
+     * @param array $rawAvailabilities Disponibilité provenant de l'entité
+     * @param int $weekDay Jour de la période de recherche
+     * @param string $startTime Heure de début de la période de recherche sous la forme hh:MM
+     * @param string $endTime Heure de fin de la période de recherche sous la forme hh:MM
+     */
+    public function computeCoverScore(
+        array $rawAvailabilities,
+        int $weekDay,
+        string $startTime,
+        string $endTime,
+    ) {
+        if (!isset($rawAvailabilities[$weekDay])) {
+            return [
+                'score' => self::NO_MATCH,
+            ];
+        }
+        
+        $seekInterval = new Interval(
+            (int) str_replace(':', '', $startTime),
+            (int) str_replace(':', '', $endTime),
+            true,
+            true,
+        );
+
+        $matches = [];
+        foreach($rawAvailabilities[$weekDay] as $rawAvailability) {
+            $interval = new Interval(
+                $rawAvailability[0],
+                $rawAvailability[1],
+                true,
+                true
+            ); // TODO faire un denormalizer
+            
+            if ($interval->includes($seekInterval)) {
+                // L'interval recherché est totalement couvert par
+                // cette disponibilité
+                // Teste des bordures
+                if ($interval->starts($seekInterval) && $interval->ends($seekInterval)) {
+                    $this->addCoverMatch($matches, self::BOTH_EXACT_EDGE, $interval);
+                } elseif ($interval->starts($seekInterval) || $interval->ends($seekInterval)) {
+                    $this->addCoverMatch($matches, self::ONE_EXACT_EDGE, $interval);
+                } else {
+                    $this->addCoverMatch($matches, self::FULLY_COVERED, $interval);
+                }
+            } elseif ($interval->overlaps($seekInterval)) {
+                $this->addCoverMatch($matches, self::PARTIAL_COVER, $interval);
+            }
+        }
+
+        /* TODO
+        if ($score == self::PARTIAL_COVER) {
+            // calculer le ratio de couverture et le retourner
+            // ou trier les matches par ratio de couverture
+        }
+        */
+        
+        // On ne retourne que les interval de la meilleur couverture trouvée
+        $scores = array_keys($matches);
+        if (empty($scores)) {
+            return [
+                'score' => self::NO_MATCH,
+            ];
+        }
+
+        $score = max($scores);
+
+        return [
+            'score' => $score,
+            'matches' => array_map(function ($interval) {
+                return $this->cloneIntervalAsClosed($interval);
+            }, $matches[$score]),
+        ];
     }
 
 }

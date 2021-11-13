@@ -641,4 +641,46 @@ class AvailabilityTest extends TestCase
             )
         );
     }
+    
+    
+    public function dataProviderCoverScore()
+    {
+        return [
+            [ 2, '09:00', '09:30', Availability::NO_MATCH, null ],
+            [ 1, '13:00', '14:00', Availability::NO_MATCH, null ],
+            [ 1, '08:00', '09:00', Availability::NO_MATCH, null ],
+            [ 1, '09:30', '09:45', Availability::NO_MATCH, null ],
+            [ 1, '08:30', '09:30', Availability::PARTIAL_COVER, [new Interval(900, 930)] ],
+            [ 1, '09:00', '10:00', Availability::PARTIAL_COVER, [new Interval(900, 930)] ],
+            [ 1, '09:45', '10:15', Availability::PARTIAL_COVER, [new Interval(1000, 1100)] ],
+            [ 1, '10:30', '11:30', Availability::PARTIAL_COVER , [new Interval(1000, 1100)] ],
+            [ 1, '09:00', '09:30', Availability::BOTH_EXACT_EDGE, [new Interval(900, 930)] ],
+            [ 1, '10:00', '10:30', Availability::ONE_EXACT_EDGE, [new Interval(1000, 1100)] ],
+            [ 1, '10:30', '11:00', Availability::ONE_EXACT_EDGE, [new Interval(1000, 1100)] ],
+            [ 3, '15:00', '16:00', Availability::FULLY_COVERED, [new Interval(1300, 1800)] ],
+            [ 1, '09:15', '10:15', Availability::PARTIAL_COVER, [new Interval(900, 930), new Interval(1000, 1100)] ],
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderCoverScore
+     */
+    public function testCoverScore($weekDay, $startTime, $endTime, $expectedScore, $expectedMatches)
+    {
+        $rawAvailabilities = [
+            1 => [
+                [ 900, 930 ],
+                [ 1000, 1100 ],
+            ],
+            3 => [
+                [ 1300, 1800 ],
+            ],
+        ];
+        
+        $computedScore = $this->availability->computeCoverScore($rawAvailabilities,$weekDay, $startTime, $endTime);
+        $this->assertEquals($expectedScore, $computedScore['score']);
+        if ($expectedScore !== Availability::NO_MATCH) {
+            $this->assertEquals($expectedMatches, $computedScore['matches']);
+        }
+    }
 }
