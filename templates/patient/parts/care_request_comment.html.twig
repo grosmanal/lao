@@ -23,13 +23,16 @@
         </div>
         <div class="flex-grow-1 ms-3 p-2 comment-body">
             <div class="mb-2">
-                <time class="fw-lighter" datetime="{{ comment.creationDate|date('c') }}">
+                <time class="fw-lighter" datetime="{{ comment.creationDate|date('c') }}" title="{{ comment.creationDate|format_datetime('medium', 'short') }}">
                     {{ comment.getCreationDateNonImmutable|ago() }}
                 </time>
                 {% if comment.modificationDate %}
                 <span class="fw-lighter">
                     &nbsp; (
-                    {{ 'Edited'|trans }} <time datetime="{{ comment.modificationDate|date('c') }}">{{ comment.getModificationDateNonImmutable|ago() }}</time>
+                    {{ 'Edited'|trans }}
+                    <time datetime="{{ comment.modificationDate|date('c') }}" title="{{ comment.modificationDate|format_datetime('medium', 'short') }}">
+                        {{ comment.getModificationDateNonImmutable|ago() }}
+                    </time>
                     )
                 </span>
                 {% endif %}

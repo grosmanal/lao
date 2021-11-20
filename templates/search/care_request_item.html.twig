@@ -23,7 +23,7 @@
 </td>
 
 <td class="date">
-    <time title="{{ searchResult.careRequest.creationDate|format_datetime('medium', 'short', locale='fr') }}" datetime="{{ searchResult.careRequest.creationDate|date('c') }}">{{ searchResult.careRequest.creationDateNonImmutable|ago }}</time>
+    <time title="{{ searchResult.careRequest.creationDate|format_datetime('medium', 'short') }}" datetime="{{ searchResult.careRequest.creationDate|date('c') }}">{{ searchResult.careRequest.creationDateNonImmutable|ago }}</time>
 </td>
 
 <td class="availabilities">
