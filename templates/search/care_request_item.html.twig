@@ -26,7 +26,7 @@
     <time title="{{ searchResult.careRequest.creationDate|format_datetime('medium', 'short') }}" datetime="{{ searchResult.careRequest.creationDate|date('c') }}">{{ searchResult.careRequest.creationDateNonImmutable|ago }}</time>
 </td>
 
-<td class="availabilities">
+<td class="d-none d-lg-table-cell availabilities">
 {% if searchResult.careRequest.patient.variableSchedule %}
     <span class="variable-schedule">
     {{ 'search.variable_schedule'|trans }}<br />
