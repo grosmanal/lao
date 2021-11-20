@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'search.title'|trans }}{% endblock %}
+
+{% block body %}
+
+<section class="card search-criteria">
+    <h2 class="card-header">{{ 'search.criteria_header'|trans }}</h2>
+    <div class="card-body">
+        {% include "search/search_form.html.twig" %}
+    </div>
+</section>
+
+{% if form.vars.submitted and form.vars.valid %}
+<section class="card search-result">
+    {% if searchResults|length > 0 %}
+        <div class="card-body">
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <td colspan="2">{{ 'search.results.patient'|trans }}</td>
+                    <td>{{ 'search.results.care_request_creation_date'|trans }}</td>
+                    <td>{{ 'search.results.availabilities'|trans }}</td>
+                    <td>{{ 'search.results.complaint'|trans }}</td>
+                    <td></td>
+                </tr>
+            </thead>
+            <tbody>
+            {% for searchResult in searchResults %}
+                <tr data-patient-url="{{ url('patient', {id: searchResult.careRequest.patient.id})  }}">
+                    {% include "search/care_request_item.html.twig" %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="alert alert-warning no-result">{{ 'search.no_result'|trans }}</div>
+    {% endif %}
+    </div>
+</section>
+{% endif %}
+
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    {{ encore_entry_link_tags('search') }}
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {{ encore_entry_script_tags('search') }}
+{% endblock %}

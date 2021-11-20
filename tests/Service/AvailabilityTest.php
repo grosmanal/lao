@@ -4,6 +4,8 @@ namespace App\Tests\Service;
 
 use PHPUnit\Framework\TestCase;
 use App\Service\Availability;
+use DateTime;
+use DateTimeImmutable;
 use Interval\Intervals;
 use Interval\Interval;
 
@@ -642,23 +644,32 @@ class AvailabilityTest extends TestCase
         );
     }
     
+
+    private function intToDateTimeImmutable(int $time): \DateTimeImmutable
+    {
+        $hour = (int) floor($time / 100);
+        $minute = $time - ($hour * 100);
+        
+        return new DateTimeImmutable(sprintf('%02d:%02d', $hour, $minute));
+    }
+    
     
     public function dataProviderCoverScore()
     {
         return [
-            [ 2, '09:00', '09:30', Availability::NO_MATCH, null ],
-            [ 1, '13:00', '14:00', Availability::NO_MATCH, null ],
-            [ 1, '08:00', '09:00', Availability::NO_MATCH, null ],
-            [ 1, '09:30', '09:45', Availability::NO_MATCH, null ],
-            [ 1, '08:30', '09:30', Availability::PARTIAL_COVER, [new Interval(900, 930)] ],
-            [ 1, '09:00', '10:00', Availability::PARTIAL_COVER, [new Interval(900, 930)] ],
-            [ 1, '09:45', '10:15', Availability::PARTIAL_COVER, [new Interval(1000, 1100)] ],
-            [ 1, '10:30', '11:30', Availability::PARTIAL_COVER , [new Interval(1000, 1100)] ],
-            [ 1, '09:00', '09:30', Availability::BOTH_EXACT_EDGE, [new Interval(900, 930)] ],
-            [ 1, '10:00', '10:30', Availability::ONE_EXACT_EDGE, [new Interval(1000, 1100)] ],
-            [ 1, '10:30', '11:00', Availability::ONE_EXACT_EDGE, [new Interval(1000, 1100)] ],
-            [ 3, '15:00', '16:00', Availability::FULLY_COVERED, [new Interval(1300, 1800)] ],
-            [ 1, '09:15', '10:15', Availability::PARTIAL_COVER, [new Interval(900, 930), new Interval(1000, 1100)] ],
+            [ 2, 900, 930, Availability::NO_MATCH, null ],
+            [ 1, 1300, 1400, Availability::NO_MATCH, null ],
+            [ 1, 800, 900, Availability::NO_MATCH, null ],
+            [ 1, 930, 945, Availability::NO_MATCH, null ],
+            [ 1, 830, 930, Availability::PARTIAL_COVER, [new Interval(900, 930)] ],
+            [ 1, 900, 1000, Availability::PARTIAL_COVER, [new Interval(900, 930)] ],
+            [ 1, 945, 1015, Availability::PARTIAL_COVER, [new Interval(1000, 1100)] ],
+            [ 1, 1030, 1130, Availability::PARTIAL_COVER , [new Interval(1000, 1100)] ],
+            [ 1, 900, 930, Availability::BOTH_EXACT_EDGE, [new Interval(900, 930)] ],
+            [ 1, 1000, 1030, Availability::ONE_EXACT_EDGE, [new Interval(1000, 1100)] ],
+            [ 1, 1030, 1100, Availability::ONE_EXACT_EDGE, [new Interval(1000, 1100)] ],
+            [ 3, 1500, 1600, Availability::FULLY_COVERED, [new Interval(1300, 1800)] ],
+            [ 1, 915, 1015, Availability::PARTIAL_COVER, [new Interval(900, 930), new Interval(1000, 1100)] ],
         ];
     }
 
@@ -677,7 +688,12 @@ class AvailabilityTest extends TestCase
             ],
         ];
         
-        $computedScore = $this->availability->computeCoverScore($rawAvailabilities,$weekDay, $startTime, $endTime);
+        $computedScore = $this->availability->computeCoverScore(
+            $rawAvailabilities,
+            $weekDay,
+            $this->intToDateTimeImmutable($startTime),
+            $this->intToDateTimeImmutable($endTime),
+        );
         $this->assertEquals($expectedScore, $computedScore['score']);
         if ($expectedScore !== Availability::NO_MATCH) {
             $this->assertEquals($expectedMatches, $computedScore['matches']);

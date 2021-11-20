@@ -106,6 +106,7 @@ function submitCareRequest(event) {
     const form = event.target;
     const data = {
         creationDate: nullFieldConverter(form['care_request[creationDate]'].value),
+        priority: nullFieldConverter(form['care_request[priority]'].checked),
         customComplaint: nullFieldConverter(form['care_request[customComplaint]'].value),
         acceptDate: nullFieldConverter(form['care_request[acceptDate]'].value),
         abandonDate: nullFieldConverter(form['care_request[abandonDate]'].value),

@@ -33,4 +33,5 @@
         update_cache: yes
         name:
             - php-mysql
+            - php-intl
         state: present

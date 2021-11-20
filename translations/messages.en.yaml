@@ -1,3 +1,14 @@
+# Libellés communs
+active: Active
+archived: Archived
+abandoned: Abandoned
+priority: Priority
+
+# Navbar
+navbar:
+    search: Search
+    logout: Logout
+
 # Modal content
 modal.close: Close
 modal:
@@ -56,9 +67,9 @@ take.charge: I take charge
 abandon: Abandon
 save: Save
 reactivate: Reactivate
-active: Active
-archived: Archived
-abandoned: Abandoned
+care_request:
+    priority:
+        label: Priority care request
 care_request_error:
     reread: Error while reading care request
     update: Error while updating care request
@@ -76,3 +87,50 @@ comment_error:
     reread: Error while reading new comment
     add: Error while adding new comment
     delete: Error while deleting comment
+      
+# Form search
+Monday: Monday
+Tuesday: Tuesday
+Wednesday: Wednesday
+Thursday: Thursday
+Friday: Friday
+Saturday: Saturday
+Sunday: Sunday
+
+search:
+    title: Patient searching
+    criteria_header: criteria
+    label:
+        label: Patient
+        placeholder: patient firstname or lastname
+    availability: Availability
+    week_day:
+        label: Week day
+        placeholder: '- week day -'
+    from: from
+    to: to
+    time_start: Start time
+    time_end: End time
+    include_variables_schedules: Include variable schedules
+    care_request_statut_label: Care requests
+    active_care_requests: active
+    archived_care_requests: archived
+    abandonned_care_requests: abandonned
+    search_button: Search
+    reset_button: Reset
+    no_result: No result for your criteria
+    results_header: results
+    results:
+        patient: patient
+        care_request_state: care request
+        care_request_creation_date: date
+        availabilities: availabilities
+        complaint: complaint
+        comments: comments 
+        score:
+            fully_covered_label: fully available
+            edge_label: availability bordering edge
+            partial_cover_label: partially available
+    variable_schedule: Variable schedule
+    error:
+        availability_criteria: Availability criteria should be completed all together

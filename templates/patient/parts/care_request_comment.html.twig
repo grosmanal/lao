@@ -1,5 +1,5 @@
 <li class="{{ html_classes('comment', { 'opacity-0': commentHidden ?? false } ) }}">
-    {% if app.user == comment.author and comment.careRequest.active %}
+    {% if app.user.id == comment.author.id and comment.careRequest.active %}
     <form action="#" onsubmit="submitCommentMenu(event)">
         <input type="hidden" name="url-api-delete" value="{{ url('api_comments_delete_item', {id: comment.id}) }}">
         <input type="hidden" name="url-get-form" value="{{ url('comment_form', {id: comment.id}) }}">
@@ -18,7 +18,7 @@
     </form>
     {% endif %}
     <article class="d-flex border border-2">
-        <div class="flex-shrink-0 {{ app.user == comment.author ? 'order-0' : 'order-1' }}">
+        <div class="flex-shrink-0 {{ app.user.id == comment.author.id ? 'order-0' : 'order-1' }}">
             <img src="https://via.placeholder.com/100" alt="{{ comment.author.firstname }}">
         </div>
         <div class="flex-grow-1 ms-3 p-2 comment-body">

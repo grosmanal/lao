@@ -6,27 +6,26 @@
 
 <div id="patient-content" class="patient-content">
     <section class="identity-section card">
-        <h3 class="card-header">
+        <h2 class="card-header">
             {% trans %}Patient{% endtrans %}
-        </h3>
+        </h2>
         <div class="card-body" id="info-content">
             {% include "patient/info.html.twig" %}
         </div>
     </section>
 
     <section class="availability-section card mt-3">
-        <h3 class="card-header">
+        <h2 class="card-header">
             {% trans %}Availabilities{% endtrans %}
-        </h3>
+        </h2>
         <div class="card-body" id="availability-content">
             {% include "patient/availability.html.twig" %}
         </div>
     </section>
-
     <section class="care-request-section card mt-3">
-        <h3 class="card-header">
+        <h2 class="card-header">
             {% trans %}Care requests{% endtrans %}
-        </h3>
+        </h2>
         <div class="card-body" id="care-request-content">
             <div id="care-requests-accordion" class="accordion">
             {% for careRequest in careRequests %}

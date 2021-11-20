@@ -1,0 +1,74 @@
+{% macro toHour(intervalEdge) %}
+    {% set paddedEdge = intervalEdge|u.padStart(4, '0') %}
+    {{ paddedEdge.slice(0, 2) ~ ':' ~ paddedEdge.slice(-2) }}
+{% endmacro %}
+
+<td class="patient">
+    {{ searchResult.careRequest.patient.displayName }}
+</td>
+
+<td class="state">
+    {% if searchResult.careRequest.state == 'active' %}
+        {% set stateClass = 'primary' %}
+    {% elseif searchResult.careRequest.state == 'archived' %}
+        {% set stateClass = 'success' %}
+    {% else %}
+        {% set stateClass = 'secondary' %}
+    {% endif %}
+
+    <span class="badge bg-{{ stateClass }}">{{ searchResult.careRequest.state|trans }}</span>
+    {% if searchResult.careRequest.priority %}
+        <span class="badge bg-danger">{{ 'priority'|trans }}</span>
+    {% endif %}
+</td>
+
+<td class="date">
+    <time title="{{ searchResult.careRequest.creationDate|format_datetime('medium', 'short', locale='fr') }}" datetime="{{ searchResult.careRequest.creationDate|date('c') }}">{{ searchResult.careRequest.creationDateNonImmutable|ago }}</time>
+</td>
+
+<td class="availabilities">
+{% if searchResult.careRequest.patient.variableSchedule %}
+    <span class="variable-schedule">
+    {{ 'search.variable_schedule'|trans }}<br />
+    </span>
+{% endif %}
+{% if searchResult.score is defined %}
+    {% if searchResult.score >= 120 %}
+        {% set scoreIcon = 'bi-check-circle' %}
+        {% set scoreLabel = 'search.results.score.fully_covered_label'|trans %}
+    {% elseif searchResult.score >= 100 %}
+        {% set scoreIcon = 'bi-exclamation-triangle' %}
+        {% set scoreLabel = 'search.results.score.edge_label'|trans %}
+    {% else %}
+        {% set scoreIcon = 'bi-exclamation-triangle-fill' %}
+        {% set scoreLabel = 'search.results.score.partial_cover_label'|trans %}
+    {% endif %}
+    {% set scoreValue = searchResult.score %}
+{% else %}
+    {% set scoreValue = '' %}
+    {% set scoreIcon = '' %}
+    {% set scoreLabel = '' %}
+{% endif %}
+{% if searchResult.availabilities is defined %}
+    {% for weekDay, weekDayavailabilities in searchResult.availabilities %}
+        {% set weekDayLabel = '1979-09-02'|date_modify('+' ~ weekDay ~ 'day')|date('l')|trans %}
+        {% for availability in weekDayavailabilities %}
+            <span class="score-{{ scoreValue }}" title="{{ scoreLabel }}">
+                {{ weekDayLabel }} : {{ _self.toHour(availability.start.value) }} - {{ _self.toHour(availability.end.value) }}
+                <i class="bi {{ scoreIcon }}"></i>
+            </span>
+            <br />
+        {% endfor %}
+    {% endfor %}
+{% endif %}
+</td>
+
+<td class="complaint">
+    {{ searchResult.careRequest.complaint ? searchResult.careRequest.complaint.label }}
+</td>
+
+<td class="comments-number">
+    {% if searchResult.careRequest.comments|length > 0%}
+        <i class="bi bi-chat-left-text"></i> {{ searchResult.careRequest.comments|length }}
+    {% endif %}
+</td>

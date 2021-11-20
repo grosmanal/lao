@@ -209,6 +209,24 @@ class Availability
         list($startTimeAsString, $endTimeAsString) = explode('-', $slotKey);
         return new Interval((int) $startTimeAsString, (int) $endTimeAsString);
     }
+    
+
+    /**
+     * Transforme une paire de DateTimeImmutable en Interval
+     * @param DateTimeImmutalbe $start
+     * @param DateTimeImmutalbe $end
+     * @param bool $isLeftOpen
+     * @param bool $isRightOpen
+     * @return Interval
+     */
+    private function intervalFromDateTimes(
+        DateTimeImmutable $start,
+        DateTimeImmutable $end,
+        bool $isLeftOpen = false,
+        bool $isRightOpen = false
+    ) {
+        return new Interval((int) $start->format('Gi'), (int) $end->format('Gi'), $isLeftOpen, $isRightOpen);
+    }
 
     /**
      * Retourne la liste de toutes les intervales (disponibles ou non) de la semaine
@@ -294,14 +312,14 @@ class Availability
      * Calcul un score de couverture en fonction de la disponibilité pour un jour et une période
      * @param array $rawAvailabilities Disponibilité provenant de l'entité
      * @param int $weekDay Jour de la période de recherche
-     * @param string $startTime Heure de début de la période de recherche sous la forme hh:MM
-     * @param string $endTime Heure de fin de la période de recherche sous la forme hh:MM
+     * @param \DateTimeImmutable $startTime Heure de début de la période de recherche sous la forme hh:MM
+     * @param \DateTimeImmutable $endTime Heure de fin de la période de recherche sous la forme hh:MM
      */
     public function computeCoverScore(
         array $rawAvailabilities,
         int $weekDay,
-        string $startTime,
-        string $endTime,
+        DateTimeImmutable $startTime,
+        DateTimeImmutable $endTime,
     ) {
         if (!isset($rawAvailabilities[$weekDay])) {
             return [
@@ -309,29 +327,25 @@ class Availability
             ];
         }
         
-        $seekInterval = new Interval(
-            (int) str_replace(':', '', $startTime),
-            (int) str_replace(':', '', $endTime),
-            true,
-            true,
-        );
+        $seekInterval = $this->intervalFromDateTimes($startTime, $endTime, true, true);
 
         $matches = [];
         foreach($rawAvailabilities[$weekDay] as $rawAvailability) {
             $interval = new Interval(
                 $rawAvailability[0],
                 $rawAvailability[1],
-                true,
-                true
+                false,
+                false
             ); // TODO faire un denormalizer
             
             if ($interval->includes($seekInterval)) {
-                // L'interval recherché est totalement couvert par
-                // cette disponibilité
+                // L'interval recherché est totalement couvert par cette disponibilité
                 // Teste des bordures
-                if ($interval->starts($seekInterval) && $interval->ends($seekInterval)) {
+                $closedSeekInterval = $this->cloneIntervalAsClosed($seekInterval);
+
+                if ($interval->starts($closedSeekInterval) && $interval->ends($closedSeekInterval)) {
                     $this->addCoverMatch($matches, self::BOTH_EXACT_EDGE, $interval);
-                } elseif ($interval->starts($seekInterval) || $interval->ends($seekInterval)) {
+                } elseif ($interval->starts($closedSeekInterval) || $interval->ends($closedSeekInterval)) {
                     $this->addCoverMatch($matches, self::ONE_EXACT_EDGE, $interval);
                 } else {
                     $this->addCoverMatch($matches, self::FULLY_COVERED, $interval);

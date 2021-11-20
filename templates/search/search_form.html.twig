@@ -1,0 +1,65 @@
+{{ form_start(form) }}
+<div class="form-group row patient">
+    <div class="col-12 col-lg-2">
+        {{ form_label(form.label) }}
+    </div>
+    <div class="col-12 col-lg-10">
+        {{ form_widget(form.label) }}
+    </div>
+</div>
+
+<div class="form-group row availability-error">
+    <div class="col-12 col-lg-2"></div>
+    <div class="col-12 col-lg-10">
+        {{ form_errors(form.weekDay) }}
+    </div>
+</div>
+<div class="form-group row availability">
+    <div class="col-12 col-lg-2">
+        <label for="search-label" class="form-label">{{ 'search.availability'|trans }}</label>
+    </div>
+    <div class="col-12 col-lg-2">
+        {{ form_widget(form.weekDay, {'attr': {'class': 'week-day'}}) }}
+    </div>
+    <div class="col-12 col-lg-auto separator-label">
+        {{ 'search.from'|trans }}
+    </div>
+    <div class="col-12 col-lg-auto">
+        {{ form_widget(form.timeStart, {'attr': {'class': 'timer'}}) }}
+    </div>
+    <div class="col-12 col-lg-auto separator-label">
+        {{ 'search.to'|trans }}
+    </div>
+    <div class="col-12 col-lg-auto">
+        {{ form_widget(form.timeEnd, {'attr': {'class': 'timer'}}) }}
+    </div>
+
+    <div class="col-12 col-lg-3">
+        {{ form_widget(form.includeVariableSchedules) }}
+    </div>
+</div>
+
+<div class="form-group row state">
+    <div class="col-12 col-lg-2">
+        <label class="form-label">{{ 'search.care_request_statut_label'|trans }}</label>
+    </div>
+    <div class="col-12 col-lg-2">
+        {{ form_widget(form.includeActiveCareRequest) }}
+    </div>
+    <div class="col-12 col-lg-2">
+        {{ form_widget(form.includeArchivedCareRequest) }}
+    </div>
+    <div class="col-12 col-lg-2">
+        {{ form_widget(form.includeAbandonnedCareRequest) }}
+    </div>
+</div>
+
+<div class="form-group row buttons">
+    <div class="col-12 col-lg-6">
+        <input type="submit" class="btn btn-primary" value="{{ 'search.search_button'|trans }}"></input>
+    </div>
+    <div class="col-12 col-lg-6">
+        <a class="btn btn-primary" href="{{ url('search') }}">{{ 'search.reset_button'|trans }}</a>
+    </div>
+</div>
+{{ form_end(form) }}

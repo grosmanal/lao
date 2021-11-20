@@ -1,3 +1,14 @@
+# Libellés communs
+active: Active
+archived: Archivée
+abandoned: Abandonnée
+priority: Prioritaire
+
+# Navbar
+navbar:
+    search: Rechercher
+    logout: Déconnecter
+
 # Modal content
 modal.close: Fermer
 modal:
@@ -49,16 +60,16 @@ time_slot:
 
 availability_error:
     update: Erreur lors de la mise à jour des disponibilités
-
+      
 # Form care request
 Care request from %creationDate%: Demande du %creationDate%
 take.charge: Je prends en charge
 abandon: Abandonner
 save: Enregistrer
 reactivate: Réactiver
-active: Active
-archived: Archivée
-abandoned: Abandonnée
+care_request:
+    priority:
+        label: Demande prioritaire
 care_request_error:
     reread: Erreur lors du ré-affichage de la demande
     update: Erreur lors de la mise à jour de la demande de soin
@@ -76,3 +87,49 @@ comment_error:
     reread: Erreur lors du ré-affichage du commentaire
     add: Erreur lors de l'ajout du commentaire
     delete: Erreur lors de la suppression du commentaire
+      
+# Form search
+Monday: lundi
+Tuesday: mardi
+Wednesday: mercredi
+Thursday: jeudi
+Friday: vendredi
+Saturday: samedi
+Sunday: dimanche
+search:
+    title: Recherche de patient
+    criteria_header: critères de recherche
+    label:
+        label: Patient
+        placeholder: nom ou prénom du patient
+    availability: Disponibilité
+    week_day:
+        label: Jour
+        placeholder: '- jour -'
+    from: de
+    to: à
+    time_start: Heure de début
+    time_end: Heure de fin
+    include_variables_schedules: Inclure les horaires variables
+    care_request_statut_label: Demandes
+    active_care_requests: actives
+    archived_care_requests: archivées
+    abandonned_care_requests: abandonnées
+    search_button: Rechercher
+    reset_button: Réinitialiser
+    no_result: Aucun résultat pour ces critères
+    results_header: résultats
+    results:
+        patient: patient
+        care_request_state: demande
+        care_request_creation_date: date
+        availabilities: disponibilités
+        complaint: plante
+        comments: commentaires 
+        score:
+            fully_covered_label: totalement disponible
+            edge_label: disponible juste sur limite
+            partial_cover_label: partiellement disponible
+    variable_schedule: Horaires variables
+    error:
+        availability_criteria: Les critères de disponibilité doivent renseignée tous ensembles

@@ -149,6 +149,16 @@ class Patient implements OfficeOwnedInterface
 
         return $this;
     }
+    
+    public function getDisplayName()
+    {
+        return
+            $this->getFirstname() . 
+            (!empty($this->getFirstname()) ? ' ' : '') .
+            $this->getLastname()
+        ;
+
+    }
 
     public function getBirthdate(): ?\DateTimeImmutable
     {

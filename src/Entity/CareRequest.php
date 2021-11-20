@@ -231,6 +231,11 @@ class CareRequest implements OfficeOwnedInterface
 
         return $this;
     }
+    
+    public function getCreationDateNonImmutable(): ?\DateTime
+    {
+        return \DateTime::createFromImmutable($this->creationDate);
+    }
 
     public function getPriority(): ?bool
     {

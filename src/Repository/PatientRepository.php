@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Office;
 use App\Entity\Patient;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -17,6 +18,26 @@ class PatientRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Patient::class);
+    }
+
+    public function findByLikeLabelAndOffice(string $label, Office $office)
+    {
+        // TODO faire également la recherche sur le contact
+        $qb = $this->createQueryBuilder('p');
+        $likeLabel = $qb->expr()->literal('%' . trim(addcslashes(strtolower($label), '%_')) . '%');
+        return $qb
+            ->andWhere(
+                $qb->expr()->orX(
+                    $qb->expr()->like('p.firstname', $likeLabel),
+                    $qb->expr()->like('p.lastname', $likeLabel),
+                    $qb->expr()->like('p.contact', $likeLabel)
+                )
+            )
+            ->andWhere('p.office = :office')
+            ->setParameter('office', $office)
+            ->getQuery()
+            ->getResult()
+        ;
     }
 
     // /**

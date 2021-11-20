@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\CareRequest;
+use App\Entity\Complaint;
 use App\Entity\Doctor;
 use App\Entity\Office;
 use Doctrine\ORM\EntityRepository;
@@ -12,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -41,12 +43,17 @@ class CareRequestType extends AbstractType
                 'widget' => 'single_text',
                 'disabled' => $fieldDisabled,
             ])
+            ->add('priority', CheckboxType::class, [
+                'label' => 'care_request.priority.label',
+                'required' => false,
+            ])
             ->add('doctorCreator', EntityType::class, [
                 'class' => Doctor::class,
                 'query_builder' => $doctorQueryBuilder,
                 'disabled' => $fieldDisabled,
             ])
-            ->add('complaint', TextType::class, [
+            ->add('complaint', EntityType::class, [
+                'class' => Complaint::class,
                 'disabled' => $fieldDisabled,
             ])
             ->add('customComplaint', TextType::class, [
@@ -72,6 +79,7 @@ class CareRequestType extends AbstractType
                 'disabled' => $buttonDisabled,
             ])
             ->add('abandonReason', TextType::class, [
+                'required' => false,
                 'disabled' => $fieldDisabled,
             ])
             ->add('abandonDate', DateType::class, [
