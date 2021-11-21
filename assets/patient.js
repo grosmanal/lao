@@ -88,7 +88,10 @@ function doSubmitCareRequest(form, data) {
                 formParent.html(response.data);
                 
                 // Transformation de l'éventuel textarea de création de commentaire en summernote
-                transformToSummernote(formParent.find('.comments textarea').get(0));
+                const textarea = formParent.find('.comments textarea');
+                if (textarea.length) {
+                    transformToSummernote(textarea.get(0));
+                }
             }).catch(function(error) {
                 modal('care_request_error.reread');
             });
