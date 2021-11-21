@@ -5,4 +5,75 @@
 <input type="hidden" name="url-api-put" value="{{ url('api_care_requests_put_item', {id: careRequest.id}) }}" />
 <input type="hidden" name="url-get-form" value="{{ url('care_request_form', {id: careRequest.id}) }}" />
 <input type="hidden" name="doctor-id" value=" {{ currentDoctorId }}" />
+
+    <div class="form-group row">
+        <div class="col-12 col-lg-2">
+            {{ form_label(careRequestForm.doctorCreator) }}
+        </div>
+        <div class="col-12 col-lg-4">
+            {{ form_widget(careRequestForm.doctorCreator) }}
+        </div>
+        <div class="col-12 col-lg-2">
+            {{ form_label(careRequestForm.acceptedByDoctor) }}
+        </div>
+        <div class="col-12 col-lg-4">
+            {{ form_widget(careRequestForm.acceptedByDoctor) }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-12 col-lg-2">
+            {{ form_label(careRequestForm.creationDate) }}
+        </div>
+        <div class="col-12 col-lg-4">
+            {{ form_widget(careRequestForm.creationDate) }}
+        </div>
+        <div class="col-12 col-lg-2">
+            {{ form_label(careRequestForm.acceptDate) }}
+        </div>
+        <div class="col-12 col-lg-4 text-start">
+            <span class="d-inline-block" style="max-width: 150px;">{{ form_widget(careRequestForm.acceptDate) }}</span>
+            {{ form_widget(careRequestForm.acceptAction) }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-12 col-lg-2">
+            {{ form_label(careRequestForm.complaint) }}
+        </div>
+        <div class="col-12 col-lg-4">
+            {{ form_widget(careRequestForm.complaint) }}
+        </div>
+        <div class="col-12 col-lg-2">
+            {{ form_label(careRequestForm.abandonReason) }}
+        </div>
+        <div class="col-12 col-lg-4">
+            {{ form_widget(careRequestForm.abandonReason) }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-12 col-lg-2">
+            {{ form_label(careRequestForm.customComplaint) }}
+        </div>
+        <div class="col-12 col-lg-4">
+            {{ form_widget(careRequestForm.customComplaint) }}
+        </div>
+        <div class="col-12 col-lg-2">
+            {{ form_label(careRequestForm.abandonDate) }}
+        </div>
+        <div class="col-12 col-lg-4 text-start">
+            <span class="d-inline-block" style="max-width: 150px;">{{ form_widget(careRequestForm.abandonDate) }}</span>
+            {{ form_widget(careRequestForm.abandonAction) }}
+        </div>
+    </div>
+    <div class="form-group row text-start">
+        <div class="col-12 col-lg-2">
+        </div>
+        <div class="col-12 col-lg-4">
+            {{ form_widget(careRequestForm.priority) }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-12 text-center">
+            {{ form_widget(careRequestForm.validate) }}
+        </div>
+    </div>
 {{ form_end(careRequestForm) }}

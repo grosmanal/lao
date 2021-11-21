@@ -63,7 +63,7 @@ availability_error:
 
 # Form care request
 Care request from %creationDate%: Care request from %creationDate%
-take.charge: I take charge
+take_charge: I take charge
 abandon: Abandon
 save: Save
 reactivate: Reactivate
@@ -72,7 +72,10 @@ care_request:
         label: Priority care request
 care_request_error:
     reread: Error while reading care request
-    update: Error while updating care request
+    update: Error while updating care request %errorMessage%
+    both_accepted_abandonned: Care request cannot be both accepted and abandonned
+    creating_doctor_office: Doctor creating care request must belong to the patient’s office
+    accepting_doctor_office: Doctor accepting care request must belong to the patient’s office
       
 # Form comment
 Edited: Edited

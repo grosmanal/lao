@@ -65,7 +65,7 @@ describe('Availability store actions', () => {
                 }
             );
     
-            expect(modal).toHaveBeenCalledWith('availability_error.update', 'modal.title.error');
+            expect(modal).toHaveBeenCalledWith('availability_error.update', {}, 'modal.title.error');
         });
 
     });

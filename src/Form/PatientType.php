@@ -21,6 +21,7 @@ class PatientType extends AbstractType
             ->add('birthdate', BirthdayType::class, [
                 'format' => 'yyyy-MM-dd',
                 'widget' => 'single_text',
+                'required' => false,
                 ])
             ->add('contact')
             ->add('phone')

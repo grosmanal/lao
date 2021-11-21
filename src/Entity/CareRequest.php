@@ -126,7 +126,8 @@ class CareRequest implements OfficeOwnedInterface
         // Une demande ne peut pas être à la fois abandonnée et archivée (acceptée)
         if ($this->getAcceptDate() != null && $this->getAbandonDate() != null) {
             $context
-                ->buildViolation('Care request cannot be both accepetd and abandonned')
+                ->buildViolation('care_request_error.both_accepted_abandonned')
+                ->setTranslationDomain('messages')
                 ->atPath('acceptDate')
                 ->addViolation()
                 ;
@@ -137,7 +138,8 @@ class CareRequest implements OfficeOwnedInterface
         if ($this->getDoctorCreator()) {
             if ($this->getOffice() != $this->getDoctorCreator()->getOffice()) {
                 $context
-                    ->buildViolation('Doctor creating care request must belong to the patient’s office')
+                    ->buildViolation('care_request_error.creating_doctor_office')
+                    ->setTranslationDomain('messages')
                     ->atPath('doctorCreator')
                     ->addViolation()
                     ;
@@ -148,7 +150,8 @@ class CareRequest implements OfficeOwnedInterface
         if ($this->getAcceptedByDoctor()) {
             if ($this->getOffice() != $this->getAcceptedByDoctor()->getOffice()) {
                 $context
-                    ->buildViolation('Doctor accepting care request must belong to the patient’s office')
+                    ->buildViolation('care_request_error.accepting_doctor_office')
+                    ->setTranslationDomain('messages')
                     ->atPath('doctorCreator')
                     ->addViolation()
                     ;

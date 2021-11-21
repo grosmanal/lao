@@ -1,5 +1,28 @@
+@import '~bootstrap/scss/bootstrap';
+@import './mixin.scss';
+
 .patient-content {
+    .identity-section {
+        form {
+            @include form-margin;
+        }
+    }
+
     .care-request-section {
+        form {
+            .form-group {
+                @include media-breakpoint-up(lg) {
+                    text-align: right;
+                }
+            }
+
+            button[type="submit"] {
+                margin-bottom: 1rem;
+            }
+            
+            @include form-margin;
+        }
+
         ul.comments {
             margin-top: 0.8rem;
             padding: 0;

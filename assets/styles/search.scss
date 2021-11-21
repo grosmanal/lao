@@ -1,23 +1,13 @@
 @import '~bootstrap/scss/bootstrap';
+@import './mixin.scss';
 
 .search-test {
     height: 500px;
 }
 
 .search-criteria {
-    div.row {
-        margin-bottom: 1rem;
-    
-        &:last-child {
-            margin-bottom: 0;
-        }
+    @include form-margin;
 
-        div {
-            margin-top: auto;
-            margin-bottom: auto;
-        }
-    }
-    
     div.row.availability-error {
         margin-bottom: 0;
 

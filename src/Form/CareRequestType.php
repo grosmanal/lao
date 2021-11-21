@@ -46,6 +46,7 @@ class CareRequestType extends AbstractType
             ->add('priority', CheckboxType::class, [
                 'label' => 'care_request.priority.label',
                 'required' => false,
+                'disabled' => $fieldDisabled,
             ])
             ->add('doctorCreator', EntityType::class, [
                 'class' => Doctor::class,
@@ -71,7 +72,7 @@ class CareRequestType extends AbstractType
                 'disabled' => $fieldDisabled,
             ])
             ->add('acceptAction', ButtonType::class, [
-                'label' => 'take.charge',
+                'label' => 'take_charge',
                 'attr' => [
                     'class' => 'btn btn-primary',
                     'onclick' => "acceptCareRequest(event)",

@@ -1,5 +1,61 @@
-{{ form_start(patientForm, {
-    'attr': {'onsubmit': 'submitPatient(event);'}
-}) }}
+{{ form_start(patientForm, { 'attr': {'onsubmit': 'submitPatient(event);'} }) }}
     <input type="hidden" name="url-api-put" value="{{ url('api_patients_put_item', { id: patient.id }) }}">
+    {# TODO mettre les message d'erreur qque part #}
+    <div class="form-group row">
+        <div class="col-12 col-lg-2">
+            {{ form_label(patientForm.firstname)}}
+        </div>
+        <div class="col-12 col-lg-4">
+            {{ form_widget(patientForm.firstname) }}
+        </div>
+        <div class="col-12 col-lg-2">
+            {{ form_label(patientForm.contact)}}
+        </div>
+        <div class="col-12 col-lg-4">
+            {{ form_widget(patientForm.contact) }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-12 col-lg-2">
+            {{ form_label(patientForm.lastname)}}
+        </div>
+        <div class="col-12 col-lg-4">
+            {{ form_widget(patientForm.lastname) }}
+        </div>
+        <div class="col-12 col-lg-2">
+            {{ form_label(patientForm.phone)}}
+        </div>
+        <div class="col-12 col-lg-4">
+            {{ form_widget(patientForm.phone) }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-12 col-lg-2">
+            {{ form_label(patientForm.birthdate)}}
+        </div>
+        <div class="col-12 col-lg-4">
+            {{ form_widget(patientForm.birthdate) }}
+        </div>
+        <div class="col-12 col-lg-2">
+            {{ form_label(patientForm.mobilePhone)}}
+        </div>
+        <div class="col-12 col-lg-4">
+            {{ form_widget(patientForm.mobilePhone) }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-12 col-lg-2"></div>
+        <div class="col-12 col-lg-4"></div>
+        <div class="col-12 col-lg-2">
+            {{ form_label(patientForm.email)}}
+        </div>
+        <div class="col-12 col-lg-4">
+            {{ form_widget(patientForm.email) }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-12 text-center">
+            {{ form_widget(patientForm.validate) }}
+        </div>
+    </div>
 {{ form_end(patientForm) }}

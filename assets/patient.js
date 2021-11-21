@@ -96,7 +96,16 @@ function doSubmitCareRequest(form, data) {
                 modal('care_request_error.reread');
             });
     }).catch(function(error) {
-        modal('care_request_error.update');
+        let errorMessage = '';
+        if (error.response.data) {
+            const responseData = error.response.data;
+            if (responseData['@type'] == 'ConstraintViolationList') {
+                responseData.violations.forEach(function(violation) {
+                    errorMessage += '<br />' + violation.message;
+                });
+            }
+        }
+        modal('care_request_error.update', { errorMessage });
     });
 }
 

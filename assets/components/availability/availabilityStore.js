@@ -157,7 +157,7 @@ export const actions = {
         })
         .catch((error) => {
             // FIXME l'appel à modal ne devrait pas être fait dans le store
-            modal('availability_error.update', 'modal.title.error');
+            modal('availability_error.update', {}, 'modal.title.error');
         });
     },
 
