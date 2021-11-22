@@ -17,8 +17,10 @@ modal:
         error: Erreur
         alert: Alerte
 
-# Page get patient
-patient.title: Patient %firstname% %lastname%
+# Patient
+patient:
+    title: Patient %firstname% %lastname%
+    variable_schedule.label: Horaires variables
 Patient: Patient
 Availabilities: Disponibilités   
 Care requests: Demandes
@@ -45,7 +47,7 @@ patient_error:
 
 # Availability
 add_availability_form:
-    day_select_placeholder: Jour…
+    day_select_placeholder: '- jour -'
     everyday_option: Tous les jours
     from_label: de
     to_label: à

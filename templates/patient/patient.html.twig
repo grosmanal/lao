@@ -19,6 +19,7 @@
             {% trans %}Availabilities{% endtrans %}
         </h2>
         <div class="card-body" id="availability-content">
+            {% include "patient/variable_schedule_form.html.twig" %}
             {% include "patient/availability.html.twig" %}
         </div>
     </section>

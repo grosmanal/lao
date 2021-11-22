@@ -18,7 +18,9 @@ modal:
         alert: Alert
 
 # Page get patient
-patient.title: Patient %firstname% %lastname%
+patient:
+    title: Patient %firstname% %lastname%
+    variable_schedule.label: Variable schedules
 Patient: Patient
 Availabilities: Availabilities   
 Care requests: Care requests

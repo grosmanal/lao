@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Patient;
 use App\Form\PatientType;
 use App\Form\CareRequestType;
+use App\Form\VariableScheduleType;
 use App\Repository\DoctorRepository;
 use App\Service\Availability;
 use App\Service\UserProfile;
@@ -29,6 +30,9 @@ class PatientController extends AbstractController
         $paramsAvailability = $this->getParameter('app.availability');
 
         $patientForm = $this->createForm(PatientType::class, $patient);
+        $variableScheduleForm = $this->createForm(VariableScheduleType::class, $patient, [
+            'api_put_url' => $this->generateUrl('api_patients_put_item', ['id' => $patient->getId()])
+        ]);
 
         $careRequests = [];
         $careRequestForms = [];
@@ -53,6 +57,7 @@ class PatientController extends AbstractController
             ],
             'patientForm' => $patientForm->createView(),
             'middleOfDay' => $paramsAvailability['middleOfDay'],
+            'variableScheduleForm' => $variableScheduleForm->createView(),
             'availability' => $availability->weekAvailabilities(
                 $paramsAvailability['daysOfWeek'],
                 $paramsAvailability['startOfDay'],

@@ -25,18 +25,36 @@ new Vue({
     }
 }).$mount('#week-availability')
 
-/**
- * Composant summernote sur chaque textarea d'ajout de commentaire
- */
 jQuery(function($) {
+    // Composant summernote sur chaque textarea d'ajout de commentaire
     $('.comments textarea').each(function() {
         transformToSummernote(this);
     })
     
+    // Clic sur checkbox variableSchedule
+    $('#variable-schedule-form input[type="checkbox"]').on('change', function() {
+        updateVariableSchedule(this)
+    });
+    
+    // Bouton d'ajout de care request
     $('.care-request-create-button').on('click', function() {
         insertCareRequestCreationForm(this, $);
     });
 });
+
+function doSubmitPatient(url, data)
+{
+    httpClient({
+        method: 'put',
+        url: url,
+        data: data
+    }).then(function (response) {
+        // TODO voir quoi faire
+        // on pourrait mettre un check dans le bouton de validation qui s'effacerait après un timer
+    }).catch(function (error) {
+        modal('patient_error.updating)');
+    });
+}
 
 /**
  * Enregistrement des infos du patient
@@ -55,19 +73,21 @@ function submitPatient(event) {
         mobilePhone: nullFieldConverter(form['patient[mobilePhone]'].value),
         email: nullFieldConverter(form['patient[email]'].value),
     };
-    httpClient({
-        method: 'put',
-        url: form['url-api-put'].value,
-        data: data
-    }).then(function (response) {
-        // TODO voir quoi faire
-        // on pourrait mettre un check dans le bouton de validation qui s'effacerait après un timer
-    }).catch(function (error) {
-        modal('patient_error.updating)');
-    });
+    
+    doSubmitPatient(form['url-api-put'].value, data);
 
     return false;
 };
+
+
+function updateVariableSchedule(input)
+{
+    const data = {
+        variableSchedule: input.checked,
+    }
+    
+    doSubmitPatient(input.form['variable_schedule[apiPutUrl]'].value, data);
+}
 
 
 /**
