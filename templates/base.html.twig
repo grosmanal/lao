@@ -17,6 +17,7 @@
                 // constante globale contenant les Uri des entités de l'API pour utilisation dans les javascript
                 // TODO voir si on peut faire mieux (comme bazingajstranslation)
                 const apiUri = {
+                    'Patient': "{{ path('api_patients_get_item', {id: '%id%'})|replace({'%25': '%'}) }}",
                     'Doctor': "{{ path('api_doctors_get_item', {id: '%id%'})|replace({'%25': '%'}) }}",
                     'Complaint': "{{ path('api_complaints_get_item', {id: '%id%'})|replace({'%25': '%'}) }}",
                     'CareRequest': "{{ path('api_care_requests_get_item', {id: '%id%'})|replace({'%25': '%'}) }}",

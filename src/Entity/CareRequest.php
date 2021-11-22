@@ -32,6 +32,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 )]
 class CareRequest implements OfficeOwnedInterface
 {
+    const STATE_NEW = 'new';
     const STATE_ACTIVE = 'active';
     const STATE_ARCHIVED = 'archived';
     const STATE_ABANDONED = 'abandoned';
@@ -173,6 +174,10 @@ class CareRequest implements OfficeOwnedInterface
     #[Groups(['careRequest:read', 'comment:read'])]
     public function getState(): string
     {
+        if (empty($this->getCreationDate())) {
+            return self::STATE_NEW;
+        }
+        
         if (!empty($this->getAbandonDate())) {
             return self::STATE_ABANDONED;
         }
@@ -184,6 +189,11 @@ class CareRequest implements OfficeOwnedInterface
         return self::STATE_ACTIVE;
     }
     
+    public function isNew(): bool
+    {
+        return $this->getState() === self::STATE_NEW;
+    }
+
     public function isActive(): bool
     {
         return $this->getState() === self::STATE_ACTIVE;

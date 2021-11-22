@@ -1,4 +1,5 @@
 # Libellés communs
+new: Nouvelle
 active: Active
 archived: Archivée
 abandoned: Abandonnée
@@ -68,6 +69,7 @@ abandon: Abandonner
 save: Enregistrer
 reactivate: Réactiver
 care_request:
+    new: Nouvelle demande
     priority:
         label: Demande prioritaire
 care_request_error:

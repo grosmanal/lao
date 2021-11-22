@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\CareRequest;
 use App\Entity\Complaint;
 use App\Entity\Doctor;
+use App\Entity\Patient;
 use App\Entity\Office;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
@@ -27,8 +28,8 @@ class CareRequestType extends AbstractType
         /** @var CareRequest */
         $careRequest = $builder->getData();
 
-        $fieldDisabled = !$careRequest->isActive();
-        $buttonDisabled = !($careRequest->isActive() && $options['user_is_doctor']);
+        $fieldDisabled = !$careRequest->isActive() && !$careRequest->isNew();
+        $buttonDisabled = !($careRequest->isActive() && !$careRequest->isNew() && $options['user_is_doctor']);
         
         $doctorQueryBuilder = function (EntityRepository $er) use ($options) {
             return $er->createQueryBuilder('d')
@@ -97,21 +98,50 @@ class CareRequestType extends AbstractType
                 'disabled' => $buttonDisabled,
             ])
             ->add('state', HiddenType::class)
+            ->add('apiAction', HiddenType::class, [
+                'data' => $options['api_action'],
+                'mapped' => false,
+            ])
+            ->add('apiUrl', HiddenType::class, [
+                'data' => $options['api_url'],
+                'mapped' => false,
+            ])
+            ->add('doctorId', HiddenType::class, [
+                'data' => $options['current_doctor']->getId(),
+                'mapped' => false,
+            ])
             ->add('validate', SubmitType::class, [
-                'label' => $careRequest->isActive() ? 'save' : 'reactivate',
+                'label' => ($careRequest->isActive() || $careRequest->isNew())? 'save' : 'reactivate',
             ])
         ;
+        
+        if ($options['patient']) {
+            // Ajout de l'id du patient dans le formulaire
+            // Cas de l'ajout d'une care request
+            $builder->add('patientId', HiddenType::class, [
+                'data' => $options['patient']->getId(),
+                'mapped' => false,
+            ]);
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class' => CareRequest::class,
+            'api_action' => null,
+            'api_url' => null,
+            'patient' => null,
             'current_office' => null,
+            'current_doctor' => null,
             'user_is_doctor' => null,
         ]);
 
+        $resolver->setAllowedTypes('api_action', 'string');
+        $resolver->setAllowedTypes('api_url', 'string');
+        $resolver->setAllowedTypes('patient', ['null', Patient::class]);
         $resolver->setAllowedTypes('current_office', Office::class);
+        $resolver->setAllowedTypes('current_doctor', Doctor::class);
         $resolver->setAllowedTypes('user_is_doctor', 'boolean');
     }
 }

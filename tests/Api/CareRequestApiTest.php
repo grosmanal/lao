@@ -54,6 +54,9 @@ class CareRequestApiTest extends AbstractApiTestCase
                 '@type' => 'Complaint',
                 'label' => 'Plainte 1',
             ],
+            'relatedUri' => [
+                'getHtmlForm' => '/care_request_forms/1',
+            ],
         ]);
     }
 

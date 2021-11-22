@@ -32,6 +32,10 @@ jQuery(function($) {
     $('.comments textarea').each(function() {
         transformToSummernote(this);
     })
+    
+    $('.care-request-create-button').on('click', function() {
+        insertCareRequestCreationForm(this, $);
+    });
 });
 
 /**
@@ -74,12 +78,12 @@ function submitPatient(event) {
  */
 function doSubmitCareRequest(form, data) {
     httpClient({
-        method: 'put',
-        url: form['url-api-put'].value,
+        method: form['care_request[apiAction]'].value,
+        url: form['care_request[apiUrl]'].value,
         data: data
     }).then(function(response) {
         httpClient
-            .get(form['url-get-form'].value)
+            .get(response.data.relatedUri.getHtmlForm)
             .then(function(response) {
                 // Recherche du parent de la form pour y injecter le nouveau HTML
                 let formParent = $(form).parentsUntil('#care-requests-accordion', '.accordion-item');
@@ -127,6 +131,12 @@ function submitCareRequest(event) {
         complaint: apiFieldConverter(form['care_request[complaint]'].value, 'Complaint'),
         acceptedByDoctor: apiFieldConverter(form['care_request[acceptedByDoctor]'].value, 'Doctor'),
     };
+    
+    if (form['care_request[patientId]']) {
+        // Le formulaire contient le champ (caché) patientId, il faut l'ajouter
+        // aux data pour création de la care request
+        data['patient'] = apiFieldConverter(form['care_request[patientId]'].value, 'Patient');
+    }
     
     doSubmitCareRequest(form, data);
 
@@ -178,7 +188,40 @@ function abandonCareRequest(event) {
     };
     
     doSubmitCareRequest(form, data);
- }
+}
+
+
+/**
+ * Insertion d'un formulaire de création de care request dans
+ * la liste des care request
+ * @param {Event} event 
+ */
+function insertCareRequestCreationForm(event, $)
+{
+    // Recherche de l'URL du formulaire de création de le care request
+    const urlCareRequestForm = $(event).data('urlCareRequestForm');
+
+    httpClient
+        .get(urlCareRequestForm)
+        .then(function(response) {
+            // Recherche du parent de la form pour y injecter le nouveau HTML
+            const careRequestsAccordion = $('#care-requests-accordion');
+            
+            // Fermeture (collapse) de toutes les care request existantes affichée
+            careRequestsAccordion.find('.accordion-collapse.collapse.show').removeClass('show');
+            
+            const careRequestAccordionItem = $('<div></div>').addClass('accordion-item')
+
+            // Injection du nouveau HTML dans l'item
+            careRequestAccordionItem.append(response.data);
+            
+            // Ajout de l'item au début de l'accordion
+            careRequestsAccordion.prepend(careRequestAccordionItem);
+            
+        }).catch(function(error) {
+            modal('care_request_error.reread');
+        });
+}
 
 
 /**

@@ -22,6 +22,11 @@ class UserProfile
         
         return $doctor;
     }
+    
+    public function getDoctor()
+    {
+        return $this->fetchDoctor();
+    }
 
     public function currentUserIsDoctor()
     {

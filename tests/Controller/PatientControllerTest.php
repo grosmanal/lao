@@ -34,7 +34,7 @@ class PatientControllerTest extends AbstractControllerTestCase
      */
     public function testGetPatient($patientId, $expected)
     {
-        $this->loginUser('admin@example.com');
+        $this->loginUser('user1@example.com');
         $crawler = $this->client->request('GET', "/patients/$patientId");
         $this->assertResponseStatusCodeSame($expected);
     }
@@ -42,7 +42,7 @@ class PatientControllerTest extends AbstractControllerTestCase
 
     public function testGetExistingPatient()
     {
-        $this->loginUser('admin@example.com');
+        $this->loginUser('user1@example.com');
         $crawler = $this->client->request('GET', "/patients/1");
         $this->assertResponseIsSuccessful();
         $this->assertPageTitleSame('Patient patient_1_firstname patient_1_lastname');

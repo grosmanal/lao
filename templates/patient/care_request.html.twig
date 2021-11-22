@@ -1,27 +1,38 @@
 {% if careRequest.active %}
-{% set badgeClass = 'bg-primary' %}
+    {% set badgeClass = 'bg-primary' %}
+{% elseif careRequest.new %}
+    {% set badgeClass = 'bg-success' %}
 {% elseif careRequest.archived %}
-{% set badgeClass = 'bg-secondary' %}
+    {% set badgeClass = 'bg-secondary' %}
 {% else %}
-{% set badgeClass = 'bg-danger' %}
+    {% set badgeClass = 'bg-danger' %}
 {% endif %}
-<h3 id="care-request-heading-{{ careRequest.id }}" class="accordion-header">
+
+{% if careRequest.id %}
+    {% set accordionHeaderId = 'care-request-heading-' ~ careRequest.id %}
+    {% set accordionBodyId = 'care-request-body-' ~ careRequest.id %}
+{% else %}
+    {% set accordionHeaderId = 'care-request-heading-new' %}
+    {% set accordionBodyId = 'care-request-body-new' %}
+{% endif %}
+<h3 id="{{ accordionHeaderId }}" class="accordion-header">
     <button
         class="accordion-button {% if not showCareRequest %}collapsed{% endif %}"
         type="button"
         data-bs-toggle="collapse"
-        data-bs-target="#care-request-body-{{ careRequest.id }}"
+        data-bs-target="#{{ accordionBodyId }}"
         aria-expanded="{% if showCareRequest %}true{% else %}false{% endif %}"
-        aria-controls="care-request-body-{{ careRequest.id }}"
+        aria-controls="{{ accordionBodyId }}"
     >
-        {% trans with {'%creationDate%': careRequest.creationDate|date('d/m/Y')} %}Care request from %creationDate%{% endtrans %}<span class="badge rounded-pill {{ badgeClass }}">{{ careRequest.state|trans }}</span>
+        {% trans with {'%creationDate%': careRequest.creationDate|date('d/m/Y')} %}Care request from %creationDate%{% endtrans %}
+        <span class="badge rounded-pill {{ badgeClass }}">{{ careRequest.state|trans }}</span>
     </button>
 </h3>
 <div
-    id="care-request-body-{{ careRequest.id }}"
+    id="{{ accordionBodyId }}"
     class="accordion-collapse collapse {% if showCareRequest %}show{% endif %}"
     data-bs-parent="#care-requests-accordion"
-    aria-labelledby="care-request-heading-{{ careRequest.id }}" 
+    aria-labelledby="{{ accordionHeaderId }}"
 >
     <div class="accordion-body">
         {% include "patient/parts/care_request_form.html.twig" %}

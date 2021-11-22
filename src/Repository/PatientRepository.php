@@ -22,7 +22,6 @@ class PatientRepository extends ServiceEntityRepository
 
     public function findByLikeLabelAndOffice(string $label, Office $office)
     {
-        // TODO faire également la recherche sur le contact
         $qb = $this->createQueryBuilder('p');
         $likeLabel = $qb->expr()->literal('%' . trim(addcslashes(strtolower($label), '%_')) . '%');
         return $qb

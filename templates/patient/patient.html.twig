@@ -25,6 +25,11 @@
     <section class="care-request-section card mt-3">
         <h2 class="card-header">
             {% trans %}Care requests{% endtrans %}
+            <i
+                class="bi bi-clipboard-plus float-end care-request-create-button"
+                title="{{ 'care_request.new'|trans }}"
+                data-url-care-request-form="{{ url('care_request_creation_form', { id: patient.id}) }}"
+            ></i>
         </h2>
         <div class="card-body" id="care-request-content">
             <div id="care-requests-accordion" class="accordion">

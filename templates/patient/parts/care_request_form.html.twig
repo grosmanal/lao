@@ -1,10 +1,7 @@
 {{ form_start(careRequestForm, {
-    'attr': {'onsubmit': careRequest.isActive ? 'submitCareRequest(event)' : 'reactivateCareRequest(event)'}
+    'attr': {'onsubmit': (careRequest.isActive or careRequest.isNew) ? 'submitCareRequest(event)' : 'reactivateCareRequest(event)'}
 }) }}
-<input type="hidden" name="care-request-id" value="{{ careRequest.id }}" />
-<input type="hidden" name="url-api-put" value="{{ url('api_care_requests_put_item', {id: careRequest.id}) }}" />
-<input type="hidden" name="url-get-form" value="{{ url('care_request_form', {id: careRequest.id}) }}" />
-<input type="hidden" name="doctor-id" value=" {{ currentDoctorId }}" />
+<input type="hidden" name="doctor-id" value=" {{ currentDoctorId }}" /> {# TODO pourquoi n'est pas créé par le form builder ?#}
 
     <div class="form-group row">
         <div class="col-12 col-lg-2">

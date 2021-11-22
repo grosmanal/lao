@@ -35,8 +35,11 @@ class PatientController extends AbstractController
         foreach ($patient->getCareRequests() as $careRequest) {
             $careRequests[$careRequest->getId()] = $careRequest;
             $careRequestForms[$careRequest->getId()] = $this->createForm(CareRequestType::class, $careRequest, [
+                'api_action' => 'PUT',
+                'api_url' => $this->generateUrl('api_care_requests_put_item', ['id' => $careRequest->getId()]),
                 'current_office' => $patient->getOffice(),
-                'user_is_doctor' => $userProfile->currentUserIsDoctor(),
+                'current_doctor' => $userProfile->getDoctor(),
+                'user_is_doctor' => $userProfile->currentUserIsDoctor(),  // TODO vérifier l'utilité (user impersonation)
             ]);
         }
         

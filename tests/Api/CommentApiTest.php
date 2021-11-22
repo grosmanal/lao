@@ -49,6 +49,9 @@ class CommentApiTest extends AbstractApiTestCase
             'creationDate' => '2021-09-27T00:00:00+00:00',
             'modificationDate' => '2021-09-30T00:00:00+00:00',
             'content' => 'lorem ipsum comment_1',
+            'relatedUri' => [
+                'getHtmlContent' => '/comments/1'
+            ],
         ]);
     }
 
