@@ -181,7 +181,7 @@ function abandonCareRequest(event) {
  */
  function acceptCareRequest(event) {
     const form = event.target.form;
-    const doctorId = form['doctor-id'].value;
+    const doctorId = form['care_request[doctorId]'].value;
     const data = {
         acceptDate: 'now',
         acceptedByDoctor: doctorId ? apiFieldConverter(doctorId, 'Doctor') : null,

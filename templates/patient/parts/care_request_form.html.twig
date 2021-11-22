@@ -1,8 +1,6 @@
 {{ form_start(careRequestForm, {
     'attr': {'onsubmit': (careRequest.isActive or careRequest.isNew) ? 'submitCareRequest(event)' : 'reactivateCareRequest(event)'}
 }) }}
-<input type="hidden" name="doctor-id" value=" {{ currentDoctorId }}" /> {# TODO pourquoi n'est pas créé par le form builder ?#}
-
     <div class="form-group row">
         <div class="col-12 col-lg-2">
             {{ form_label(careRequestForm.doctorCreator) }}
