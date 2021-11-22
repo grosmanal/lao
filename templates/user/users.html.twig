@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Utilisateurs{% endblock %}
+
+{% block body %}
+    <h1>Utilisateurs</h1>
+    <ul>
+        {% for office in offices %}
+            <li>
+                {{ office.name }}
+                <ul>
+                    {% for doctor in office.doctors %}
+                        <li><a href="{{ url('home', { _switch_user: doctor.userIdentifier }) }}">{{ doctor.displayName }}</a></li>
+                    {% endfor %}
+                </ul>
+            </li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

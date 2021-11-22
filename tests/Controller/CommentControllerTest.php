@@ -25,7 +25,7 @@ class CommentControllerTest extends AbstractControllerTestCase
      */
     public function testGet($commentId, $expected): void
     {
-        $this->loginUser('admin@example.com');
+        $this->loginUser('user1@example.com');
         $crawler = $this->client->request('GET', "/comments/${commentId}");
 
         $this->assertResponseStatusCodeSame($expected);
@@ -33,7 +33,7 @@ class CommentControllerTest extends AbstractControllerTestCase
     
     public function testContent()
     {
-        $this->loginUser('admin@example.com');
+        $this->loginUser('user1@example.com');
         $crawler = $this->client->request('GET', "/comments/1");
 
         $this->assertResponseIsSuccessful();

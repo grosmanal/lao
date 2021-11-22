@@ -62,6 +62,11 @@
                         <li class="nav-item">
                             <a class="nav-link disabled">Logged as {{ app.user.email }}</a>
                         </li>
+                        <li class="nav-item">
+                            {% if is_granted('IS_IMPERSONATOR') %}
+                                <a href="{{ impersonation_exit_path(path('users')) }}" class="nav-link">Exit impersonation</a>
+                            {% endif %}
+                        </li>
                     {% endif %}
                 </ul>
             </div>

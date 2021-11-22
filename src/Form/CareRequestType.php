@@ -10,9 +10,7 @@ use App\Entity\Office;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -29,12 +27,12 @@ class CareRequestType extends AbstractType
         $careRequest = $builder->getData();
 
         $fieldDisabled = !$careRequest->isActive() && !$careRequest->isNew();
-        $buttonDisabled = !($careRequest->isActive() && !$careRequest->isNew() && $options['user_is_doctor']);
+        $buttonDisabled = !($careRequest->isActive() && !$careRequest->isNew());
         
         $doctorQueryBuilder = function (EntityRepository $er) use ($options) {
             return $er->createQueryBuilder('d')
                 ->andWhere('d.office = :office')
-                ->setParameter(':office', $options['current_office'])
+                ->setParameter(':office', $options['current_doctor']->getOffice())
                 ;
         };
 
@@ -132,16 +130,12 @@ class CareRequestType extends AbstractType
             'api_action' => null,
             'api_url' => null,
             'patient' => null,
-            'current_office' => null,
             'current_doctor' => null,
-            'user_is_doctor' => null,
         ]);
 
         $resolver->setAllowedTypes('api_action', 'string');
         $resolver->setAllowedTypes('api_url', 'string');
         $resolver->setAllowedTypes('patient', ['null', Patient::class]);
-        $resolver->setAllowedTypes('current_office', Office::class);
         $resolver->setAllowedTypes('current_doctor', Doctor::class);
-        $resolver->setAllowedTypes('user_is_doctor', 'boolean');
     }
 }

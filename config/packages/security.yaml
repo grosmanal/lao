@@ -31,19 +31,24 @@ security:
             # https://symfony.com/doc/current/security.html#firewalls-authentication
 
             # https://symfony.com/doc/current/security/impersonating_user.html
-            # switch_user: true
+            switch_user: true
 
     access_decision_manager:
         strategy: unanimous
         allow_if_all_abstain: false
 
     role_hierarchy:
-        ROLE_ADMIN: ROLE_DOCTOR
+        ROLE_ADMIN: 
+            - ROLE_API_USER
+            - ROLE_ALLOWED_TO_SWITCH
+        ROLE_DOCTOR: ROLE_API_USER
           
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: ^/login, roles: PUBLIC_ACCESS }
-        - { path: ^/api, roles: ROLE_DOCTOR }
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/api, roles: ROLE_API_USER }
+        - { path: ^/patient, roles: ROLE_DOCTOR }
+        - { path: ^/care_request, roles: ROLE_DOCTOR }
+        - { path: ^/comment, roles: ROLE_DOCTOR }
+        - { path: ^/search, roles: ROLE_DOCTOR }

@@ -40,7 +40,7 @@ class Comment implements OfficeOwnedInterface
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class)
+     * @ORM\ManyToOne(targetEntity=Doctor::class)
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotBlank
      */
@@ -108,12 +108,12 @@ class Comment implements OfficeOwnedInterface
         return $this->id;
     }
 
-    public function getAuthor(): ?User
+    public function getAuthor(): ?Doctor
     {
         return $this->author;
     }
 
-    public function setAuthor(?User $author): self
+    public function setAuthor(?Doctor $author): self
     {
         $this->author = $author;
 

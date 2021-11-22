@@ -7,6 +7,7 @@ use App\Form\CareRequestType;
 use App\Repository\PatientRepository;
 use App\Service\UserProfile;
 use App\Service\Notification;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -38,9 +39,7 @@ class CareRequestController extends AbstractController
             'api_action' => 'POST',
             'api_url' => $this->generateUrl('api_care_requests_post_collection'),
             'patient' => $patient,
-            'current_office' => $patient->getOffice(),
             'current_doctor' => $userProfile->getDoctor(),
-            'user_is_doctor' => $userProfile->currentUserIsDoctor(), // TODO vérifier l'utilité (user impersonation)
         ]);
         
         return $this->render('patient/care_request.html.twig', [
@@ -57,6 +56,7 @@ class CareRequestController extends AbstractController
         methods: [ 'GET' ],
         requirements: ['id' => '\d+'],
     )]
+    #[IsGranted('ROLE_DOCTOR')]
     public function careRequestForm(
         CareRequest $careRequest,
         UserProfile $userProfile,
@@ -68,9 +68,7 @@ class CareRequestController extends AbstractController
         $careRequestForm = $this->createForm(CareRequestType::class, $careRequest, [
             'api_action' => 'PUT',
             'api_url' => $this->generateUrl('api_care_requests_put_item', ['id' => $careRequest->getId()]),
-            'current_office' => $careRequest->getOffice(),
             'current_doctor' => $userProfile->getDoctor(),
-            'user_is_doctor' => $userProfile->currentUserIsDoctor(), // TODO vérifier l'utilité (user impersonation)
         ]);
         
         return $this->render('patient/care_request.html.twig', [
