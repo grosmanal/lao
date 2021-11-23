@@ -76,6 +76,8 @@ care_request:
     confirm_delete: Supprimer définitivement cette demande ?
     priority:
         label: Demande prioritaire
+    comment:
+        placeholder: Commentaire
 care_request_error:
     reread: Erreur lors du ré-affichage de la demande
     update: Erreur lors de la mise à jour de la demande de soin %errorMessage%

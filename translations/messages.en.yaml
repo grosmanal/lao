@@ -76,6 +76,8 @@ care_request:
     confirm_delete: Permanently delete this care request ?
     priority:
         label: Priority care request
+    comment:
+        placeholder: Comment
 care_request_error:
     reread: Error while reading care request
     update: Error while updating care request %errorMessage%

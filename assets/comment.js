@@ -1,5 +1,7 @@
 import httpClient from 'axios';
 import $ from 'jquery';
+import Translator from 'bazinga-translator';
+
 import nullFieldConverter from './utils/nullFieldConverter';
 import apiFieldConverter from './utils/apiFieldConverter';
 import modal from './components/modal';
@@ -40,6 +42,7 @@ function transformToSummernote(commentElement)
     $(commentElement).summernote({
         lang: 'fr-FR',
         height: 200,
+        placeholder: Translator.trans('care_request.comment.placeholder'),
         toolbar: [
             ['style', ['style']],
             ['character', ['bold', 'italic', 'underline', 'clear']],
@@ -50,7 +53,6 @@ function transformToSummernote(commentElement)
         hint: {
             mentions: doctors,
             match: /\B@(\w*)$/,
-            placeholder: 'Commentaire', // TODO marche pas ?
             search: function (keyword, callback) {
                 callback($.grep(this.mentions, function(item) {
                     return item.displayName.toLowerCase().indexOf(keyword.toLowerCase()) == 0;
