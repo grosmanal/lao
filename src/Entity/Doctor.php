@@ -15,7 +15,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 #[ApiResource(
     security: "is_granted('ROLE_ADMIN')"
-    // TODO dans le futur les docteurs pourront créer d'autres docteurs du même cabinet
 )]
 class Doctor extends User
 {

@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     normalizationContext: ['groups' => ['patient:read']],
     collectionOperations: [
         'get',
-        'post' => ['security' => "is_granted('ROLE_ADMIN')"], // TODO à l'avenir autoriser les docteurs à poster un patient via API (?)
+        'post' => ['security' => "is_granted('ROLE_ADMIN')"],
     ],
     itemOperations: [
         'get' => ['security' => "is_granted('view', object)"],

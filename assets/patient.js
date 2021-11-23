@@ -25,32 +25,30 @@ new Vue({
     }
 }).$mount('#week-availability')
 
-jQuery(function($) {
+jQuery(function ($) {
     // Composant summernote sur chaque textarea d'ajout de commentaire
-    $('.comments textarea').each(function() {
+    $('.comments textarea').each(function () {
         transformToSummernote(this);
     })
-    
+
     // Clic sur checkbox variableSchedule
-    $('#variable-schedule-form input[type="checkbox"]').on('change', function() {
+    $('#variable-schedule-form input[type="checkbox"]').on('change', function () {
         updateVariableSchedule(this)
     });
-    
+
     // Bouton d'ajout de care request
-    $('.care-request-create-button').on('click', function() {
+    $('.care-request-create-button').on('click', function () {
         insertCareRequestCreationForm(this, $);
     });
 });
 
-function doSubmitPatient(url, data)
-{
+function doSubmitPatient(url, data) {
     httpClient({
         method: 'put',
         url: url,
         data: data
     }).then(function (response) {
-        // TODO voir quoi faire
-        // on pourrait mettre un check dans le bouton de validation qui s'effacerait après un timer
+        // https://manal.xyz/gitea/origami_informatique/lao/issues/85
     }).catch(function (error) {
         modal('patient_error.updating)');
     });
@@ -73,19 +71,18 @@ function submitPatient(event) {
         mobilePhone: nullFieldConverter(form['patient[mobilePhone]'].value),
         email: nullFieldConverter(form['patient[email]'].value),
     };
-    
+
     doSubmitPatient(form['url-api-put'].value, data);
 
     return false;
 };
 
 
-function updateVariableSchedule(input)
-{
+function updateVariableSchedule(input) {
     const data = {
         variableSchedule: input.checked,
     }
-    
+
     doSubmitPatient(input.form['variable_schedule[apiPutUrl]'].value, data);
 }
 
@@ -101,30 +98,32 @@ function doSubmitCareRequest(form, data) {
         method: form['care_request[apiAction]'].value,
         url: form['care_request[apiUrl]'].value,
         data: data
-    }).then(function(response) {
+    }).then(function (response) {
         httpClient
             .get(response.data.relatedUri.getHtmlForm)
-            .then(function(response) {
+            .then(function (response) {
                 // Recherche du parent de la form pour y injecter le nouveau HTML
                 let formParent = $(form).parentsUntil('#care-requests-accordion', '.accordion-item');
 
                 // Injection du nouveau HTML
                 formParent.html(response.data);
-                
+
                 // Transformation de l'éventuel textarea de création de commentaire en summernote
                 const textarea = formParent.find('.comments textarea');
                 if (textarea.length) {
                     transformToSummernote(textarea.get(0));
                 }
-            }).catch(function(error) {
+
+                // https://manal.xyz/gitea/origami_informatique/lao/issues/85
+            }).catch(function (error) {
                 modal('care_request_error.reread');
             });
-    }).catch(function(error) {
+    }).catch(function (error) {
         let errorMessage = '';
         if (error.response.data) {
             const responseData = error.response.data;
             if (responseData['@type'] == 'ConstraintViolationList') {
-                responseData.violations.forEach(function(violation) {
+                responseData.violations.forEach(function (violation) {
                     errorMessage += '<br />' + violation.message;
                 });
             }
@@ -151,13 +150,13 @@ function submitCareRequest(event) {
         complaint: apiFieldConverter(form['care_request[complaint]'].value, 'Complaint'),
         acceptedByDoctor: apiFieldConverter(form['care_request[acceptedByDoctor]'].value, 'Doctor'),
     };
-    
+
     if (form['care_request[patientId]']) {
         // Le formulaire contient le champ (caché) patientId, il faut l'ajouter
         // aux data pour création de la care request
         data['patient'] = apiFieldConverter(form['care_request[patientId]'].value, 'Patient');
     }
-    
+
     doSubmitCareRequest(form, data);
 
     return false;
@@ -177,9 +176,9 @@ function reactivateCareRequest(event) {
         abandonReason: null,
         acceptedByDoctor: null,
     };
-    
+
     doSubmitCareRequest(form, data);
-    
+
     return false;
 }
 
@@ -192,39 +191,38 @@ function abandonCareRequest(event) {
     const data = {
         abandonDate: 'now',
     };
-    
+
     doSubmitCareRequest(form, data);
 }
 
 /**
  * Acceptation de la demande de prise en charge
  */
- function acceptCareRequest(event) {
+function acceptCareRequest(event) {
     const form = event.target.form;
     const doctorId = form['care_request[doctorId]'].value;
     const data = {
         acceptDate: 'now',
         acceptedByDoctor: doctorId ? apiFieldConverter(doctorId, 'Doctor') : null,
     };
-    
+
     doSubmitCareRequest(form, data);
 }
 
 
-function deleteCareRequest(event)
-{
+function deleteCareRequest(event) {
     if (confirm(Translator.trans('care_request.confirm_delete')) != true) {
         return false;
-    } 
-    
+    }
+
     // Suppression de la care request
     httpClient.delete(event.target.dataset.apiUrlDelete)
-    .then(function (response) {
-        // Suppression de la care request du DOM
-        $(event.target).parentsUntil('#care-requests-accordion', '.accordion-item').remove();
-    }).catch(function (error) {
-        modal('care_request_error.delete');
-    });
+        .then(function (response) {
+            // Suppression de la care request du DOM
+            $(event.target).parentsUntil('#care-requests-accordion', '.accordion-item').remove();
+        }).catch(function (error) {
+            modal('care_request_error.delete');
+        });
 }
 
 
@@ -233,29 +231,28 @@ function deleteCareRequest(event)
  * la liste des care request
  * @param {Event} event 
  */
-function insertCareRequestCreationForm(event, $)
-{
+function insertCareRequestCreationForm(event, $) {
     // Recherche de l'URL du formulaire de création de le care request
     const urlCareRequestForm = $(event).data('urlCareRequestForm');
 
     httpClient
         .get(urlCareRequestForm)
-        .then(function(response) {
+        .then(function (response) {
             // Recherche du parent de la form pour y injecter le nouveau HTML
             const careRequestsAccordion = $('#care-requests-accordion');
-            
+
             // Fermeture (collapse) de toutes les care request existantes affichée
             careRequestsAccordion.find('.accordion-collapse.collapse.show').removeClass('show');
-            
+
             const careRequestAccordionItem = $('<div></div>').addClass('accordion-item')
 
             // Injection du nouveau HTML dans l'item
             careRequestAccordionItem.append(response.data);
-            
+
             // Ajout de l'item au début de l'accordion
             careRequestsAccordion.prepend(careRequestAccordionItem);
-            
-        }).catch(function(error) {
+
+        }).catch(function (error) {
             modal('care_request_error.reread');
         });
 }
@@ -266,8 +263,8 @@ function insertCareRequestCreationForm(event, $)
  * avec Ctrl + Entrée
  */
 const formsComment = document.querySelectorAll('.comment-form');
-formsComment.forEach(function(element) {
-    element.addEventListener('keydown', function(event) {
+formsComment.forEach(function (element) {
+    element.addEventListener('keydown', function (event) {
         if (event.getModifierState('Control') && event.key == 'Enter') {
             element.dispatchEvent(new Event('submit', {
                 'bubbles': true,

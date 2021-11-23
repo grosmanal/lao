@@ -19,7 +19,7 @@ class Availability
     /**
      * Transforme une liste de jours composés d'Interval en un objet serializable
      * en vue d'écriture en bdd
-     * TODO renommer en normalize (ou faire un normalizer ?)
+     * https://manal.xyz/gitea/origami_informatique/lao/issues/88
      */
     public function intervalsToRaw($intervaledAvailabilities) {
         $rawAvailabilities = [];
@@ -43,7 +43,7 @@ class Availability
     /**
      * Transforme une liste de jours composés d'array [heureDébut, heureFin]
      * en liste d'Interval (heureDébut et heureFin sont des entiers)
-     * TODO renommer en denormalize (ou faire un denormalizer ?)
+     * https://manal.xyz/gitea/origami_informatique/lao/issues/88
      */
     public function rawToIntervals($rawAvailabilities) {
         $intervaledAvailabilities = [];
@@ -336,7 +336,7 @@ class Availability
                 $rawAvailability[1],
                 false,
                 false
-            ); // TODO faire un denormalizer
+            ); // https://manal.xyz/gitea/origami_informatique/lao/issues/88
             
             if ($interval->includes($seekInterval)) {
                 // L'interval recherché est totalement couvert par cette disponibilité
@@ -355,13 +355,6 @@ class Availability
             }
         }
 
-        /* TODO
-        if ($score == self::PARTIAL_COVER) {
-            // calculer le ratio de couverture et le retourner
-            // ou trier les matches par ratio de couverture
-        }
-        */
-        
         // On ne retourne que les interval de la meilleur couverture trouvée
         $scores = array_keys($matches);
         if (empty($scores)) {

@@ -57,7 +57,6 @@ class Notification
         
         // Ce filter sert lors du chargement des fixtures : les doctors ne sont 
         // pas encore en bdd (il n'y a pas eu de flush)
-        // TODO voir s'il ne faut pas charger les fixtures en deux fois
         return array_filter($doctors, function($doctor) { return $doctor !== null; });
     }
     
@@ -86,7 +85,7 @@ class Notification
         // Recherche de la liste des utilisateurs à notifier
         $doctors = $this->getDoctorsMentioned($comment);
 
-        // TODO ne pas créer de notification pour l'auteur (à paramétrer ?)
+        // https://manal.xyz/gitea/origami_informatique/lao/issues/89
 
         if (empty($doctors)) {
             // Aucune mention dans le commentaire

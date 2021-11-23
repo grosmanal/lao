@@ -83,7 +83,7 @@ export default {
         border-bottom: 1px lightgray solid;
         text-align: end;
         transition: background-color 0.3s ease-in;
-        background-color: rgb(241, 241, 241); /* TODO variable sass comme body-bg */
+        background-color: rgb(241, 241, 241); /* https://manal.xyz/gitea/origami_informatique/lao/issues/87 */
     }
 
     .slot:first-of-type {

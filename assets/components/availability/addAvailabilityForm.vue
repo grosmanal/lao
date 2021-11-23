@@ -78,7 +78,7 @@ export default {
                 weekDaysToProceed = [ this.weekDay ];
             }
 
-            // TODO tester que periodStart et periodEnd sont dans les limites du tableau
+            // https://manal.xyz/gitea/origami_informatique/lao/issues/86
             
             weekDaysToProceed.forEach(currentWeekDay => {
                 this.storeAddAvailabilityPeriod({
