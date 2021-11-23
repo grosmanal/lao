@@ -63,6 +63,8 @@ time_slot:
 
 availability_error:
     update: Erreur lors de la mise à jour des disponibilités
+    period_start_out_of_bound: Le début de la période est hors limite
+    period_end_out_of_bound: La fin de la période est hors limite
       
 # Form care request
 Care request from %creationDate%: Demande du %creationDate%

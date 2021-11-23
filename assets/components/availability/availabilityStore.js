@@ -8,7 +8,7 @@ import {
     firstHour,
     lastHour,
 } from './availabilityUtils';
-import modal from '../modal';
+import Translator from 'bazinga-translator';
 
 Vue.use(Vuex);
 
@@ -156,8 +156,7 @@ export const actions = {
             });
         })
         .catch((error) => {
-            // FIXME l'appel à modal ne devrait pas être fait dans le store
-            modal('availability_error.update', {}, 'modal.title.error');
+            throw(Translator.trans('availability_error.update'));
         });
     },
 
@@ -168,6 +167,14 @@ export const actions = {
         const timeSlotStart = timeSlotFromPeriodEdge(Object.keys(weekDayAvailability), periodStart);
         const timeSlotEnd = timeSlotFromPeriodEdge(Object.keys(weekDayAvailability), periodEnd, true);
         
+        if (timeSlotStart == undefined) {
+            throw Translator.trans('availability_error.period_start_out_of_bound');
+        }
+        
+        if (timeSlotEnd == undefined) {
+            throw Translator.trans('availability_error.period_end_out_of_bound');
+        }
+
         return context.dispatch('updateWeekDayAvailability', {
             weekDay: weekDay,
             timeSlotStart: timeSlotStart,
@@ -188,7 +195,7 @@ export const actions = {
     toggleTimeSlot: (context, {weekDay, timeSlot}) => {
         const available = ! context.getters.timeSlotAvailability(weekDay, timeSlot)
 
-        context.dispatch('addAvailabilityTimeslot', {
+        return context.dispatch('addAvailabilityTimeslot', {
             weekDay: weekDay,
             timeSlot: timeSlot,
             available: available,
@@ -233,6 +240,28 @@ export const actions = {
             timeSlotEnd: endingTimeSlot,
             available: false,
         });
+    },
+    
+    addAvailabilityWholeWeekTimeSlot: (context, {weekDays, timeSlot, available}) => {
+        for (let weekDay of weekDays) {
+            context.dispatch('updateWeekDayAvailability', {
+                weekDay: weekDay,
+                timeSlotStart: timeSlot,
+                timeSlotEnd: timeSlot,
+                available: available,
+            });
+        }
+    },
+    
+    setOmegaAvailable: (context, {weekDays, available}) => {
+        for (let weekDay of weekDays) {
+            context.dispatch('updateWeekDayAvailability', {
+                weekDay: weekDay,
+                timeSlotStart: context.getters.startOfDaySlot,
+                timeSlotEnd: context.getters.endOfDaySlot,
+                available: available,
+            })
+        }
     },
     
     setWholeDayAvailable: (context, {weekDay, available}) => {

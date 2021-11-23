@@ -41,15 +41,11 @@ export default {
         },
 
         addAvailabilityOmega: function() {
-            this.weekDays.forEach(weekDay => {
-                this.$store.dispatch('setWholeDayAvailable', {weekDay, available: true});
-            });
+            this.$store.dispatch('setOmegaAvailable', {weekDays: this.weekDays, available: true})
         },
 
         addAvailabilityWholeWeekTimeSlot: function(timeSlot) {
-            this.weekDays.forEach(weekDay => {
-                this.$store.dispatch('addAvailabilityTimeslot', {weekDay, timeSlot, available: true});
-            });
+            this.$store.dispatch('addAvailabilityWholeWeekTimeSlot', {weekDays: this.weekDays, timeSlot, available: true})
         },
     }
 }

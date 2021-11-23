@@ -1,7 +1,7 @@
 import { describe } from 'jest-circus';
 import { actions }  from '../availabilityStore';
 import axios from 'axios';
-import modal from '../../modal';
+import { modalOrConsole } from '../../modal';
 
 jest.mock('axios');
 jest.mock('../../modal');
@@ -40,7 +40,7 @@ describe('Availability store actions', () => {
 
     test('updateWeekDayAvailability non-existant patient', () => {
         axios.put.mockImplementation(() => Promise.reject('dummy'));
-        modal.mockResolvedValue(null);
+        modalOrConsole.mockResolvedValue(null);
 
         const context = {
             getters: {
@@ -65,7 +65,7 @@ describe('Availability store actions', () => {
                 }
             );
     
-            expect(modal).toHaveBeenCalledWith('availability_error.update', {}, 'modal.title.error');
+            expect(modalOrConsole).toHaveBeenCalledWith('availability_error.update', {}, 'modal.title.error');
         });
 
     });
@@ -89,6 +89,31 @@ describe('Availability store actions', () => {
             timeSlotEnd: "1000-1030",
             available: true,
         })
+    });
+
+    test('addAvailabilityPeriod out of bound', () => {
+        const context = {
+            getters: {
+                weekDayAvailability: jest.fn().mockReturnValue({
+                    "0900-0930": true,
+                    "0930-1000": false,
+                    "1000-1030": false,
+                })
+            },
+            dispatch: jest.fn(),
+        };
+
+        expect(() => actions.addAvailabilityPeriod(context, {weekDay: 1, periodStart: "0700", periodEnd: "0730"}))
+            .toThrow('availability_error.period_start_out_of_bound');
+
+        expect(() => actions.addAvailabilityPeriod(context, {weekDay: 1, periodStart: "1300", periodEnd: "1330"}))
+            .toThrow('availability_error.period_start_out_of_bound');
+
+        expect(() => actions.addAvailabilityPeriod(context, {weekDay: 1, periodStart: "0700", periodEnd: "1330"}))
+            .toThrow('availability_error.period_start_out_of_bound');
+
+        expect(() => actions.addAvailabilityPeriod(context, {weekDay: 1, periodStart: "0930", periodEnd: "1330"}))
+            .toThrow('availability_error.period_end_out_of_bound');
     });
 
     test('addAvailabilityTimeslot', () => {

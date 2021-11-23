@@ -20,6 +20,7 @@
 import Vuex from 'vuex';
 import Translator from 'bazinga-translator';
 import { weekDayLabel } from './availabilityUtils';
+import { modalOrConsole } from '../modal';
 
 export default {
     name: 'add-availability-form',
@@ -78,13 +79,14 @@ export default {
                 weekDaysToProceed = [ this.weekDay ];
             }
 
-            // https://manal.xyz/gitea/origami_informatique/lao/issues/86
-            
             weekDaysToProceed.forEach(currentWeekDay => {
                 this.storeAddAvailabilityPeriod({
                     weekDay: parseInt(currentWeekDay, 10),
                     periodStart: this.convertTimeFromPicker(this.periodStart),
                     periodEnd: this.convertTimeFromPicker(this.periodEnd)
+                })
+                .catch((error) => {
+                    modalOrConsole(error);
                 });
             });
 

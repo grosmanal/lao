@@ -63,6 +63,8 @@ time_slot:
 
 availability_error:
     update: Error while updating patient availability
+    period_start_out_of_bound: The period start is out of bound
+    period_end_out_of_bound: The period end is out of bound
 
 # Form care request
 Care request from %creationDate%: Care request from %creationDate%

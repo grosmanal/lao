@@ -2,7 +2,7 @@ import $ from 'jquery';
 import Translator from 'bazinga-translator';
 import {Modal as bootstrapModal} from 'bootstrap';
 
-export default function(message, messageParameters = {}, title = 'modal.title.alert') {
+function modal (message, messageParameters = {}, title = 'modal.title.alert') {
     // Alimentation du titre
     $('#modal-window .modal-title').html(Translator.trans(title));
     
@@ -12,3 +12,14 @@ export default function(message, messageParameters = {}, title = 'modal.title.al
     const modalWindow = new bootstrapModal($('#modal-window'));
     modalWindow.show();
 }
+
+function modalOrConsole(message, messageParameters = {}, title = 'modal.title.alert') {
+    if (typeof message === 'string') {
+        modal(message, messageParameters, title);
+    }
+    else {
+        console.error(error);
+    }
+}
+
+export { modal, modalOrConsole };

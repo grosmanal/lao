@@ -25,6 +25,7 @@ import TimeSlot from './timeSlot.vue';
 import Vuex from 'vuex';
 import Translator from 'bazinga-translator';
 import { weekDayLabel as utilsWeekDayLabel } from './availabilityUtils';
+import { modalOrConsole } from '../modal';
 
 export default {
     name: 'week-day-availability',
@@ -55,16 +56,26 @@ export default {
         }),
 
         setWholeDayAvailable: function() {
-            this.storeSetWholeDayAvailable({weekDay: this.weekDay, available: true});
+            this.storeSetWholeDayAvailable({weekDay: this.weekDay, available: true})
+            .catch((error) => {
+                modalOrConsole(error, {}, 'modal.title.error');
+            });
         },
         
         setMorningAvailable: function() {
-            this.storeSetMorningAvailable({weekDay: this.weekDay, available: true});
+            this.storeSetMorningAvailable({weekDay: this.weekDay, available: true})
+            .catch((error) => {
+                modalOrConsole(error, {}, 'modal.title.error');
+            });
         },
   
         setAfternoonAvailable: function() {
-            this.storeSetAfternoonAvailable({weekDay: this.weekDay, available: true});
+            this.storeSetAfternoonAvailable({weekDay: this.weekDay, available: true})
+            .catch((error) => {
+                modalOrConsole(error, {}, 'modal.title.error');
+            });
         },
+
         hideCloseButton: function() {
             this.resetTimeSlotShowingCloseButton();
         },

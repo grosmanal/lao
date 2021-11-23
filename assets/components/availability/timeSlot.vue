@@ -19,6 +19,7 @@
 import Vuex from 'vuex';
 import Translator from 'bazinga-translator';
 import { firstHourReadable, lastHourReadable, weekDayLabel  } from './availabilityUtils';
+import { modalOrConsole } from '../modal';
 
 export default {
     name: 'time-slot',
@@ -57,16 +58,20 @@ export default {
             updateTimeSlotShowingCloseButton: 'updateTimeSlotShowingCloseButton',
             resetTimeSlotShowingCloseButton: 'resetTimeSlotShowingCloseButton',
         }),
-
         toggle: async function() {
-            this.storeToggleTimeSlot({weekDay: this.weekDay, timeSlot: this.timeSlot});
-
+            this.storeToggleTimeSlot({weekDay: this.weekDay, timeSlot: this.timeSlot})
+            .catch((error) => {
+                modalOrConsole(error, {}, 'modal.title.error');
+            });
         },
         deleteSlotAndNext: function() {
             Promise.all([
                 this.storeDeleteTimeSlotAndNext({weekDay: this.weekDay, timeSlot: this.timeSlot}),
                 this.resetTimeSlotShowingCloseButton(),
-            ]);
+            ])
+            .catch((error) => {
+                modalOrConsole(error, {}, 'modal.title.error');
+            });
         },
         showCloseButton: function() {
             this.updateTimeSlotShowingCloseButton({weekDay: this.weekDay, timeSlot: this.timeSlot})
