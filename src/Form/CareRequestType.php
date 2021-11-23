@@ -113,7 +113,21 @@ class CareRequestType extends AbstractType
             ])
         ;
         
-        if ($options['patient']) {
+        if ($careRequest->getId()) {
+            // care request existante
+            $builder
+                ->add('delete', ButtonType::class, [
+                    'label' => 'care_request.delete',
+                    'label_html' => true,
+                    'attr' => [
+                        'class' => 'btn btn-outline-danger',
+                        'onclick' => "deleteCareRequest(event)",
+                        'data-api-url-delete' => $options['api_delete_url'],
+                    ],
+                ])
+            ;
+        }
+        else {
             // Ajout de l'id du patient dans le formulaire
             // Cas de l'ajout d'une care request
             $builder->add('patientId', HiddenType::class, [
@@ -131,11 +145,13 @@ class CareRequestType extends AbstractType
             'api_url' => null,
             'patient' => null,
             'current_doctor' => null,
+            'api_delete_url' => null,
         ]);
 
         $resolver->setAllowedTypes('api_action', 'string');
         $resolver->setAllowedTypes('api_url', 'string');
         $resolver->setAllowedTypes('patient', ['null', Patient::class]);
         $resolver->setAllowedTypes('current_doctor', Doctor::class);
+        $resolver->setAllowedTypes('api_delete_url', ['null', 'string']);
     }
 }

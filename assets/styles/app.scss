@@ -10,6 +10,10 @@ $accordion-icon-active-color: #000;
 
 @import '~bootstrap/scss/bootstrap';
 
+body {
+    padding-bottom: 1rem;
+}
+
 .body-content {
     padding-top: 70px;
 }

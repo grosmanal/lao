@@ -66,9 +66,11 @@ class CareRequestController extends AbstractController
         $this->denyAccessUnlessGranted('edit', $careRequest);
         
         $careRequestForm = $this->createForm(CareRequestType::class, $careRequest, [
+            'translation_domain' => 'messages',
             'api_action' => 'PUT',
             'api_url' => $this->generateUrl('api_care_requests_put_item', ['id' => $careRequest->getId()]),
             'current_doctor' => $userProfile->getDoctor(),
+            'api_delete_url' => $this->generateUrl('api_care_requests_delete_item', ['id' => $careRequest->getId()]),
         ]);
         
         return $this->render('patient/care_request.html.twig', [

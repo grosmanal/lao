@@ -72,11 +72,14 @@ save: Enregistrer
 reactivate: Réactiver
 care_request:
     new: Nouvelle demande
+    delete: '%icon% Supprimer'
+    confirm_delete: Supprimer définitivement cette demande ?
     priority:
         label: Demande prioritaire
 care_request_error:
     reread: Erreur lors du ré-affichage de la demande
     update: Erreur lors de la mise à jour de la demande de soin %errorMessage%
+    delete: Erreur lors de la suppression de la demande
     both_accepted_abandonned: Une demande ne peut être à la fois acceptée et abandonnée.
     creating_doctor_office: Le docteur créant une demande doit être du même cabinet que le patient.
     accepting_doctor_office: Le docteur acceptant une demande doit être du même cabinet que le patient.

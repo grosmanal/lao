@@ -72,11 +72,14 @@ save: Save
 reactivate: Reactivate
 care_request:
     new: New care request
+    delete: '%icon% Delete'
+    confirm_delete: Permanently delete this care request ?
     priority:
         label: Priority care request
 care_request_error:
     reread: Error while reading care request
     update: Error while updating care request %errorMessage%
+    delete: Error while deleting patient
     both_accepted_abandonned: Care request cannot be both accepted and abandonned
     creating_doctor_office: Doctor creating care request must belong to the patient’s office
     accepting_doctor_office: Doctor accepting care request must belong to the patient’s office

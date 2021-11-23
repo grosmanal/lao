@@ -211,6 +211,23 @@ function abandonCareRequest(event) {
 }
 
 
+function deleteCareRequest(event)
+{
+    if (confirm(Translator.trans('care_request.confirm_delete')) != true) {
+        return false;
+    } 
+    
+    // Suppression de la care request
+    httpClient.delete(event.target.dataset.apiUrlDelete)
+    .then(function (response) {
+        // Suppression de la care request du DOM
+        $(event.target).parentsUntil('#care-requests-accordion', '.accordion-item').remove();
+    }).catch(function (error) {
+        modal('care_request_error.delete');
+    });
+}
+
+
 /**
  * Insertion d'un formulaire de création de care request dans
  * la liste des care request
@@ -265,6 +282,7 @@ formsComment.forEach(function(element) {
 window.submitPatient = submitPatient;
 window.submitCareRequest = submitCareRequest;
 window.reactivateCareRequest = reactivateCareRequest;
+window.deleteCareRequest = deleteCareRequest;
 window.submitComment = submitComment;
 window.submitCommentMenu = submitCommentMenu;
 window.abandonCareRequest = abandonCareRequest;
