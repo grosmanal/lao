@@ -19,7 +19,6 @@
 <script>
 import Vuex from 'vuex';
 import { weekDayLabel } from './availabilityUtils';
-import Translator from 'bazinga-translator';
 
 export default {
     name: 'add-availability-form',

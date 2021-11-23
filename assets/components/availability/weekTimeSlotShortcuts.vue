@@ -18,7 +18,6 @@
 <script>
 import Vuex from 'vuex';
 import { toReadableHour } from './availabilityUtils';
-import Translator from 'bazinga-translator';
 
 export default {
     name: 'week-time-slot-shortcuts',

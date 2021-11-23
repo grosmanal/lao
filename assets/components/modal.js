@@ -1,6 +1,5 @@
 import $ from 'jquery';
 import {Modal as bootstrapModal} from 'bootstrap';
-import Translator from 'bazinga-translator';
 
 export default function(message, messageParameters = {}, title = 'modal.title.alert') {
     // Alimentation du titre
