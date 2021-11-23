@@ -23,6 +23,7 @@
 <script>
 import TimeSlot from './timeSlot.vue';
 import Vuex from 'vuex';
+import Translator from 'bazinga-translator';
 import { weekDayLabel as utilsWeekDayLabel } from './availabilityUtils';
 
 export default {

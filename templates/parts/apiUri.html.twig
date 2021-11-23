@@ -1,0 +1,14 @@
+<script>
+// constante globale contenant les Uri des entités de l'API pour utilisation dans les javascript
+{% set apiEntities = {
+    Patient: 'api_patients_get_item',
+    Doctor: 'api_doctors_get_item',
+    Complaint: 'api_complaints_get_item',
+    CareRequest: 'api_care_requests_get_item'
+} %}
+const apiUri = {
+    {% for entity, path in apiEntities %}
+    {{ entity }}: "{{ path(path, {id: '%id%'})|replace({'%25': '%'}) }}",
+    {% endfor %}
+};
+</script>

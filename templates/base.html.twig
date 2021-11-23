@@ -10,19 +10,9 @@
         {% endblock %}
 
         {% block javascripts %}
-            <script src="{{ asset('bundles/bazingajstranslation/js/translator.min.js') }}"></script> {# TODO pourquoi pas importé via webpack ? #}
+            <script src="{{ asset('bundles/bazingajstranslation/js/translator.min.js') }}"></script>
             <script src="{{ url('bazinga_jstranslation_js') }}"></script>
-            
-            <script>
-                // constante globale contenant les Uri des entités de l'API pour utilisation dans les javascript
-                // TODO voir si on peut faire mieux (comme bazingajstranslation)
-                const apiUri = {
-                    'Patient': "{{ path('api_patients_get_item', {id: '%id%'})|replace({'%25': '%'}) }}",
-                    'Doctor': "{{ path('api_doctors_get_item', {id: '%id%'})|replace({'%25': '%'}) }}",
-                    'Complaint': "{{ path('api_complaints_get_item', {id: '%id%'})|replace({'%25': '%'}) }}",
-                    'CareRequest': "{{ path('api_care_requests_get_item', {id: '%id%'})|replace({'%25': '%'}) }}",
-                };
-            </script>
+            {% include "parts/apiUri.html.twig" %}
 
             {{ encore_entry_script_tags('app') }}
         {% endblock %}

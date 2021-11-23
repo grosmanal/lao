@@ -18,6 +18,7 @@
 
 <script>
 import Vuex from 'vuex';
+import Translator from 'bazinga-translator';
 import { weekDayLabel } from './availabilityUtils';
 
 export default {

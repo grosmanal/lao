@@ -1,5 +1,6 @@
 import httpClient from 'axios';
 import $ from 'jquery';
+import Translator from 'bazinga-translator';
 
 import nullFieldConverter from './utils/nullFieldConverter';
 import apiFieldConverter from './utils/apiFieldConverter';

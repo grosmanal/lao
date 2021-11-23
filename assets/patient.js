@@ -1,5 +1,6 @@
 import httpClient from 'axios';
 import $ from 'jquery';
+import Translator from 'bazinga-translator';
 import modal from './components/modal';
 import { submitCommentMenu, submitComment, transformToSummernote } from './comment';
 import nullFieldConverter from './utils/nullFieldConverter';

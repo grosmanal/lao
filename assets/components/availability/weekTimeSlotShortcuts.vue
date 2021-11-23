@@ -17,6 +17,7 @@
 
 <script>
 import Vuex from 'vuex';
+import Translator from 'bazinga-translator';
 import { toReadableHour } from './availabilityUtils';
 
 export default {
