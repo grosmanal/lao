@@ -71,7 +71,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .availability-container {
     display: flex;
     justify-content: center;

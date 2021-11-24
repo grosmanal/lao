@@ -83,7 +83,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .week-day-availability {
     min-width: 130px;
 }

@@ -56,7 +56,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .week-time-slot-shortcuts {
     display: flex;
     flex-direction: column;

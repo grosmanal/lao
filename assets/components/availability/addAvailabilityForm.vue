@@ -96,7 +96,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
     .add-availability-form {
         margin-bottom: 25px;
         display: flex;

@@ -80,7 +80,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
     .slot {
         min-height: 35px;
         max-width: 200px;
