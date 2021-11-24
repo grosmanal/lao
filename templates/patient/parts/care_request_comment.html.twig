@@ -1,22 +1,5 @@
 <li class="{{ html_classes('comment', { 'opacity-0': commentHidden ?? false } ) }}">
-    {% if app.user.id == comment.author.id and comment.careRequest.active %}
-    <form action="#" onsubmit="submitCommentMenu(event)">
-        <input type="hidden" name="url-api-delete" value="{{ url('api_comments_delete_item', {id: comment.id}) }}">
-        <input type="hidden" name="url-get-form" value="{{ url('comment_form', {id: comment.id}) }}">
-        <menu>
-            <menuitem>
-                <button class="btn btn-sm btn-outline-primary" name="edit" type="submit">
-                    <i class="bi bi-pencil-square"></i>
-                    {% trans %}comment.edit{% endtrans %}
-                </button>
-                <button class="btn btn-sm btn-outline-danger" name="delete" type="submit">
-                    <i class="bi bi-trash"></i>
-                    {% trans %}comment.delete{% endtrans %}
-                </button>
-            </menuitem>
-        </menu>
-    </form>
-    {% endif %}
+    {#% include "patient/parts/care_request_comment_menu.html.twig" %#}
     <article class="d-flex border border-2">
         <div class="flex-shrink-0 {{ app.user.id == comment.author.id ? 'order-0' : 'order-1' }}">
             <img src="https://via.placeholder.com/100" alt="{{ comment.author.firstname }}">
@@ -36,6 +19,35 @@
                     )
                 </span>
                 {% endif %}
+
+                {% if app.user.id == comment.author.id and comment.careRequest.active %}
+                <span class="float-end">
+                    <div class="dropdown">
+                        <form action="#" onsubmit="submitCommentMenu(event)">
+                            <input type="hidden" name="url-api-delete" value="{{ url('api_comments_delete_item', {id: comment.id}) }}">
+                            <input type="hidden" name="url-get-form" value="{{ url('comment_form', {id: comment.id}) }}">
+
+                            <button class="btn btn-outline-secondary btn-sm dropdown-toggle" data-bs-toggle="dropdown">
+                                <i class="bi bi-three-dots"></i>
+                            </button>
+
+                            <ul class="dropdown-menu">
+                                <li class="dropdown-item">
+                                    <button type="submit" name="edit" class="btn btn-link ps-0 text-primary text-decoration-none">
+                                        <i class="bi bi-pencil-square"></i> {{ 'comment.edit'|trans }}
+                                    </button>
+                                </li>
+                                <li class="dropdown-item">
+                                    <button type="submit" name="delete" class="btn btn-link ps-0 text-danger text-decoration-none">
+                                        <i class="bi bi-trash"></i>{{ 'comment.delete'|trans }}
+                                    </button>
+                                </li>
+                            </ul>
+                        </form>
+                    </div>
+                </span>
+                {% endif %}
+
             </div>
 
             <p>
@@ -44,3 +56,34 @@
         </div>
     </article>
 </li>
+
+
+{#
+
+                            <ul class="dropdown-menu">
+                                <li class="dropdown-item text-primary">
+                                    <i class="bi bi-pencil-square"></i>
+                                    {% trans %}comment.edit{% endtrans %}
+                                </li>
+                                <li class="dropdown-item text-danger">
+                                    <i class="bi bi-trash"></i>
+                                    {% trans %}comment.delete{% endtrans %}
+                                </li>
+                            </ul>
+                            
+
+                            
+                            <menu class="dropdown-menu">
+                                <menuitem class="dropdown-item">
+                                        <i class="bi bi-pencil-square"></i>
+                                        {% trans %}comment.edit{% endtrans %}
+                                    </button>
+                                </menuitem>
+                                <menuitem class="dropdown-item">
+                                    <button class="btn btn-sm btn-outline-danger" type="submit">
+                                        <i class="bi bi-trash"></i>
+                                        {% trans %}comment.delete{% endtrans %}
+                                    </button>
+                                </menuitem>
+                            </menu>
+#}

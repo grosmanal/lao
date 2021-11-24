@@ -85,15 +85,15 @@ function editComment(form)
     httpClient
         .get(form['url-get-form'].value)
         .then(function(response) {
-            // Recherche du parent de la form pour y injecter le nouveau HTML
-            let commentListItemJq = $(form).parent();
+            // Recherche de l'item de la liste des commentaires pour y injecter le nouveau HTML
+            const commentListItem = $(form).parentsUntil('ul.comments', 'li.comment');
 
             // Cache du commentaire actuel et de la barre de bouton
-            commentListItemJq.children().hide();
-            commentListItemJq.children().filter('.d-flex').removeClass('d-flex');
+            commentListItem.children().hide();
+            commentListItem.children().filter('.d-flex').removeClass('d-flex');
 
             // Injection du nouveau HTML
-            let newTextArea = commentListItemJq.append(response.data).find('textarea');
+            const newTextArea = commentListItem.append(response.data).find('textarea');
             
             // Transformation en summernote
             transformToSummernote(newTextArea.get(0));
@@ -113,11 +113,12 @@ function deleteComment(form)
         method: 'delete',
         url: form['url-api-delete'].value,
     }).then(function (response) {
-        const comment = $(form).parent();
-        const commentListItem = comment.get(0);
+        // Recherche de l'item de la liste des commentaires pour y le supprimer
+        const commentListItem = $(form).parentsUntil('ul.comments', 'li.comment');
+        const commentListItemDom = commentListItem.get(0);
         
-        commentListItem.addEventListener('transitionend', function(event) {
-            if (event.target !== commentListItem) {
+        commentListItemDom.addEventListener('transitionend', function(event) {
+            if (event.target !== commentListItemDom) {
                 return;
             }
 
@@ -125,8 +126,9 @@ function deleteComment(form)
         });
 
         // Visibility pour transition jolie
-        comment.addClass('opacity-0');
+        commentListItem.addClass('opacity-0');
     }).catch(function(error) {
+        console.log(error);
         modal('comment_error.delete');
     });
 }

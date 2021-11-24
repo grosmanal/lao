@@ -1,0 +1,20 @@
+{# Attention : ce twig n'est pas utilisé : gardé pour mémoire #}
+{# include en commentaire dans care_request_comment.html.twig #}
+{% if app.user.id == comment.author.id and comment.careRequest.active %}
+<form action="#" onsubmit="submitCommentMenu(event)">
+    <input type="hidden" name="url-api-delete" value="{{ url('api_comments_delete_item', {id: comment.id}) }}">
+    <input type="hidden" name="url-get-form" value="{{ url('comment_form', {id: comment.id}) }}">
+    <menu>
+        <menuitem>
+            <button class="btn btn-sm btn-outline-primary" name="edit" type="submit">
+                <i class="bi bi-pencil-square"></i>
+                {% trans %}comment.edit{% endtrans %}
+            </button>
+            <button class="btn btn-sm btn-outline-danger" name="delete" type="submit">
+                <i class="bi bi-trash"></i>
+                {% trans %}comment.delete{% endtrans %}
+            </button>
+        </menuitem>
+    </menu>
+</form>
+{% endif %}
