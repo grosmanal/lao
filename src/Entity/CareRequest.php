@@ -37,10 +37,6 @@ class CareRequest implements OfficeOwnedInterface
     const STATE_ARCHIVED = 'archived';
     const STATE_ABANDONED = 'abandoned';
 
-    const ABANDONED_NO_ANSWER = 'no_answer';
-    const ABANDONED_OTHER_DOCTOR = 'other_doc';
-    const ABANDONED_TOO_OLD = '';
-    
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -174,7 +170,7 @@ class CareRequest implements OfficeOwnedInterface
     #[Groups(['careRequest:read', 'comment:read'])]
     public function getState(): string
     {
-        if (empty($this->getCreationDate())) {
+        if (empty($this->getId())) {
             return self::STATE_NEW;
         }
         

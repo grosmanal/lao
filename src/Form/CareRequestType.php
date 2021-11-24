@@ -54,6 +54,7 @@ class CareRequestType extends AbstractType
             ])
             ->add('complaint', EntityType::class, [
                 'class' => Complaint::class,
+                'required' => false,
                 'disabled' => $fieldDisabled,
             ])
             ->add('customComplaint', TextType::class, [
@@ -63,6 +64,7 @@ class CareRequestType extends AbstractType
             ->add('acceptedByDoctor', EntityType::class, [
                 'class' => Doctor::class,
                 'query_builder' => $doctorQueryBuilder,
+                'required' => false,
                 'disabled' => $fieldDisabled,
             ])
             ->add('acceptDate', DateType::class, [

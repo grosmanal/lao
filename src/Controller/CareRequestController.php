@@ -7,6 +7,7 @@ use App\Form\CareRequestType;
 use App\Repository\PatientRepository;
 use App\Service\UserProfile;
 use App\Service\Notification;
+use DateTimeImmutable;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -35,6 +36,10 @@ class CareRequestController extends AbstractController
         $this->denyAccessUnlessGranted('edit', $patient);
         
         $careRequest = new CareRequest();
+        $careRequest
+            ->setCreationDate(new DateTimeImmutable('now'))
+            ->setDoctorCreator($userProfile->getDoctor())
+            ;
         $careRequestForm = $this->createForm(CareRequestType::class, $careRequest, [
             'api_action' => 'POST',
             'api_url' => $this->generateUrl('api_care_requests_post_collection'),
