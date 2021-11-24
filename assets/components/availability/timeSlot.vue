@@ -80,7 +80,9 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+    @import '../../styles/variables';
+
     .slot {
         min-height: 35px;
         max-width: 200px;
@@ -88,7 +90,7 @@ export default {
         border-bottom: 1px lightgray solid;
         text-align: end;
         transition: background-color 0.3s ease-in;
-        background-color: rgb(241, 241, 241); /* https://manal.xyz/gitea/origami_informatique/lao/issues/87 */
+        background-color: $body-bg;
     }
 
     .slot:first-of-type {
