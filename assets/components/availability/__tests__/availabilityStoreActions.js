@@ -7,7 +7,7 @@ jest.mock('axios');
 jest.mock('../../modal');
 
 describe('Availability store actions', () => {
-    test('updateWeekDayAvailability', () => {
+    test('updateWeekDaysAvailability', () => {
         axios.put.mockResolvedValue({foo: 'bar'});
 
         const context = {
@@ -18,27 +18,27 @@ describe('Availability store actions', () => {
         }
 
         const payload = {
-            weekDay: 1,
+            weekDays: [ 1 ],
             timeSlotStart: "0800-0830",
             timeSlotEnd: "0830-0900",
             available: true,
         }
 
-        actions.updateWeekDayAvailability(context, payload).then(() => {
+        actions.updateWeekDaysAvailability(context, payload).then(() => {
             expect(axios.put).toHaveBeenCalledWith(
                 '/mockedUrl', {
-                    weekDay: 1,
+                    weekDays: [ 1 ],
                     start: "0800",
                     end: "0900",
                     available: true,
                 }
             );
     
-            expect(context.commit).toHaveBeenCalledWith('UPDATE_WEEKDAY_AVAILABILITY', payload);
+            expect(context.commit).toHaveBeenCalledWith('UPDATE_WEEKDAYS_AVAILABILITY', payload);
         });        
     });
 
-    test('updateWeekDayAvailability non-existant patient', () => {
+    test('updateWeekDaysAvailability non-existant patient', () => {
         axios.put.mockImplementation(() => Promise.reject('dummy'));
         modalOrConsole.mockResolvedValue(null);
 
@@ -49,16 +49,16 @@ describe('Availability store actions', () => {
         }
 
         const payload = {
-            weekDay: 1,
+            weekDays: [ 1 ],
             timeSlotStart: "0800-0830",
             timeSlotEnd: "0830-0900",
             available: true,
         }
 
-        actions.updateWeekDayAvailability(context, payload).then(() => {
+        actions.updateWeekDaysAvailability(context, payload).then(() => {
             expect(axios.put).toHaveBeenCalledWith(
                 '/mockedUrl', {
-                    weekDay: 1,
+                    weekDays: [ 1 ],
                     start: "0800",
                     end: "0900",
                     available: true,
@@ -82,9 +82,9 @@ describe('Availability store actions', () => {
             dispatch: jest.fn(),
         };
 
-        actions.addAvailabilityPeriod(context, {weekDay: 1, periodStart: "0930", periodEnd: "1030"});
-        expect(context.dispatch).toHaveBeenCalledWith('updateWeekDayAvailability', {
-            weekDay: 1,
+        actions.addAvailabilityPeriod(context, {weekDays: [ 1 ], periodStart: "0930", periodEnd: "1030"});
+        expect(context.dispatch).toHaveBeenCalledWith('updateWeekDaysAvailability', {
+            weekDays: [ 1 ],
             timeSlotStart: "0930-1000",
             timeSlotEnd: "1000-1030",
             available: true,
@@ -103,16 +103,16 @@ describe('Availability store actions', () => {
             dispatch: jest.fn(),
         };
 
-        expect(() => actions.addAvailabilityPeriod(context, {weekDay: 1, periodStart: "0700", periodEnd: "0730"}))
+        expect(() => actions.addAvailabilityPeriod(context, {weekDays: [ 1 ], periodStart: "0700", periodEnd: "0730"}))
             .toThrow('availability_error.period_start_out_of_bound');
 
-        expect(() => actions.addAvailabilityPeriod(context, {weekDay: 1, periodStart: "1300", periodEnd: "1330"}))
+        expect(() => actions.addAvailabilityPeriod(context, {weekDays: [ 1 ], periodStart: "1300", periodEnd: "1330"}))
             .toThrow('availability_error.period_start_out_of_bound');
 
-        expect(() => actions.addAvailabilityPeriod(context, {weekDay: 1, periodStart: "0700", periodEnd: "1330"}))
+        expect(() => actions.addAvailabilityPeriod(context, {weekDays: [ 1 ], periodStart: "0700", periodEnd: "1330"}))
             .toThrow('availability_error.period_start_out_of_bound');
 
-        expect(() => actions.addAvailabilityPeriod(context, {weekDay: 1, periodStart: "0930", periodEnd: "1330"}))
+        expect(() => actions.addAvailabilityPeriod(context, {weekDays: [ 1 ], periodStart: "0930", periodEnd: "1330"}))
             .toThrow('availability_error.period_end_out_of_bound');
     });
 
@@ -136,8 +136,8 @@ describe('Availability store actions', () => {
         };
 
         actions.addAvailabilityTimeslot(context, {weekDay: 1, timeSlot: "0930-1000", available: true});
-        expect(context.dispatch).toHaveBeenCalledWith('updateWeekDayAvailability', {
-            weekDay: 1,
+        expect(context.dispatch).toHaveBeenCalledWith('updateWeekDaysAvailability', {
+            weekDays: [ 1 ],
             timeSlotStart: "0930-1000",
             timeSlotEnd: "0930-1000",
             available: true,
@@ -178,8 +178,8 @@ describe('Availability store actions', () => {
         };
 
         actions.deleteTimeSlotAndNext(context, {weekDay: 1, timeSlot: "0900-0930"});
-        expect(context.dispatch).toHaveBeenCalledWith('updateWeekDayAvailability', {
-            weekDay: 1,
+        expect(context.dispatch).toHaveBeenCalledWith('updateWeekDaysAvailability', {
+            weekDays: [ 1 ],
             timeSlotStart: "0900-0930",
             timeSlotEnd: "0900-0930",
             available: false,
@@ -201,8 +201,8 @@ describe('Availability store actions', () => {
         };
 
         actions.deleteTimeSlotAndNext(context, {weekDay: 1, timeSlot: "0930-1000"});
-        expect(context.dispatch).toHaveBeenCalledWith('updateWeekDayAvailability', {
-            weekDay: 1,
+        expect(context.dispatch).toHaveBeenCalledWith('updateWeekDaysAvailability', {
+            weekDays: [ 1 ],
             timeSlotStart: "0930-1000",
             timeSlotEnd: "1100-1130",
             available: false,
@@ -224,8 +224,8 @@ describe('Availability store actions', () => {
         };
 
         actions.deleteTimeSlotAndNext(context, {weekDay: 1, timeSlot: "0930-1000"});
-        expect(context.dispatch).toHaveBeenCalledWith('updateWeekDayAvailability', {
-            weekDay: 1,
+        expect(context.dispatch).toHaveBeenCalledWith('updateWeekDaysAvailability', {
+            weekDays: [ 1 ],
             timeSlotStart: "0930-1000",
             timeSlotEnd: "1130-1200",
             available: false,
@@ -242,8 +242,8 @@ describe('Availability store actions', () => {
         };
 
         actions.setWholeDayAvailable(context, {weekDay: 1, available: true});
-        expect(context.dispatch).toHaveBeenCalledWith('updateWeekDayAvailability', {
-            weekDay: 1,
+        expect(context.dispatch).toHaveBeenCalledWith('updateWeekDaysAvailability', {
+            weekDays: [ 1 ],
             timeSlotStart: "0900-0930",
             timeSlotEnd: "1130-1200",
             available: true,
@@ -260,8 +260,8 @@ describe('Availability store actions', () => {
         };
 
         actions.setMorningAvailable(context, {weekDay: 1, available: true});
-        expect(context.dispatch).toHaveBeenCalledWith('updateWeekDayAvailability', {
-            weekDay: 1,
+        expect(context.dispatch).toHaveBeenCalledWith('updateWeekDaysAvailability', {
+            weekDays: [ 1 ],
             timeSlotStart: "0900-0930",
             timeSlotEnd: "1000-1030",
             available: true,
@@ -278,8 +278,8 @@ describe('Availability store actions', () => {
         };
 
         actions.setAfternoonAvailable(context, {weekDay: 1, available: true});
-        expect(context.dispatch).toHaveBeenCalledWith('updateWeekDayAvailability', {
-            weekDay: 1,
+        expect(context.dispatch).toHaveBeenCalledWith('updateWeekDaysAvailability', {
+            weekDays: [ 1 ],
             timeSlotStart: "1000-1030",
             timeSlotEnd: "1130-1200",
             available: true,

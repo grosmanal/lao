@@ -8,7 +8,7 @@ use App\Service\Availability;
 use App\Input\PatientPatchAvailabilityInput;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Exception\BadRequestException;
+use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class PatientPatchAvailabilityController extends AbstractController
@@ -21,8 +21,6 @@ class PatientPatchAvailabilityController extends AbstractController
     
     public function __invoke(Patient $data): Patient
     {
-        $this->denyAccessUnlessGranted('edit', $data); // TODO doublon avec security dans entity ?
-        
         $requestContent = $this->get('request_stack')->getCurrentRequest()->getContent();
         
         /** @var PatientPatchAvailabilityInput */
@@ -30,7 +28,7 @@ class PatientPatchAvailabilityController extends AbstractController
         $errors = $this->validator->validate($input);
         
         if (count($errors) > 0) {
-            throw new BadRequestException(sprintf("%s : %s", 
+            throw new UnprocessableEntityHttpException(sprintf("%s : %s", 
                 $errors->get(0)->getPropertyPath(),
                 $errors->get(0)->getMessage()
             ));
@@ -38,22 +36,17 @@ class PatientPatchAvailabilityController extends AbstractController
 
         // Conversion de la disponibilité du patient en objets Interval
         $intervaledAvailabilities = $this->availability->rawToIntervals($data->getAvailability());
-        if ($input->getAvailable()) {
-            $newAvailabilities = $this->availability->addAvailability(
+        foreach ($input->getWeekDays() as $weekDay) {
+            $intervaledAvailabilities = $this->availability->updateAvailability(
+                $input->getAvailable(),
                 $intervaledAvailabilities,
-                $input->getWeekDay(),
-                new Interval((int) $input->getStart(), (int) $input->getEnd())
-            );
-        } else {
-            $newAvailabilities = $this->availability->removeAvailability(
-                $intervaledAvailabilities,
-                $input->getWeekDay(),
+                $weekDay,
                 new Interval((int) $input->getStart(), (int) $input->getEnd())
             );
         }
 
         $data->setAvailability(
-            $this->availability->intervalsToRaw($newAvailabilities)
+            $this->availability->intervalsToRaw($intervaledAvailabilities)
         );
 
         return $data;

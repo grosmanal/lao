@@ -182,6 +182,25 @@ class Availability
 
         return $current;
     }
+    
+
+    /**
+     * Ajoute ou supprime une disponibilité à celles déjà existantes
+     *
+     * @param bool $available Flag permettant d'ajouter (true) au supprimer (false) une disponibilité
+     * @param array $current Disponibilités précédentes
+     * @param int $weekDay Jour de la semaine sur lequel supprimer un intervalle
+     * @param Interval $interval Intervale à ajouter / supprimer
+     * @return array Nouvelles disponibilités
+     */
+    public function updateAvailability(bool $available, array $current, int $weekDay, Interval $interval)
+    {
+        if ($available) {
+            return $this->addAvailability($current, $weekDay, $interval);
+        } else {
+            return $this->removeAvailability($current, $weekDay, $interval);
+        }
+    }
 
 
     /**

@@ -7,12 +7,17 @@ use Symfony\Component\Validator\Constraints as Assert;
 class PatientPatchAvailabilityInput
 {
     /**
-     * @var int
+     * @var int[]
      * @Assert\NotBlank
-     * @Assert\GreaterThanOrEqual(1)
-     * @Assert\LessThanOrEqual(7)
+     * @Assert\Type("array")
+     * @Assert\Count(max=7)
+     * @Assert\All({
+     *     @Assert\Type("int"),
+     *     @Assert\GreaterThanOrEqual(1),
+     *     @Assert\LessThanOrEqual(7)
+     * })
      */
-    private $weekDay;
+    private $weekDays;
 
     /**
      * @var bool
@@ -32,14 +37,14 @@ class PatientPatchAvailabilityInput
      */
     private $end;
 
-    public function getWeekDay(): int
+    public function getWeekDays(): array
     {
-        return $this->weekDay;
+        return $this->weekDays;
     }
 
-    public function setWeekDay(int $weekDay): self
+    public function setWeekDays(array $weekDays): self
     {
-        $this->weekDay = $weekDay;
+        $this->weekDays = $weekDays;
 
         return $this;
     }

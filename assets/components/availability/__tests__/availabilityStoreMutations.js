@@ -72,8 +72,8 @@ describe('Availability store mutations', () => {
             },
         };
 
-        mutations.UPDATE_WEEKDAY_AVAILABILITY(state, {
-            weekDay: 1,
+        mutations.UPDATE_WEEKDAYS_AVAILABILITY(state, {
+            weekDays: [ 1 ],
             timeSlotStart: "0900-0930",
             timeSlotEnd: "0900-0930",
             available: true,
@@ -114,8 +114,8 @@ describe('Availability store mutations', () => {
             },
         };
 
-        mutations.UPDATE_WEEKDAY_AVAILABILITY(state, {
-            weekDay: 1,
+        mutations.UPDATE_WEEKDAYS_AVAILABILITY(state, {
+            weekDays: [ 1 ],
             timeSlotStart: "0830-0900",
             timeSlotEnd: "0900-0930",
             available: true,
@@ -156,8 +156,8 @@ describe('Availability store mutations', () => {
             },
         };
 
-        mutations.UPDATE_WEEKDAY_AVAILABILITY(state, {
-            weekDay: 1,
+        mutations.UPDATE_WEEKDAYS_AVAILABILITY(state, {
+            weekDays: [ 1 ],
             timeSlotStart: "0830-0900",
             timeSlotEnd: "0900-0930",
             available: false,
@@ -198,8 +198,8 @@ describe('Availability store mutations', () => {
             },
         };
 
-        mutations.UPDATE_WEEKDAY_AVAILABILITY(state, {
-            weekDay: 1,
+        mutations.UPDATE_WEEKDAYS_AVAILABILITY(state, {
+            weekDays: [ 1 ],
             timeSlotStart: "0845-0915",
             timeSlotEnd: "0900-0945",
             available: true,

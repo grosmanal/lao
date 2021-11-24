@@ -17,12 +17,12 @@ export const mutations = {
         state.availability = initAvailability;
     },
     
-    UPDATE_WEEKDAY_AVAILABILITY: (state, { weekDay, timeSlotStart, timeSlotEnd, available }) => {
+    UPDATE_WEEKDAYS_AVAILABILITY: (state, { weekDays, timeSlotStart, timeSlotEnd, available }) => {
         let newAvailability = new Object();
         Object.assign(newAvailability, state.availability)
         
         for (const currentWeekDay in state.availability) {
-            if (parseInt(currentWeekDay) === weekDay) {
+            if (weekDays.includes(parseInt(currentWeekDay))) {
                 // On est sur le jour à modifier
                 
                 for (const currentTimeSlot in newAvailability[currentWeekDay]) {
@@ -137,19 +137,19 @@ export const actions = {
         Vuex._urlPutPatientAvailability = urlPutPatientAvailability;
     },
     
-    updateWeekDayAvailability: (context, { weekDay, timeSlotStart, timeSlotEnd, available }) => {
+    updateWeekDaysAvailability: (context, { weekDays, timeSlotStart, timeSlotEnd, available }) => {
         return axios.put(
             context.getters.urlPutPatientAvailability,
             {
-                weekDay: weekDay,
+                weekDays: weekDays,
                 start: firstHour(timeSlotStart),
                 end: lastHour(timeSlotEnd),
                 available: available,
             }
         ).then((response) => {
             // mutation du state availability
-            context.commit('UPDATE_WEEKDAY_AVAILABILITY', {
-                weekDay: weekDay,
+            context.commit('UPDATE_WEEKDAYS_AVAILABILITY', {
+                weekDays: weekDays,
                 timeSlotStart: timeSlotStart,
                 timeSlotEnd: timeSlotEnd,
                 available: available,
@@ -161,9 +161,9 @@ export const actions = {
     },
 
 
-    addAvailabilityPeriod: (context, {weekDay, periodStart, periodEnd}) => {
+    addAvailabilityPeriod: (context, {weekDays, periodStart, periodEnd}) => {
         // Recherche des slots correspondant à periodStart et periodEnd
-        const weekDayAvailability = context.getters.weekDayAvailability(weekDay);
+        const weekDayAvailability = context.getters.weekDayAvailability(weekDays[0]);
         const timeSlotStart = timeSlotFromPeriodEdge(Object.keys(weekDayAvailability), periodStart);
         const timeSlotEnd = timeSlotFromPeriodEdge(Object.keys(weekDayAvailability), periodEnd, true);
         
@@ -175,8 +175,8 @@ export const actions = {
             throw Translator.trans('availability_error.period_end_out_of_bound');
         }
 
-        return context.dispatch('updateWeekDayAvailability', {
-            weekDay: weekDay,
+        return context.dispatch('updateWeekDaysAvailability', {
+            weekDays: weekDays,
             timeSlotStart: timeSlotStart,
             timeSlotEnd: timeSlotEnd,
             available: true,
@@ -184,8 +184,8 @@ export const actions = {
     },
 
     addAvailabilityTimeslot: (context, {weekDay, timeSlot, available}) => {
-        return context.dispatch('updateWeekDayAvailability', {
-            weekDay: weekDay,
+        return context.dispatch('updateWeekDaysAvailability', {
+            weekDays: [ weekDay ],
             timeSlotStart: timeSlot,
             timeSlotEnd: timeSlot,
             available: available,
@@ -234,8 +234,8 @@ export const actions = {
             }
         }
 
-        return context.dispatch('updateWeekDayAvailability', {
-            weekDay: weekDay,
+        return context.dispatch('updateWeekDaysAvailability', {
+            weekDays: [ weekDay ],
             timeSlotStart: timeSlot,
             timeSlotEnd: endingTimeSlot,
             available: false,
@@ -243,30 +243,26 @@ export const actions = {
     },
     
     addAvailabilityWholeWeekTimeSlot: (context, {weekDays, timeSlot, available}) => {
-        for (let weekDay of weekDays) {
-            context.dispatch('updateWeekDayAvailability', {
-                weekDay: weekDay,
-                timeSlotStart: timeSlot,
-                timeSlotEnd: timeSlot,
-                available: available,
-            });
-        }
+        return context.dispatch('updateWeekDaysAvailability', {
+            weekDays: weekDays,
+            timeSlotStart: timeSlot,
+            timeSlotEnd: timeSlot,
+            available: available,
+        });
     },
     
     setOmegaAvailable: (context, {weekDays, available}) => {
-        for (let weekDay of weekDays) {
-            context.dispatch('updateWeekDayAvailability', {
-                weekDay: weekDay,
-                timeSlotStart: context.getters.startOfDaySlot,
-                timeSlotEnd: context.getters.endOfDaySlot,
-                available: available,
-            })
-        }
+        return context.dispatch('updateWeekDaysAvailability', {
+            weekDays: weekDays,
+            timeSlotStart: context.getters.startOfDaySlot,
+            timeSlotEnd: context.getters.endOfDaySlot,
+            available: available,
+        });
     },
     
     setWholeDayAvailable: (context, {weekDay, available}) => {
-        return context.dispatch('updateWeekDayAvailability', {
-            weekDay: weekDay,
+        return context.dispatch('updateWeekDaysAvailability', {
+            weekDays: [ weekDay ],
             timeSlotStart: context.getters.startOfDaySlot,
             timeSlotEnd: context.getters.endOfDaySlot,
             available: available,
@@ -274,8 +270,8 @@ export const actions = {
     },
 
     setMorningAvailable: (context, {weekDay, available}) => {
-        return context.dispatch('updateWeekDayAvailability', {
-            weekDay: weekDay,
+        return context.dispatch('updateWeekDaysAvailability', {
+            weekDays: [ weekDay ],
             timeSlotStart: context.getters.startOfDaySlot,
             timeSlotEnd: context.getters.middleOfDaySlot(true),
             available: available,
@@ -283,8 +279,8 @@ export const actions = {
     },
 
     setAfternoonAvailable: (context, {weekDay, available}) => {
-        return context.dispatch('updateWeekDayAvailability', {
-            weekDay: weekDay,
+        return context.dispatch('updateWeekDaysAvailability', {
+            weekDays: [ weekDay ],
             timeSlotStart: context.getters.middleOfDaySlot(false),
             timeSlotEnd: context.getters.endOfDaySlot,
             available: available,

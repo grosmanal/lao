@@ -79,15 +79,13 @@ export default {
                 weekDaysToProceed = [ this.weekDay ];
             }
 
-            weekDaysToProceed.forEach(currentWeekDay => {
-                this.storeAddAvailabilityPeriod({
-                    weekDay: parseInt(currentWeekDay, 10),
-                    periodStart: this.convertTimeFromPicker(this.periodStart),
-                    periodEnd: this.convertTimeFromPicker(this.periodEnd)
-                })
-                .catch((error) => {
-                    modalOrConsole(error);
-                });
+            this.storeAddAvailabilityPeriod({
+                weekDays: weekDaysToProceed.map((item) => parseInt(item, 10)),
+                periodStart: this.convertTimeFromPicker(this.periodStart),
+                periodEnd: this.convertTimeFromPicker(this.periodEnd)
+            })
+            .catch((error) => {
+                modalOrConsole(error);
             });
 
             this.weekDay = undefined;

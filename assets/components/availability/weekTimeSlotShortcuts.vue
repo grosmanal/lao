@@ -19,6 +19,7 @@
 import Vuex from 'vuex';
 import Translator from 'bazinga-translator';
 import { toReadableHour } from './availabilityUtils';
+import { modalOrConsole } from '../modal';
 
 export default {
     name: 'week-time-slot-shortcuts',
@@ -42,10 +43,14 @@ export default {
 
         addAvailabilityOmega: function() {
             this.$store.dispatch('setOmegaAvailable', {weekDays: this.weekDays, available: true})
+            .catch((error) => modalOrConsole(error))
+            ;
         },
 
         addAvailabilityWholeWeekTimeSlot: function(timeSlot) {
             this.$store.dispatch('addAvailabilityWholeWeekTimeSlot', {weekDays: this.weekDays, timeSlot, available: true})
+            .catch((error) => modalOrConsole(error))
+            ;
         },
     }
 }
