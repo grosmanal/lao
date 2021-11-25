@@ -43,7 +43,7 @@
                         {% include "patient/care_request.html.twig" with {
                             careRequest: newCareRequest,
                             careRequestForm: newCareRequestForm,
-                            showCareRequest: true
+                            showCareRequest: true,
                         } %}
                     </div>
                 {% endif %}
@@ -52,7 +52,7 @@
                     <div class="accordion-item">
                         {% include "patient/care_request.html.twig" with {
                             careRequestForm: careRequestForms[careRequest.id],
-                            showCareRequest: careRequest.active
+                            showCareRequest: careRequest.active,
                         } %}
                     </div>
                 {% endfor %}

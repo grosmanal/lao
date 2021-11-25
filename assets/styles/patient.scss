@@ -5,6 +5,16 @@
     .identity-section {
         form {
             @include form-margin;
+            
+            .form-content {
+                columns: 1;
+                
+                margin-bottom: 0.7rem;
+
+                @include media-breakpoint-up(lg) {
+                    columns: 2;
+                }
+            }
         }
     }
 
@@ -17,6 +27,16 @@
             }
 
             @include form-margin;
+            
+            .form-content {
+                columns: 1;
+
+                margin-bottom: 0.7rem;
+
+                @include media-breakpoint-up(lg) {
+                    columns: 2;
+                }
+            }
         }
 
         ul.comments {
