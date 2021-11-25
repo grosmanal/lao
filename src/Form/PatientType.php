@@ -14,6 +14,9 @@ class PatientType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        /** @var Patient */
+        $patient = $builder->getData();
+
         $builder
             ->add('id', HiddenType::class)
             ->add('firstname')
@@ -22,12 +25,15 @@ class PatientType extends AbstractType
                 'format' => 'yyyy-MM-dd',
                 'widget' => 'single_text',
                 'required' => false,
+                'input' => 'datetime_immutable',
                 ])
             ->add('contact')
             ->add('phone')
             ->add('mobilePhone')
             ->add('email')
-            ->add('validate', SubmitType::class)
+            ->add('validate', SubmitType::class, [
+                'label' => $patient->getId() ? 'patient.form.save_button' : 'patient.form.add_button',
+            ])
         ;
     }
 

@@ -21,6 +21,19 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CareRequestType extends AbstractType
 {
+    private function validateButtonLabel(CareRequest $careRequest)
+    {
+        switch ($careRequest->getState()) {
+            case CareRequest::STATE_ACTIVE:
+                return 'care_request.form.save_button';
+            case CareRequest::STATE_NEW:
+                return 'care_request.form.add_button';
+            default:
+                return 'care_request.form.reactivate_button';
+        }
+    }
+    
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         /** @var CareRequest */
@@ -111,7 +124,7 @@ class CareRequestType extends AbstractType
                 'mapped' => false,
             ])
             ->add('validate', SubmitType::class, [
-                'label' => ($careRequest->isActive() || $careRequest->isNew())? 'save' : 'reactivate',
+                'label' => $this->validateButtonLabel($careRequest),
             ])
         ;
         

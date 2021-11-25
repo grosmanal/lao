@@ -14,36 +14,53 @@
         </div>
     </section>
 
-    <section class="availability-section card mt-3">
-        <h2 class="card-header">
-            {% trans %}Availabilities{% endtrans %}
-        </h2>
-        <div class="card-body" id="availability-content">
-            {% include "patient/variable_schedule_form.html.twig" %}
-            {% include "patient/availability.html.twig" %}
-        </div>
-    </section>
-    <section class="care-request-section card mt-3">
-        <h2 class="card-header">
-            {% trans %}Care requests{% endtrans %}
-            <i
-                class="bi bi-clipboard-plus float-end care-request-create-button"
-                title="{{ 'care_request.new'|trans }}"
-                data-url-care-request-form="{{ url('care_request_creation_form', { id: patient.id}) }}"
-            ></i>
-        </h2>
-        <div class="card-body" id="care-request-content">
-            <div id="care-requests-accordion" class="accordion">
-            {% for careRequest in careRequests %}
-                <div class="accordion-item">
-                    {% set careRequestForm = careRequestForms[careRequest.id] %}
-                    {% set showCareRequest = careRequest.active %}
-                    {% include "patient/care_request.html.twig" %}
-                </div>
-            {% endfor %}
+    {% if patient.id %}
+        {# On affiche les disponibilités / demandes que si le patient existe en bdd #}
+        <section class="availability-section card mt-3">
+            <h2 class="card-header">
+                {% trans %}Availabilities{% endtrans %}
+            </h2>
+            <div class="card-body" id="availability-content">
+                {% include "patient/variable_schedule_form.html.twig" %}
+                {% include "patient/availability.html.twig" %}
             </div>
-        </div>
-    </section>
+        </section>
+
+        <section class="care-request-section card mt-3">
+            <h2 class="card-header">
+                {% trans %}Care requests{% endtrans %}
+                <i
+                    class="bi bi-clipboard-plus float-end care-request-create-button"
+                    title="{{ 'care_request.new'|trans }}"
+                    data-url-care-request-form="{{ url('care_request_creation_form', { id: patient.id}) }}"
+                ></i>
+            </h2>
+            <div class="card-body" id="care-request-content">
+                <div id="care-requests-accordion" class="accordion">
+                {% if newCareRequestForm is not empty %}
+                    {# inclusion du formulaire de création de care request #}
+                    <div class="accordion-item">
+                        {% include "patient/care_request.html.twig" with {
+                            careRequest: newCareRequest,
+                            careRequestForm: newCareRequestForm,
+                            showCareRequest: true
+                        } %}
+                    </div>
+                {% endif %}
+                {% for careRequest in careRequests %}
+                    {# inclusion du formulaire de chaque care request du patient #}
+                    <div class="accordion-item">
+                        {% include "patient/care_request.html.twig" with {
+                            careRequestForm: careRequestForms[careRequest.id],
+                            showCareRequest: careRequest.active
+                        } %}
+                    </div>
+                {% endfor %}
+                </div>
+            </div>
+        </section>
+
+    {% endif %}
 </div>
 
 {% endblock %}

@@ -1,17 +1,23 @@
-{{ form_start(patientForm, { 'attr': {'onsubmit': 'submitPatient(event);'} }) }}
-    <input type="hidden" name="url-api-put" value="{{ url('api_patients_put_item', { id: patient.id }) }}">
+{% if patient.id %}
+    {# le patient existe : on utilisera l'API pour les modifications #}
+    {% set formVariables = { 'attr': {'onsubmit': 'submitPatient(event);'} } %}
+{% endif %}
+{{ form_start(patientForm, formVariables ?? {} ) }}
+    {% if patient.id %}
+        <input type="hidden" name="url-api-put" value="{{ url('api_patients_put_item', { id: patient.id }) }}">
+    {% endif %}
     <div class="form-group row">
         <div class="col-12 col-lg-2">
             {{ form_label(patientForm.firstname)}}
         </div>
         <div class="col-12 col-lg-4">
-            {{ form_widget(patientForm.firstname) }}
+            {{ form_widget(patientForm.firstname, { 'attr': {'tabindex': 1} }) }}
         </div>
         <div class="col-12 col-lg-2">
             {{ form_label(patientForm.contact)}}
         </div>
         <div class="col-12 col-lg-4">
-            {{ form_widget(patientForm.contact) }}
+            {{ form_widget(patientForm.contact, { 'attr': {'tabindex': 4} }) }}
         </div>
     </div>
     <div class="form-group row">
@@ -19,13 +25,13 @@
             {{ form_label(patientForm.lastname)}}
         </div>
         <div class="col-12 col-lg-4">
-            {{ form_widget(patientForm.lastname) }}
+            {{ form_widget(patientForm.lastname, { 'attr': {'tabindex': 2} }) }}
         </div>
         <div class="col-12 col-lg-2">
             {{ form_label(patientForm.phone)}}
         </div>
         <div class="col-12 col-lg-4">
-            {{ form_widget(patientForm.phone) }}
+            {{ form_widget(patientForm.phone, { 'attr': {'tabindex': 5} }) }}
         </div>
     </div>
     <div class="form-group row">
@@ -33,13 +39,13 @@
             {{ form_label(patientForm.birthdate)}}
         </div>
         <div class="col-12 col-lg-4">
-            {{ form_widget(patientForm.birthdate) }}
+            {{ form_widget(patientForm.birthdate, { 'attr': {'tabindex': 3} }) }}
         </div>
         <div class="col-12 col-lg-2">
             {{ form_label(patientForm.mobilePhone)}}
         </div>
         <div class="col-12 col-lg-4">
-            {{ form_widget(patientForm.mobilePhone) }}
+            {{ form_widget(patientForm.mobilePhone, { 'attr': {'tabindex': 6} }) }}
         </div>
     </div>
     <div class="form-group row">
@@ -49,12 +55,12 @@
             {{ form_label(patientForm.email)}}
         </div>
         <div class="col-12 col-lg-4">
-            {{ form_widget(patientForm.email) }}
+            {{ form_widget(patientForm.email, { 'attr': {'tabindex': 7} }) }}
         </div>
     </div>
     <div class="form-group row">
         <div class="col-12 text-center">
-            {{ form_widget(patientForm.validate) }}
+            {{ form_widget(patientForm.validate, { 'attr': {'tabindex': 8} }) }}
         </div>
     </div>
 {{ form_end(patientForm) }}

@@ -7,6 +7,7 @@ priority: Prioritaire
 
 # Navbar
 navbar:
+    patient_new: Nouveau patient
     search: Rechercher
     logout: Déconnecter
 
@@ -20,7 +21,11 @@ modal:
 # Patient
 patient:
     title: Patient %firstname% %lastname%
+    title_new: Nouveau patient
     variable_schedule.label: Horaires variables
+    form:
+        add_button: Ajouter
+        save_button: Enregistrer
 Patient: Patient
 Availabilities: Disponibilités   
 Care requests: Demandes
@@ -33,7 +38,6 @@ Contact: Contact
 Phone: Téléphone
 Mobile phone: Téléphone portable
 Email: Email
-Validate: Enregistrer
 Creation date: Date de création
 Doctor creator: Créateur
 Complaint: Plainte
@@ -70,8 +74,6 @@ availability_error:
 Care request from %creationDate%: Demande du %creationDate%
 take_charge: Prendre en charge
 abandon: Abandonner
-save: Enregistrer
-reactivate: Réactiver
 care_request:
     new: Nouvelle demande
     delete: '%icon% Supprimer'
@@ -80,6 +82,10 @@ care_request:
         label: Demande prioritaire
     comment:
         placeholder: Commentaire
+    form:
+        add_button: Ajouter
+        save_button: Enregistrer
+        reactivate_button: Réactiver
 care_request_error:
     reread: Erreur lors du ré-affichage de la demande
     update: Erreur lors de la mise à jour de la demande de soin %errorMessage%

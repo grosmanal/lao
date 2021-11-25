@@ -7,6 +7,7 @@ priority: Priority
 
 # Navbar
 navbar:
+    patient_new: New Patient
     search: Search
     logout: Logout
 
@@ -20,7 +21,11 @@ modal:
 # Page get patient
 patient:
     title: Patient %firstname% %lastname%
+    title_new: New patient
     variable_schedule.label: Variable schedules
+    form:
+        add_button: Add
+        save_button: Save
 Patient: Patient
 Availabilities: Availabilities   
 Care requests: Care requests
@@ -33,7 +38,6 @@ Contact: Contact
 Phone: Phone
 Mobile phone: Mobile phone
 Email: Email
-Validate: Validate
 Creation date: Creation date
 Doctor creator: Doctor creator
 Complaint: Complaint
@@ -70,8 +74,6 @@ availability_error:
 Care request from %creationDate%: Care request from %creationDate%
 take_charge: I take charge
 abandon: Abandon
-save: Save
-reactivate: Reactivate
 care_request:
     new: New care request
     delete: '%icon% Delete'
@@ -80,6 +82,10 @@ care_request:
         label: Priority care request
     comment:
         placeholder: Comment
+    form:
+        add_button: Add
+        save_button: Save
+        reactivate_button: Reactivate
 care_request_error:
     reread: Error while reading care request
     update: Error while updating care request %errorMessage%
