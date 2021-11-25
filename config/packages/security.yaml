@@ -52,3 +52,4 @@ security:
         - { path: ^/care_request, roles: ROLE_DOCTOR }
         - { path: ^/comment, roles: ROLE_DOCTOR }
         - { path: ^/search, roles: ROLE_DOCTOR }
+        - { path: ^/$, roles: IS_AUTHENTICATED_REMEMBERED }
