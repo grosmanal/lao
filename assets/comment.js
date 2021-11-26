@@ -98,7 +98,7 @@ function editComment(form)
             // Transformation en summernote
             transformToSummernote(newTextArea.get(0));
         }).catch(function(error) {
-            modal('care_request_error.reread');
+            modal('care_request.error.reread');
         });
 }
 
@@ -129,7 +129,7 @@ function deleteComment(form)
         commentListItem.addClass('opacity-0');
     }).catch(function(error) {
         console.log(error);
-        modal('comment_error.delete');
+        modal('comment.error.delete');
     });
 }
 
@@ -239,7 +239,7 @@ function upsertComment(form)
             prependCommentInList(form, response.data.relatedUri.getHtmlContent);
         }
     }).catch(function(error) {
-        modal('comment_error.add');
+        modal('comment.error.add');
     });
     
     return false;
@@ -266,7 +266,7 @@ function updateCommentInList(form)
             })
         }) 
         .catch(function(error) {
-            modal('comment_error.reread');
+            modal('comment.error.reread');
         })
         ;
 }
@@ -295,7 +295,7 @@ function prependCommentInList(form, urlHtmlContent)
             }, 100)
         })
         .catch(function(error) {
-            modal('comment_error.reread');
+            modal('comment.error.reread');
         })
         ;
 }

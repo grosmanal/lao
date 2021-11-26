@@ -25,10 +25,10 @@ import { modalOrConsole } from '../modal';
 export default {
     name: 'add-availability-form',
     created: function() {
-        this._dayWeekLabel = Translator.trans('add_availability_form.day_select_placeholder');
-        this._addLabel = Translator.trans('add_availability_form.add_button_label');
-        this._fromLabel = Translator.trans('add_availability_form.from_label');
-        this._toLabel = Translator.trans('add_availability_form.to_label');
+        this._dayWeekLabel = Translator.trans('availability.add_form.day_select_placeholder');
+        this._addLabel = Translator.trans('availability.add_form.add_button_label');
+        this._fromLabel = Translator.trans('availability.add_form.from_label');
+        this._toLabel = Translator.trans('availability.add_form.to_label');
     },
 
     data: () => {
@@ -46,7 +46,7 @@ export default {
                     return {weekDay, label: weekDayLabel(new Number(weekDay))
                 };
             });
-            options.unshift({weekDay: 0, label: Translator.trans("add_availability_form.everyday_option")});
+            options.unshift({weekDay: 0, label: Translator.trans("availability.add_form.everyday_option")});
 
             return options;
         },

@@ -44,7 +44,7 @@ export default {
             return this.weekDay == weekDays[weekDays.length - 1];
         },
         timeSlotTitle: function() {
-            return Translator.trans('time_slot.title', {
+            return Translator.trans('availability.time_slot.title', {
                 weekDayLabel: weekDayLabel(this.weekDay),
                 periodBegin: firstHourReadable(this.timeSlot),
                 periodEnd: lastHourReadable(this.timeSlot),

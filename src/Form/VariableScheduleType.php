@@ -15,7 +15,7 @@ class VariableScheduleType extends AbstractType
     {
         $builder
             ->add('variableSchedule', CheckboxType::class, [
-                'label' => 'patient.variable_schedule.label',
+                'label' => 'availability.variable_schedule',
                 'required' => false,
             ])
             ->add('apiPutUrl', HiddenType::class, [

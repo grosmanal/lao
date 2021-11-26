@@ -54,61 +54,69 @@ class CareRequestType extends AbstractType
             ->add('creationDate', DateType::class, [
                 'widget' => 'single_text',
                 'disabled' => $fieldDisabled,
+                'label' => 'care_request.form.creation_date',
             ])
             ->add('priority', CheckboxType::class, [
-                'label' => 'care_request.priority.label',
                 'required' => false,
                 'disabled' => $fieldDisabled,
+                'label' => 'care_request.form.priority',
             ])
             ->add('doctorCreator', EntityType::class, [
                 'class' => Doctor::class,
                 'query_builder' => $doctorQueryBuilder,
                 'disabled' => $fieldDisabled,
+                'label' => 'care_request.form.doctor_creator',
             ])
             ->add('complaint', EntityType::class, [
                 'class' => Complaint::class,
                 'required' => false,
                 'disabled' => $fieldDisabled,
+                'label' => 'care_request.form.complaint',
             ])
             ->add('customComplaint', TextType::class, [
                 'required' => false,
                 'disabled' => $fieldDisabled,
+                'label' => 'care_request.form.custom_complaint',
             ])
             ->add('acceptedByDoctor', EntityType::class, [
                 'class' => Doctor::class,
                 'query_builder' => $doctorQueryBuilder,
                 'required' => false,
                 'disabled' => $fieldDisabled,
+                'label' => 'care_request.form.accepted_by_doctor',
             ])
             ->add('acceptDate', DateType::class, [
                 'widget' => 'single_text',
                 'required' => false,
                 'disabled' => $fieldDisabled,
+                'label' => 'care_request.form.accept_date',
             ])
             ->add('acceptAction', ButtonType::class, [
-                'label' => 'take_charge',
                 'attr' => [
                     'class' => 'btn btn-primary',
                     'onclick' => "acceptCareRequest(event)",
                 ],
                 'disabled' => $buttonDisabled,
+                'label' => 'care_request.form.take_charge_action',
             ])
             ->add('abandonReason', TextType::class, [
                 'required' => false,
                 'disabled' => $fieldDisabled,
+                'label' => 'care_request.form.abandon_reason',
             ])
             ->add('abandonDate', DateType::class, [
                 'widget' => 'single_text',
                 'required' => false,
                 'disabled' => $fieldDisabled,
+                'label' => 'care_request.form.abandon_date',
             ])
             ->add('abandonAction', ButtonType::class, [
-                'label' => 'abandon',
                 'attr' => [
                     'class' => 'btn btn-primary',
                     'onclick' => "abandonCareRequest(event)",
                 ],
                 'disabled' => $buttonDisabled,
+                'label' => 'care_request.form.abandon_action',
             ])
             ->add('state', HiddenType::class)
             ->add('apiAction', HiddenType::class, [

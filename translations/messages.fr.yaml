@@ -1,10 +1,3 @@
-# Libellés communs
-new: Nouvelle
-active: Active
-archived: Archivée
-abandoned: Abandonnée
-priority: Prioritaire
-
 # Navbar
 navbar:
     patient_new: Nouveau patient
@@ -12,103 +5,110 @@ navbar:
     logout: Déconnecter
 
 # Modal content
-modal.close: Fermer
 modal:
     title:
         error: Erreur
         alert: Alerte
+    close: Fermer
 
 # Patient
 patient:
     title: Patient %firstname% %lastname%
     title_new: Nouveau patient
-    variable_schedule.label: Horaires variables
-    form:
-        add_button: Ajouter
-        save_button: Enregistrer
-Patient: Patient
-Availabilities: Disponibilités   
-Care requests: Demandes
-
-# Form patient
-Firstname: Prénom
-Lastname: Nom
-Birthdate: Date de naissance
-Contact: Contact
-Phone: Téléphone
-Mobile phone: Téléphone portable
-Email: Email
-Creation date: Date de création
-Doctor creator: Créateur
-Complaint: Plainte
-Custom complaint: Complément de plainte
-Accepted by doctor: Acceptée par
-Accept date: Acceptée le
-Abandon reason: Raison d'abandon
-Abandon date: Date d'abandon
-patient_error:
-    updating: Erreur lors de la mise à jour du patient
+    info:
+        header: Patient
+        form:
+            firstname: Prénom
+            lastname: Nom
+            birthdate: Date de naissance
+            contact: Contact
+            phone: Téléphone
+            mobile_phone: Téléphone portable
+            email: Email
+            add_button: Ajouter
+            save_button: Enregistrer
+    availabilities:
+        header: Disponibilités
+    care_requests:
+        header: Demandes
+    error:
+        updating: Erreur lors de la mise à jour du patient
 
 # Availability
-add_availability_form:
-    day_select_placeholder: '- jour -'
-    everyday_option: Tous les jours
-    from_label: de
-    to_label: à
-    add_button_label: Ajouter
-week_day_availability:
-    set_morning_button_label: mat.
-    set_afternoon_button_label: ap.-m.
-week_time_slot_shortcuts:
-    omega_button_label: Tout
-    add_button_title: Disponible de %periodBegin% à %periodEnd% tous les jours
-time_slot:
-    title: '%weekDayLabel% de %periodBegin% à %periodEnd%'
-
-availability_error:
-    update: Erreur lors de la mise à jour des disponibilités
-    period_start_out_of_bound: Le début de la période est hors limite
-    period_end_out_of_bound: La fin de la période est hors limite
+availability:
+    variable_schedule: Horaires variables
+    add_form:
+        day_select_placeholder: '- jour -'
+        everyday_option: Tous les jours
+        from_label: de
+        to_label: à
+        add_button_label: Ajouter
+    week_day:
+        set_morning_button_label: mat.
+        set_afternoon_button_label: ap.-m.
+    week_time_slot_shortcuts:
+        omega_button_label: Tout
+        add_button_title: Disponible de %periodBegin% à %periodEnd% tous les jours
+    time_slot:
+        title: '%weekDayLabel% de %periodBegin% à %periodEnd%'
+    error:
+        update: Erreur lors de la mise à jour des disponibilités
+        period_start_out_of_bound: Le début de la période est hors limite
+        period_end_out_of_bound: La fin de la période est hors limite
       
 # Form care request
-Care request from %creationDate%: Demande du %creationDate%
-take_charge: Prendre en charge
-abandon: Abandonner
+Care request from %creationDate%: 
 care_request:
+    title: Demande du %creationDate%
+    state_badge:
+        new: Nouvelle
+        active: Active
+        archived: Archivée
+        abandoned: Abandonnée
+    priority_badge: Prioritaire
     new: Nouvelle demande
     delete: '%icon% Supprimer'
     confirm_delete: Supprimer définitivement cette demande ?
-    priority:
-        label: Demande prioritaire
     comment:
         placeholder: Commentaire
     form:
+        creation_date: Date de création
+        doctor_creator: Créateur
+        complaint: Plainte
+        custom_complaint: Complément de plainte
+        accepted_by_doctor: Acceptée par
+        accept_date: Acceptée le
+        take_charge_action: Prendre en charge
+        abandon_reason: Raison d'abandon
+        abandon_date: Date d'abandon
+        priority: Demande prioritaire
+        abandon_action: Abandonner
         add_button: Ajouter
         save_button: Enregistrer
         reactivate_button: Réactiver
-care_request_error:
-    reread: Erreur lors du ré-affichage de la demande
-    update: Erreur lors de la mise à jour de la demande de soin %errorMessage%
-    delete: Erreur lors de la suppression de la demande
-    both_accepted_abandonned: Une demande ne peut être à la fois acceptée et abandonnée.
-    creating_doctor_office: Le docteur créant une demande doit être du même cabinet que le patient.
-    accepting_doctor_office: Le docteur acceptant une demande doit être du même cabinet que le patient.
+    error:
+        reread: Erreur lors du ré-affichage de la demande
+        update: Erreur lors de la mise à jour de la demande de soin %errorMessage%
+        delete: Erreur lors de la suppression de la demande
+        both_accepted_abandonned: Une demande ne peut être à la fois acceptée et abandonnée.
+        creating_doctor_office: Le docteur créant une demande doit être du même cabinet que le patient.
+        accepting_doctor_office: Le docteur acceptant une demande doit être du même cabinet que le patient.
     
-# Form comment
-Edited: modifié
+# Comment
 comment:
-    edit: Modifier
-    delete: Supprimer
-    cancel: Annuler
-    update: Modifier le commentaire
-    add: Ajouter un commentaire
-    
-comment_error:
-    reread: Erreur lors du ré-affichage du commentaire
-    add: Erreur lors de l'ajout du commentaire
-    delete: Erreur lors de la suppression du commentaire
+    modified_label: modifié
+    edit_btn: Modifier
+    delete_btn: Supprimer
+    cancel_btn: Annuler
+    update_btn: Modifier le commentaire
+    add_btn: Ajouter un commentaire
+    error:
+        reread: Erreur lors du ré-affichage du commentaire
+        add: Erreur lors de l'ajout du commentaire
+        delete: Erreur lors de la suppression du commentaire
       
-# Form search
+# Search
+# Les jours sont obtenu avec jddayofweek qui retourne les libellés anglais 
 Monday: lundi
 Tuesday: mardi
 Wednesday: mercredi
@@ -116,6 +116,7 @@ Thursday: jeudi
 Friday: vendredi
 Saturday: samedi
 Sunday: dimanche
+
 search:
     title: Recherche de patient
     criteria_header: critères de recherche

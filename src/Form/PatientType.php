@@ -5,8 +5,11 @@ namespace App\Form;
 use App\Entity\Patient;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TelType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -19,20 +22,33 @@ class PatientType extends AbstractType
 
         $builder
             ->add('id', HiddenType::class)
-            ->add('firstname')
-            ->add('lastname')
+            ->add('firstname', TextType::class, [
+                'label' => 'patient.info.form.firstname',
+            ])
+            ->add('lastname', TextType::class, [
+                'label' => 'patient.info.form.lastname',
+            ])
             ->add('birthdate', BirthdayType::class, [
                 'format' => 'yyyy-MM-dd',
                 'widget' => 'single_text',
                 'required' => false,
                 'input' => 'datetime_immutable',
+                'label' => 'patient.info.form.birthdate',
                 ])
-            ->add('contact')
-            ->add('phone')
-            ->add('mobilePhone')
-            ->add('email')
+            ->add('contact', TextType::class, [
+                'label' => 'patient.info.form.contact',
+            ])
+            ->add('phone', TelType::class, [
+                'label' => 'patient.info.form.phone',
+            ])
+            ->add('mobilePhone', TelType::class, [
+                'label' => 'patient.info.form.mobile_phone',
+            ])
+            ->add('email', EmailType::class, [
+                'label' => 'patient.info.form.email',
+            ])
             ->add('validate', SubmitType::class, [
-                'label' => $patient->getId() ? 'patient.form.save_button' : 'patient.form.add_button',
+                'label' => $patient->getId() ? 'patient.info.form.save_button' : 'patient.info.form.add_button',
             ])
         ;
     }

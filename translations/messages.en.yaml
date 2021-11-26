@@ -1,10 +1,3 @@
-# Libellés communs
-new: New
-active: Active
-archived: Archived
-abandoned: Abandoned
-priority: Priority
-
 # Navbar
 navbar:
     patient_new: New Patient
@@ -12,103 +5,110 @@ navbar:
     logout: Logout
 
 # Modal content
-modal.close: Close
 modal:
     title:
         error: Error
         alert: Alert
+    close: Close
 
-# Page get patient
+# Page patient
 patient:
     title: Patient %firstname% %lastname%
     title_new: New patient
-    variable_schedule.label: Variable schedules
-    form:
-        add_button: Add
-        save_button: Save
-Patient: Patient
-Availabilities: Availabilities   
-Care requests: Care requests
-
-# Form patient
-Firstname: Firstname
-Lastname: Lastname
-Birthdate: Birthdate
-Contact: Contact
-Phone: Phone
-Mobile phone: Mobile phone
-Email: Email
-Creation date: Creation date
-Doctor creator: Doctor creator
-Complaint: Complaint
-Custom complaint: Custom complaint
-Accepted by doctor: Accepted by doctor
-Accept date: Accept date
-Abandon reason: Abandon reason
-Abandon date: Abandon date
-patient_error:
-    updating: Error while updating patient
+    info:
+        header: Patient
+        form:
+            firstname: Firstname
+            lastname: Lastname
+            birthdate: Birthdate
+            contact: Contact
+            phone: Phone
+            mobile_phone: Mobile phone
+            email: Email
+            add_button: Add
+            save_button: Save
+    availabilities:
+        header: Availabilities
+    care_requests:
+        header: Care requests
+    error:
+        updating: Error while updating patient
         
 # Availability
-add_availability_form:
-    day_select_placeholder: Choose day
-    everyday_option: Everyday
-    from_label: from
-    to_label: to
-    add_button_label: Add
-week_day_availability:
-    set_morning_button_label: am
-    set_afternoon_button_label: pm
-week_time_slot_shortcuts:
-    omega_button_label: Always
-    add_button_title: Add availability from %periodBegin% to %periodEnd% everyday
-time_slot:
-    title: '%weekDayLabel% from %periodBegin% to %periodEnd%'
-
-availability_error:
-    update: Error while updating patient availability
-    period_start_out_of_bound: The period start is out of bound
-    period_end_out_of_bound: The period end is out of bound
+availability:
+    variable_schedule: Variable schedules
+    add_form:
+        day_select_placeholder: Choose day
+        everyday_option: Everyday
+        from_label: from
+        to_label: to
+        add_button_label: Add
+    week_day:
+        set_morning_button_label: am
+        set_afternoon_button_label: pm
+    week_time_slot_shortcuts:
+        omega_button_label: Always
+        add_button_title: Add availability from %periodBegin% to %periodEnd% everyday
+    time_slot:
+        title: '%weekDayLabel% from %periodBegin% to %periodEnd%'
+    error:
+        update: Error while updating patient availability
+        period_start_out_of_bound: The period start is out of bound
+        period_end_out_of_bound: The period end is out of bound
 
 # Form care request
-Care request from %creationDate%: Care request from %creationDate%
-take_charge: I take charge
-abandon: Abandon
+Care request from %creationDate%: 
 care_request:
+    title: Care request from %creationDate%
+    state_badge:
+        new: New
+        active: Active
+        archived: Archived
+        abandoned: Abandoned
+    priority_badge: Priority
     new: New care request
     delete: '%icon% Delete'
     confirm_delete: Permanently delete this care request ?
-    priority:
-        label: Priority care request
     comment:
         placeholder: Comment
     form:
+        creation_date: Creation date
+        doctor_creator: Doctor creator
+        complaint: Complaint
+        custom_complaint: Custom complaint
+        accepted_by_doctor: Accepted by doctor
+        accept_date: Accept date
+        take_charge_action: I take charge
+        abandon_reason: Abandon reason
+        abandon_date: Abandon date
+        abandon_action: Abandon
+        priority: Priority care request
         add_button: Add
         save_button: Save
         reactivate_button: Reactivate
-care_request_error:
-    reread: Error while reading care request
-    update: Error while updating care request %errorMessage%
-    delete: Error while deleting patient
-    both_accepted_abandonned: Care request cannot be both accepted and abandonned
-    creating_doctor_office: Doctor creating care request must belong to the patient’s office
-    accepting_doctor_office: Doctor accepting care request must belong to the patient’s office
+    error:
+        reread: Error while reading care request
+        update: Error while updating care request %errorMessage%
+        delete: Error while deleting patient
+        both_accepted_abandonned: Care request cannot be both accepted and abandonned
+        creating_doctor_office: Doctor creating care request must belong to the patient’s office
+        accepting_doctor_office: Doctor accepting care request must belong to the patient’s office
       
-# Form comment
-Edited: Edited
+# Comment
 comment:
-    edit: Edit
-    delete: Delete
-    cancel: Cancel
-    update: Update comment
-    add: Add comment
-    
-comment_error:
-    reread: Error while reading new comment
-    add: Error while adding new comment
-    delete: Error while deleting comment
+    modified_label: edited
+    edit_btn: Edit
+    delete_btn: Delete
+    cancel_btn: Cancel
+    update_btn: Update comment
+    add_btn: Add comment
+    error:
+        reread: Error while reading new comment
+        add: Error while adding new comment
+        delete: Error while deleting comment
       
-# Form search
+# Search
+# Les jours sont obtenu avec jddayofweek qui retourne les libellés anglais 
 Monday: Monday
 Tuesday: Tuesday
 Wednesday: Wednesday

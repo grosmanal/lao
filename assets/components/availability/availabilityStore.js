@@ -156,7 +156,7 @@ export const actions = {
             });
         })
         .catch((error) => {
-            throw(Translator.trans('availability_error.update'));
+            throw(Translator.trans('availability.error.update'));
         });
     },
 
@@ -168,11 +168,11 @@ export const actions = {
         const timeSlotEnd = timeSlotFromPeriodEdge(Object.keys(weekDayAvailability), periodEnd, true);
         
         if (timeSlotStart == undefined) {
-            throw Translator.trans('availability_error.period_start_out_of_bound');
+            throw Translator.trans('availability.error.period_start_out_of_bound');
         }
         
         if (timeSlotEnd == undefined) {
-            throw Translator.trans('availability_error.period_end_out_of_bound');
+            throw Translator.trans('availability.error.period_end_out_of_bound');
         }
 
         return context.dispatch('updateWeekDaysAvailability', {

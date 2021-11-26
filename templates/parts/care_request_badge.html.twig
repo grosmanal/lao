@@ -1,0 +1,16 @@
+{% if careRequest.state == 'new' %}
+    {% set stateClass = 'success' %}
+{% elseif careRequest.state == 'active' %}
+    {% set stateClass = 'primary' %}
+{% elseif careRequest.state == 'archived' %}
+    {% set stateClass = 'info' %}
+{% else %}
+    {% set stateClass = 'secondary' %}
+{% endif %}
+
+{% set stateLabel = 'care_request.state_badge.' ~ careRequest.state %}
+
+<span class="badge bg-{{ stateClass }} ms-1">{{ stateLabel|trans }}</span>
+{% if careRequest.priority %}
+    <span class="badge bg-danger ms-1">{{ 'care_request.priority_badge'|trans }}</span>
+{% endif %}

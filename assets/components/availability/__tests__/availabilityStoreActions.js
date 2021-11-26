@@ -65,7 +65,7 @@ describe('Availability store actions', () => {
                 }
             );
     
-            expect(modalOrConsole).toHaveBeenCalledWith('availability_error.update', {}, 'modal.title.error');
+            expect(modalOrConsole).toHaveBeenCalledWith('availability.error.update', {}, 'modal.title.error');
         });
 
     });
@@ -104,16 +104,16 @@ describe('Availability store actions', () => {
         };
 
         expect(() => actions.addAvailabilityPeriod(context, {weekDays: [ 1 ], periodStart: "0700", periodEnd: "0730"}))
-            .toThrow('availability_error.period_start_out_of_bound');
+            .toThrow('availability.error.period_start_out_of_bound');
 
         expect(() => actions.addAvailabilityPeriod(context, {weekDays: [ 1 ], periodStart: "1300", periodEnd: "1330"}))
-            .toThrow('availability_error.period_start_out_of_bound');
+            .toThrow('availability.error.period_start_out_of_bound');
 
         expect(() => actions.addAvailabilityPeriod(context, {weekDays: [ 1 ], periodStart: "0700", periodEnd: "1330"}))
-            .toThrow('availability_error.period_start_out_of_bound');
+            .toThrow('availability.error.period_start_out_of_bound');
 
         expect(() => actions.addAvailabilityPeriod(context, {weekDays: [ 1 ], periodStart: "0930", periodEnd: "1330"}))
-            .toThrow('availability_error.period_end_out_of_bound');
+            .toThrow('availability.error.period_end_out_of_bound');
     });
 
     test('addAvailabilityTimeslot', () => {

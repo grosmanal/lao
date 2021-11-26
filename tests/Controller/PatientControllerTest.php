@@ -46,7 +46,7 @@ class PatientControllerTest extends AbstractControllerTestCase
         $crawler = $this->client->request('GET', "/patients/1");
         $this->assertResponseIsSuccessful();
         $this->assertPageTitleSame('Patient patient_1_firstname patient_1_lastname');
-        $this->assertCount(3, $crawler->filter('#care-requests-accordion h3')); // Nombre de care requests du patient
+        $this->assertCount(4, $crawler->filter('#care-requests-accordion h3')); // Nombre de care requests du patient
     }
 
     

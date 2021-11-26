@@ -7,7 +7,7 @@
 <div id="patient-content" class="patient-content">
     <section class="identity-section card">
         <h2 class="card-header">
-            {% trans %}Patient{% endtrans %}
+            {{ 'patient.info.header'|trans }}
         </h2>
         <div class="card-body" id="info-content">
             {% include "patient/info.html.twig" %}
@@ -18,7 +18,7 @@
         {# On affiche les disponibilités / demandes que si le patient existe en bdd #}
         <section class="availability-section card mt-3">
             <h2 class="card-header">
-                {% trans %}Availabilities{% endtrans %}
+                {{ 'patient.availabilities.header'|trans }}
             </h2>
             <div class="card-body" id="availability-content">
                 {% include "patient/variable_schedule_form.html.twig" %}
@@ -28,7 +28,7 @@
 
         <section class="care-request-section card mt-3">
             <h2 class="card-header">
-                {% trans %}Care requests{% endtrans %}
+                {{ 'patient.care_requests.header'|trans }}
                 <i
                     class="bi bi-clipboard-plus float-end care-request-create-button"
                     title="{{ 'care_request.new'|trans }}"

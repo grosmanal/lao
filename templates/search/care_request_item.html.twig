@@ -8,18 +8,7 @@
 </td>
 
 <td class="state">
-    {% if searchResult.careRequest.state == 'active' %}
-        {% set stateClass = 'primary' %}
-    {% elseif searchResult.careRequest.state == 'archived' %}
-        {% set stateClass = 'success' %}
-    {% else %}
-        {% set stateClass = 'secondary' %}
-    {% endif %}
-
-    <span class="badge bg-{{ stateClass }}">{{ searchResult.careRequest.state|trans }}</span>
-    {% if searchResult.careRequest.priority %}
-        <span class="badge bg-danger">{{ 'priority'|trans }}</span>
-    {% endif %}
+    {% include "parts/care_request_badge.html.twig" with {careRequest: searchResult.careRequest} %}
 </td>
 
 <td class="date">

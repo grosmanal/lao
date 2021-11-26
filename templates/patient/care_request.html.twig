@@ -1,13 +1,3 @@
-{% if careRequest.active %}
-    {% set badgeClass = 'bg-primary' %}
-{% elseif careRequest.new %}
-    {% set badgeClass = 'bg-success' %}
-{% elseif careRequest.archived %}
-    {% set badgeClass = 'bg-secondary' %}
-{% else %}
-    {% set badgeClass = 'bg-danger' %}
-{% endif %}
-
 {% if careRequest.id %}
     {% set accordionHeaderId = 'care-request-heading-' ~ careRequest.id %}
     {% set accordionBodyId = 'care-request-body-' ~ careRequest.id %}
@@ -24,8 +14,8 @@
         aria-expanded="{% if showCareRequest %}true{% else %}false{% endif %}"
         aria-controls="{{ accordionBodyId }}"
     >
-        {% trans with {'%creationDate%': careRequest.creationDate|date('d/m/Y')} %}Care request from %creationDate%{% endtrans %}
-        <span class="badge rounded-pill {{ badgeClass }}">{{ careRequest.state|trans }}</span>
+        {{ 'care_request.title'|trans({'%creationDate%': careRequest.creationDate|date('d/m/Y')}) }}
+        {% include "parts/care_request_badge.html.twig" with {careRequest: careRequest} %}
     </button>
 </h3>
 <div

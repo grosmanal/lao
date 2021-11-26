@@ -51,7 +51,7 @@ function doSubmitPatient(url, data) {
     }).then(function (response) {
         // https://manal.xyz/gitea/origami_informatique/lao/issues/85
     }).catch(function (error) {
-        modal('patient_error.updating)');
+        modal('patient.error.updating)');
     });
 }
 
@@ -117,7 +117,7 @@ function doSubmitCareRequest(form, data) {
 
                 // https://manal.xyz/gitea/origami_informatique/lao/issues/85
             }).catch(function (error) {
-                modal('care_request_error.reread');
+                modal('care_request.error.reread');
             });
     }).catch(function (error) {
         let errorMessage = '';
@@ -129,7 +129,7 @@ function doSubmitCareRequest(form, data) {
                 });
             }
         }
-        modal('care_request_error.update', { errorMessage });
+        modal('care_request.error.update', { errorMessage });
     });
 }
 
@@ -222,7 +222,7 @@ function deleteCareRequest(event) {
             // Suppression de la care request du DOM
             $(event.target).parentsUntil('#care-requests-accordion', '.accordion-item').remove();
         }).catch(function (error) {
-            modal('care_request_error.delete');
+            modal('care_request.error.delete');
         });
 }
 
@@ -254,7 +254,7 @@ function insertCareRequestCreationForm(event, $) {
             careRequestsAccordion.prepend(careRequestAccordionItem);
 
         }).catch(function (error) {
-            modal('care_request_error.reread');
+            modal('care_request.error.reread');
         });
 }
 

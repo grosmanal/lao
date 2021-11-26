@@ -12,7 +12,7 @@
                 {% if comment.modificationDate %}
                 <span class="fw-lighter">
                     &nbsp; (
-                    {{ 'Edited'|trans }}
+                    {{ 'comment.modified_label'|trans }}
                     <time datetime="{{ comment.modificationDate|date('c') }}" title="{{ comment.modificationDate|format_datetime('medium', 'short') }}">
                         {{ comment.getModificationDateNonImmutable|ago() }}
                     </time>
@@ -34,12 +34,12 @@
                             <ul class="dropdown-menu">
                                 <li class="dropdown-item">
                                     <button type="submit" name="edit" class="btn btn-link ps-0 text-primary text-decoration-none">
-                                        <i class="bi bi-pencil-square"></i> {{ 'comment.edit'|trans }}
+                                        <i class="bi bi-pencil-square"></i> {{ 'comment.edit_btn'|trans }}
                                     </button>
                                 </li>
                                 <li class="dropdown-item">
                                     <button type="submit" name="delete" class="btn btn-link ps-0 text-danger text-decoration-none">
-                                        <i class="bi bi-trash"></i>{{ 'comment.delete'|trans }}
+                                        <i class="bi bi-trash"></i>{{ 'comment.delete_btn'|trans }}
                                     </button>
                                 </li>
                             </ul>
@@ -56,34 +56,3 @@
         </div>
     </article>
 </li>
-
-
-{#
-
-                            <ul class="dropdown-menu">
-                                <li class="dropdown-item text-primary">
-                                    <i class="bi bi-pencil-square"></i>
-                                    {% trans %}comment.edit{% endtrans %}
-                                </li>
-                                <li class="dropdown-item text-danger">
-                                    <i class="bi bi-trash"></i>
-                                    {% trans %}comment.delete{% endtrans %}
-                                </li>
-                            </ul>
-                            
-
-                            
-                            <menu class="dropdown-menu">
-                                <menuitem class="dropdown-item">
-                                        <i class="bi bi-pencil-square"></i>
-                                        {% trans %}comment.edit{% endtrans %}
-                                    </button>
-                                </menuitem>
-                                <menuitem class="dropdown-item">
-                                    <button class="btn btn-sm btn-outline-danger" type="submit">
-                                        <i class="bi bi-trash"></i>
-                                        {% trans %}comment.delete{% endtrans %}
-                                    </button>
-                                </menuitem>
-                            </menu>
-#}

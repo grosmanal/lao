@@ -16,7 +16,7 @@
 
     {% if comment is defined %}
         {# Le commentaire existe : permettre l'annulation de l'édition #}
-        <button class="btn btn-primary btn-sm float-end mt-2 ms-1" name="cancel" type="submit">{{'comment.cancel'|trans}}</button>
+        <button class="btn btn-primary btn-sm float-end mt-2 ms-1" name="cancel" type="submit">{{'comment.cancel_btn'|trans}}</button>
     {% endif %}
-    <button class="btn btn-primary btn-sm float-end mt-2" name="upsert" type="submit">{{ comment is defined ? 'comment.update'|trans : 'comment.add'|trans }}</button>
+    <button class="btn btn-primary btn-sm float-end mt-2" name="upsert" type="submit">{{ comment is defined ? 'comment.update_btn'|trans : 'comment.add_btn'|trans }}</button>
 </form>

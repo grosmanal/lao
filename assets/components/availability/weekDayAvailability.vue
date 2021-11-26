@@ -38,9 +38,9 @@ export default {
             return this.$store.getters.weekDayAvailability(this.weekDay);
         },
         
-        setMorningButtonLabel: () => Translator.trans('week_day_availability.set_morning_button_label'),
+        setMorningButtonLabel: () => Translator.trans('availability.week_day.set_morning_button_label'),
 
-        setAfternoonButtonLabel: () => Translator.trans('week_day_availability.set_afternoon_button_label'),
+        setAfternoonButtonLabel: () => Translator.trans('availability.week_day.set_afternoon_button_label'),
         
         weekDayLabel: function () {
             return utilsWeekDayLabel(this.weekDay);

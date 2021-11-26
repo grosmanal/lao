@@ -24,7 +24,7 @@ import { modalOrConsole } from '../modal';
 export default {
     name: 'week-time-slot-shortcuts',
     created: function() {
-        this._omegaButtonLabel = Translator.trans('week_time_slot_shortcuts.omega_button_label');
+        this._omegaButtonLabel = Translator.trans('availability.week_time_slot_shortcuts.omega_button_label');
     },
     computed: {
         ...Vuex.mapGetters([
@@ -35,7 +35,7 @@ export default {
     methods: {
         buttonTitle: function(timeSlot) {
             const edges = timeSlot.split('-');
-            return Translator.trans('week_time_slot_shortcuts.add_button_title', {
+            return Translator.trans('availability.week_time_slot_shortcuts.add_button_title', {
                 periodBegin: toReadableHour(edges[0]),
                 periodEnd: toReadableHour(edges[1]),
             });
