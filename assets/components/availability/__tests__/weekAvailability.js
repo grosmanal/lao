@@ -1,6 +1,6 @@
 import { describe } from 'jest-circus';
 import { mount } from '@vue/test-utils';
-import WeekAvailability from '../weekAvailability.vue';
+import AvailabilityWeek from '../AvailabilityWeek.vue';
 import axios from 'axios';
 
 jest.mock('axios');
@@ -21,7 +21,7 @@ describe('weekAvailability vue component', () => {
                 "0930-1000": false,   
             },
         };
-        const wrapper = mount(WeekAvailability, {
+        const wrapper = mount(AvailabilityWeek, {
             propsData: {
                 middleOfDay: "0900",
                 initAvailability: initAvailability,
@@ -57,7 +57,7 @@ describe('weekAvailability vue component', () => {
             },
         };
 
-        const wrapper = mount(WeekAvailability, {
+        const wrapper = mount(AvailabilityWeek, {
             propsData: {
                 middleOfDay: "0900",
                 initAvailability: initAvailability,
@@ -91,7 +91,7 @@ describe('weekAvailability vue component', () => {
             },
         };
 
-        const wrapper = mount(WeekAvailability, {
+        const wrapper = mount(AvailabilityWeek, {
             propsData: {
                 middleOfDay: "0900",
                 initAvailability: initAvailability,
@@ -158,7 +158,7 @@ describe('weekAvailability vue component', () => {
             document.body.appendChild(elem)
         }
 
-        const wrapper = mount(WeekAvailability, {
+        const wrapper = mount(AvailabilityWeek, {
             propsData: {
                 middleOfDay: "0900",
                 initAvailability: initAvailability,
@@ -210,7 +210,7 @@ describe('weekAvailability vue component', () => {
             },
         };
 
-        const wrapper = mount(WeekAvailability, {
+        const wrapper = mount(AvailabilityWeek, {
             propsData: {
                 middleOfDay: "0900",
                 initAvailability: initAvailability,
@@ -248,7 +248,7 @@ describe('weekAvailability vue component', () => {
             },
         };
 
-        const wrapper = mount(WeekAvailability, {
+        const wrapper = mount(AvailabilityWeek, {
             propsData: {
                 middleOfDay: "0900",
                 initAvailability: initAvailability,
@@ -286,7 +286,7 @@ describe('weekAvailability vue component', () => {
             },
         };
 
-        const wrapper = mount(WeekAvailability, {
+        const wrapper = mount(AvailabilityWeek, {
             propsData: {
                 middleOfDay: "0900",
                 initAvailability: initAvailability,
@@ -329,7 +329,7 @@ describe('weekAvailability vue component', () => {
             },
         };
 
-        const wrapper = mount(WeekAvailability, {
+        const wrapper = mount(AvailabilityWeek, {
             propsData: {
                 middleOfDay: "0900",
                 initAvailability: initAvailability,
@@ -369,7 +369,7 @@ describe('weekAvailability vue component', () => {
             },
         };
 
-        const wrapper = mount(WeekAvailability, {
+        const wrapper = mount(AvailabilityWeek, {
             propsData: {
                 middleOfDay: "0900",
                 initAvailability: initAvailability,

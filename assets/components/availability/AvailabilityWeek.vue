@@ -1,7 +1,7 @@
 <template>
     <div class="availability-container">
         <div> <!-- div pour centrer tout l'ensemble grâce à flex -->
-            <add-availability-form></add-availability-form>
+            <AvailabilityAddForm/>
             <div class="availability-grid">
                 <div class="hours">
                     <div
@@ -12,22 +12,22 @@
                     <div class="hour">{{ lastHourReadable(endOfDaySlot) }}</div>
                 </div>
                 <ol class="week-days">
-                    <week-day-availability
+                    <AvailabilityWeekDay
                         v-for="(weekDayAvailability, weekDay) in availability"
                         v-bind:key="weekDay"
                         v-bind:week-day="parseInt(weekDay)"
-                    ></week-day-availability>
+                    ></AvailabilityWeekDay>
                 </ol>
-                <week-time-slot-shortcuts></week-time-slot-shortcuts>
+                <AvailabilityWeekShortCuts/>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import WeekDayAvailability from './weekDayAvailability.vue';
-import AddAvailabilityForm from './addAvailabilityForm.vue';
-import WeekTimeSlotShortcuts from './weekTimeSlotShortcuts.vue';
+import AvailabilityWeekDay from './AvailabilityWeekDay.vue';
+import AvailabilityAddForm from './AvailabilityAddForm.vue';
+import AvailabilityWeekShortCuts from './AvailabilityWeekShortcuts.vue';
 import { firstHourReadable, lastHourReadable } from './availabilityUtils';
 import store from './availabilityStore';
 import Vuex from 'vuex';
@@ -36,9 +36,9 @@ export default {
     name: 'week-availability',
     store,
     components: {
-        WeekDayAvailability,
-        AddAvailabilityForm,
-        WeekTimeSlotShortcuts
+        AvailabilityWeekDay,
+        AvailabilityAddForm,
+        AvailabilityWeekShortCuts
     },
     computed: {
         ...Vuex.mapGetters([

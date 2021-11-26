@@ -22,7 +22,7 @@ import { firstHourReadable, lastHourReadable, weekDayLabel  } from './availabili
 import { modalOrConsole } from '../modal';
 
 export default {
-    name: 'time-slot',
+    name: 'AvailabilityWeekDayTimeSlot',
     props: {
         weekDay: { type: Number },
         timeSlot: { type: String },

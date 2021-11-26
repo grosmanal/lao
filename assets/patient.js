@@ -12,7 +12,7 @@ import './styles/patient.scss'
  * Composant Vue des disponibilités
  */
 import Vue from 'vue';
-import Weekvailability from './components/availability/weekAvailability.vue';
+import Weekvailability from './components/availability/AvailabilityWeek.vue';
 
 new Vue({
     render(h) {

@@ -8,12 +8,12 @@
     </ul>
     <ul class="week-day-slots" @mouseleave="hideCloseButton">
         <li>
-            <time-slot
+            <TimeSlot
                 v-for="(slotAvailable, timeSlot) in weekDayAvailability"
                 v-bind:key="timeSlot"
                 v-bind:week-day="weekDay"
                 v-bind:time-slot="timeSlot"
-            ></time-slot>
+            ></TimeSlot>
         </li>
     </ul>
     
@@ -21,14 +21,14 @@
 </template>
 
 <script>
-import TimeSlot from './timeSlot.vue';
+import TimeSlot from './AvailabilityWeekDayTimeSlot.vue';
 import Vuex from 'vuex';
 import Translator from 'bazinga-translator';
 import { weekDayLabel as utilsWeekDayLabel } from './availabilityUtils';
 import { modalOrConsole } from '../modal';
 
 export default {
-    name: 'week-day-availability',
+    name: 'AvailabilityWeekDay',
     components: { TimeSlot },
     props: {
         'weekDay': { type: Number },

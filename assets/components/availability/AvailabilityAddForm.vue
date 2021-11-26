@@ -23,7 +23,7 @@ import { weekDayLabel } from './availabilityUtils';
 import { modalOrConsole } from '../modal';
 
 export default {
-    name: 'add-availability-form',
+    name: 'AvailabilityAddForm',
     created: function() {
         this._dayWeekLabel = Translator.trans('availability.add_form.day_select_placeholder');
         this._addLabel = Translator.trans('availability.add_form.add_button_label');

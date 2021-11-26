@@ -22,7 +22,7 @@ import { toReadableHour } from './availabilityUtils';
 import { modalOrConsole } from '../modal';
 
 export default {
-    name: 'week-time-slot-shortcuts',
+    name: 'AvailabilityWeekShortcuts',
     created: function() {
         this._omegaButtonLabel = Translator.trans('availability.week_time_slot_shortcuts.omega_button_label');
     },
