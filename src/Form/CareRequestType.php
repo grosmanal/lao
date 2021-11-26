@@ -18,9 +18,13 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class CareRequestType extends AbstractType
 {
+    public function __construct(private UrlGeneratorInterface $urlGenerator) {
+    }
+
     private function validateButtonLabel(CareRequest $careRequest)
     {
         switch ($careRequest->getState()) {
@@ -48,7 +52,6 @@ class CareRequestType extends AbstractType
                 ->setParameter(':office', $options['current_doctor']->getOffice())
                 ;
         };
-
         
         $builder
             ->add('creationDate', DateType::class, [
@@ -64,12 +67,18 @@ class CareRequestType extends AbstractType
             ->add('doctorCreator', EntityType::class, [
                 'class' => Doctor::class,
                 'query_builder' => $doctorQueryBuilder,
+                'choice_value' => function(?Doctor $doctor) {
+                    return $doctor ? $this->urlGenerator->generate('api_doctors_get_item', ['id' => $doctor->getId()]) : '';
+                },
                 'disabled' => $fieldDisabled,
                 'label' => 'care_request.form.doctor_creator',
             ])
             ->add('complaint', EntityType::class, [
                 'class' => Complaint::class,
                 'required' => false,
+                'choice_value' => function(?Complaint $complaint) {
+                    return $complaint ? $this->urlGenerator->generate('api_complaints_get_item', ['id' => $complaint->getId()]) : '';
+                },
                 'disabled' => $fieldDisabled,
                 'label' => 'care_request.form.complaint',
             ])
@@ -81,6 +90,9 @@ class CareRequestType extends AbstractType
             ->add('acceptedByDoctor', EntityType::class, [
                 'class' => Doctor::class,
                 'query_builder' => $doctorQueryBuilder,
+                'choice_value' => function(?Doctor $doctor) {
+                    return $doctor ? $this->urlGenerator->generate('api_doctors_get_item', ['id' => $doctor->getId()]) : '';
+                },
                 'required' => false,
                 'disabled' => $fieldDisabled,
                 'label' => 'care_request.form.accepted_by_doctor',
@@ -127,8 +139,8 @@ class CareRequestType extends AbstractType
                 'data' => $options['api_url'],
                 'mapped' => false,
             ])
-            ->add('doctorId', HiddenType::class, [
-                'data' => $options['current_doctor']->getId(),
+            ->add('doctorUri', HiddenType::class, [
+                'data' => $this->urlGenerator->generate('api_doctors_get_item', ['id' => $options['current_doctor']->getId()]),
                 'mapped' => false,
             ])
             ->add('validate', SubmitType::class, [
@@ -151,10 +163,10 @@ class CareRequestType extends AbstractType
             ;
         }
         else {
-            // Ajout de l'id du patient dans le formulaire
+            // Ajout de l'URI du patient dans le formulaire
             // Cas de l'ajout d'une care request
-            $builder->add('patientId', HiddenType::class, [
-                'data' => $options['patient']->getId(),
+            $builder->add('patientUri', HiddenType::class, [
+                'data' => $this->urlGenerator->generate('api_patients_get_item', ['id' => $options['patient']->getId()]),
                 'mapped' => false,
             ]);
         }

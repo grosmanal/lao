@@ -12,7 +12,6 @@
         {% block javascripts %}
             <script src="{{ asset('bundles/bazingajstranslation/js/translator.min.js') }}"></script>
             <script src="{{ url('bazinga_jstranslation_js') }}"></script>
-            {% include "parts/apiUri.html.twig" %}
 
             {{ encore_entry_script_tags('app') }}
         {% endblock %}

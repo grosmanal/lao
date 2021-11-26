@@ -4,7 +4,6 @@ import Translator from 'bazinga-translator';
 import { modal } from './components/modal';
 import { submitCommentMenu, submitComment, transformToSummernote } from './comment';
 import nullFieldConverter from './utils/nullFieldConverter';
-import apiFieldConverter from './utils/apiFieldConverter';
 
 import './styles/patient.scss'
 
@@ -147,15 +146,15 @@ function submitCareRequest(event) {
         acceptDate: nullFieldConverter(form['care_request[acceptDate]'].value),
         abandonDate: nullFieldConverter(form['care_request[abandonDate]'].value),
         abandonReason: nullFieldConverter(form['care_request[abandonReason]'].value),
-        doctorCreator: apiFieldConverter(form['care_request[doctorCreator]'].value, 'Doctor'),
-        complaint: apiFieldConverter(form['care_request[complaint]'].value, 'Complaint'),
-        acceptedByDoctor: apiFieldConverter(form['care_request[acceptedByDoctor]'].value, 'Doctor'),
+        doctorCreator: nullFieldConverter(form['care_request[doctorCreator]'].value),
+        complaint: nullFieldConverter(form['care_request[complaint]'].value),
+        acceptedByDoctor: nullFieldConverter(form['care_request[acceptedByDoctor]'].value),
     };
 
-    if (form['care_request[patientId]']) {
-        // Le formulaire contient le champ (caché) patientId, il faut l'ajouter
+    if (form['care_request[patientUri]']) {
+        // Le formulaire contient le champ (caché) patientUri, il faut l'ajouter
         // aux data pour création de la care request
-        data['patient'] = apiFieldConverter(form['care_request[patientId]'].value, 'Patient');
+        data['patient'] = form['care_request[patientUri]'].value;
     }
 
     doSubmitCareRequest(form, data);
@@ -201,10 +200,9 @@ function abandonCareRequest(event) {
  */
 function acceptCareRequest(event) {
     const form = event.target.form;
-    const doctorId = form['care_request[doctorId]'].value;
     const data = {
         acceptDate: 'now',
-        acceptedByDoctor: doctorId ? apiFieldConverter(doctorId, 'Doctor') : null,
+        acceptedByDoctor: nullFieldConverter(form['care_request[doctorUri]'].value),
     };
 
     doSubmitCareRequest(form, data);
