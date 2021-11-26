@@ -12,9 +12,14 @@ use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class PatientType extends AbstractType
 {
+    public function __construct(private UrlGeneratorInterface $urlGenerator)
+    {
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         /** @var Patient */
@@ -51,6 +56,16 @@ class PatientType extends AbstractType
                 'label' => $patient->getId() ? 'patient.info.form.save_button' : 'patient.info.form.add_button',
             ])
         ;
+        
+        if ($patient->getId()) {
+            // Le patient existe : on utilisera l'API pour le modifier
+            $builder
+                ->add('apiPutUrl', HiddenType::class, [
+                    'data' => $this->urlGenerator->generate('api_patients_put_item', ['id' => $patient->getId()]),
+                    'mapped' => false,
+                ])
+            ;
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver)

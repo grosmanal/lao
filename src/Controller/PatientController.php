@@ -3,14 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Patient;
-use App\Form\CareRequestFormFactory;
 use App\Form\PatientType;
-use App\Form\CareRequestType;
+use App\Form\CareRequestFormFactory;
+use App\Form\CommentFormFactory;
 use App\Form\VariableScheduleType;
-use App\Repository\DoctorRepository;
 use App\Service\Availability;
 use App\Service\UserProfile;
-use App\Service\Notification;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -60,8 +58,8 @@ class PatientController extends AbstractController
         Patient $patient,
         Availability $availability,
         UserProfile $userProfile,
-        Notification $notification,
         CareRequestFormFactory $careRequestFormFactory,
+        CommentFormFactory $commentFormFactory,
     ): Response
     {
         $this->denyAccessUnlessGranted('edit', $patient);
@@ -75,9 +73,13 @@ class PatientController extends AbstractController
 
         $careRequests = [];
         $careRequestForms = [];
+        $careRequestCommentForms = [];
         foreach ($patient->getCareRequests() as $careRequest) {
             $careRequests[$careRequest->getId()] = $careRequest;
             $careRequestForms[$careRequest->getId()] = $careRequestFormFactory->create($userProfile->getDoctor(), $careRequest);
+            if ($careRequest->isActive()) {
+                $careRequestCommentForms[$careRequest->getId()] = $commentFormFactory->createNew($userProfile->getDoctor(), $careRequest);
+            }
         }
         
         if (empty($careRequestForms)) {
@@ -89,7 +91,6 @@ class PatientController extends AbstractController
         return $this->render('patient/patient.html.twig', [
             'patient' => $patient,
             'currentDoctorId' => $userProfile->currentUserDoctorId(),
-            'officeDoctors' => $notification->hintMentionData($patient->getOffice()),
             'content' => [
                 'title' => new TranslatableMessage('patient.title', [
                     '%firstname%' => $patient->getFirstname(),
@@ -108,6 +109,7 @@ class PatientController extends AbstractController
             ),
             'careRequests' => $careRequests,
             'careRequestForms' => array_map(function($careRequestForm) {return $careRequestForm->createView();}, $careRequestForms),
+            'careRequestCommentForms' => array_map(function($careRequestCommentForm) {return $careRequestCommentForm->createView();}, $careRequestCommentForms),
             'newCareRequest' => isset($newCareRequestForm) ? $newCareRequestForm->getData() : null,
             'newCareRequestForm' => isset($newCareRequestForm) ? $newCareRequestForm->createView() : null,
         ]);

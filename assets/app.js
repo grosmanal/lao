@@ -12,7 +12,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import 'bootstrap';
 
 // start the Stimulus application
-//import './bootstrap'; // TODO à virer si pas besoin
+//import './bootstrap';
 
 //import bsCustomFileInput from 'bs-custom-file-input';
 //bsCustomFileInput.init();

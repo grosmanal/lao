@@ -3,10 +3,6 @@
     {% set formVariables = { 'attr': {'onsubmit': 'submitPatient(event);'} } %}
 {% endif %}
 {{ form_start(patientForm, formVariables ?? {} ) }}
-    {% if patient.id %}
-        <input type="hidden" name="url-api-put" value="{{ url('api_patients_put_item', { id: patient.id }) }}">
-    {% endif %}
-
     <div class="form-content">
 
         <div class="form-group row">

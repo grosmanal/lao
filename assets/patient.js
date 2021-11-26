@@ -72,8 +72,8 @@ function submitPatient(event) {
         mobilePhone: nullFieldConverter(form['patient[mobilePhone]'].value),
         email: nullFieldConverter(form['patient[email]'].value),
     };
-
-    doSubmitPatient(form['url-api-put'].value, data);
+    
+    doSubmitPatient(form['patient[apiPutUrl]'].value, data);
 
     return false;
 };

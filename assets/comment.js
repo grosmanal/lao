@@ -30,7 +30,7 @@ function transformToSummernote(commentElement)
     const formElement = $(commentElement).parents('form');
     let doctors
     try {
-        doctors = JSON.parse(formElement.get(0)['doctors'].value);
+        doctors = JSON.parse(formElement.get(0)['comment[doctors]'].value);
     } catch (e) {
         if (e instanceof SyntaxError) {
             doctors = [];
@@ -178,10 +178,10 @@ function submitComment(event) {
     const form = event.target;
 
     switch(event.submitter.name) {
-        case 'cancel':
+        case 'comment[cancel]':
             cancelEditComment(form);
             break;
-        case 'upsert':
+        case 'comment[upsert]':
             upsertComment(form);
             break;
     }
@@ -195,22 +195,17 @@ function submitComment(event) {
  */
 function upsertComment(form)
 {
-    let commentId, updating
-    if (form['comment-id'] === undefined) {
-        updating = false;
-    } else {
+    let updating
+    if (form['comment[apiAction]'].value === 'PUT') {
         updating = true;
-        commentId = form['comment-id'].value;
+    } else {
+        updating = false;
     }
 
-    const careRequestId = form['care-request-id'].value;
-    const authorId = form['user-id'].value;
-    const comment = nullFieldConverter(form['comment'].value);
-    
     const data = {
-        author: apiFieldConverter(authorId, 'Doctor'),
-        careRequest: apiFieldConverter(careRequestId, 'CareRequest'),
-        content: comment,
+        author: form['comment[authorApiUri]'].value,
+        careRequest: form['comment[careRequestApiUri]'].value,
+        content: nullFieldConverter(form['comment[content]'].value),
     }
     
     if (updating) {
@@ -219,22 +214,13 @@ function upsertComment(form)
         data.creationDate = 'now';
     }
     
-    let method, url
-    if (updating) {
-        method = 'put';
-        url = form['url-api-put'].value;
-    } else {
-        method = 'post';
-        url = form['url-api-post'].value;
-    }
-    
     httpClient({
-        method,
-        url,
+        method: form['comment[apiAction]'].value,
+        url: form['comment[apiUrl]'].value,
         data,
     }).then(function (response) {
         if (updating) {
-            updateCommentInList(form);
+            updateCommentInList(form, response.data.relatedUri.getHtmlContent);
         } else {
             prependCommentInList(form, response.data.relatedUri.getHtmlContent);
         }
@@ -246,7 +232,7 @@ function upsertComment(form)
  }
 
 
-function updateCommentInList(form)
+function updateCommentInList(form, urlHtmlContent)
 {
     const commentListItem = $(form).parent();
     
@@ -255,7 +241,7 @@ function updateCommentInList(form)
 
     // Alimentation de la liste avec le nouveau contenu du commentaire
     httpClient
-        .get(form['url-get-content'].value)
+        .get(urlHtmlContent)
         .then(function(response) {
             // Suppression du li père avec append de chacun de ses enfant
             // Je n'utilise pas replaceWith car cette fonction ne me permet pas
@@ -274,13 +260,13 @@ function updateCommentInList(form)
 
 function prependCommentInList(form, urlHtmlContent)
 {
-    // Réinitialisation du summernote
-    $(form['comment']).summernote('reset');
-
     // Insertion du commentaire dans la liste des commentaires existants
     httpClient
         .get(urlHtmlContent)
         .then(function(response) {
+            // Réinitialisation du summernote
+            $(form['comment[content]']).summernote('reset');
+
             // Recherche de l'élément liste
             const listElement = $(form).siblings('ul.comments');
             
@@ -288,7 +274,7 @@ function prependCommentInList(form, urlHtmlContent)
             listElement.prepend(response.data);
             
             // Vidage du contenu de formulaire
-            form['comment'].value = '';
+            form['comment[content]'].value = '';
 
             setTimeout(function() {
                 listElement.find('li').first().removeClass('opacity-0');

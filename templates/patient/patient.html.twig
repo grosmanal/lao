@@ -53,6 +53,7 @@
                         {% include "patient/care_request.html.twig" with {
                             careRequestForm: careRequestForms[careRequest.id],
                             showCareRequest: careRequest.active,
+                            commentForm: careRequestCommentForms[careRequest.id] ?? null,
                         } %}
                     </div>
                 {% endfor %}

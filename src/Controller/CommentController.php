@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Comment;
-use App\Service\Notification;
+use App\Form\CommentFormFactory;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,14 +23,14 @@ class CommentController extends AbstractController
     
 
     #[Route('/comment_forms/{id}', name: 'comment_form', methods: [ 'GET' ] )]
-    public function commentForm(Comment $comment, Notification $notification): Response
+    public function commentForm(Comment $comment, CommentFormFactory $commentFormFactory): Response
     {
         $this->denyAccessUnlessGranted('edit', $comment);
+        
+        $commentForm = $commentFormFactory->create($comment);
 
         return $this->render('patient/parts/care_request_comment_form.html.twig', [
-            'comment' => $comment,
-            'careRequest' => $comment->getCareRequest(),
-            'officeDoctors' => $notification->hintMentionData($comment->getOffice()),
+            'commentForm' => $commentForm->createView(),
         ]);
     }
     

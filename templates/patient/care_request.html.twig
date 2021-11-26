@@ -28,7 +28,7 @@
         {% include "patient/parts/care_request_form.html.twig" %}
         
         <section class="comments mt-3 w-75 mx-auto">
-            {% if careRequest.isActive %}
+            {% if (commentForm  ?? null) is not empty %}
                 {% include 'patient/parts/care_request_comment_form.html.twig' %}
             {% endif %}
             

@@ -4,11 +4,10 @@ namespace App\Controller;
 
 use App\Entity\CareRequest;
 use App\Form\CareRequestFormFactory;
-use App\Form\CareRequestType;
+use App\Form\CommentFormFactory;
 use App\Repository\PatientRepository;
 use App\Service\UserProfile;
 use App\Service\Notification;
-use DateTimeImmutable;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -70,17 +69,20 @@ class CareRequestController extends AbstractController
         UserProfile $userProfile,
         Notification $notification,
         CareRequestFormFactory $careRequestFormFactory,
+        CommentFormFactory $commentFormFactory,
     ): Response
     {
         $this->denyAccessUnlessGranted('edit', $careRequest);
         
         $careRequestForm = $careRequestFormFactory->create($userProfile->getDoctor(), $careRequest);
+        $commentForm = $careRequest->isActive() ? $commentFormFactory->createNew($userProfile->getDoctor(), $careRequest) : null;
         
         return $this->render('patient/care_request.html.twig', [
             'currentDoctorId' => $userProfile->currentUserDoctorId(),
             'officeDoctors' => $notification->hintMentionData($careRequest->getOffice()),
             'careRequest' => $careRequest,
             'careRequestForm' => $careRequestForm->createView(),
+            'commentForm' => $commentForm ?->createView(),
             'showCareRequest' => true,
         ]);
     }
