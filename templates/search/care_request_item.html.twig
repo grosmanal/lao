@@ -44,7 +44,7 @@
         {% for availability in weekDayavailabilities %}
             <span class="score-{{ scoreValue }}" title="{{ scoreLabel }}">
                 {{ weekDayLabel }} : {{ _self.toHour(availability.start.value) }} - {{ _self.toHour(availability.end.value) }}
-                <i class="bi {{ scoreIcon }}"></i>
+                <i class="bi {{ scoreIcon }} d-none"></i> {# masquage de l'icone score #121 #}
             </span>
             <br />
         {% endfor %}
