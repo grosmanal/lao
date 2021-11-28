@@ -145,7 +145,7 @@ search:
         care_request_state: demande
         care_request_creation_date: date
         availabilities: disponibilités
-        complaint: plante
+        complaint: plainte
         comments: commentaires 
         score:
             fully_covered_label: totalement disponible
