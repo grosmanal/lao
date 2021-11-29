@@ -16,16 +16,6 @@
 
     {% if patient.id %}
         {# On affiche les disponibilités / demandes que si le patient existe en bdd #}
-        <section class="availability-section card mt-3">
-            <h2 class="card-header">
-                {{ 'patient.availabilities.header'|trans }}
-            </h2>
-            <div class="card-body" id="availability-content">
-                {% include "patient/variable_schedule_form.html.twig" %}
-                {% include "patient/availability.html.twig" %}
-            </div>
-        </section>
-
         <section class="care-request-section card mt-3">
             <h2 class="card-header">
                 {{ 'patient.care_requests.header'|trans }}
@@ -58,6 +48,16 @@
                     </div>
                 {% endfor %}
                 </div>
+            </div>
+        </section>
+
+        <section class="availability-section card mt-3">
+            <h2 class="card-header">
+                {{ 'patient.availabilities.header'|trans }}
+            </h2>
+            <div class="card-body" id="availability-content">
+                {% include "patient/variable_schedule_form.html.twig" %}
+                {% include "patient/availability.html.twig" %}
             </div>
         </section>
 
