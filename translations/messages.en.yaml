@@ -10,6 +10,10 @@ modal:
         error: Error
         alert: Alert
     close: Close
+      
+# Confirmation button
+confirm:
+    button_label: Confirm
 
 # Page patient
 patient:

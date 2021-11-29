@@ -1,9 +1,10 @@
 import httpClient from 'axios';
 import $ from 'jquery';
-import Translator from 'bazinga-translator';
 import { modal } from './components/modal';
 import { submitCommentMenu, submitComment, transformToSummernote } from './comment';
 import nullFieldConverter from './utils/nullFieldConverter';
+import confirm from './utils/confirm';
+import removeDomElement from './utils/removeDomElement';
 
 import './styles/patient.scss'
 
@@ -210,19 +211,27 @@ function acceptCareRequest(event) {
 }
 
 
+/**
+ * Suppression de la care request
+ * @param {Event} event 
+ */
 function deleteCareRequest(event) {
-    if (confirm(Translator.trans('care_request.confirm_delete')) != true) {
-        return false;
-    }
+    event.preventDefault();
+    
+    const apiUrlDelete = event.target.dataset.apiUrlDelete;
+    const elementToRemove = $(event.target).parentsUntil('#care-requests-accordion', '.accordion-item');
 
-    // Suppression de la care request
-    httpClient.delete(event.target.dataset.apiUrlDelete)
-        .then(function (response) {
-            // Suppression de la care request du DOM
-            $(event.target).parentsUntil('#care-requests-accordion', '.accordion-item').remove();
-        }).catch(function (error) {
-            modal('care_request.error.delete');
-        });
+    confirm(event.target, function() {
+        // Suppression de la care request
+        httpClient.delete(apiUrlDelete)
+            .then(function (response) {
+                // Suppression de la care request du DOM
+                removeDomElement(elementToRemove.get(0));
+            }).catch(function (error) {
+                modal('care_request.error.delete');
+            })
+        ;
+    });
 }
 
 

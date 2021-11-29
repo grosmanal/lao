@@ -11,6 +11,10 @@ modal:
         alert: Alerte
     close: Fermer
 
+# Confirmation button
+confirm:
+    button_label: Confirmer
+
 # Patient
 patient:
     title: Patient %firstname% %lastname%

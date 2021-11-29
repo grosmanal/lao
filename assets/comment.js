@@ -3,6 +3,7 @@ import $ from 'jquery';
 import Translator from 'bazinga-translator';
 
 import nullFieldConverter from './utils/nullFieldConverter';
+import removeDomElement from './utils/removeDomElement';
 import { modal } from './components/modal';
 
 import 'summernote/dist/summernote-lite';
@@ -114,18 +115,7 @@ function deleteComment(form)
     }).then(function (response) {
         // Recherche de l'item de la liste des commentaires pour y le supprimer
         const commentListItem = $(form).parentsUntil('ul.comments', 'li.comment');
-        const commentListItemDom = commentListItem.get(0);
-        
-        commentListItemDom.addEventListener('transitionend', function(event) {
-            if (event.target !== commentListItemDom) {
-                return;
-            }
-
-            this.remove();
-        });
-
-        // Visibility pour transition jolie
-        commentListItem.addClass('opacity-0');
+        removeDomElement(commentListItem.get(0));
     }).catch(function(error) {
         console.log(error);
         modal('comment.error.delete');
