@@ -27,7 +27,7 @@
                             <input type="hidden" name="url-api-delete" value="{{ url('api_comments_delete_item', {id: comment.id}) }}">
                             <input type="hidden" name="url-get-form" value="{{ url('comment_form', {id: comment.id}) }}">
 
-                            <button class="btn btn-outline-secondary btn-sm dropdown-toggle" data-bs-toggle="dropdown">
+                            <button class="btn btn-outline-secondary btn-sm dropdown-toggle" data-bs-toggle="dropdown" data-bs-auto-close="outside">
                                 <i class="bi bi-three-dots"></i>
                             </button>
 

@@ -3,6 +3,7 @@ import $ from 'jquery';
 import Translator from 'bazinga-translator';
 
 import nullFieldConverter from './utils/nullFieldConverter';
+import confirm from './utils/confirm';
 import removeDomElement from './utils/removeDomElement';
 import { modal } from './components/modal';
 
@@ -105,20 +106,23 @@ function editComment(form)
 
 /**
  * Suppression d'un commentaire
+ * @param {Element} deleteButton Bouton de suppression
  * @param {HTMLFormElement} form Formulaire contenant le bouton de suppression
  */
-function deleteComment(form)
+function deleteComment(deleteButton, form)
 {
-    httpClient({
-        method: 'delete',
-        url: form['url-api-delete'].value,
-    }).then(function (response) {
-        // Recherche de l'item de la liste des commentaires pour y le supprimer
-        const commentListItem = $(form).parentsUntil('ul.comments', 'li.comment');
-        removeDomElement(commentListItem.get(0));
-    }).catch(function(error) {
-        console.log(error);
-        modal('comment.error.delete');
+    confirm(deleteButton, function() {
+        httpClient({
+            method: 'delete',
+            url: form['url-api-delete'].value,
+        }).then(function (response) {
+            // Recherche de l'item de la liste des commentaires pour y le supprimer
+            const commentListItem = $(form).parentsUntil('ul.comments', 'li.comment');
+            removeDomElement(commentListItem.get(0));
+        }).catch(function(error) {
+            console.log(error);
+            modal('comment.error.delete');
+        });
     });
 }
 
@@ -126,13 +130,14 @@ function submitCommentMenu(event) {
     event.preventDefault();
     
     const form = event.target;
+    const button = event.submitter;
     
     switch(event.submitter.name) {
         case 'edit':
             editComment(form);
             break;
         case 'delete':
-            deleteComment(form);
+            deleteComment(button, form);
             break;
     }
 

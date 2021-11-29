@@ -160,7 +160,7 @@ class CareRequestType extends AbstractType
                     'label' => 'care_request.delete',
                     'label_html' => true,
                     'attr' => [
-                        'class' => 'btn btn-outline-danger',
+                        'class' => 'btn-outline-danger',
                         'onclick' => "deleteCareRequest(event)",
                         'data-api-url-delete' => $options['api_delete_url'],
                     ],

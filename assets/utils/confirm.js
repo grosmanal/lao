@@ -8,6 +8,12 @@ function doConfirmAction(cancelConfirmationTimeout, confirmCallback) {
     confirmCallback();
 }
 
+/**
+ * 
+ * @param {HTMLElement} domActionButton 
+ * @param {function} confirmCallback 
+ * @param {string} confirmLabel 
+ */
 export default function (domActionButton, confirmCallback, confirmLabel = undefined) {
     // Changement de l'apparence du bouton
     const actionButton = $(domActionButton);
@@ -17,13 +23,22 @@ export default function (domActionButton, confirmCallback, confirmLabel = undefi
     const confirmButtonContent =
         '<i class="bi bi-exclamation-diamond"></i> ' +
         (confirmLabel !== undefined ? confirmLabel : Translator.trans('confirm.button_label'));
+        
+    
+    // Ajout des classe du bouton d'origine
+    // et transfomation du danger en warning
+    domActionButton.classList.forEach(function(actionButtonClass) {
+        const dangerClass = actionButtonClass.match(/^([a-z\-]*)\-danger$/)
+        if (dangerClass != null) {
+            confirmButton.addClass(dangerClass[1] + '-warning');
+        } else {
+            confirmButton.addClass(actionButtonClass);
+        }
+    });
 
     confirmButton
-        .addClass('btn') // TODO si le actionButton a btn
-        .addClass('btn-outline-warning')
         .html(confirmButtonContent)
     ;
-    
     
     // Timeout pour annuler la demande de confirmation
     const cancelConfirmationTimeout = setTimeout(function() {
