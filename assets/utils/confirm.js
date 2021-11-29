@@ -1,20 +1,28 @@
 import $ from 'jquery';
 import Translator from 'bazinga-translator';
 
-function doConfirmAction(cancelConfirmationTimeout, confirmCallback) {
+function doConfirmAction(cancelConfirmationTimeout, confirmCallback, confirmCallbackParameters) {
     // Suppression du timeout d'annulation de la confirmation
     clearTimeout(cancelConfirmationTimeout);
 
-    confirmCallback();
+    confirmCallback(...confirmCallbackParameters);
 }
 
 /**
  * 
  * @param {HTMLElement} domActionButton 
  * @param {function} confirmCallback 
+ * @param {Iterable} confirmCallbackParameters
  * @param {string} confirmLabel 
  */
-export default function (domActionButton, confirmCallback, confirmLabel = undefined) {
+export default function (
+    domActionButton,
+    confirmCallback,
+    confirmCallbackParameters = {},
+    additionalCancelConfrimCallback = null,
+    warningClass = '',
+    confirmLabel = undefined
+) {
     // Changement de l'apparence du bouton
     const actionButton = $(domActionButton);
     
@@ -35,6 +43,10 @@ export default function (domActionButton, confirmCallback, confirmLabel = undefi
             confirmButton.addClass(actionButtonClass);
         }
     });
+    
+    if (warningClass != '') {
+        confirmButton.addClass(warningClass);
+    }
 
     confirmButton
         .html(confirmButtonContent)
@@ -43,10 +55,14 @@ export default function (domActionButton, confirmCallback, confirmLabel = undefi
     // Timeout pour annuler la demande de confirmation
     const cancelConfirmationTimeout = setTimeout(function() {
         confirmButton.replaceWith(actionButton);
+        additionalCancelConfrimCallback();
     }, 2000);
 
     confirmButton
-        .on('click', function(event) { event.preventDefault(); doConfirmAction(cancelConfirmationTimeout, confirmCallback); })
+        .on('click', function(event) {
+            event.preventDefault();
+            doConfirmAction(cancelConfirmationTimeout, confirmCallback, confirmCallbackParameters);
+        })
     ;
 
     actionButton.replaceWith(confirmButton);

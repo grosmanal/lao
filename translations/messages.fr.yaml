@@ -90,6 +90,9 @@ care_request:
         add_button: Ajouter
         save_button: Enregistrer
         reactivate_button: Réactiver
+    confirm_abandon:
+        title: Raison d’abandon vide
+        content: Est-ce normal ?
     error:
         reread: Erreur lors du ré-affichage de la demande
         update: Erreur lors de la mise à jour de la demande de soin %errorMessage%

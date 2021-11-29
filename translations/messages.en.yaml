@@ -90,6 +90,9 @@ care_request:
         add_button: Add
         save_button: Save
         reactivate_button: Reactivate
+    confirm_abandon:
+        title: Empty abandon reason
+        content: Is this OK ?
     error:
         reread: Error while reading care request
         update: Error while updating care request %errorMessage%
