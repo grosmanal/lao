@@ -189,6 +189,7 @@ function reactivateCareRequest(event) {
 function abandonCareRequest(event) {
     const form = event.target.form
     const data = {
+        abandonReason: nullFieldConverter(form['care_request[abandonReason]'].value),
         abandonDate: 'now',
     };
 

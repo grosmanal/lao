@@ -103,7 +103,7 @@ class CareRequest implements OfficeOwnedInterface
     private $abandonDate;
 
     /**
-     * @ORM\Column(type="string", length=10, nullable=true)
+     * @ORM\ManyToOne(targetEntity=AbandonReason::class)
      */
     #[Groups(['careRequest:read', 'careRequest:put'])]
     private $abandonReason;
@@ -323,12 +323,12 @@ class CareRequest implements OfficeOwnedInterface
         return $this;
     }
 
-    public function getAbandonReason(): ?string
+    public function getAbandonReason(): ?AbandonReason
     {
         return $this->abandonReason;
     }
 
-    public function setAbandonReason(?string $abandonReason): self
+    public function setAbandonReason(?AbandonReason $abandonReason): self
     {
         $this->abandonReason = $abandonReason;
 

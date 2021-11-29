@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\AbandonReason;
 use App\Entity\CareRequest;
 use App\Entity\Complaint;
 use App\Entity\Doctor;
@@ -111,8 +112,12 @@ class CareRequestType extends AbstractType
                 'disabled' => $buttonDisabled,
                 'label' => 'care_request.form.take_charge_action',
             ])
-            ->add('abandonReason', TextType::class, [
+            ->add('abandonReason', EntityType::class, [
+                'class' => AbandonReason::class,
                 'required' => false,
+                'choice_value' => function(?AbandonReason $abandonReason) {
+                    return $abandonReason ? $this->urlGenerator->generate('api_abandon_reasons_get_item', ['id' => $abandonReason->getId()]) : '';
+                },
                 'disabled' => $fieldDisabled,
                 'label' => 'care_request.form.abandon_reason',
             ])

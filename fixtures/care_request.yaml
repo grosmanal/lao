@@ -76,5 +76,5 @@ App\Entity\CareRequest:
         acceptedByDoctor: ~
         acceptDate: ~
         abandonDate: <immutableDateTimeBetween("-6 month", "-3 month")>
-        abandonReason: 'no_answer'
+        abandonReason: '@abandon_reason_ne_repond_pas'
 
