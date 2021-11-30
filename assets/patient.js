@@ -5,6 +5,7 @@ import { submitCommentMenu, submitComment, transformToSummernote } from './comme
 import nullFieldConverter from './utils/nullFieldConverter';
 import confirm from './utils/confirm';
 import removeDomElement from './utils/removeDomElement';
+import showCheckFlag from './utils/showCheckFlag';
 
 import './styles/patient.scss'
 
@@ -61,25 +62,20 @@ function collectPatientData(form) {
 }
     
 
-function doApiPutPatient(url, data) {
-    httpClient({
-        method: 'PUT',
-        url: url,
-        data: data
-    }).then(function (response) {
-        // https://manal.xyz/gitea/origami_informatique/lao/issues/85
-    }).catch(function (error) {
-        modal('patient.error.updating)');
-    });
-}
-
-
 function updateVariableSchedule(input) {
     const data = {
         variableSchedule: input.checked,
     }
 
-    doApiPutPatient(input.form['variable_schedule[apiUrl]'].value, data);
+    httpClient({
+        method: 'PUT',
+        url: input.form['variable_schedule[apiUrl]'].value,
+        data: data
+    }).then(function (response) {
+        // rien à faire
+    }).catch(function (error) {
+        modal('patient.error.updating)');
+    });
 }
 
 
@@ -110,7 +106,15 @@ function submitPatient(event) {
     }
     
     if (event.submitter.name == 'patient[update]') {
-        doApiPutPatient(apiUrl, collectPatientData(form));
+        httpClient({
+            method: 'PUT',
+            url: apiUrl,
+            data: collectPatientData(form)
+        }).then(function (response) {
+            showCheckFlag(event.submitter)
+        }).catch(function (error) {
+            modal('patient.error.updating');
+        });
     } else if (event.submitter.name == 'patient[delete]') {
         deletePatient(event.submitter, apiUrl);
     } else if (event.submitter.name == 'patient[create]') {
@@ -146,8 +150,12 @@ function doSubmitCareRequest(form, data) {
                 if (textarea.length) {
                     transformToSummernote(textarea.get(0));
                 }
-
-                // https://manal.xyz/gitea/origami_informatique/lao/issues/85
+                
+                // Affichage d'un check sur le bouton du nouveau formulaire
+                const updateButton = formParent.find('#care_request_update');
+                if (updateButton.length) {
+                    showCheckFlag(updateButton.get(0));
+                }
             }).catch(function (error) {
                 modal('care_request.error.reread');
             });

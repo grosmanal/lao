@@ -148,7 +148,7 @@ class CareRequestType extends AbstractType
                 'data' => $this->urlGenerator->generate('api_doctors_get_item', ['id' => $options['current_doctor']->getId()]),
                 'mapped' => false,
             ])
-            ->add('validate', SubmitType::class, [
+            ->add('update', SubmitType::class, [
                 'label' => $this->validateButtonLabel($careRequest),
             ])
         ;
