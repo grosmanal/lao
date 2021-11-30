@@ -15,17 +15,6 @@ import Vue from 'vue';
 import Weekvailability from './components/availability/AvailabilityWeek.vue';
 import Translator from 'bazinga-translator';
 
-new Vue({
-    render(h) {
-        return h(Weekvailability, {
-            props: {
-                middleOfDay: this.$el.getAttribute('data-middle-of-day'),
-                initAvailability: JSON.parse(this.$el.getAttribute('data-availability')),
-                urlPutPatientAvailability: this.$el.getAttribute('data-url-put-patient-availability'),
-            }
-        });
-    }
-}).$mount('#week-availability')
 
 jQuery(function ($) {
     // Composant summernote sur chaque textarea d'ajout de commentaire
@@ -42,6 +31,21 @@ jQuery(function ($) {
     $('.care-request-create-button').on('click', function () {
         insertCareRequestCreationForm(this, $);
     });
+    
+    // Composant availability
+    if ($('#week-availability').length > 0) {
+        new Vue({
+            render(h) {
+                return h(Weekvailability, {
+                    props: {
+                        middleOfDay: this.$el.getAttribute('data-middle-of-day'),
+                        initAvailability: JSON.parse(this.$el.getAttribute('data-availability')),
+                        urlPutPatientAvailability: this.$el.getAttribute('data-url-put-patient-availability'),
+                    }
+                });
+            }
+        }).$mount('#week-availability')
+    }
 });
 
 function collectPatientData(form) {
