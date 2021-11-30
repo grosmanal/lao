@@ -5,7 +5,6 @@ import { submitCommentMenu, submitComment, transformToSummernote } from './comme
 import nullFieldConverter from './utils/nullFieldConverter';
 import confirm from './utils/confirm';
 import removeDomElement from './utils/removeDomElement';
-import { Popover } from 'bootstrap';
 
 import './styles/patient.scss'
 
@@ -201,21 +200,18 @@ function abandonCareRequest(event) {
     const abandonReason = form['care_request[abandonReason]'];
     
     if (abandonReason.value == '') {
-        const popover = Popover.getOrCreateInstance(abandonReason, {
+        const popoverAttributes = {
+            element: abandonReason,
             title: Translator.trans('care_request.confirm_abandon.title'),
             content: Translator.trans('care_request.confirm_abandon.content'),
             placement: 'top',
-            trigger: 'manual',
-        });
-
-        popover.show();
+        }
         
         confirm(
             button,
-            function(form, data) { popover.hide(), doSubmitCareRequest(form, data) },
-            [form, data],
-            function() { popover.hide(); },
-            'btn-warning'
+            function() { doSubmitCareRequest(form, data) },
+            'btn-warning',
+            popoverAttributes,
         );
     } else {
         // La raison d'abandon est rensignée
