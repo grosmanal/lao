@@ -110,7 +110,7 @@ class CareRequest implements OfficeOwnedInterface
 
     /**
      * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="careRequest", orphanRemoval=true, cascade={"remove"})
-     * @ORM\OrderBy({"creationDate" = "DESC"})
+     * @ORM\OrderBy({"creationDate" = "ASC"})
      */
     #[ApiSubresource()]
     private $comments;

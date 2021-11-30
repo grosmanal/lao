@@ -216,7 +216,7 @@ function upsertComment(form)
         if (updating) {
             updateCommentInList(form, response.data.relatedUri.getHtmlContent);
         } else {
-            prependCommentInList(form, response.data.relatedUri.getHtmlContent);
+            appendCommentInList(form, response.data.relatedUri.getHtmlContent);
         }
     }).catch(function(error) {
         modal('comment.error.add');
@@ -252,7 +252,7 @@ function updateCommentInList(form, urlHtmlContent)
 }
 
 
-function prependCommentInList(form, urlHtmlContent)
+function appendCommentInList(form, urlHtmlContent)
 {
     // Insertion du commentaire dans la liste des commentaires existants
     httpClient
@@ -265,13 +265,13 @@ function prependCommentInList(form, urlHtmlContent)
             const listElement = $(form).siblings('ul.comments');
             
             // Injection du nouveau HTML
-            listElement.prepend(response.data);
+            listElement.append(response.data);
             
             // Vidage du contenu de formulaire
             form['comment[content]'].value = '';
 
             setTimeout(function() {
-                listElement.find('li').first().removeClass('opacity-0');
+                listElement.find('li.comment').last().removeClass('opacity-0');
             }, 100)
         })
         .catch(function(error) {

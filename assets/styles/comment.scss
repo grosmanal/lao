@@ -1,5 +1,9 @@
 $mention-bg: rgb(230, 230, 230);
 
+li.comment {
+    transition: opacity 0.5s linear;
+}
+
 div.note-editable {
     span.mention {
         background-color: $mention-bg;
