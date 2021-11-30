@@ -32,6 +32,7 @@ class PatientType extends AbstractType
             ])
             ->add('lastname', TextType::class, [
                 'label' => 'patient.info.form.lastname',
+                'required' => false,
             ])
             ->add('birthdate', BirthdayType::class, [
                 'format' => 'yyyy-MM-dd',
@@ -42,15 +43,18 @@ class PatientType extends AbstractType
                 ])
             ->add('contact', TextType::class, [
                 'label' => 'patient.info.form.contact',
+                'required' => false,
             ])
             ->add('phone', TelType::class, [
                 'label' => 'patient.info.form.phone',
             ])
             ->add('mobilePhone', TelType::class, [
                 'label' => 'patient.info.form.mobile_phone',
+                'required' => false,
             ])
             ->add('email', EmailType::class, [
                 'label' => 'patient.info.form.email',
+                'required' => false,
             ])
         ;
         
