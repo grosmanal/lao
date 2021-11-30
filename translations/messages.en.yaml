@@ -31,13 +31,18 @@ patient:
             email: Email
             add_button: Add
             save_button: Save
+            delete_button: '%icon% Delete'
+        confirm_delete:
+            title: Definitive deletion
+            content: All patient data will be definitively erased !
     availabilities:
         header: Availabilities
     care_requests:
         header: Care requests
     error:
         updating: Error while updating patient
-        
+        deleting: Error while deleting patient
+
 # Availability
 availability:
     variable_schedule: Variable schedules
@@ -72,7 +77,6 @@ care_request:
     priority_badge: Priority
     new: New care request
     delete: '%icon% Delete'
-    confirm_delete: Permanently delete this care request ?
     comment:
         placeholder: Comment
     form:

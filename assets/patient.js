@@ -32,7 +32,7 @@ jQuery(function ($) {
     $('.comments textarea').each(function () {
         transformToSummernote(this);
     })
-
+    
     // Clic sur checkbox variableSchedule
     $('#variable-schedule-form input[type="checkbox"]').on('change', function () {
         updateVariableSchedule(this)
@@ -44,9 +44,22 @@ jQuery(function ($) {
     });
 });
 
-function doSubmitPatient(url, data) {
+function collectPatientData(form) {
+    return {
+        firstname: nullFieldConverter(form['patient[firstname]'].value),
+        lastname: nullFieldConverter(form['patient[lastname]'].value),
+        birthdate: nullFieldConverter(form['patient[birthdate]'].value),
+        contact: nullFieldConverter(form['patient[contact]'].value),
+        phone: nullFieldConverter(form['patient[phone]'].value),
+        mobilePhone: nullFieldConverter(form['patient[mobilePhone]'].value),
+        email: nullFieldConverter(form['patient[email]'].value),
+    };
+}
+    
+
+function doApiPutPatient(url, data) {
     httpClient({
-        method: 'put',
+        method: 'PUT',
         url: url,
         data: data
     }).then(function (response) {
@@ -56,36 +69,50 @@ function doSubmitPatient(url, data) {
     });
 }
 
-/**
- * Enregistrement des infos du patient
- */
-function submitPatient(event) {
-    event.preventDefault();
-
-    const form = event.target;
-
-    const data = {
-        firstname: nullFieldConverter(form['patient[firstname]'].value),
-        lastname: nullFieldConverter(form['patient[lastname]'].value),
-        birthdate: nullFieldConverter(form['patient[birthdate]'].value),
-        contact: nullFieldConverter(form['patient[contact]'].value),
-        phone: nullFieldConverter(form['patient[phone]'].value),
-        mobilePhone: nullFieldConverter(form['patient[mobilePhone]'].value),
-        email: nullFieldConverter(form['patient[email]'].value),
-    };
-    
-    doSubmitPatient(form['patient[apiPutUrl]'].value, data);
-
-    return false;
-};
-
 
 function updateVariableSchedule(input) {
     const data = {
         variableSchedule: input.checked,
     }
 
-    doSubmitPatient(input.form['variable_schedule[apiPutUrl]'].value, data);
+    doApiPutPatient(input.form['variable_schedule[apiUrl]'].value, data);
+}
+
+
+function deletePatient(deleteButton, apiUrl) {
+    confirm(deleteButton, function() {
+        httpClient.delete(apiUrl)
+        .then(function (response) {
+            window.location = '/';
+        }).catch(function (error) {
+            modal('patient.error.deleting');
+        });
+    }, null, {
+        element: null, // placement du popover sur le bouton de confirmation
+        title: Translator.trans('patient.info.confirm_delete.title'),
+        content: Translator.trans('patient.info.confirm_delete.content'),
+        placement: 'top'
+    });
+}
+
+
+function submitPatient(event) {
+    const form = event.target;
+    
+    const apiUrl = $(event.submitter).data('apiUrl');
+    if (apiUrl !== undefined) {
+        // On utilisera l'API : ne pas continuer le submit vers l'action du formulaire
+        event.preventDefault();
+    }
+    
+    if (event.submitter.name == 'patient[update]') {
+        doApiPutPatient(apiUrl, collectPatientData(form));
+    } else if (event.submitter.name == 'patient[delete]') {
+        deletePatient(event.submitter, apiUrl);
+    } else if (event.submitter.name == 'patient[create]') {
+        // Rien à faire : le submit se poursuit par
+        // un appel en POST de /patient_new
+    }
 }
 
 

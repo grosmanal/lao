@@ -14,7 +14,11 @@ function doConfirmAction(cancelConfirmationTimeout, confirmCallback) {
  * @param {HTMLElement} domActionButton Bouton concerné par la confirmation
  * @param {function} confirmCallback Callback a appeler si confirmation
  * @param {string} warningClass Classe à ajouter à l'élément de confimation
- * @param {Object} popoverAttributes Attributs pour création d'un popover ( {element, title, content, placement} )
+ * @param {Object} popoverAttributes Attributs pour création d'un popover
+ * @param {Element|null} popoverAttributes.element Élement DOM qui recevra le popover
+ * @param {string} popoverAttributes.title Titre du popover
+ * @param {string} popoverAttributes.content Contenu du popover
+ * @param {string} popoverAttributes.placement Placement du popover
  * @param {string} confirmLabel Libellé demandant la confirmation
  */
 export default function (
@@ -56,6 +60,12 @@ export default function (
     // Création du popover
     let popover = null;
     if (popoverAttributes !== null) {
+        if (popoverAttributes.element == null) {
+            // L'élément sur lequel positionner le popover n'est pas précisé
+            // On place donc le popover sur le bouton de confirmation
+            popoverAttributes.element = confirmButton.get(0);
+        }
+
         popover = Popover.getOrCreateInstance(popoverAttributes.element, {
             title: popoverAttributes.title,
             content: popoverAttributes.content,
@@ -86,8 +96,8 @@ export default function (
         })
     ;
 
+    actionButton.replaceWith(confirmButton);
     if (popover != null) {
         popover.show();
     }
-    actionButton.replaceWith(confirmButton);
 }

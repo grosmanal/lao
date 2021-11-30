@@ -109,7 +109,7 @@ class CareRequest implements OfficeOwnedInterface
     private $abandonReason;
 
     /**
-     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="careRequest", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="careRequest", orphanRemoval=true, cascade={"remove"})
      * @ORM\OrderBy({"creationDate" = "DESC"})
      */
     #[ApiSubresource()]

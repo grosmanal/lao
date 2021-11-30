@@ -1,6 +1,12 @@
 @import './bootstrap';
 @import './mixin';
 
+.submit-form-group {
+    @include media-breakpoint-up(lg) {
+        text-align: right;
+    }
+}
+
 .patient-content {
     .identity-section {
         form {
@@ -20,12 +26,6 @@
 
     .care-request-section {
         form {
-            .form-group {
-                @include media-breakpoint-up(lg) {
-                    text-align: right;
-                }
-            }
-
             @include form-margin;
             
             .form-content {

@@ -66,9 +66,13 @@ class PatientController extends AbstractController
 
         $paramsAvailability = $this->getParameter('app.availability');
 
-        $patientForm = $this->createForm(PatientType::class, $patient);
+        $apiPutUrl = $this->generateUrl('api_patients_put_item', ['id' => $patient->getId()]);
+        $patientForm = $this->createForm(PatientType::class, $patient, [
+            'api_delete_url' => $this->generateUrl('api_patients_delete_item', ['id' => $patient->getId()]),
+            'api_put_url' => $apiPutUrl,
+        ]);
         $variableScheduleForm = $this->createForm(VariableScheduleType::class, $patient, [
-            'api_put_url' => $this->generateUrl('api_patients_put_item', ['id' => $patient->getId()])
+            'api_put_url' => $apiPutUrl,
         ]);
 
         $careRequests = [];

@@ -111,7 +111,7 @@ class Patient implements OfficeOwnedInterface
     private $office;
 
     /**
-     * @ORM\OneToMany(targetEntity=CareRequest::class, mappedBy="patient")
+     * @ORM\OneToMany(targetEntity=CareRequest::class, mappedBy="patient", cascade={"remove"})
      * @ORM\OrderBy({"creationDate" = "DESC"})
      */
     private $careRequests;

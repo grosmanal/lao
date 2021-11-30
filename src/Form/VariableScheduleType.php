@@ -18,7 +18,7 @@ class VariableScheduleType extends AbstractType
                 'label' => 'availability.variable_schedule',
                 'required' => false,
             ])
-            ->add('apiPutUrl', HiddenType::class, [
+            ->add('apiUrl', HiddenType::class, [
                 'data' => $options['api_put_url'],
                 'mapped' => false,
             ])

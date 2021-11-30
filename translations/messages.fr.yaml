@@ -31,12 +31,17 @@ patient:
             email: Email
             add_button: Ajouter
             save_button: Enregistrer
+            delete_button: '%icon% Supprimer'
+        confirm_delete:
+            title: Suppression définitive
+            content: Toutes les données du patient seront définitivement supprimées !
     availabilities:
         header: Disponibilités
     care_requests:
         header: Demandes
     error:
         updating: Erreur lors de la mise à jour du patient
+        deleting: Erreur lors de la suppression du patient
 
 # Availability
 availability:
@@ -72,7 +77,6 @@ care_request:
     priority_badge: Prioritaire
     new: Nouvelle demande
     delete: '%icon% Supprimer'
-    confirm_delete: Supprimer définitivement cette demande ?
     comment:
         placeholder: Commentaire
     form:

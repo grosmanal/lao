@@ -52,17 +52,33 @@ class PatientType extends AbstractType
             ->add('email', EmailType::class, [
                 'label' => 'patient.info.form.email',
             ])
-            ->add('validate', SubmitType::class, [
-                'label' => $patient->getId() ? 'patient.info.form.save_button' : 'patient.info.form.add_button',
-            ])
         ;
         
         if ($patient->getId()) {
-            // Le patient existe : on utilisera l'API pour le modifier
+            // Le patient existe
             $builder
-                ->add('apiPutUrl', HiddenType::class, [
-                    'data' => $this->urlGenerator->generate('api_patients_put_item', ['id' => $patient->getId()]),
-                    'mapped' => false,
+                // Bouton de mise à jour
+                ->add('update', SubmitType::class, [
+                    'label' => 'patient.info.form.save_button',
+                    'attr' => [
+                        'data-api-url' => $options['api_put_url'],
+                    ],
+                ])
+                // Bouton de suppression
+                ->add('delete', SubmitType::class, [
+                    'label' => 'patient.info.form.delete_button',
+                    'label_html' => true,
+                    'attr' => [
+                        'class' => 'btn-outline-danger',
+                        'data-api-url' => $options['api_delete_url'],
+                    ],
+                ])
+            ;
+        } else {
+            $builder
+                // Bouton de création
+                ->add('create', SubmitType::class, [
+                    'label' => 'patient.info.form.add_button',
                 ])
             ;
         }
@@ -72,6 +88,11 @@ class PatientType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Patient::class,
+            'api_delete_url' => null,
+            'api_put_url' => null,
         ]);
+
+        $resolver->setAllowedTypes('api_delete_url', ['null', 'string']);
+        $resolver->setAllowedTypes('api_put_url', ['null', 'string']);
     }
 }
