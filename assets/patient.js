@@ -129,8 +129,9 @@ function submitPatient(event) {
  * puis mise à jour de l'html de la care request avec les nouvelle données
  * @param {object} form 
  * @param {object} data 
+ * @param {boolean} checkFlag Afficher le check flag sur le bouton update
  */
-function doSubmitCareRequest(form, data) {
+function doSubmitCareRequest(form, data, checkFlag = true) {
     httpClient({
         method: form['care_request[apiAction]'].value,
         url: form['care_request[apiUrl]'].value,
@@ -152,11 +153,12 @@ function doSubmitCareRequest(form, data) {
                 }
                 
                 // Affichage d'un check sur le bouton du nouveau formulaire
-                const updateButton = formParent.find('#care_request_update');
-                if (updateButton.length) {
+                const updateButton = formParent.find('#care_request_upsert');
+                if (checkFlag && updateButton.length) {
                     showCheckFlag(updateButton.get(0));
                 }
             }).catch(function (error) {
+                console.error(error);
                 modal('care_request.error.reread');
             });
     }).catch(function (error) {
@@ -176,10 +178,8 @@ function doSubmitCareRequest(form, data) {
 /**
  * Modification d'une demande
  */
-function submitCareRequest(event) {
-    event.preventDefault();
+function upsertCareRequest(form) {
 
-    const form = event.target;
     const data = {
         creationDate: nullFieldConverter(form['care_request[creationDate]'].value),
         priority: nullFieldConverter(form['care_request[priority]'].checked),
@@ -192,25 +192,26 @@ function submitCareRequest(event) {
         acceptedByDoctor: nullFieldConverter(form['care_request[acceptedByDoctor]'].value),
     };
 
+    let checkFlag = undefined;
     if (form['care_request[patientUri]']) {
         // Le formulaire contient le champ (caché) patientUri, il faut l'ajouter
         // aux data pour création de la care request
+        // Cas d'une création de care request
         data['patient'] = form['care_request[patientUri]'].value;
+        checkFlag = false;
+    } else {
+        // Cas d'une modification de care request
+        checkFlag = true;
     }
 
-    doSubmitCareRequest(form, data);
-
-    return false;
+    doSubmitCareRequest(form, data, checkFlag);
 };
 
 
 /**
  * Réactivation d'une care request
  */
-function reactivateCareRequest(event) {
-    event.preventDefault();
-
-    const form = event.target;
+function reactivateCareRequest(form) {
     const data = {
         acceptDate: null,
         abandonDate: null,
@@ -218,19 +219,14 @@ function reactivateCareRequest(event) {
         acceptedByDoctor: null,
     };
 
-    doSubmitCareRequest(form, data);
-
-    return false;
+    doSubmitCareRequest(form, data, false);
 }
 
 
 /**
  * Abandon de la demande de prise en charge
  */
-function abandonCareRequest(event) {
-    const form = event.target.form
-    const button = event.target;
-
+function abandonCareRequest(form, button) {
     const data = {
         abandonReason: nullFieldConverter(form['care_request[abandonReason]'].value),
         abandonDate: 'now',
@@ -261,8 +257,7 @@ function abandonCareRequest(event) {
 /**
  * Acceptation de la demande de prise en charge
  */
-function acceptCareRequest(event) {
-    const form = event.target.form;
+function acceptCareRequest(form) {
     const data = {
         acceptDate: 'now',
         acceptedByDoctor: nullFieldConverter(form['care_request[doctorUri]'].value),
@@ -274,15 +269,13 @@ function acceptCareRequest(event) {
 
 /**
  * Suppression de la care request
- * @param {Event} event 
+ * @param {HTMLButtonElement} button 
  */
-function deleteCareRequest(event) {
-    event.preventDefault();
-    
-    const apiUrlDelete = event.target.dataset.apiUrlDelete;
-    const elementToRemove = $(event.target).parentsUntil('#care-requests-accordion', '.accordion-item');
+function deleteCareRequest(button) {
+    const apiUrlDelete = button.dataset.apiUrlDelete;
+    const elementToRemove = $(button).parentsUntil('#care-requests-accordion', '.accordion-item');
 
-    confirm(event.target, function() {
+    confirm(button, function() {
         // Suppression de la care request
         httpClient.delete(apiUrlDelete)
             .then(function (response) {
@@ -293,6 +286,25 @@ function deleteCareRequest(event) {
             })
         ;
     });
+}
+
+
+function submitCareRequest(event) {
+    event.preventDefault();
+
+    const form = event.target;
+    
+    if (event.submitter.name == 'care_request[upsert]') {
+        upsertCareRequest(form);
+    } else if (event.submitter.name == 'care_request[reactivate]') {
+        reactivateCareRequest(form);
+    } else if (event.submitter.name == 'care_request[abandon]') {
+        abandonCareRequest(form, event.submitter);
+    } else if (event.submitter.name == 'care_request[accept]') {
+        acceptCareRequest(form);
+    } else if (event.submitter.name == 'care_request[delete]') {
+        deleteCareRequest(event.submitter);
+    }
 }
 
 
@@ -348,8 +360,6 @@ formsComment.forEach(function (element) {
 // Elles doivent donc être globale
 window.submitPatient = submitPatient;
 window.submitCareRequest = submitCareRequest;
-window.reactivateCareRequest = reactivateCareRequest;
-window.deleteCareRequest = deleteCareRequest;
 window.submitComment = submitComment;
 window.submitCommentMenu = submitCommentMenu;
 window.abandonCareRequest = abandonCareRequest;

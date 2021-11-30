@@ -30,7 +30,6 @@ class SearchController extends AbstractController
         ;
         
         $form = $this->createForm(SearchType::class, $searchCreteria, [
-            'translation_domain' => 'messages',
             'daysOfWeek' => $this->getParameter('app.availability')['daysOfWeek'],
             'method' => 'GET',
         ]);

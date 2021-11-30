@@ -48,7 +48,6 @@ class CareRequestFormFactory
     public function create(Doctor $doctor, CareRequest $careRequest)
     {
         return $this->formFactory->create(CareRequestType::class, $careRequest, [
-            'translation_domain' => 'messages',
             'api_action' => 'PUT',
             'api_url' => $this->urlGenerator->generate('api_care_requests_put_item', ['id' => $careRequest->getId()]),
             'current_doctor' => $doctor,

@@ -7,10 +7,8 @@ use App\Entity\CareRequest;
 use App\Entity\Complaint;
 use App\Entity\Doctor;
 use App\Entity\Patient;
-use App\Entity\Office;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -25,19 +23,6 @@ class CareRequestType extends AbstractType
 {
     public function __construct(private UrlGeneratorInterface $urlGenerator) {
     }
-
-    private function validateButtonLabel(CareRequest $careRequest)
-    {
-        switch ($careRequest->getState()) {
-            case CareRequest::STATE_ACTIVE:
-                return 'care_request.form.save_button';
-            case CareRequest::STATE_NEW:
-                return 'care_request.form.add_button';
-            default:
-                return 'care_request.form.reactivate_button';
-        }
-    }
-    
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -104,11 +89,7 @@ class CareRequestType extends AbstractType
                 'disabled' => $fieldDisabled,
                 'label' => 'care_request.form.accept_date',
             ])
-            ->add('acceptAction', ButtonType::class, [
-                'attr' => [
-                    'class' => 'btn btn-primary',
-                    'onclick' => "acceptCareRequest(event)",
-                ],
+            ->add('accept', SubmitType::class, [
                 'disabled' => $buttonDisabled,
                 'label' => 'care_request.form.take_charge_action',
             ])
@@ -127,15 +108,10 @@ class CareRequestType extends AbstractType
                 'disabled' => $fieldDisabled,
                 'label' => 'care_request.form.abandon_date',
             ])
-            ->add('abandonAction', ButtonType::class, [
-                'attr' => [
-                    'class' => 'btn btn-primary',
-                    'onclick' => "abandonCareRequest(event)",
-                ],
+            ->add('abandon', SubmitType::class, [
                 'disabled' => $buttonDisabled,
                 'label' => 'care_request.form.abandon_action',
             ])
-            ->add('state', HiddenType::class)
             ->add('apiAction', HiddenType::class, [
                 'data' => $options['api_action'],
                 'mapped' => false,
@@ -148,20 +124,32 @@ class CareRequestType extends AbstractType
                 'data' => $this->urlGenerator->generate('api_doctors_get_item', ['id' => $options['current_doctor']->getId()]),
                 'mapped' => false,
             ])
-            ->add('update', SubmitType::class, [
-                'label' => $this->validateButtonLabel($careRequest),
-            ])
         ;
+        
+        switch ($careRequest->getState()) {
+            case CareRequest::STATE_ACTIVE:
+            case CareRequest::STATE_NEW:
+                $builder->add('upsert', SubmitType::class, [
+                    'label' => $careRequest->getState() == CareRequest::STATE_ACTIVE ?
+                        'care_request.form.save_button' :
+                        'care_request.form.add_button',
+                ]);
+                break;
+            default:
+                $builder->add('reactivate', SubmitType::class, [
+                    'label' => 'care_request.form.reactivate_button',
+                ]);
+                break;
+        }
         
         if ($careRequest->getId()) {
             // care request existante
             $builder
-                ->add('delete', ButtonType::class, [
+                ->add('delete', SubmitType::class, [
                     'label' => 'care_request.delete',
                     'label_html' => true,
                     'attr' => [
                         'class' => 'btn-outline-danger',
-                        'onclick' => "deleteCareRequest(event)",
                         'data-api-url-delete' => $options['api_delete_url'],
                     ],
                 ])
