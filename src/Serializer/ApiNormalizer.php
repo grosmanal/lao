@@ -23,12 +23,12 @@ final class ApiNormalizer implements NormalizerInterface, DenormalizerInterface,
         $this->router = $router;
     }
 
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $this->decorated->supportsNormalization($data, $format);
     }
 
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($object, $format = null, array $context = []): array
     {
         $data = $this->decorated->normalize($object, $format, $context);
 
@@ -49,12 +49,12 @@ final class ApiNormalizer implements NormalizerInterface, DenormalizerInterface,
         return $data;
     }
 
-    public function supportsDenormalization($data, $type, $format = null)
+    public function supportsDenormalization($data, $type, $format = null): bool
     {
         return $this->decorated->supportsDenormalization($data, $type, $format);
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize($data, $class, $format = null, array $context = []): mixed
     {
         return $this->decorated->denormalize($data, $class, $format, $context);
     }
