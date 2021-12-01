@@ -59,12 +59,12 @@
         "version": "v0.5.3"
     },
     "doctrine/doctrine-bundle": {
-        "version": "2.4",
+        "version": "2.5",
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "master",
             "version": "2.4",
-            "ref": "dda18c8830b143bc31c0e0457fb13b9029614d76"
+            "ref": "032f52ed50a27762b78ca6a2aaf432958c473553"
         },
         "files": [
             "config/packages/doctrine.yaml",
@@ -75,12 +75,12 @@
         ]
     },
     "doctrine/doctrine-fixtures-bundle": {
-        "version": "3.0",
+        "version": "3.4",
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "master",
             "version": "3.0",
-            "ref": "e5b542d4ef47d8a003c91beb35650c76907f7e53"
+            "ref": "1f5514cfa15b947298df4d771e694e578d4c204d"
         },
         "files": [
             "src/DataFixtures/AppFixtures.php"
@@ -136,12 +136,12 @@
         "version": "v1.0.5"
     },
     "hautelook/alice-bundle": {
-        "version": "2.1",
+        "version": "2.9",
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "master",
             "version": "2.1",
-            "ref": "71822522faf7ed2792d86b7f94ce73443358ccb9"
+            "ref": "ff94d76b2ec0c552b5d67d401f59ab8fd62f3d5f"
         },
         "files": [
             "config/packages/dev/hautelook_alice.yaml",
@@ -405,12 +405,12 @@
         "version": "v5.3.4"
     },
     "symfony/framework-bundle": {
-        "version": "5.3",
+        "version": "5.4",
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "master",
-            "version": "5.3",
-            "ref": "772b77cfb5017644547ef7f9364c54e4eb9a6c61"
+            "version": "5.4",
+            "ref": "d4131812e20853626928e73d3effef44014944c0"
         },
         "files": [
             "config/packages/cache.yaml",
@@ -439,12 +439,12 @@
         "version": "v5.3.4"
     },
     "symfony/mailer": {
-        "version": "4.3",
+        "version": "5.4",
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "master",
             "version": "4.3",
-            "ref": "c3bab0c981b79d4085e3b6734f7b5eebe35a0ca7"
+            "ref": "bbfc7e27257d3a3f12a6fb0a42540a42d9623a37"
         },
         "files": [
             "config/packages/mailer.yaml"
@@ -499,12 +499,12 @@
         "version": "v5.3.4"
     },
     "symfony/phpunit-bridge": {
-        "version": "5.3",
+        "version": "5.4",
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "master",
             "version": "5.3",
-            "ref": "905679249e7b10f06c572917a9022a72cbfedc04"
+            "ref": "97cb3dc7b0f39c7cfc4b7553504c9d7b7795de96"
         },
         "files": [
             ".env.test",
@@ -566,12 +566,12 @@
         "version": "v5.3.4"
     },
     "symfony/security-bundle": {
-        "version": "5.3",
+        "version": "5.4",
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "master",
             "version": "5.3",
-            "ref": "227eba5e0c7e8fc4beda3537c3d81dc23ba08182"
+            "ref": "3307d76caa2d12fb10ade57975beb3d8975df396"
         },
         "files": [
             "config/packages/security.yaml"
@@ -621,12 +621,12 @@
         "version": "v5.3.4"
     },
     "symfony/twig-bundle": {
-        "version": "5.3",
+        "version": "5.4",
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "master",
-            "version": "5.3",
-            "ref": "3dd530739a4284e3272274c128dbb7a8140a66f1"
+            "version": "5.4",
+            "ref": "bffbb8f1a849736e64006735afae730cb428b6ff"
         },
         "files": [
             "config/packages/twig.yaml",
@@ -670,12 +670,12 @@
         ]
     },
     "symfony/webpack-encore-bundle": {
-        "version": "1.9",
+        "version": "1.13",
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "master",
             "version": "1.9",
-            "ref": "404714014dd6ff7de9aa0f9582d592147359e617"
+            "ref": "0f274572ea315eb3b5884518a50ca43f211b4534"
         },
         "files": [
             "assets/app.js",
