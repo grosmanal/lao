@@ -64,11 +64,11 @@ class CareRequestControllerFormTest extends AbstractControllerTestCase
         $this->assertSelectorTextSame('h3 button', 'Demande du 27/09/2021 Active Prioritaire');
         $this->assertSelectorExists('form');
         $this->assertFormValue('form', 'care_request[doctorCreator]', '/api/doctors/1');
-        $this->assertSelectorExists('form button[name~="care_request[acceptAction]"]');
-        $this->assertSelectorNotExists('form button[name~="care_request[acceptAction]"][disabled]');
-        $this->assertSelectorExists('form button[name~="care_request[abandonAction]"]');
-        $this->assertSelectorNotExists('form button[name~="care_request[abandonAction]"][disabled]');
-        $this->assertSelectorTextSame('form button[type="submit"]', 'Enregistrer');
+        $this->assertSelectorExists('form button[name="care_request[accept]"]');
+        $this->assertSelectorNotExists('form button[name="care_request[accept]"][disabled]');
+        $this->assertSelectorExists('form button[name="care_request[abandon]"]');
+        $this->assertSelectorNotExists('form button[name="care_request[abandon]"][disabled]');
+        $this->assertSelectorTextSame('form button[name="care_request[upsert]"]', 'Enregistrer');
         
         // Test de l'existence du commentaire
         $this->assertSelectorExists('section.comments ul.comments li');
@@ -86,11 +86,11 @@ class CareRequestControllerFormTest extends AbstractControllerTestCase
         $this->assertSelectorTextSame('h3 button', 'Demande du 25/09/2021 Active');
         $this->assertSelectorExists('form');
         $this->assertFormValue('form', 'care_request[doctorCreator]', '/api/doctors/1');
-        $this->assertSelectorExists('form button[name~="care_request[acceptAction]"]');
-        $this->assertSelectorNotExists('form button[name~="care_request[acceptAction]"][disabled]');
-        $this->assertSelectorExists('form button[name~="care_request[abandonAction]"]');
-        $this->assertSelectorNotExists('form button[name~="care_request[abandonAction]"][disabled]');
-        $this->assertSelectorTextSame('form button[type="submit"]', 'Enregistrer');
+        $this->assertSelectorExists('form button[name="care_request[accept]"]');
+        $this->assertSelectorNotExists('form button[name="care_request[accept]"][disabled]');
+        $this->assertSelectorExists('form button[name="care_request[abandon]"]');
+        $this->assertSelectorNotExists('form button[name="care_request[abandon]"][disabled]');
+        $this->assertSelectorTextSame('form button[name="care_request[upsert]"]', 'Enregistrer');
     }
 
     public function testGetCareRequestContentArchived()
@@ -100,9 +100,9 @@ class CareRequestControllerFormTest extends AbstractControllerTestCase
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextSame('h3 button', 'Demande du 26/09/2021 Archivée Prioritaire');
         $this->assertSelectorExists('form');
-        $this->assertSelectorExists('form button[name~="care_request[acceptAction]"][disabled]');
-        $this->assertSelectorExists('form button[name~="care_request[abandonAction]"][disabled]');
-        $this->assertSelectorTextSame('form button[type="submit"]', 'Réactiver');
+        $this->assertSelectorExists('form button[name="care_request[accept]"][disabled]');
+        $this->assertSelectorExists('form button[name="care_request[abandon]"][disabled]');
+        $this->assertSelectorTextSame('form button[name="care_request[reactivate]"]', 'Réactiver');
         
         // Test de l'existence du commentaire
         $this->assertSelectorExists('section.comments ul.comments li');
@@ -119,9 +119,9 @@ class CareRequestControllerFormTest extends AbstractControllerTestCase
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextSame('h3 button', 'Demande du 25/09/2021 Abandonnée Prioritaire');
         $this->assertSelectorExists('form');
-        $this->assertSelectorExists('form button[name~="care_request[acceptAction]"][disabled]');
-        $this->assertSelectorExists('form button[name~="care_request[abandonAction]"][disabled]');
-        $this->assertSelectorTextSame('form button[type="submit"]', 'Réactiver');
+        $this->assertSelectorExists('form button[name="care_request[accept]"][disabled]');
+        $this->assertSelectorExists('form button[name="care_request[abandon]"][disabled]');
+        $this->assertSelectorTextSame('form button[name="care_request[reactivate]"]', 'Réactiver');
         
         // Test de l'existence du commentaire
         $this->assertSelectorExists('section.comments ul.comments li');
