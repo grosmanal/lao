@@ -1,0 +1,16 @@
+@import './bootstrap';
+
+body {
+    background-image: url('../images/wp3165576-zen-wallpaper.jpg');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.body-content {
+    max-width: 30rem;
+}
+
+.row {
+    background-color: $body-bg;
+}

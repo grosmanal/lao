@@ -29,7 +29,7 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
         $this->urlGenerator = $urlGenerator;
     }
 
-    public function authenticate(Request $request): PassportInterface
+    public function authenticate(Request $request): Passport
     {
         $email = $request->request->get('email', '');
 
@@ -54,7 +54,7 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
             $routeName = 'users';
         }
         else {
-            $routeName = 'home';
+            $routeName = 'search';
         }
         return new RedirectResponse($this->urlGenerator->generate($routeName));
     }

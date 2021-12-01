@@ -2,43 +2,89 @@
 
 {% trans_default_domain 'login' %}
 
-{% block title %}{% trans %}Log in!{% endtrans %}{% endblock %}
+{% block title %}{% trans %}content.title{% endtrans %}{% endblock %}
 
 {% block body %}
-<form method="post">
-    {% if error %}
-        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
+        <form id="login-form" method="post" class="shadow p-3 bg-body rounded mx-auto">
+            {% if error %}
+                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            {% endif %}
 
-    {% if app.user %}
-        <div class="mb-3">
-            {% trans with {'%username%' : app.user.username} %}You are logged in as %username%{% endtrans %}, <a href="{{ path('app_logout') }}">{% trans %}Logout{% endtrans %}</a>
-        </div>
-    {% endif %}
+            {% if app.user %}
+                <div class="mb-3">
+                    {% trans with {'%username%' : app.user.username} %}message.logged{% endtrans %}, <a href="{{ path('app_logout') }}">{% trans %}message.logout{% endtrans %}</a>
+                </div>
+            {% endif %}
+            <div class="logo-container text-center">
+                <img src="https://via.placeholder.com/200" alt="logo" class="logo mx-auto">
+            </div>
 
-    <h1 class="h3 mb-3 font-weight-normal">{% trans %}Please sign in{% endtrans %}</h1>
-    <label for="inputEmail">{% trans %}Email{% endtrans %}</label>
-    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
-    <label for="inputPassword">{% trans %}Password{% endtrans %}</label>
-    <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+            <h1 class="h3 mt-4 font-weight-normal text-center">{% trans %}message.connect{% endtrans %}</h1>
 
-    <input type="hidden" name="_csrf_token"
-           value="{{ csrf_token('authenticate') }}"
-    >
+            <label for="inputEmail" class="form-label mt-3 mb-1">{% trans %}form.email.label{% endtrans %}</label>
+            <input
+                id="inputEmail"
+                class="form-control"
+                type="email"
+                value="{{ last_username }}"
+                name="email"
+                autocomplete="email"
+                placeholder="{{ 'form.email.placeholder'|trans }}"
+                required
+                autofocus
+            >
 
-    {#
-        Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
-        See https://symfony.com/doc/current/security/remember_me.html
+            <label for="inputPassword" class="form-label mt-3 mb-1">{% trans %}form.password.label{% endtrans %}</label>
+            <input
+                id="inputPassword"
+                class="form-control"
+                type="password"
+                name="password"
+                autocomplete="current-password"
+                placeholder="{{ 'form.password.placeholder'|trans }}"
+                required
+            >
+            
+            <div class="form-check mt-1">
+                <input
+                    id="showPassword"
+                    class="form-check-input"
+                    type="checkbox"
+                    name="showPassword"
+                    onchange="toggleShowPassword(event)"
+                >
+                <label class="form-check-label" for="showPassword">{% trans %}form.show_password{% endtrans %}</label>
+            </div>
 
-        <div class="checkbox mb-3">
-            <label>
-                <input type="checkbox" name="_remember_me"> Remember me
-            </label>
-        </div>
-    #}
+            <input type="hidden" name="_csrf_token"
+                   value="{{ csrf_token('authenticate') }}"
+            >
 
-    <button class="btn btn-lg btn-primary" type="submit">
-        {% trans %}Sign in{% endtrans %}
-    </button>
-</form>
+            {#
+                Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
+                See https://symfony.com/doc/current/security/remember_me.html
+            #}
+            <div class="form-check mt-3">
+                <input id="rememberMe" class="form-check-input" type="checkbox" name="_remember_me">
+                <label class="form-check-label" for="rememberMe">{% trans %}form.remember_me{% endtrans %}</label>
+            </div>
+
+            <div class="text-center mt-4">
+                <button class="btn btn-lg btn-primary" type="submit">
+                    {% trans %}form.signin{% endtrans %}
+                </button>
+            </div>
+        </form>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    {{ encore_entry_link_tags('login') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {{ encore_entry_script_tags('login') }}
 {% endblock %}

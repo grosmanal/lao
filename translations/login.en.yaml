@@ -1,7 +1,17 @@
-'Log in!': Log in!
-You are logged in as %username%: You are logged in as %username%
-Logout: Logout
-Please sign in: Please sign in
-Email: Email
-Password: Password
-Sign in: Sign in
+content:
+  title: Lao log in
+message:
+  connect: Log in!
+  logged: You are logged in as %username%
+  logout: Logout
+  signin: Please sign in
+form:
+  email:
+    label: Email
+    placeholder: Your email
+  password:
+    label: Password
+    placeholder: Your password
+  signin: Sign in
+  show_password: Show password
+  remember_me: Remember me

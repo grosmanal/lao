@@ -1,7 +1,17 @@
-'Log in!': Connexion
-You are logged in as %username%: Vous êtes connecté en tant que %username%
-Logout: Déconnexion
-Please sign in: Merci de vous connecter
-Email: Email
-Password: Mot de passe
-Sign in: Connexion
+content:
+  title: Lao connexion
+message:
+  connect: Connexion
+  logged: Vous êtes connecté en tant que %username%
+  logout: Deconnexion
+  signin: Merci de vous connecter
+form:
+  email:
+    label: Email
+    placeholder: Votre email
+  password:
+    label: Mot de passe
+    placeholder: Votre mot de passe
+  signin: Connexion
+  show_password: Afficher le mot de passe
+  remember_me: Se souvenir de moi
