@@ -20,25 +20,6 @@ class PatientRepository extends ServiceEntityRepository
         parent::__construct($registry, Patient::class);
     }
 
-    public function findByLikeLabelAndOffice(string $label, Office $office)
-    {
-        $qb = $this->createQueryBuilder('p');
-        $likeLabel = $qb->expr()->literal('%' . trim(addcslashes(strtolower($label), '%_')) . '%');
-        return $qb
-            ->andWhere(
-                $qb->expr()->orX(
-                    $qb->expr()->like('p.firstname', $likeLabel),
-                    $qb->expr()->like('p.lastname', $likeLabel),
-                    $qb->expr()->like('p.contact', $likeLabel)
-                )
-            )
-            ->andWhere('p.office = :office')
-            ->setParameter('office', $office)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-
     // /**
     //  * @return Patient[] Returns an array of Patient objects
     //  */

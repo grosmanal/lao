@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Entity\CareRequest;
 use App\Entity\Office;
 use DateTimeImmutable;
 use App\Input\SearchCriteria;
@@ -19,30 +20,14 @@ class CareRequestFinder
 
     public function find(SearchCriteria $searchCriteria, Office $office)
     {
-        $searchResults = [];
+        $searchResults = array_map(function(CareRequest $careRequest){
+            return [
+                'careRequest' => $careRequest,
+            ];
+
+        }, $this->careRequestRepository->findBySearchCriteria($searchCriteria));
         
-        // Filtre nom / prénom du patient
-        if (!empty($searchCriteria->getLabel())) {
-            // On fait une rechercher sur le nom / prénom du patient
-            foreach ($this->patientRepository->findByLikeLabelAndOffice($searchCriteria->getLabel(), $office) as $patient) {
-                foreach ($patient->getCareRequests() as $careRequest) {
-                    $searchResults[] = [
-                        'careRequest' => $careRequest,
-                    ];
-                }
-            }
-        } else {
-            // Pas de recherche sur le nom : lecture de toutes les care requests
-            foreach ($this->patientRepository->findBy(['office' => $office]) as $patient) {
-                foreach ($patient->getCareRequests() as $careRequest) {
-                    $searchResults[] = [
-                        'careRequest' => $careRequest,
-                    ];
-                }
-            }
-        }
-        
-        // Filtre statut de la care request
+        // Filtre statut de la care request (le statut étant calculé, il est plus simple de filtrer en PHP plutôt qu'en DQL)
         $searchResults = array_filter($searchResults, function($searchResult) use ($searchCriteria) {
             return
                 ($searchResult['careRequest']->isActive() && $searchCriteria->getIncludeActiveCareRequest()) ||

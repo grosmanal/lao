@@ -8,12 +8,35 @@
     </div>
 </div>
 
+<div class="form-group row creator">
+    <div class="col-12 col-lg-2">
+        {{ 'search.creation'|trans }}
+    </div>
+    <div class="col-12 col-lg-2">
+        {{ form_widget(form.creator) }}
+    </div>
+    <div class="col-12 col-lg-auto separator-label">
+        {{ 'search.creation_from'|trans }}
+    </div>
+    <div class="col-12 col-lg-auto">
+        {{ form_widget(form.creationFrom, {'attr': {'class': ''}}) }}
+    </div>
+    <div class="col-12 col-lg-auto separator-label">
+        {{ 'search.creation_to'|trans }}
+    </div>
+    <div class="col-12 col-lg-auto">
+        {{ form_widget(form.creationTo, {'attr': {'class': ''}}) }}
+    </div>
+</div>
+
 <div class="form-group row availability-error">
     <div class="col-12 col-lg-2"></div>
     <div class="col-12 col-lg-10">
         {{ form_errors(form.weekDay) }}
     </div>
 </div>
+
+
 <div class="form-group row availability">
     <div class="col-12 col-lg-2">
         <label for="search-label" class="form-label">{{ 'search.availability'|trans }}</label>
@@ -22,13 +45,13 @@
         {{ form_widget(form.weekDay, {'attr': {'class': 'week-day'}}) }}
     </div>
     <div class="col-12 col-lg-auto separator-label">
-        {{ 'search.from'|trans }}
+        {{ 'search.availability_from'|trans }}
     </div>
     <div class="col-12 col-lg-auto">
         {{ form_widget(form.timeStart, {'attr': {'class': 'timer'}}) }}
     </div>
     <div class="col-12 col-lg-auto separator-label">
-        {{ 'search.to'|trans }}
+        {{ 'search.availability_to'|trans }}
     </div>
     <div class="col-12 col-lg-auto">
         {{ form_widget(form.timeEnd, {'attr': {'class': 'timer'}}) }}

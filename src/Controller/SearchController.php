@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Form\SearchType;
 use App\Input\SearchCriteria;
 use App\Service\CareRequestFinder;
+use App\Service\UserProfile;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,6 +21,7 @@ class SearchController extends AbstractController
         Request $request,
         Security $security,
         CareRequestFinder $careRequestFinder,
+        UserProfile $userProfile,
     ): Response {
         $searchCreteria = new SearchCriteria();
         
@@ -31,6 +33,7 @@ class SearchController extends AbstractController
         
         $form = $this->createForm(SearchType::class, $searchCreteria, [
             'daysOfWeek' => $this->getParameter('app.availability')['daysOfWeek'],
+            'current_doctor' => $userProfile->getDoctor(),
             'method' => 'GET',
         ]);
         

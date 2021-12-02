@@ -21,7 +21,10 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class CareRequestType extends AbstractType
 {
-    public function __construct(private UrlGeneratorInterface $urlGenerator) {
+    public function __construct(
+        private UrlGeneratorInterface $urlGenerator,
+        private TypeOptionsFactory $typeOptionsFactory,
+    ) {
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -31,13 +34,6 @@ class CareRequestType extends AbstractType
 
         $fieldDisabled = !$careRequest->isActive() && !$careRequest->isNew();
         $buttonDisabled = !($careRequest->isActive() && !$careRequest->isNew());
-        
-        $doctorQueryBuilder = function (EntityRepository $er) use ($options) {
-            return $er->createQueryBuilder('d')
-                ->andWhere('d.office = :office')
-                ->setParameter(':office', $options['current_doctor']->getOffice())
-                ;
-        };
         
         $builder
             ->add('creationDate', DateType::class, [
@@ -50,15 +46,10 @@ class CareRequestType extends AbstractType
                 'disabled' => $fieldDisabled,
                 'label' => 'care_request.form.priority',
             ])
-            ->add('doctorCreator', EntityType::class, [
-                'class' => Doctor::class,
-                'query_builder' => $doctorQueryBuilder,
-                'choice_value' => function(?Doctor $doctor) {
-                    return $doctor ? $this->urlGenerator->generate('api_doctors_get_item', ['id' => $doctor->getId()]) : '';
-                },
+            ->add('doctorCreator', EntityType::class, $this->typeOptionsFactory->createOfficeDoctorOptions([
                 'disabled' => $fieldDisabled,
                 'label' => 'care_request.form.doctor_creator',
-            ])
+            ], $options['current_doctor']->getOffice(), true))
             ->add('complaint', EntityType::class, [
                 'class' => Complaint::class,
                 'required' => false,
@@ -73,16 +64,11 @@ class CareRequestType extends AbstractType
                 'disabled' => $fieldDisabled,
                 'label' => 'care_request.form.custom_complaint',
             ])
-            ->add('acceptedByDoctor', EntityType::class, [
-                'class' => Doctor::class,
-                'query_builder' => $doctorQueryBuilder,
-                'choice_value' => function(?Doctor $doctor) {
-                    return $doctor ? $this->urlGenerator->generate('api_doctors_get_item', ['id' => $doctor->getId()]) : '';
-                },
+            ->add('acceptedByDoctor', EntityType::class, $this->typeOptionsFactory->createOfficeDoctorOptions([
                 'required' => false,
                 'disabled' => $fieldDisabled,
                 'label' => 'care_request.form.accepted_by_doctor',
-            ])
+            ], $options['current_doctor']->getOffice(), true))
             ->add('acceptDate', DateType::class, [
                 'widget' => 'single_text',
                 'required' => false,

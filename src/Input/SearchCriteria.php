@@ -2,27 +2,35 @@
 
 namespace App\Input;
 
+use App\Entity\Doctor;
 use DateTime;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\Date;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class SearchCriteria
 {
-    private ?string $label;
-
-    private ?int $weekDay;
-
-    private ?DateTime $timeStart;
-
-    private ?DateTime $timeEnd;
+    private ?string $label = null;
     
-    private ?bool $includeVariableSchedules;
+    private ?Doctor $creator = null;
 
-    private ?bool $includeActiveCareRequest;
+    private ?DateTime $creationFrom = null;
 
-    private ?bool $includeArchivedCareRequest;
+    private ?DateTime $creationTo = null;
 
-    private ?bool $includeAbandonnedCareRequest;
+    private ?int $weekDay = null;
+
+    private ?DateTime $timeStart = null;
+
+    private ?DateTime $timeEnd = null;
+    
+    private ?bool $includeVariableSchedules = null;
+
+    private ?bool $includeActiveCareRequest = null;
+
+    private ?bool $includeArchivedCareRequest = null;
+
+    private ?bool $includeAbandonnedCareRequest = null;
     
     
     /**
@@ -63,6 +71,82 @@ class SearchCriteria
     public function setLabel(?string $label)
     {
         $this->label = $label;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of creator
+     *
+     * @return ?Doctor
+     */
+    public function getCreator()
+    {
+        return $this->creator;
+    }
+
+    /**
+     * Set the value of creator
+     *
+     * @param ?Doctor $creator
+     *
+     * @return self
+     */
+    public function setCreator(?Doctor $creator)
+    {
+        $this->creator = $creator;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of creationFrom
+     *
+     * @return ?DateTime
+     */
+    public function getCreationFrom()
+    {
+        return $this->creationFrom;
+    }
+
+    /**
+     * Set the value of creationFrom
+     *
+     * @param ?DateTime $creationFrom
+     *
+     * @return self
+     */
+    public function setCreationFrom(?DateTime $creationFrom)
+    {
+        $this->creationFrom = $creationFrom;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of creationTo
+     *
+     * @return ?DateTime
+     */
+    public function getCreationTo()
+    {
+        return $this->creationTo;
+    }
+
+    /**
+     * Set the value of creationTo
+     *
+     * @param ?DateTime $creationTo
+     *
+     * @return self
+     */
+    public function setCreationTo(?DateTime $creationTo)
+    {
+        if ($creationTo == null) {
+            $this->creationTo = $creationTo;
+        } else {
+            $this->creationTo = $creationTo->setTime(23, 59, 59, 9999);
+        }
 
         return $this;
     }

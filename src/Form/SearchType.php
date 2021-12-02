@@ -2,18 +2,24 @@
 
 namespace App\Form;
 
-use App\Input\SearchInput;
+use App\Entity\Doctor;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Traversable;
 
 class SearchType extends AbstractType
 {
+    public function __construct(
+        private TypeOptionsFactory $typeOptionsFactory,
+    ) {
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         foreach ($options['daysOfWeek'] as $weekDay) {
@@ -24,8 +30,21 @@ class SearchType extends AbstractType
             ->add('label', TextType::class, [
                 'label' => 'search.label.label',
                 'attr' => [
-                    'placeholder' => 'search.label.placeholder'
+                    'placeholder' => 'search.label.placeholder',
                 ],
+                'required' => false,
+            ])
+            ->add('creator', EntityType::class, $this->typeOptionsFactory->createOfficeDoctorOptions([
+                'label' => 'search.creator.label',
+                'required' => false,
+                'placeholder' => 'search.creator.placeholder'
+            ], $options['current_doctor']->getOffice()))
+            ->add('creationFrom', DateType::class, [
+                'widget' => 'single_text',
+                'required' => false,
+            ])
+            ->add('creationTo', DateType::class, [
+                'widget' => 'single_text',
                 'required' => false,
             ])
             ->add('weekDay', ChoiceType::class, [
@@ -68,8 +87,10 @@ class SearchType extends AbstractType
         $resolver->setDefaults([
             'csrf_protection' => false,
             'daysOfWeek' => [],
+            'current_doctor' => null,
         ]);
 
         $resolver->setAllowedTypes('daysOfWeek', 'array');
+        $resolver->setAllowedTypes('current_doctor', Doctor::class);
     }
 }

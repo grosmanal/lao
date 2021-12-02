@@ -134,12 +134,17 @@ search:
     label:
         label: Patient
         placeholder: patient firstname or lastname
+    creation: Creation
+    creator:
+        placeholder: '- creator -'
+    creation_from: from
+    creation_to: to
     availability: Availability
     week_day:
         label: Week day
         placeholder: '- week day -'
-    from: from
-    to: to
+    availability_from: from
+    availability_to: to
     time_start: Start time
     time_end: End time
     include_variables_schedules: Include variable schedules
