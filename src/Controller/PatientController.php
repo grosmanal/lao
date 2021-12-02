@@ -56,6 +56,7 @@ class PatientController extends AbstractController
     #[Route('/patients/{id}', name: 'patient')]
     public function patient(
         Patient $patient,
+        Request $request,
         Availability $availability,
         UserProfile $userProfile,
         CareRequestFormFactory $careRequestFormFactory,
@@ -74,19 +75,30 @@ class PatientController extends AbstractController
         $variableScheduleForm = $this->createForm(VariableScheduleType::class, $patient, [
             'api_put_url' => $apiPutUrl,
         ]);
+        
+        // Demande-t-on une care request en particulier
+        $careRequestIdToShow = $request->query->get('careRequest');
 
-        $careRequests = [];
-        $careRequestForms = [];
-        $careRequestCommentForms = [];
+        $careRequestsData = [];
         foreach ($patient->getCareRequests() as $careRequest) {
-            $careRequests[$careRequest->getId()] = $careRequest;
-            $careRequestForms[$careRequest->getId()] = $careRequestFormFactory->create($userProfile->getDoctor(), $careRequest);
-            if ($careRequest->isActive()) {
-                $careRequestCommentForms[$careRequest->getId()] = $commentFormFactory->createNew($userProfile->getDoctor(), $careRequest);
+            $careRequestData = [
+                'careRequest' => $careRequest,
+                'careRequestForm' => $careRequestFormFactory->create($userProfile->getDoctor(), $careRequest),
+                'commentForm' => $careRequest->isActive() ? $commentFormFactory->createNew($userProfile->getDoctor(), $careRequest) : null,
+            ];
+            
+            if ($careRequestIdToShow) {
+                // Si on demande l'affichage d'une care request en particulier, on affiche QUE celle-là
+                $careRequestData['showCareRequest'] = ($careRequestIdToShow == $careRequest->getId());
+            } else {
+                // Sinon on affiche les care request actives
+                $careRequestData['showCareRequest'] = $careRequest->isActive();
             }
+
+            $careRequestsData[] = $careRequestData;
         }
         
-        if (empty($careRequestForms)) {
+        if (empty($careRequestsData)) {
             // Ce patient n'a aucune care request
             // On affiche le formulaire de création de care request
             $newCareRequestForm = $careRequestFormFactory->createNew($userProfile->getDoctor(), $patient);
@@ -111,9 +123,14 @@ class PatientController extends AbstractController
                 $paramsAvailability['interval'],
                 $patient->getAvailability()
             ),
-            'careRequests' => $careRequests,
-            'careRequestForms' => array_map(function($careRequestForm) {return $careRequestForm->createView();}, $careRequestForms),
-            'careRequestCommentForms' => array_map(function($careRequestCommentForm) {return $careRequestCommentForm->createView();}, $careRequestCommentForms),
+            'careRequestsData' => array_map(function($careRequestData) {
+                return [
+                    'careRequest' => $careRequestData['careRequest'],
+                    'showCareRequest' => $careRequestData['showCareRequest'],
+                    'careRequestForm' => $careRequestData['careRequestForm']->createView(),
+                    'commentForm' => $careRequestData['commentForm']?->createView(),
+                ];
+            }, $careRequestsData),
             'newCareRequest' => isset($newCareRequestForm) ? $newCareRequestForm->getData() : null,
             'newCareRequestForm' => isset($newCareRequestForm) ? $newCareRequestForm->createView() : null,
         ]);

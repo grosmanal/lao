@@ -27,7 +27,7 @@
             </thead>
             <tbody>
             {% for searchResult in searchResults %}
-                <tr data-patient-url="{{ url('patient', {id: searchResult.careRequest.patient.id})  }}">
+                <tr data-patient-url="{{ searchResult.url }}">
                     {% include "search/care_request_item.html.twig" %}
                 </tr>
             {% endfor %}

@@ -37,13 +37,14 @@
                         } %}
                     </div>
                 {% endif %}
-                {% for careRequest in careRequests %}
+                {% for careRequestData in careRequestsData %}
                     {# inclusion du formulaire de chaque care request du patient #}
                     <div class="accordion-item">
                         {% include "patient/care_request.html.twig" with {
-                            careRequestForm: careRequestForms[careRequest.id],
-                            showCareRequest: careRequest.active,
-                            commentForm: careRequestCommentForms[careRequest.id] ?? null,
+                            careRequest: careRequestData.careRequest,
+                            showCareRequest: careRequestData.showCareRequest,
+                            careRequestForm: careRequestData.careRequestForm,
+                            commentForm: careRequestData.commentForm,
                         } %}
                     </div>
                 {% endfor %}

@@ -65,10 +65,13 @@
         }
         
         tbody {
-            cursor: pointer;
-
             .patient {
                 font-weight: bold;
+                
+                a {
+                    text-decoration: none;
+                    color: var(--bs-body-color);
+                }
             }
 
             .date {

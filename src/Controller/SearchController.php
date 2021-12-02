@@ -49,6 +49,17 @@ class SearchController extends AbstractController
             
             $searchResults = $careRequestFinder->find($searchCreteria, $doctor->getOffice());
             
+            // Ajout de l'url de la care request pour chaque résultat
+            $searchResults = array_map(function($searchResult) {
+                return array_merge($searchResult, [
+                    'url' => $this->generateUrl('patient', [
+                        'id' => $searchResult['careRequest']->getPatient()->getId(),
+                        'careRequest' => $searchResult['careRequest']->getId(),
+                        '_fragment' => sprintf('care-request-heading-%d', $searchResult['careRequest']->getId()),
+                    ]),
+                ]);
+            }, $searchResults);
+
             // Tri par priorité et date de care request
             usort($searchResults, function($a, $b) {
                 /** @var \App\Entity\CareRequest */

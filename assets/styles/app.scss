@@ -5,7 +5,8 @@ body {
 }
 
 .body-content {
-    padding-top: 70px;
+    // padding-top: 70px; si navbar est fixed-top
+    padding-top: 1rem;
 }
 
 h2::first-letter {
