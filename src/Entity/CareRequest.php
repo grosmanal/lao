@@ -373,4 +373,12 @@ class CareRequest implements OfficeOwnedInterface
 
         return $this;
     }
+    
+    /**
+     * @inheritdoc
+     */
+    public function ownedByOffice(): ?Office
+    {
+        return $this->getOffice();
+    }
 }

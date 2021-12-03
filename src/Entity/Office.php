@@ -254,7 +254,7 @@ class Office implements OfficeOwnedInterface
         return $this;
     }
 
-    public function getOffice(): self
+    public function ownedByOffice(): ?Office
     {
         return $this;
     }

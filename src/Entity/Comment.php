@@ -29,7 +29,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
         'delete' => ['security' => "is_granted('edit', object)"],
     ],
 )]
-class Comment implements OfficeOwnedInterface
+class Comment implements DoctorOwnedInterface, OfficeOwnedInterface
 {
     /**
      * @ORM\Id
@@ -215,5 +215,15 @@ class Comment implements OfficeOwnedInterface
         }
 
         return $this;
+    }
+   
+    public function ownedByDoctor(): ?Doctor
+    {
+        return $this->getAuthor();
+    }
+    
+    public function ownedByOffice(): ?Office
+    {
+        return $this->getOffice();
     }
 }

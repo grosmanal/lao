@@ -3,13 +3,14 @@
 namespace App\Security\Voter;
 
 use App\Entity\User;
-use App\Entity\OfficeOwnedInterface;
+use App\Entity\Doctor;
+use App\Entity\DoctorOwnedInterface;
 use App\Repository\DoctorRepository;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
-class OfficeOwnedVoter extends Voter
+class DoctorOwnedVoter extends Voter
 {
     public const VIEW = 'view';
     public const EDIT = 'edit';
@@ -25,7 +26,7 @@ class OfficeOwnedVoter extends Voter
         }
         
         $reflectionClass = new \ReflectionClass($subject);
-        if (!$reflectionClass->implementsInterface(OfficeOwnedInterface::class)) {
+        if (!$reflectionClass->implementsInterface(DoctorOwnedInterface::class)) {
            return false;
         }
 
@@ -34,48 +35,53 @@ class OfficeOwnedVoter extends Voter
 
     protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool
     {
-        $user = $token->getUser();
+        if ($this->security->isGranted('ROLE_ADMIN')) {
+            return true;
+        }
 
+        if (!$this->security->isGranted('ROLE_DOCTOR')) {
+            return false;
+        }
+
+        $user = $token->getUser();
         if (!$user instanceof User) {
             // the user must be logged in; if not, deny access
             return false;
         }
 
-        /** @var OfficeOwnedInterface $ressource */
+        $doctor = $this->doctorRepository->find($user->getId());
+        if (!$doctor) {
+            throw new \LogicException('Should not be here : every entity Doctor must have the ROLE_DOCTOR');
+        }
+
+        /** @var DoctorOwnedInterface $ressource */
         $ressource = $subject;
 
         switch ($attribute) {
             case self::VIEW:
-                return $this->canView($ressource, $user);
+                return $this->canView($ressource, $doctor);
             case self::EDIT:
-                return $this->canEdit($ressource, $user);
+                return $this->canEdit($ressource, $doctor);
         }
 
         throw new \LogicException('This code should not be reached!');
     }
 
-    private function canView(OfficeOwnedInterface $ressource, User $user): bool
+    private function canView(DoctorOwnedInterface $ressource, Doctor $doctor): bool
     {
-        return $this->canEdit($ressource, $user);
-    }
-
-    private function canEdit(OfficeOwnedInterface $ressource, User $user): bool
-    {
-        if ($this->security->isGranted('ROLE_ADMIN')) {
+        // Les docteurs du même office peuvent voir
+        if ($ressource->ownedByDoctor()->getOffice() == $doctor->getOffice()) {
             return true;
         }
+        
+        return false;
+    }
 
-        if ($this->security->isGranted('ROLE_DOCTOR')) {
-            // Recherche de l'Office correspondant au docteur connecté
-            $doctor = $this->doctorRepository->find($user->getId());
-            
-            if (!$doctor) {
-                throw new \LogicException('Should not be here : every entity Doctor must have the ROLE_DOCTOR');
-            }
-
-            if ($ressource->ownedByOffice() === $doctor->getOffice()) {
-                return true;
-            }
+    private function canEdit(DoctorOwnedInterface $ressource, Doctor $doctor): bool
+    {
+        // Seule le docteur possédant l'objet peut le modifier
+        if ($ressource->ownedByDoctor() === $doctor) {
+            return true;
         }
 
         return false;

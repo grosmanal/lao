@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiResource(
     security: "is_granted('ROLE_ADMIN')"
 )]
-class Doctor extends User
+class Doctor extends User implements DoctorOwnedInterface
 {
     /**
      * @ORM\ManyToOne(targetEntity=Office::class, inversedBy="doctors")
@@ -75,6 +75,11 @@ class Doctor extends User
             }
         }
 
+        return $this;
+    }
+    
+    public function ownedByDoctor(): ?Doctor
+    {
         return $this;
     }
 }

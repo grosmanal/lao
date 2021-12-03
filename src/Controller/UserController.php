@@ -41,8 +41,7 @@ class UserController extends AbstractController
         InitialAvatarGenerator $initialAvatarGenerator,
     ): Response
     {
-        // https://manal.xyz/gitea/origami_informatique/lao/issues/158
-        // TODO $this->denyAccessUnlessGranted('edit', $doctor);
+        $this->denyAccessUnlessGranted('edit', $doctor);
 
         $form = $this->createForm(UserType::class, $doctor);
         

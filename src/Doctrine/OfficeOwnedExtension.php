@@ -34,6 +34,7 @@ class OfficeOwnedExtension implements QueryCollectionExtensionInterface
         // La class App\Entity\Office implémente OfficeOwnedInterface (pour gérer la sécurité du get item)
         // mais ne doit pas être affectée par ce DoctrineExtension car seul le ROLE_ADMIN
         // est autorisé à faire un get collection
+        // TODO pourquoi ? : on peut retourner la liste mais tronquée
         if ($reflectionClass->getName() == Office::class) {
             return;
         }

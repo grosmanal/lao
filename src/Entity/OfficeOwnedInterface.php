@@ -4,5 +4,9 @@ namespace App\Entity;
 
 interface OfficeOwnedInterface
 {
-    public function getOffice(): ?Office;
+    /**
+     * Office owning entity
+     * @return Office
+     */
+    public function ownedByOffice(): ?Office;
 }

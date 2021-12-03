@@ -290,4 +290,9 @@ class Patient implements OfficeOwnedInterface
 
         return $this;
     }
+    
+    public function ownedByOffice(): ?Office
+    {
+        return $this->getOffice();
+    }
 }
