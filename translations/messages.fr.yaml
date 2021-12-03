@@ -2,6 +2,10 @@
 navbar:
     patient_new: Nouveau patient
     search: Rechercher
+    connected_as: Connecté·e en tant que %displayName%
+    profile: Mon profil
+    notifications: Notifications
+    exit_impersonation: Quitter usurpation
     logout: Déconnecter
 
 # Modal content
@@ -170,3 +174,28 @@ search:
     variable_schedule: Horaires variables
     error:
         availability_criteria: Les critères de disponibilité doivent renseignée tous ensembles
+          
+user:
+    content:
+        title: Profil de %displayName%
+        header: Votre profil
+    flash:
+        data_updated: Les données ont été enregistrées
+    form:
+        firstname:
+            label: Prénom
+            placeholder: Prénom
+        lastname:
+            label: Patronyme
+            placeholder: Patronyme
+        email:
+            label: Email
+            placeholder: Email
+        password:
+            label: Nouveau mot de passe
+            placeholder: Mot de passe
+        confirm_password:
+            label: Confirmation 
+            placeholder: Confirmez le mot de passe
+        avatar: Avatar
+        update: Enregistrer

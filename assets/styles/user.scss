@@ -1,0 +1,27 @@
+@import './bootstrap';
+@import './mixin';
+
+.user {
+    @include form-margin;
+}
+
+.vich-image {
+    display: flex;
+    
+    .form-group {
+        margin-left: 1rem;
+    }
+    
+    a {
+        margin-top: auto;
+        margin-bottom: auto;
+        
+        img {
+            max-width: 50px;
+            max-height: 50px;
+        }
+    }
+    a:first-of-type {
+        margin-left: 1rem;
+    }
+}

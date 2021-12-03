@@ -34,4 +34,5 @@
         name:
             - php-mysql
             - php-intl
+            - php-gd
         state: present

@@ -10,10 +10,6 @@
 
     div.row.availability-error {
         margin-bottom: 0;
-
-        .form-error-icon {
-            background-color: $danger;
-        }
     }
 
     @include media-breakpoint-up(lg) {

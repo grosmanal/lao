@@ -1,0 +1,91 @@
+{% extends "base.html.twig" %}
+
+{% block title %}{{ 'user.content.title'|trans({'%displayName%': doctor.displayName}) }}{% endblock %}
+
+{% block body %}
+<section class="card user">
+    <h2 class="card-header">{{ 'user.content.header'|trans }}</h2>
+    <div class="card-body">
+       {% for message in app.flashes('success') %}
+            <div class="alert alert-success mb-3">
+                {{ message }}
+            </div>
+        {% endfor %} 
+
+        {{ form_start(userForm, {attr: {novalidate: true}}) }}
+        <div class="form-group row firstname">
+            <div class="col-12 col-lg-2">
+                {{ form_label(userForm.firstname, null, {errors: null}) }}
+            </div>
+            <div class="col-12 col-lg-10">
+                {{ form_errors(userForm.firstname) }}
+                {{ form_widget(userForm.firstname) }}
+            </div>
+        </div>
+        
+        <div class="form-group row lastname">
+            <div class="col-12 col-lg-2">
+                {{ form_label(userForm.lastname, null, {errors: null}) }}
+            </div>
+            <div class="col-12 col-lg-10">
+                {{ form_errors(userForm.lastname) }}
+                {{ form_widget(userForm.lastname) }}
+            </div>
+        </div>
+        
+        <div class="form-group row email">
+            <div class="col-12 col-lg-2">
+                {{ form_label(userForm.email, null, {errors: null}) }}
+            </div>
+            <div class="col-12 col-lg-10">
+                {{ form_errors(userForm.email) }}
+                {{ form_widget(userForm.email) }}
+            </div>
+        </div>
+        
+        <div class="form-group row password">
+            <div class="col-12 col-lg-2">
+                {{ form_label(userForm.plainPassword.first, null, {errors: null}) }}
+            </div>
+            <div class="col-12 col-lg-5">
+                {{ form_errors(userForm.plainPassword.first) }}
+                {{ form_widget(userForm.plainPassword.first) }}
+            </div>
+            <div class="col-12 col-lg-5">
+                {{ form_errors(userForm.plainPassword.second) }}
+                {{ form_widget(userForm.plainPassword.second) }}
+            </div>
+        </div>
+
+        <div class="form-group row avatar">
+            <div class="col-12 col-lg-2">
+                {{ form_label(userForm.avatarFile, null, {errors: null}) }}
+            </div>
+            <div class="col-12 col-lg-10">
+                {{ form_errors(userForm.avatarFile) }}
+                {{ form_widget(userForm.avatarFile) }}
+            </div>
+        </div>
+
+        <div class="form-group row update">
+            <div class="col-12 text-center">
+                {{ form_widget(userForm.update) }}
+            </div>
+        </div>
+        {{ form_end(userForm) }}
+    </div>
+</section>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    {{ encore_entry_link_tags('user') }}
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {{ encore_entry_script_tags('user') }}
+{% endblock %}

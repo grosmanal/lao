@@ -15,9 +15,9 @@ App\Entity\Doctor:
         lastname: Chaillet
         office: '@office_1'
     doctor_julie:
-        email: julie.doe@free.fr
+        email: julie.tartaglia@free.fr
         password: '\$2y\$13\$N1dxqPx7LdFWDvwrZAA1Q.deK2FjoxzkhNHzOOeJTbsuDvMY3GU36'
         roles: [ ROLE_DOCTOR ]
         firstname: Julie
-        lastname: Doe
+        lastname: Tartaglia
         office: '@office_2'

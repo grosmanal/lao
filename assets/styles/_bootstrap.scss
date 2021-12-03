@@ -45,3 +45,8 @@
 
 // Utilities API last to generate classes based on the Sass map in `_utilities.scss`
 @import "~bootstrap/scss/utilities/api";
+
+
+.form-error-icon {
+    background-color: $danger;
+}

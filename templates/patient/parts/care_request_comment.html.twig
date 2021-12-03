@@ -1,11 +1,12 @@
 <li class="{{ html_classes('comment', { 'opacity-0': commentHidden ?? false } ) }}">
     {#% include "patient/parts/care_request_comment_menu.html.twig" %#}
     <article class="d-flex border border-2">
-        <div class="flex-shrink-0 {{ app.user.id == comment.author.id ? 'order-0' : 'order-1' }}">
-            <img src="https://via.placeholder.com/100" alt="{{ comment.author.firstname }}">
+        <div class="flex-shrink-0 {{ app.user.id == comment.author.id ? 'order-0' : 'order-1' }} author-avatar">
+            <img src="{{ vich_uploader_asset(comment.author, 'avatarFile') }}" alt="{{ comment.author.firstname }}">
         </div>
         <div class="flex-grow-1 ms-3 p-2 comment-body">
             <div class="mb-2">
+                <span class="fw-bold author-name">{{ comment.author.firstname }}</span>
                 <time class="fw-lighter" datetime="{{ comment.creationDate|date('c') }}" title="{{ comment.creationDate|format_datetime('medium', 'short') }}">
                     {{ comment.getCreationDateNonImmutable|ago() }}
                 </time>

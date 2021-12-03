@@ -1,7 +1,13 @@
-@import './bootstrap';
-
 body {
     padding-bottom: 1rem;
+}
+
+
+.navbar {
+    .avatar {
+        max-width: 50px;
+        max-height: 50px;
+    }
 }
 
 .body-content {

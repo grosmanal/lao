@@ -2,6 +2,10 @@
 navbar:
     patient_new: New Patient
     search: Search
+    connected_as: Connected as %displayName%
+    profile: My profile
+    notifications: Notifications
+    exit_impersonation: Exit impersonation
     logout: Logout
 
 # Modal content
@@ -170,3 +174,28 @@ search:
     variable_schedule: Variable schedule
     error:
         availability_criteria: Availability criteria should be completed all together
+          
+user:
+    content:
+        title: '%displayName%’s profil'
+        header: Your profile
+    flash:
+        data_updated: Data updated
+    form:
+        firstname:
+            label: Firstname
+            placeholder: Firstname
+        lastname:
+            label: Lastname
+            placeholder: Lastname
+        email:
+            label: Email
+            placeholder: Email
+        password:
+            label: New password
+            placeholder: Password
+        confirm_password:
+            label: Confirm password
+            placeholder: Confirm password
+        avatar: Avatar
+        update: Update
