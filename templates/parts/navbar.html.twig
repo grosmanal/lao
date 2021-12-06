@@ -14,14 +14,19 @@
             </li>
             {% if app.user %}
                 <li class="nav-item dropdown ms-auto">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownUser" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle p-0" href="#" id="navbarDropdownUser" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <img class="avatar" src="{{ vich_uploader_asset(app.user, 'avatarFile') }}" alt="avatar">
+                        {% if unreadNotifications|length > 0 %}
+                        <span id="notificationIndicator" class="position-absolute top-100 start-0 p-2 bg-danger border border-light rounded-circle" style="transform: translate(-50%, -80%)">
+                            <span class="visually-hidden">Notifications</span>
+                        </span>
+                        {% endif %}
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownUser">
                         <li><a href="#" class="dropdown-item disabled">{{ 'navbar.connected_as'|trans({'%displayName%': app.user.displayName}) }}</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="{{ url('user', {id: app.user.id}) }}">{{ 'navbar.profile'|trans }}</a></li>
-                        <li><a class="dropdown-item" href="#">{{ 'navbar.notifications'|trans }}</a></li>
+                        <li><a class="dropdown-item" href="{{ url('notifications') }}">{{ 'navbar.notifications'|trans }}</a></li>
                         <li><hr class="dropdown-divider"></li>
                         {% if is_granted('IS_IMPERSONATOR') %}
                             <li><a class="dropdown-item" href="{{ impersonation_exit_path(path('users')) }}">{{ 'navbar.exit_impersonation'|trans }}</a></li>

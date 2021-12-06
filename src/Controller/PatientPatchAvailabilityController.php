@@ -8,6 +8,7 @@ use App\Service\Availability;
 use App\Input\PatientPatchAvailabilityInput;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -16,12 +17,13 @@ class PatientPatchAvailabilityController extends AbstractController
     public function __construct(
         private Availability $availability,
         private SerializerInterface $serializer,
-        private ValidatorInterface $validator
+        private ValidatorInterface $validator,
+        private RequestStack $requestStack,
     ) {}
     
     public function __invoke(Patient $data): Patient
     {
-        $requestContent = $this->get('request_stack')->getCurrentRequest()->getContent();
+        $requestContent = $this->requestStack->getCurrentRequest()->getContent();
         
         /** @var PatientPatchAvailabilityInput */
         $input = $this->serializer->deserialize($requestContent, PatientPatchAvailabilityInput::class, 'json');

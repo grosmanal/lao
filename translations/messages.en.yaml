@@ -199,3 +199,15 @@ user:
             placeholder: Confirm password
         avatar: Avatar
         update: Update
+            
+# Notifications
+notifications:
+    content:
+        title: Notifications
+        unread_header: Unread notifications
+    item:
+        mention_sentence: '%notifier% mentions you in'
+        comment: comment
+        patient: regarding patient %patientDisplayName%
+    error:
+        updating: Error while updating notification

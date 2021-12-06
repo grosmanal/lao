@@ -12,11 +12,10 @@ use App\Service\UserProfile;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Translation\TranslatableMessage;
 
-class PatientController extends AbstractController
+class PatientController extends AbstractAppController
 {
     #[Route('/patients/new', name: 'patient_new')]
     public function patientNew(

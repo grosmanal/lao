@@ -48,6 +48,12 @@ jQuery(function ($) {
             }
         }).$mount('#week-availability')
     }
+    
+    // Scroll jusqu'à l'élément (fait ici car certains éléments sont créés dynamiquement)
+    const currentUrl = new URL(window.location.href)
+    if (currentUrl.hash) {
+        $(currentUrl.hash).get(0).scrollIntoView();
+    }
 });
 
     
@@ -76,7 +82,7 @@ function updateVariableSchedule(input) {
     }).then(function (response) {
         // rien à faire
     }).catch(function (error) {
-        modal('patient.error.updating)');
+        modal('patient.error.updating');
     });
 }
 

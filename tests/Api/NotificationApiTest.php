@@ -9,7 +9,7 @@ class NotificationApiTest extends AbstractApiTestCase
     const NOTIFICATION_DATA = [
         'comment' => '/api/comments/1',
         'doctor' => '/api/doctors/1',
-        'state' => 'new',
+        'creationDate' => 'now',
     ];
 
     public function setUp(): void
@@ -33,7 +33,7 @@ class NotificationApiTest extends AbstractApiTestCase
         $this->assertJsonContains([
             'comment' => '/api/comments/9',
             'doctor' => '/api/doctors/1',
-            'state' => 'viewed',
+            'creationDate' => '2021-09-28T15:32:00+00:00',
         ]);
     }
 
@@ -183,19 +183,19 @@ class NotificationApiTest extends AbstractApiTestCase
     {
         // On ne peut modifier que ses notifications
         // 
-        $newState = 'archived';
+        $readDate = '2021-12-06T09:24:00+00:00';
 
         $this->loginUser($userEmail);
         $crawler = $this->client->request('PUT', "/api/notifications/1", [
             'json' => [
-                'state' => $newState,
+                'readDate' => $readDate,
             ],
         ]);
         $this->assertResponseStatusCodeSame($expected);
 
         if ($expected == Response::HTTP_OK) {
             $crawler = $this->client->request('GET', "/api/notifications/1");
-            $this->assertJsonContains(['state' => $newState]);
+            $this->assertJsonContains(['readDate' => $readDate]);
         }
     }
     
@@ -205,7 +205,8 @@ class NotificationApiTest extends AbstractApiTestCase
         return [
             [ 'comment', '/api/comments/1', '/api/comments/9' ], // pas modifiable
             [ 'doctor', '/api/doctors/3', '/api/doctors/1' ], // pas modifiable
-            [ 'state', 'viewed', 'viewed'], // modifiable
+            [ 'creationDate', '2000-01-01T00:00:00+00:00', '2021-09-28T15:32:00+00:00'], // pas modifiable
+            [ 'readDate', '2021-10-01T17:30:52+00:00', '2021-10-01T17:30:52+00:00'], // modifiable
         ];
     }
 
@@ -226,30 +227,4 @@ class NotificationApiTest extends AbstractApiTestCase
         $this->assertResponseIsSuccessful();
         $this->assertJsonContains([ $payloadKey => $expected ]);
     }
-    
-    public function dataProviderPutUnconsistentValues()
-    {
-        return [
-            [ 'state', \App\Entity\Notification::STATE_NEW, Response::HTTP_OK ],
-            [ 'state', \App\Entity\Notification::STATE_VIEWED, Response::HTTP_OK ],
-            [ 'state', \App\Entity\Notification::STATE_ARCHIVED, Response::HTTP_OK ],
-            [ 'state', '', Response::HTTP_UNPROCESSABLE_ENTITY ],
-            [ 'state', 'unknown_state', Response::HTTP_UNPROCESSABLE_ENTITY ],
-        ];
-    }
-    
-    /**
-     * @dataProvider dataProviderPutUnconsistentValues
-     */
-    public function testPutUnconsistentValues($payloadKey, $payloadValue, $expected)
-    {
-        $this->loginUser('admin@example.com');
-        $crawler = $this->client->request('PUT', "/api/notifications/1", [
-            'json' => [ $payloadKey => $payloadValue ],
-        ]);
-        
-        $this->assertResponseStatusCodeSame($expected);
-    }
-    
-
 }

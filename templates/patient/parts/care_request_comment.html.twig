@@ -1,4 +1,4 @@
-<li class="{{ html_classes('comment', { 'opacity-0': commentHidden ?? false } ) }}">
+<li id="comment-{{ comment.id }}" class="{{ html_classes('comment', { 'opacity-0': commentHidden ?? false } ) }}">
     {#% include "patient/parts/care_request_comment_menu.html.twig" %#}
     <article class="d-flex border border-2">
         <div class="flex-shrink-0 {{ app.user.id == comment.author.id ? 'order-0' : 'order-1' }} author-avatar">

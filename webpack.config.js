@@ -31,6 +31,7 @@ Encore
     .addEntry('patient', './assets/patient.js')
     .addEntry('search', './assets/search.js')
     .addEntry('user', './assets/user.js')
+    .addEntry('notification', './assets/notification.js')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     //.enableStimulusBridge('./assets/controllers.json')

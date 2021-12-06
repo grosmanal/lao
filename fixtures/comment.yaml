@@ -30,3 +30,21 @@ App\Entity\Comment:
         modificationDate: ~
         careRequest: '@care_request_1'
         content: '\<p>Hello <span class="mention" data-mention-doctor-id="2">Laurence</span>'
+    comment_6:
+        author: '@doctor_joelle'
+        creationDate: <immutableDateTimeBetween("-1 years", "-2 weeks")> 
+        modificationDate: ~
+        careRequest: '@care_request_1'
+        content: '\<p>Question à <span class="mention" data-mention-doctor-id="2">Laurence</span> lorem ipsum'
+    comment_7:
+        author: '@doctor_joelle'
+        creationDate: <immutableDateTimeBetween("-1 years", "-2 weeks")> 
+        modificationDate: ~
+        careRequest: '@care_request_1'
+        content: '\<p>Je pense que <span class="mention" data-mention-doctor-id="2">Laurence</span> a raison.'
+    comment_8:
+        author: '@doctor_laurence'
+        creationDate: <immutableDateTimeBetween("-1 years", "-2 weeks")> 
+        modificationDate: ~
+        careRequest: '@care_request_1'
+        content: '\<p>Merci <span class="mention" data-mention-doctor-id="1">Joëlle</span> pour ta confiance.'

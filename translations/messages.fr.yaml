@@ -199,3 +199,15 @@ user:
             placeholder: Confirmez le mot de passe
         avatar: Avatar
         update: Enregistrer
+            
+# Notifications
+notifications:
+    content:
+        title: Notifications
+        unread_header: Notifications non-lues
+    item:
+        mention_sentence: '%notifier% vous a mentionné·e dans'
+        comment: un commentaire
+        patient: concernant %patientDisplayName%
+    error:
+        updating: Erreur lors de la mise à jour de la notification

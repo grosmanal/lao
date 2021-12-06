@@ -1,4 +1,4 @@
-@import './bootstrap';
+@import '~bootstrap/scss/mixins';
 @import './mixin';
 
 .submit-form-group {
@@ -53,7 +53,7 @@
                     margin-bottom: 15px;
                     
                     .author-avatar {
-                        background-color: $body-bg;
+                        background-color: var(--body-bg);
                         padding: 5px;
                         max-width: 60px;
                     }

@@ -6,4 +6,5 @@ App\Entity\Notification:
     notification_1:
         comment: '@comment_9'
         doctor: '@doctor_1'
-        state: 'viewed'
+        creationDate: <(new DateTimeImmutable("2021-09-28 15:32:00"))>
+        readDate: ~

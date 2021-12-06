@@ -105,7 +105,7 @@ class Notification
                 $notification
                     ->setDoctor($doctor)
                     ->setComment($comment)
-                    ->setState(NotificationEntity::STATE_NEW)
+                    ->setCreationDate(new \DateTimeImmutable('now'))
                     ;
                     
                 $notifications[] = $notification;

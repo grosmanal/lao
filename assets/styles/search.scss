@@ -1,4 +1,4 @@
-@import './bootstrap';
+@import '~bootstrap/scss/mixins'; 
 @import './mixin';
 
 .search-test {
@@ -78,15 +78,15 @@
                 text-align: center;
                 
                 .score-50 i {
-                    color: $danger;
+                    color: var(--bs-danger);
                 }
 
                 .score-100, .score-110 i {
-                    color: $warning;
+                    color: var(--bs-warding);
                 }
 
                 .score-120 i {
-                    color: $success;
+                    color: var(--bs-success);
                 }
             }
             

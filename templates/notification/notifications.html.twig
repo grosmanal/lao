@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'notifications.content.title'|trans }}{% endblock %}
+
+{% block body %}
+
+<section class="card unread-notifications">
+    <h2 class="card-header">{{ 'notifications.content.unread_header'|trans }}</h2>
+    <div class="card-body">
+        <ul class="list-group unread-notifications">
+            {% for unreadNotification in unreadNotifications %}
+            {% include "notification/notification_item.html.twig" with {notification: unreadNotification} %}
+            {% endfor %}
+        </ul>
+    </div>
+</section>
+
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {{ encore_entry_script_tags('notification') }}
+{% endblock %}

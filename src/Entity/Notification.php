@@ -61,12 +61,16 @@ class Notification
     private $doctor;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\Choice(choices=Notification::STATES))
+     * @ORM\Column(type="datetime_immutable")
      * @Assert\NotBlank
      */
+    private $creationDate;
+
+    /**
+     * @ORM\Column(type="datetime_immutable", nullable=true)
+     */
     #[Groups(['notification:put'])]
-    private $state;
+    private $readDate;
 
     /**
      * @Assert\Callback
@@ -114,14 +118,26 @@ class Notification
         return $this;
     }
 
-    public function getState(): ?string
+    public function getCreationDate(): ?\DateTimeImmutable
     {
-        return $this->state;
+        return $this->creationDate;
     }
 
-    public function setState(string $state): self
+    public function setCreationDate(\DateTimeImmutable $creationdate): self
     {
-        $this->state = $state;
+        $this->creationDate = $creationdate;
+
+        return $this;
+    }
+
+    public function getReadDate(): ?\DateTimeImmutable
+    {
+        return $this->readDate;
+    }
+
+    public function setReadDate(?\DateTimeImmutable $readDate): self
+    {
+        $this->readDate = $readDate;
 
         return $this;
     }

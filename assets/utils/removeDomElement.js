@@ -3,7 +3,7 @@
  * avoir transformé son opacité
  * @param {Element} domElement 
  */
-export default function(domElement) {
+export default function(domElement, afterRemoveCallback = null) {
     // Ajout d'un event listener pour supprimer
     // l'élément après la transition
 
@@ -16,6 +16,10 @@ export default function(domElement) {
         }
 
         this.remove();
+        
+        if (afterRemoveCallback) {
+            afterRemoveCallback();
+        }
     })
     
     domElement.classList.add('opacity-0');

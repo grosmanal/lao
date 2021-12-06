@@ -7,13 +7,12 @@ use App\Input\SearchCriteria;
 use App\Service\CareRequestFinder;
 use App\Service\UserProfile;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
 
-class SearchController extends AbstractController
+class SearchController extends AbstractAppController
 {
     #[Route('/search', name: 'search')]
     #[IsGranted("ROLE_DOCTOR")]

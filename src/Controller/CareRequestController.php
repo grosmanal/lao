@@ -9,7 +9,6 @@ use App\Repository\PatientRepository;
 use App\Service\UserProfile;
 use App\Service\Notification;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -17,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * Controller utilisé par API Platform pour définir l'opération 'availability'
  * de la ressource Patient
  */
-class CareRequestController extends AbstractController
+class CareRequestController extends AbstractAppController
 {
     /**
      * Retourne le code HTML du formulaire de création d'une nouvelle demande de soin

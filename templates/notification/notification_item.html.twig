@@ -1,0 +1,19 @@
+<li class="list-group-item list-group-item-action d-flex align-items-baseline notification">
+    <form onsubmit="submitNotification(event)" class="w-100">
+        <div class="d-flex align-items-baseline">
+            <span>
+                {{ 'notifications.item.mention_sentence'|trans({'%notifier%': notification.comment.author.displayName}) }}
+                
+                <button type="submit" name="markAndGo" class="btn btn-link border-0 m-0 p-0" style="margin-bottom: 3px !important">{{ 'notifications.item.comment'|trans }}</button>
+            </span>
+            <span class="ms-auto">{{ notification.comment.creationDate|ago }}</span>
+            <button type="submit" name="mark" class="btn btn-sm btn-outline-primary ms-2"><i class="bi bi-check"></i></button>
+        </div>
+        <input type="hidden" name="apiUrl" value="{{ url('api_notifications_put_item', {id: notification.id}) }}">
+        <input type="hidden" name="commentUrl" value="{{ url('patient', {
+                id: notification.comment.careRequest.patient.id,
+                '_fragment': 'comment-' ~ notification.comment.id,
+                careRequest: notification.comment.careRequest.id,
+            }) }}">
+    </form>
+</li>
