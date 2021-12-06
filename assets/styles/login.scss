@@ -1,16 +1,13 @@
-body {
-    background-image: url('../images/zen-wallpaper.jpg');
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-}
-
 .logo {
     max-width: 200px;
 }
 
 .body-content {
     max-width: 30rem;
+    
+    form {
+        background-color: white;
+    }
 }
 
 .row {

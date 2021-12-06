@@ -7,11 +7,16 @@
 <section class="card unread-notifications">
     <h2 class="card-header">{{ 'notifications.content.unread_header'|trans }}</h2>
     <div class="card-body">
-        <ul class="list-group unread-notifications">
-            {% for unreadNotification in unreadNotifications %}
-            {% include "notification/notification_item.html.twig" with {notification: unreadNotification} %}
-            {% endfor %}
-        </ul>
+        {% if unreadNotifications|length > 0 %}
+            <ul class="list-group unread-notifications">
+                {% for unreadNotification in unreadNotifications %}
+                {% include "notification/notification_item.html.twig" with {notification: unreadNotification} %}
+                {% endfor %}
+            </ul>
+        {% else %}
+            <div class="alert alert-warning">{{ 'notifications.content.no_notification'|trans }}</div>
+            
+        {% endif %}
     </div>
 </section>
 

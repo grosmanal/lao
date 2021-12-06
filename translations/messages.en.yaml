@@ -205,6 +205,7 @@ notifications:
     content:
         title: Notifications
         unread_header: Unread notifications
+        no_notification: No notification
     item:
         mention_sentence: '%notifier% mentions you in'
         comment: comment
