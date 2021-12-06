@@ -33,6 +33,12 @@ final class ApiNormalizer implements NormalizerInterface, DenormalizerInterface,
         $data = $this->decorated->normalize($object, $format, $context);
 
         if (is_array($data)) {
+            if ($object instanceof \App\Entity\Patient) {
+                $data['relatedUri'] = [
+                    'getHtmlForm' => $this->router->generate('patient_form', ['id' => $object->getId()]),
+                ];
+            }
+
             if ($object instanceof \App\Entity\CareRequest) {
                 $data['relatedUri'] = [
                     'getHtmlForm' => $this->router->generate('care_request_form', ['id' => $object->getId()]),

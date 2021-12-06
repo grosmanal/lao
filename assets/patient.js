@@ -118,9 +118,18 @@ function submitPatient(event) {
             method: 'PUT',
             url: apiUrl,
             data: collectPatientData(form)
-        }).then(function (response) {
-            showCheckFlag(event.submitter)
-        }).catch(function (error) {
+        }).then(function(response) {
+            httpClient.get(response.data.relatedUri.getHtmlForm)
+            .then(function(response) {
+                const formParent = $(form).parent();
+                $(form).replaceWith(response.data);
+
+                showCheckFlag(
+                    formParent.find('form button[name="patient[update]"]').get(0)
+                )
+            })
+        }).catch(function(error) {
+            console.error(error);
             modal('patient.error.updating');
         });
     } else if (event.submitter.name == 'patient[delete]') {

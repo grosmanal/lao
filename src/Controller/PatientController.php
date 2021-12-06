@@ -6,7 +6,9 @@ use App\Entity\Patient;
 use App\Form\PatientType;
 use App\Form\CareRequestFormFactory;
 use App\Form\CommentFormFactory;
+use App\Form\PatientFormFactory;
 use App\Form\VariableScheduleType;
+use App\Service\AgeComputer;
 use App\Service\Availability;
 use App\Service\UserProfile;
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,12 +19,16 @@ use Symfony\Component\Translation\TranslatableMessage;
 
 class PatientController extends AbstractAppController
 {
+    /**
+     * 
+     */
     #[Route('/patients/new', name: 'patient_new')]
     public function patientNew(
         Request $request,
         EntityManagerInterface $em,
         UserProfile $userProfile,
-    ): Response {
+    ): Response
+    {
         $patient = new Patient();
         $patient
             ->setOffice($userProfile->getDoctor()->getOffice())
@@ -51,28 +57,52 @@ class PatientController extends AbstractAppController
             'patientForm' => $patientForm->createView(),
         ]);
     }
+    
+    
+    /**
+     * 
+     */
+    #[Route('/patient_forms/{id}', name: 'patient_form')]
+    public function patientForm(
+        Patient $patient,
+        PatientFormFactory $patientFormFactory,
+        AgeComputer $ageComputer,
+    ): Response
+    {
+        $this->denyAccessUnlessGranted('edit', $patient);
 
+        $patientForm = $patientFormFactory->create($patient);
+
+        return $this->render('patient/info.html.twig', [
+            'patient' => $patient,
+            'patientAge' => $ageComputer->getAgeAsString($patient->getBirthdate()),
+            'patientForm' => $patientForm->createView(),
+        ]);
+    }
+
+
+    /**
+     * 
+     */
     #[Route('/patients/{id}', name: 'patient')]
     public function patient(
         Patient $patient,
         Request $request,
         Availability $availability,
         UserProfile $userProfile,
+        PatientFormFactory $patientFormFactory,
         CareRequestFormFactory $careRequestFormFactory,
         CommentFormFactory $commentFormFactory,
+        AgeComputer $ageComputer,
     ): Response
     {
         $this->denyAccessUnlessGranted('edit', $patient);
 
         $paramsAvailability = $this->getParameter('app.availability');
 
-        $apiPutUrl = $this->generateUrl('api_patients_put_item', ['id' => $patient->getId()]);
-        $patientForm = $this->createForm(PatientType::class, $patient, [
-            'api_delete_url' => $this->generateUrl('api_patients_delete_item', ['id' => $patient->getId()]),
-            'api_put_url' => $apiPutUrl,
-        ]);
+        $patientForm = $patientFormFactory->create($patient);
         $variableScheduleForm = $this->createForm(VariableScheduleType::class, $patient, [
-            'api_put_url' => $apiPutUrl,
+            'api_put_url' => $this->generateUrl('api_patients_put_item', ['id' => $patient->getId()]),
         ]);
         
         // Demande-t-on une care request en particulier
@@ -105,6 +135,7 @@ class PatientController extends AbstractAppController
         
         return $this->render('patient/patient.html.twig', [
             'patient' => $patient,
+            'patientAge' => $ageComputer->getAgeAsString($patient->getBirthdate()),
             'currentDoctorId' => $userProfile->currentUserDoctorId(),
             'content' => [
                 'title' => new TranslatableMessage('patient.title', [

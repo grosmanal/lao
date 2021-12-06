@@ -1,0 +1,3 @@
+years: '{1}%years% year old|]1,Inf[%years% years old'
+months: '[0,1]%months% month old|]1,Inf[%months% months old'
+half: and half
