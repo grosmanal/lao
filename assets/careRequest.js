@@ -60,6 +60,7 @@ function doSubmitCareRequest(form, data, checkFlag = true) {
                 });
             }
         }
+        console.error(error);
         modal('care_request.error.update', { errorMessage });
     });
 }
@@ -171,6 +172,7 @@ function deleteCareRequest(button) {
                 // Suppression de la care request du DOM
                 removeDomElement(elementToRemove.get(0));
             }).catch(function (error) {
+                console.error(error);
                 modal('care_request.error.delete');
             })
         ;

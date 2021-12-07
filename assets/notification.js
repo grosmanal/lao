@@ -10,6 +10,7 @@ function setNotificationRead(form) {
         readDate: 'now',
     })
     .catch(function(error) {
+        console.error(error);
         modal('notification.error.updating');
     })
     ;

@@ -77,6 +77,7 @@ function updateVariableSchedule(input) {
     }).then(function (response) {
         // rien à faire
     }).catch(function (error) {
+        console.error(error);
         modal('patient.error.updating');
     });
 }
@@ -88,6 +89,7 @@ function deletePatient(deleteButton, apiUrl) {
         .then(function (response) {
             window.location = '/';
         }).catch(function (error) {
+            console.error(error);
             modal('patient.error.deleting');
         });
     }, null, {
