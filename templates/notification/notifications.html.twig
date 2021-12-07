@@ -4,24 +4,43 @@
 
 {% block body %}
 
-<section class="card unread-notifications">
-    <h2 class="card-header">{{ 'notifications.content.unread_header'|trans }}</h2>
+<section class="card notifications">
+    <h2 class="card-header">
+        {{ headerLabel|trans }}
+        {% if markAllReadUrl is defined %}
+            <a href="{{ markAllReadUrl }}" class="text-reset">
+            <i class="bi bi-check-all float-end" title="{{ 'notifications.content.mark_all'|trans }}"></i>
+            </a>
+        {% endif %}
+    </h2>
     <div class="card-body">
-        {% if unreadNotifications|length > 0 %}
-            <ul class="list-group unread-notifications">
-                {% for unreadNotification in unreadNotifications %}
-                {% include "notification/notification_item.html.twig" with {notification: unreadNotification} %}
+        {% set notificationCollection = notifications ?? pagination %}
+        {% if notificationCollection|length > 0 %}
+            <ul class="list-group notifications">
+                {% for notification in notificationCollection %}
+                {% include "notification/notification_item.html.twig" %}
                 {% endfor %}
             </ul>
+            
+            {% if pagination is not null %}
+                <div class="navigation mt-2 d-flex justify-content-center">
+                    {{ knp_pagination_render(pagination) }}
+                </div>
+            {% endif %}
         {% else %}
             <div class="alert alert-warning">{{ 'notifications.content.no_notification'|trans }}</div>
-            
         {% endif %}
     </div>
+    <a class="text-center" href="{{ url(geminiRoute) }}">{{ geminiRouteLabel|trans }}</a>
 </section>
 
 {% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+
+    {{ encore_entry_link_tags('notification') }}
+{% endblock %}
 
 {% block javascripts %}
     {{ parent() }}

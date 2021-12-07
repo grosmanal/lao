@@ -7,6 +7,7 @@ App\Entity\Doctor:
         firstname: Joëlle
         lastname: Terrien
         office: '@office_1'
+        avatarName: 61aa325feeb121.68542657.png
     doctor_laurence:
         email: laurence.chaillet@free.fr
         password: '\$2y\$13\$N1dxqPx7LdFWDvwrZAA1Q.deK2FjoxzkhNHzOOeJTbsuDvMY3GU36'
@@ -14,6 +15,7 @@ App\Entity\Doctor:
         firstname: Laurence
         lastname: Chaillet
         office: '@office_1'
+        avatarName: 61ae272e480df5.52581853.png
     doctor_julie:
         email: julie.tartaglia@free.fr
         password: '\$2y\$13\$N1dxqPx7LdFWDvwrZAA1Q.deK2FjoxzkhNHzOOeJTbsuDvMY3GU36'

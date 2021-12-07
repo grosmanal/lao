@@ -204,11 +204,16 @@ user:
 notifications:
     content:
         title: Notifications
-        unread_header: Unread notifications
+        unread_notification_header: Notifications
+        read_notification_header: Read notifications
         no_notification: No notification
+        notifications: Show unread notifications
+        read_notifications: Show read notifications
+        mark_all: Mark all notification read
     item:
         mention_sentence: '%notifier% mentions you in'
         comment: comment
         patient: regarding patient %patientDisplayName%
+        mark_button: Mark as read
     error:
         updating: Error while updating notification

@@ -202,9 +202,13 @@ function submitCareRequest(event) {
  * la liste des care request
  * @param {Event} event 
  */
-function insertCareRequestCreationForm(event, $) {
+function insertCareRequestCreationForm(event) {
+    event.preventDefault();
+
+    const form = event.target;
+
     // Recherche de l'URL du formulaire de création de le care request
-    const urlCareRequestForm = $(event).data('urlCareRequestForm');
+    const urlCareRequestForm = form['careRequestCreationFormUrl'].value;
 
     httpClient
         .get(urlCareRequestForm)
@@ -224,6 +228,7 @@ function insertCareRequestCreationForm(event, $) {
             careRequestsAccordion.prepend(careRequestAccordionItem);
 
         }).catch(function (error) {
+            console.error(error);
             modal('care_request.error.reread');
         });
 }

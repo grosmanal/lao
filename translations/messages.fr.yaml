@@ -204,11 +204,16 @@ user:
 notifications:
     content:
         title: Notifications
-        unread_header: Notifications non-lues
+        unread_notification_header: Notifications
+        read_notification_header: Notifications lues
         no_notification: Aucune notification
+        notifications: Afficher les notifications non-lus
+        read_notifications: Afficher les notifications lues
+        mark_all: Marquer toutes les notifications lues
     item:
         mention_sentence: '%notifier% vous a mentionné·e dans'
         comment: un commentaire
         patient: concernant %patientDisplayName%
+        mark_button: Marquer lu
     error:
         updating: Erreur lors de la mise à jour de la notification

@@ -21,5 +21,15 @@ App\Entity\Notification:
     notification_4:
         comment: '@comment_8'
         doctor: '@doctor_joelle'
-        creationDate: <(new DateTimeImmutable("2021-05-18 15:33:20"))> 
+        creationDate: '<(new DateTimeImmutable("2021-05-18 15:33:20"))>'
         readDate: ~
+    notification_{5..35}:
+        comment: '@comment_8'
+        doctor: '@doctor_joelle'
+        creationDate: '<immutableDateTimeBetween("-1 year", "-1 day")>'
+        readDate: ~
+    notification_{36..50}:
+        comment: '@comment_8'
+        doctor: '@doctor_joelle'
+        creationDate: '<immutableDateTimeBetween("-1 year", "-1 day")>'
+        readDate: '<immutableDateTimeBetween("-1 year", "-1 day")>'

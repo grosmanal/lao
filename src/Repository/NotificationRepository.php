@@ -19,16 +19,44 @@ class NotificationRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Notification::class);
     }
+    
+    public function readUnreadForDoctorQuery(Doctor $doctor, bool $read)
+    {
+        $qb = $this->createQueryBuilder('n');
+
+        return $qb
+            ->andWhere('n.doctor = :doctor')
+            ->setParameter(':doctor', $doctor)
+            ->andWhere($read ? $qb->expr()->isNotNull('n.readDate') : $qb->expr()->isNull('n.readDate'))
+            ->orderBy('n.creationDate', 'ASC')
+            ->getQuery()
+        ;
+    }
+    
+    public function readForDoctorQuery(Doctor $doctor)
+    {
+        return $this->readUnreadForDoctorQuery($doctor, true);
+    }
 
     public function findUnreadForDoctor(Doctor $doctor)
     {
-        return $this->createQueryBuilder('n')
-            ->andWhere('n.doctor = :doctor')
-            ->setParameter(':doctor', $doctor)
-            ->andWhere('n.readDate is null')
-            ->getQuery()
+        return $this->readUnreadForDoctorQuery($doctor, false)
             ->getResult()
         ;
+    }
+    
+    public function markAllForDoctor(Doctor $doctor): void
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb
+            ->update('\App\Entity\Notification', 'n')
+            ->set('n.readDate', ':now')
+            ->setParameter(':now', new \DateTimeImmutable())
+            ->andWhere('n.doctor = :doctor')
+            ->setParameter(':doctor', $doctor)
+            ->andWhere($qb->expr()->isNull('n.readDate'))
+        ;
+        $qb->getQuery()->execute();
     }
 
     // /**

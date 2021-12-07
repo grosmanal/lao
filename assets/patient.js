@@ -29,11 +29,6 @@ jQuery(function ($) {
         updateVariableSchedule(this)
     });
 
-    // Bouton d'ajout de care request
-    $('.care-request-create-button').on('click', function () {
-        insertCareRequestCreationForm(this, $);
-    });
-    
     // Composant availability
     if ($('#week-availability').length > 0) {
         new Vue({
@@ -162,3 +157,4 @@ window.submitPatient = submitPatient;
 window.submitCareRequest = submitCareRequest;
 window.submitComment = submitComment;
 window.submitCommentMenu = submitCommentMenu;
+window.insertCareRequestCreationForm = insertCareRequestCreationForm;

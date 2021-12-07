@@ -6,6 +6,7 @@ App\Entity\User:
         roles: [ ROLE_ADMIN ]
         firstname: Emmanuel
         lastname: Averty
+        avatarName: 61ae271493ed2376496228.png
     user_patient:
         email: patient@free.fr
         password: '\$2y\$13\$N1dxqPx7LdFWDvwrZAA1Q.deK2FjoxzkhNHzOOeJTbsuDvMY3GU36'

@@ -18,12 +18,18 @@
         {# On affiche les disponibilités / demandes que si le patient existe en bdd #}
         <section class="care-request-section card mt-3">
             <h2 class="card-header">
-                {{ 'patient.care_requests.header'|trans }}
-                <i
-                    class="bi bi-clipboard-plus float-end care-request-create-button"
-                    title="{{ 'care_request.new'|trans }}"
-                    data-url-care-request-form="{{ url('care_request_creation_form', { id: patient.id}) }}"
-                ></i>
+                <span>
+                    {{ 'patient.care_requests.header'|trans }}
+                </span>
+                <form action="#" class="float-end" onsubmit="insertCareRequestCreationForm(event)">
+                    <input type="hidden" name="careRequestCreationFormUrl" value="{{ url('care_request_creation_form', { id: patient.id}) }}">
+                    <button type="submit" class="btn btn-link m-0 p-0 fs-3 text-reset">
+                    <i
+                        class="bi bi-clipboard-plus care-request-create-button"
+                        title="{{ 'care_request.new'|trans }}"
+                    ></i>
+                    </button>
+                </form>
             </h2>
             <div class="card-body" id="care-request-content">
                 <div id="care-requests-accordion" class="accordion">
