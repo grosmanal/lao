@@ -4,14 +4,13 @@ namespace App\Service;
 
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-// TODO tests
 class AgeComputer
 {
     public function __construct(private TranslatorInterface $translator)
     {
     }
 
-    public function getAgeAsString(\DateTimeImmutable $birthdate)
+    public function getAgeAsString(\DateTimeInterface $birthdate)
     {
         $difference = (new \DateTime())->diff($birthdate);
         

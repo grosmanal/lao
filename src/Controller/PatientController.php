@@ -8,7 +8,6 @@ use App\Form\CareRequestFormFactory;
 use App\Form\CommentFormFactory;
 use App\Form\PatientFormFactory;
 use App\Form\VariableScheduleType;
-use App\Service\AgeComputer;
 use App\Service\Availability;
 use App\Service\UserProfile;
 use Doctrine\ORM\EntityManagerInterface;
@@ -66,7 +65,6 @@ class PatientController extends AbstractAppController
     public function patientForm(
         Patient $patient,
         PatientFormFactory $patientFormFactory,
-        AgeComputer $ageComputer,
     ): Response
     {
         $this->denyAccessUnlessGranted('edit', $patient);
@@ -75,7 +73,6 @@ class PatientController extends AbstractAppController
 
         return $this->render('patient/info.html.twig', [
             'patient' => $patient,
-            'patientAge' => $ageComputer->getAgeAsString($patient->getBirthdate()),
             'patientForm' => $patientForm->createView(),
         ]);
     }
@@ -93,7 +90,6 @@ class PatientController extends AbstractAppController
         PatientFormFactory $patientFormFactory,
         CareRequestFormFactory $careRequestFormFactory,
         CommentFormFactory $commentFormFactory,
-        AgeComputer $ageComputer,
     ): Response
     {
         $this->denyAccessUnlessGranted('edit', $patient);
@@ -135,7 +131,6 @@ class PatientController extends AbstractAppController
         
         return $this->render('patient/patient.html.twig', [
             'patient' => $patient,
-            'patientAge' => $ageComputer->getAgeAsString($patient->getBirthdate()),
             'currentDoctorId' => $userProfile->currentUserDoctorId(),
             'content' => [
                 'title' => new TranslatableMessage('patient.title', [
