@@ -98,10 +98,6 @@ export default {
         background-color: var(--bs-body-bg)
     }
 
-    .slot:first-of-type {
-        border-top: 1px lightgray solid;
-    }
-
     .delete-availability {
         width: 20px;
         margin: 5px;

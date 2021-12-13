@@ -7,10 +7,11 @@
         <li><button class="btn btn-primary btn-sm" @click="setAfternoonAvailable">{{ setAfternoonButtonLabel }}</button></li>
     </ul>
     <ul class="week-day-slots" @mouseleave="hideCloseButton">
-        <li>
+        <li
+            v-for="(slotAvailable, timeSlot) in weekDayAvailability"
+            v-bind:key="timeSlot"
+        >
             <TimeSlot
-                v-for="(slotAvailable, timeSlot) in weekDayAvailability"
-                v-bind:key="timeSlot"
                 v-bind:week-day="weekDay"
                 v-bind:time-slot="timeSlot"
             ></TimeSlot>
@@ -83,7 +84,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .week-day-availability {
     min-width: 130px;
 }
@@ -109,6 +110,11 @@ export default {
 .week-day-slots {
     list-style: none;
     padding: 0;
+    
+    li:first-of-type {
+        border-top: 1px lightgray solid;
+    }
+
 }
 
 </style>
