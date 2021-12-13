@@ -14,7 +14,7 @@ export {
 };
 
 /**
- * Appel ajax de la mise à jour (via API) de la care request
+ * Appel ajax de la mise à jour ou création (via API) de la care request
  * puis mise à jour de l'html de la care request avec les nouvelle données
  * @param {object} form 
  * @param {object} data 
@@ -71,7 +71,6 @@ function doSubmitCareRequest(form, data, checkFlag = true) {
 function upsertCareRequest(form) {
 
     const data = {
-        creationDate: nullFieldConverter(form['care_request[creationDate]'].value),
         priority: nullFieldConverter(form['care_request[priority]'].checked),
         customComplaint: nullFieldConverter(form['care_request[customComplaint]'].value),
         acceptDate: nullFieldConverter(form['care_request[acceptDate]'].value),
@@ -81,6 +80,11 @@ function upsertCareRequest(form) {
         complaint: nullFieldConverter(form['care_request[complaint]'].value),
         acceptedByDoctor: nullFieldConverter(form['care_request[acceptedByDoctor]'].value),
     };
+        
+    if (form['care_request[creationDate]'].value != '') {
+        // Voir https://manal.xyz/gitea/origami_informatique/lao/issues/175
+        data.creationDate = form['care_request[creationDate]'].value;
+    }
 
     let checkFlag = undefined;
     if (form['care_request[patientUri]']) {

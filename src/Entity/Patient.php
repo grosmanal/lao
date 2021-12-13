@@ -9,8 +9,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Translation\TranslatableMessage;
 use Symfony\Component\Validator\Constraints as Assert;
 
+// TODO vérifier s'il faut mettre les date et user de création / modification dans denormalize du post
 /**
  * @ORM\Entity(repositoryClass=PatientRepository::class)
  */
@@ -32,7 +34,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         ]
     ],
 )]
-class Patient implements OfficeOwnedInterface
+class Patient implements OfficeOwnedInterface, ActivityLoggableEntityInterface
 {
     /**
      * @ORM\Id
@@ -96,6 +98,27 @@ class Patient implements OfficeOwnedInterface
      */
     #[Groups(['patient:read'])]
     private $variableSchedule;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class)
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $creator;
+
+    /**
+     * @ORM\Column(type="datetime_immutable")
+     */
+    private $creationDate;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class)
+     */
+    private $modifier;
+
+    /**
+     * @ORM\Column(type="datetime_immutable", nullable=true)
+     */
+    private $modificationDate;
 
     /**
      * @ORM\Column(type="json")
@@ -249,6 +272,54 @@ class Patient implements OfficeOwnedInterface
         return $this;
     }
 
+    public function getCreator(): ?User
+    {
+        return $this->creator;
+    }
+
+    public function setCreator(?User $creator): self
+    {
+        $this->creator = $creator;
+
+        return $this;
+    }
+
+    public function getCreationDate(): ?\DateTimeImmutable
+    {
+        return $this->creationDate;
+    }
+
+    public function setCreationDate(\DateTimeImmutable $creationDate): self
+    {
+        $this->creationDate = $creationDate;
+
+        return $this;
+    }
+
+    public function getModifier(): ?User
+    {
+        return $this->modifier;
+    }
+
+    public function setModifier(?User $modifier): self
+    {
+        $this->modifier = $modifier;
+
+        return $this;
+    }
+
+    public function getModificationDate(): ?\DateTimeImmutable
+    {
+        return $this->modificationDate;
+    }
+
+    public function setModificationDate(?\DateTimeImmutable $modificationDate): self
+    {
+        $this->modificationDate = $modificationDate;
+
+        return $this;
+    }
+
     public function getOffice(): ?Office
     {
         return $this->office;
@@ -294,5 +365,26 @@ class Patient implements OfficeOwnedInterface
     public function ownedByOffice(): ?Office
     {
         return $this->getOffice();
+    }
+
+    public function getActivityIcon(): string
+    {
+        return 'bi-file-person';
+    }
+
+    public function getActivityRoute(): array
+    {
+        return [
+            'name' => 'patient',
+            'parameters' => [ 'id' => $this->getId(), ],
+        ];
+    }
+    
+    public function getActivityMessage(string $action): TranslatableMessage
+    {
+        return new TranslatableMessage(sprintf('activity.patient.%s', $action), [
+            '%doctorDisplayName%' => $this->getCreator()->getDisplayName(),
+            '%patientDisplayName%' => $this->getDisplayName(),
+        ]);
     }
 }

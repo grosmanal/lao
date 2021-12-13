@@ -13,13 +13,26 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Patient[]    findAll()
  * @method Patient[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class PatientRepository extends ServiceEntityRepository
+class PatientRepository extends ServiceEntityRepository implements ActivityLoggableRepositoryInterface
 {
+    use ActivityLoggableTrait;
+    
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Patient::class);
     }
 
+    
+    public function findActiveSince(Office $office, \DateTimeInterface $since): array
+    {
+        $qb = $this->createQueryBuilder('p');
+        return $this->addWhereSince($qb, 'p', $since)
+            ->andWhere('p.office = :office')
+            ->setParameter(':office', $office)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
     // /**
     //  * @return Patient[] Returns an array of Patient objects
     //  */

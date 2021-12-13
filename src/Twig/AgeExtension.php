@@ -20,8 +20,12 @@ class AgeExtension extends AbstractExtension
     }
     
 
-    public function age(\DateTimeInterface $birthDate)
+    public function age(?\DateTimeInterface $birthDate): ?string
     {
+        if (!$birthDate) {
+            return null;
+        }
+
         return $this->ageComputer->getAgeAsString($birthDate);
     }
 }

@@ -9,9 +9,11 @@ use App\Repository\CareRequestRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Translation\TranslatableMessage;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
+// TODO vérifier s'il faut mettre les date et user de création / modification dans denormalize du post
 /**
  * @ORM\Entity(repositoryClass=CareRequestRepository::class)
  */
@@ -30,7 +32,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
         ],
     ],
 )]
-class CareRequest implements OfficeOwnedInterface
+class CareRequest implements OfficeOwnedInterface, ActivityLoggableEntityInterface
 {
     const STATE_NEW = 'new';
     const STATE_ACTIVE = 'active';
@@ -61,10 +63,19 @@ class CareRequest implements OfficeOwnedInterface
 
     /**
      * @ORM\Column(type="datetime_immutable")
-     * @Assert\NotBlank
      */
     #[Groups(['careRequest:read', 'careRequest:put', 'comment:read'])]
     private $creationDate;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class)
+     */
+    private $modifier;
+
+    /**
+     * @ORM\Column(type="datetime_immutable", nullable=true)
+     */
+    private $modificationDate;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
@@ -228,13 +239,23 @@ class CareRequest implements OfficeOwnedInterface
 
         return $this;
     }
+    
+    public function getCreator(): ?User
+    {
+        return $this->getDoctorCreator(); // TODO faut-il merger ces deux fonctions
+    }
+    
+    public function setCreator(?User $user): self
+    {
+        return $this->setDoctorCreator($user);
+    }
 
     public function getCreationDate(): ?\DateTimeImmutable
     {
         return $this->creationDate;
     }
 
-    public function setCreationDate(\DateTimeImmutable $creationDate): self
+    public function setCreationDate(?\DateTimeImmutable $creationDate): self
     {
         $this->creationDate = $creationDate;
 
@@ -244,6 +265,30 @@ class CareRequest implements OfficeOwnedInterface
     public function getCreationDateNonImmutable(): ?\DateTime
     {
         return \DateTime::createFromImmutable($this->creationDate);
+    }
+
+    public function getModifier(): ?User
+    {
+        return $this->modifier;
+    }
+
+    public function setModifier(?User $modifier): self
+    {
+        $this->modifier = $modifier;
+
+        return $this;
+    }
+
+    public function getModificationDate(): ?\DateTimeImmutable
+    {
+        return $this->modificationDate;
+    }
+
+    public function setModificationDate(?\DateTimeImmutable $modificationDate): self
+    {
+        $this->modificationDate = $modificationDate;
+
+        return $this;
     }
 
     public function getPriority(): ?bool
@@ -380,5 +425,31 @@ class CareRequest implements OfficeOwnedInterface
     public function ownedByOffice(): ?Office
     {
         return $this->getOffice();
+    }
+
+    public function getActivityIcon(): string
+    {
+        return 'bi-clipboard';
+    }
+    
+    public function getActivityRoute(): array
+    {
+        return [
+            'name' => 'patient',
+            'parameters' => [
+                'id' => $this->getPatient()->getId(),
+                'careRequest' => $this->getId(),
+                '_fragment' => sprintf('care-request-heading-%d', $this->getId()),
+            ],
+        ];
+    }
+    
+    public function getActivityMessage(string $action): TranslatableMessage
+    {
+        return new TranslatableMessage(sprintf('activity.care_request.%s', $action), [
+            '%doctorDisplayName%' => $this->getCreator()->getDisplayName(),
+            '%patientDisplayName%' => $this->getPatient()->getDisplayName(),
+            '%careRequestCreationDate%' => $this->getCreationDate()->format('d/m/Y')
+        ]);
     }
 }

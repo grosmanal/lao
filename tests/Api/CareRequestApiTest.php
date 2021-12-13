@@ -139,7 +139,7 @@ class CareRequestApiTest extends AbstractApiTestCase
         return [
             ['patient', Response::HTTP_UNPROCESSABLE_ENTITY],
             ['doctorCreator', Response::HTTP_UNPROCESSABLE_ENTITY],
-            ['creationDate', Response::HTTP_UNPROCESSABLE_ENTITY],
+            ['creationDate', Response::HTTP_CREATED],
             ['priority', Response::HTTP_CREATED],
             ['complaint', Response::HTTP_CREATED],
             ['customComplaint', Response::HTTP_CREATED],
@@ -158,6 +158,21 @@ class CareRequestApiTest extends AbstractApiTestCase
             'json' => $data,
         ]);
         $this->assertResponseStatusCodeSame($expected);
+    }
+    
+
+    public function testPostEmptyCreationDate()
+    {
+        $this->loginUser('admin@example.com');
+
+        $data = array_diff_key(self::CARE_REQUEST_DATA, ['creationDate' => null]);
+        $response = $this->client->request('POST', "/api/care_requests", [
+            'json' => $data,
+        ]);
+        $this->assertResponseStatusCodeSame(Response::HTTP_CREATED);
+        
+        $jsonContent = json_decode($response->getContent(), true);
+        $this->assertNotEmpty($jsonContent['creationDate']);
     }
 
 

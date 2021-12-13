@@ -10,7 +10,7 @@ class AgeComputer
     {
     }
 
-    public function getAgeAsString(\DateTimeInterface $birthdate)
+    public function getAgeAsString(\DateTimeInterface $birthdate): string
     {
         $difference = (new \DateTime())->diff($birthdate);
         

@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\CareRequest;
+use App\Entity\Office;
 use App\Input\SearchCriteria;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -13,8 +14,10 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method CareRequest[]    findAll()
  * @method CareRequest[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class CareRequestRepository extends ServiceEntityRepository
+class CareRequestRepository extends ServiceEntityRepository implements ActivityLoggableRepositoryInterface
 {
+    use ActivityLoggableTrait;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, CareRequest::class);
@@ -65,6 +68,21 @@ class CareRequestRepository extends ServiceEntityRepository
             ->getResult()
         ;
         
+    }
+    
+    public function findActiveSince(Office $office, \DateTimeInterface $since): array
+    {
+        $qb = $this->createQueryBuilder('c');
+        $qb
+            ->innerJoin('c.patient', 'p')
+            ->andWhere('p.office = :office')
+            ->setParameter(':office', $office)
+        ;
+        
+        return $this->addWhereSince($qb, 'c', $since)
+            ->getQuery()
+            ->getResult()
+        ;
     }
 
     // /**

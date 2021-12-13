@@ -1,0 +1,34 @@
+---
+include:
+    - ../office.yaml
+App\Entity\Patient:
+    # Utilisation d'un patient qui n'entrera pas dans les tests pour la jointure avec care_request
+    # car celui-ci est retourné en tant que Proxy si sélectionné
+    patient_0: # ID : 1
+        firstname: firstname
+        office: '@office_1'
+        creator: '@doctor_1'
+        creationDate: <(new DateTimeImmutable("2020-01-01 15:00:01"))>
+        modificationDate: ~
+        availability: []
+    patient_1: # ID : 2
+        firstname: firstname
+        office: '@office_1'
+        creator: '@doctor_1'
+        creationDate: <(new DateTimeImmutable("2021-01-01 15:00:01"))>
+        modificationDate: ~
+        availability: []
+    patient_2: # ID : 3
+        firstname: firstname
+        office: '@office_1'
+        creator: '@doctor_1'
+        creationDate: <(new DateTimeImmutable("2021-01-02 15:00:01"))>
+        modificationDate: ~
+        availability: []
+    patient_3: # ID : 4
+        firstname: firstname
+        office: '@office_1'
+        creator: '@doctor_1'
+        creationDate: <(new DateTimeImmutable("2021-01-01 15:00:01"))>
+        modificationDate: <(new DateTimeImmutable("2021-01-03 15:00:01"))>
+        availability: []

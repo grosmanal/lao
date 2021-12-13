@@ -37,6 +37,7 @@ class CareRequestType extends AbstractType
         
         $builder
             ->add('creationDate', DateType::class, [
+                'required' => false,
                 'widget' => 'single_text',
                 'disabled' => $fieldDisabled,
                 'label' => 'care_request.form.creation_date',

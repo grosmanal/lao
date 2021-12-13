@@ -217,3 +217,26 @@ notifications:
         mark_button: Marquer lu
     error:
         updating: Erreur lors de la mise à jour de la notification
+          
+# Home
+home:
+    content:
+        title: Liste attente Orhto
+
+# Activity
+activity:
+    content:
+        header: Activité depuis %daysSince% jours
+        more_days: Afficher l'activité pour les %days% derniers jours
+    patient:
+        creation: '<span class="doctor">%doctorDisplayName%</span> a créé le patient %patientDisplayName%'
+        creation_modification: '<span class="doctor">%doctorDisplayName%</span> a créé le patient %patientDisplayName%'
+        modification: '<span class="doctor">%doctorDisplayName%</span> a modifié le patient %patientDisplayName%'
+    care_request:
+        creation: '<span class="doctor">%doctorDisplayName%</span> a créé une demande pour le patient %patientDisplayName%'
+        creation_modification: '<span class="doctor">%doctorDisplayName%</span> a créé une demande pour le patient %patientDisplayName%'
+        modification: '<span class="doctor">%doctorDisplayName%</span> a modifié la demande du %careRequestCreationDate% pour le patient %patientDisplayName%'
+    comment:
+        creation: '<span class="doctor">%doctorDisplayName%</span> a écrit un commentaire à propos de la demande du %careRequestCreationDate% pour le patient %patientDisplayName%'
+        creation_modification: '<span class="doctor">%doctorDisplayName%</span> a écrit un commentaire à propos de la demande du %careRequestCreationDate% pour le patient %patientDisplayName%'
+        modification: '<span class="doctor">%doctorDisplayName%</span> a modifié son commentaire à propos de la demande du %careRequestCreationDate% pour le patient %patientDisplayName%'

@@ -9,8 +9,10 @@ use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Translation\TranslatableMessage;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
+// TODO vérifier s'il faut mettre les date et user de création / modification dans denormalize du post
 /**
  * @ORM\Entity(repositoryClass=CommentRepository::class)
  */
@@ -18,7 +20,10 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
     normalizationContext: ['groups' => ['comment:read']],
     collectionOperations: [
         'get',
-        'post' => ['security_post_denormalize' => "is_granted('edit', object)"],
+        'post' => [
+            'denormalization_context' => ['groups' => ['comment:post']],
+            'security_post_denormalize' => "is_granted('edit', object)"
+        ],
     ],
     itemOperations: [
         'get' => ['security' => "is_granted('view', object)"],
@@ -29,7 +34,8 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
         'delete' => ['security' => "is_granted('edit', object)"],
     ],
 )]
-class Comment implements DoctorOwnedInterface, OfficeOwnedInterface
+// https://manal.xyz/gitea/origami_informatique/lao/issues/171
+class Comment implements DoctorOwnedInterface, OfficeOwnedInterface, ActivityLoggableEntityInterface
 {
     /**
      * @ORM\Id
@@ -44,20 +50,19 @@ class Comment implements DoctorOwnedInterface, OfficeOwnedInterface
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotBlank
      */
-    #[Groups(['comment:read'])]
+    #[Groups(['comment:read', 'comment:post'])]
     private $author;
 
     /**
      * @ORM\Column(type="datetime_immutable")
-     * @Assert\NotBlank
      */
-    #[Groups(['comment:read'])]
+    #[Groups(['comment:read', 'comment:post'])]
     private $creationDate;
 
     /**
      * @ORM\Column(type="datetime_immutable", nullable=true)
      */
-    #[Groups(['comment:read', 'comment:put'])]
+    #[Groups(['comment:read'])]
     private $modificationDate;
 
     /**
@@ -65,14 +70,14 @@ class Comment implements DoctorOwnedInterface, OfficeOwnedInterface
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotBlank
      */
-    #[Groups(['comment:read'])]
+    #[Groups(['comment:read', 'comment:post'])]
     private $careRequest;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      * @Assert\NotBlank
      */
-    #[Groups(['comment:read', 'comment:put'])]
+    #[Groups(['comment:read', 'comment:post', 'comment:put'])]
     private $content;
 
     /**
@@ -119,6 +124,16 @@ class Comment implements DoctorOwnedInterface, OfficeOwnedInterface
 
         return $this;
     }
+    
+    public function getCreator(): ?User
+    {
+        return $this->getAuthor();
+    }
+    
+    public function setCreator(?User $user): self
+    {
+        return $this->setAuthor($user);
+    }
 
     public function getCreationDate(): ?\DateTimeImmutable
     {
@@ -134,6 +149,18 @@ class Comment implements DoctorOwnedInterface, OfficeOwnedInterface
     {
         $this->creationDate = $creationDate;
 
+        return $this;
+    }
+    
+    public function getModifier(): ?User
+    {
+        // Seul l'auteur d'un commentaire peut le modifier (DoctorOwnedInterface)
+        return $this->getAuthor();
+    }
+    
+    public function setModifier(?User $user): self
+    {
+        // Rien à faire : seul l'auteur d'un commentaire peut le modifier (DoctorOwnedInterface)
         return $this;
     }
 
@@ -225,5 +252,30 @@ class Comment implements DoctorOwnedInterface, OfficeOwnedInterface
     public function ownedByOffice(): ?Office
     {
         return $this->getOffice();
+    }
+
+    public function getActivityIcon(): string
+    {
+        return 'bi-chat-left-text';
+    }
+    
+    public function getActivityRoute(): array
+    {
+        return [
+            'name' => 'patient',
+            'parameters' => [
+                'id' => $this->getCareRequest()->getPatient()->getId(),
+                '_fragment' => sprintf('comment-%d', $this->getId()),
+            ],
+        ];
+    }
+    
+    public function getActivityMessage(string $action): TranslatableMessage
+    {
+        return new TranslatableMessage(sprintf('activity.comment.%s', $action), [
+            '%doctorDisplayName%' => $this->getCreator()->getDisplayName(),
+            '%patientDisplayName%' => $this->getCareRequest()->getPatient()->getDisplayName(),
+            '%careRequestCreationDate%' => $this->getCreationDate()->format('d/m/Y')
+        ]);
     }
 }

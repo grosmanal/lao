@@ -27,7 +27,6 @@ class CareRequestFormFactory
     {
         $careRequest = new CareRequest();
         $careRequest
-            ->setCreationDate(new DateTimeImmutable('now'))
             ->setDoctorCreator($doctor)
             ;
             

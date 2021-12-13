@@ -217,3 +217,26 @@ notifications:
         mark_button: Mark as read
     error:
         updating: Error while updating notification
+        
+# Home
+home:
+    content:
+        title: Speech therapist waiting list
+          
+# Activity
+activity:
+    content:
+        header: Activity since %daysSince% days
+        more_days: Show activity for past %days% days
+    patient:
+        creation: '<span class="doctor">%doctorDisplayName%</span> created patient %patientDisplayName%'
+        creation_modification: '<span class="doctor">%doctorDisplayName%</span> created patient %patientDisplayName%'
+        modification: '<span class="doctor">%doctorDisplayName%</span> modified patient %patientDisplayName%'
+    care_request:
+        creation: '<span class="doctor">%doctorDisplayName%</span> created a care request for patient %patientDisplayName%'
+        creation_modification: '<span class="doctor">%doctorDisplayName%</span> created a care request for patient %patientDisplayName%'
+        modification: '<span class="doctor">%doctorDisplayName%</span> modified the care request from %careRequestCreationDate% for patient %patientDisplayName%'
+    comment:
+        creation: '<span class="doctor">%doctorDisplayName%</span> wrote a comment about care request from %careRequestCreationDate% for patient %patientDisplayName%'
+        creation_modification: '<span class="doctor">%doctorDisplayName%</span> wrote a comment about care request from %careRequestCreationDate% for patient %patientDisplayName%'
+        modification: '<span class="doctor">%doctorDisplayName%</span> modified his / her comment about the care request from %careRequestCreationDate% for patient %patientDisplayName%'

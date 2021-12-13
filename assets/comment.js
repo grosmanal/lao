@@ -203,12 +203,6 @@ function upsertComment(form)
         content: nullFieldConverter(form['comment[content]'].value),
     }
     
-    if (updating) {
-        data.modificationDate = 'now';
-    } else {
-        data.creationDate = 'now';
-    }
-    
     httpClient({
         method: form['comment[apiAction]'].value,
         url: form['comment[apiUrl]'].value,
