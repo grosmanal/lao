@@ -7,6 +7,7 @@
 <div id="patient-content" class="patient-content">
     <section class="identity-section card">
         <h2 class="card-header">
+            <i class="bi bi-person-square"></i>
             {{ 'patient.info.header'|trans }}
         </h2>
         <div class="card-body" id="info-content">
@@ -19,6 +20,7 @@
         <section class="care-request-section card mt-3">
             <h2 class="card-header">
                 <span class="align-middle">
+                    <i class="bi bi-clipboard"></i>
                     {{ 'patient.care_requests.header'|trans }}
                 </span>
                 <form action="#" class="float-end" onsubmit="insertCareRequestCreationForm(event)">
@@ -60,6 +62,7 @@
 
         <section class="availability-section card mt-3">
             <h2 class="card-header">
+                <i class="bi bi-calendar-week"></i>
                 {{ 'patient.availabilities.header'|trans }}
             </h2>
             <div class="card-body" id="availability-content">

@@ -4,7 +4,10 @@
 
 {% block body %}
 <section class="card user">
-    <h2 class="card-header">{{ 'user.content.header'|trans }}</h2>
+    <h2 class="card-header">
+        <i class="bi bi-person"></i>
+        {{ 'user.content.header'|trans }}
+    </h2>
     <div class="card-body">
        {% for message in app.flashes('success') %}
             <div class="alert alert-success mb-3">

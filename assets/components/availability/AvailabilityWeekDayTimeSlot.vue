@@ -81,16 +81,21 @@ export default {
 </script>
 
 <style scoped lang="scss">
-    @import '../../styles/variables';
+    // ma proposition
+    //$slotAvailableBackground: #a7dbfb;
+    // proposition de Joëlle : 
+    $slotAvailableBackground: #0dcaf096;
 
     .slot {
         min-height: 35px;
         max-width: 200px;
-        border-left: 1px lightgray solid;
+        border-left-style: solid;
+        border-left-width: 1px;
+        border-left-color: lightgray;
         border-bottom: 1px lightgray solid;
         text-align: end;
         transition: background-color 0.3s ease-in;
-        background-color: $body-bg;
+        background-color: var(--bs-body-bg)
     }
 
     .slot:first-of-type {
@@ -104,9 +109,10 @@ export default {
     }
 
     .slot-available {
-        background-color: #c1da86;
-        border-bottom-color: green;
-        border-top-color: green;
+        background-color: $slotAvailableBackground;
+        border-bottom-color: darken($slotAvailableBackground, 30%);
+        border-top-color: darken($slotAvailableBackground, 30%);
+        border-left-color: darken($slotAvailableBackground, 30%);
     }
 
     .slot-right-edge {

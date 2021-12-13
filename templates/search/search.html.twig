@@ -5,7 +5,10 @@
 {% block body %}
 
 <section class="card search-criteria">
-    <h2 class="card-header">{{ 'search.criteria_header'|trans }}</h2>
+    <h2 class="card-header">
+        <i class="bi bi-search"></i>
+        {{ 'search.criteria_header'|trans }}
+    </h2>
     <div class="card-body">
         {% include "search/search_form.html.twig" %}
     </div>
