@@ -229,14 +229,14 @@ activity:
         header: Activité depuis %daysSince% jours
         more_days: Afficher l'activité pour les %days% derniers jours
     patient:
-        creation: '<span class="doctor">%doctorDisplayName%</span> a créé le patient %patientDisplayName%'
-        creation_modification: '<span class="doctor">%doctorDisplayName%</span> a créé le patient %patientDisplayName%'
-        modification: '<span class="doctor">%doctorDisplayName%</span> a modifié le patient %patientDisplayName%'
+        creation: '<span class="patient">%patientDisplayName%</span> : création par <span class="doctor">%doctorDisplayName%</span>'
+        creation_modification: '<span class="patient">%patientDisplayName%</span> : création par <span class="doctor">%doctorDisplayName%</span>'
+        modification: '<span class="patient">%patientDisplayName%</span> : modification par <span class="doctor">%doctorDisplayName%</span>'
     care_request:
-        creation: '<span class="doctor">%doctorDisplayName%</span> a créé une demande pour le patient %patientDisplayName%'
-        creation_modification: '<span class="doctor">%doctorDisplayName%</span> a créé une demande pour le patient %patientDisplayName%'
-        modification: '<span class="doctor">%doctorDisplayName%</span> a modifié la demande du %careRequestCreationDate% pour le patient %patientDisplayName%'
+        creation: '<span class="patient">%patientDisplayName%</span> : ajout d’une demande par <span class="doctor">%doctorDisplayName%</span>'
+        creation_modification: '<span class="patient">%patientDisplayName%</span> : ajout d’une demande par <span class="doctor">%doctorDisplayName%</span>'
+        modification: '<span class="patient">%patientDisplayName%</span> : modification de la demande du %careRequestCreationDate% par <span class="doctor">%doctorDisplayName%</span>'
     comment:
-        creation: '<span class="doctor">%doctorDisplayName%</span> a écrit un commentaire à propos de la demande du %careRequestCreationDate% pour le patient %patientDisplayName%'
-        creation_modification: '<span class="doctor">%doctorDisplayName%</span> a écrit un commentaire à propos de la demande du %careRequestCreationDate% pour le patient %patientDisplayName%'
-        modification: '<span class="doctor">%doctorDisplayName%</span> a modifié son commentaire à propos de la demande du %careRequestCreationDate% pour le patient %patientDisplayName%'
+        creation: '<span class="patient">%patientDisplayName%</span> : ajout d’un commentaire à propos de la demande du %careRequestCreationDate% par <span class="doctor">%doctorDisplayName%</span>'
+        creation_modification: '<span class="patient">%patientDisplayName%</span> : ajout d’un commentaire à propos de la demande du %careRequestCreationDate% par <span class="doctor">%doctorDisplayName%</span>'
+        modification: '<span class="patient">%patientDisplayName%</span> : <span class="doctor">%doctorDisplayName%</span> a modifié son commentaire à propos de la demande du %careRequestCreationDate%'

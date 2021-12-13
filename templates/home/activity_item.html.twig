@@ -1,6 +1,14 @@
 <li class="list-group-item list-group-item-action">
     <i class="bi {{ entity.icon }}"></i>
     <a href="{{ entity.url }}" class="text-reset text-decoration-none">
-        {{ entity.logMessage|trans|raw }} <span class="float-end">{{ entity.valorisationDate|ago }}</span>
+        {{ entity.logMessage|trans|raw }}
+        <span class="float-end">
+            <time
+                title="{{ entity.valorisationDate|format_datetime('medium', 'short') }}"
+                datetime="{{ entity.valorisationDate|date('c') }}"
+            >
+                {{ entity.valorisationDate|ago }}
+            </time>
+        </span>
     </a>
 </li>

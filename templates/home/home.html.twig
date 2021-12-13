@@ -22,3 +22,17 @@
     </div>
 </section>
 {% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+
+<style>
+.activity .patient {
+    font-weight: bold;
+}
+
+.activity .doctor {
+    background-color: lightgray;
+}
+</style>
+{% endblock %}
