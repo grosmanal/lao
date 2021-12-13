@@ -17,6 +17,10 @@ body {
     padding-top: 1rem;
 }
 
-h2::first-letter {
-    text-transform: capitalize;
+h2 {
+    font-size: 1.7rem;
+
+    &::first-letter {
+        text-transform: capitalize;
+    }
 }
