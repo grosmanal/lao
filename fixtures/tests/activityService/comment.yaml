@@ -4,17 +4,17 @@ include:
 App\Entity\Comment:
     comment_1:
         author: '@doctor_1'
-        creationDate: <(new DateTimeImmutable("2021-01-01, 15:10:03"))>
+        creationDate: <(new DateTimeImmutable("2021-01-01 15:10:03"))>
         modificationDate: ~
         careRequest: '@care_request_0'
     comment_2:
         author: '@doctor_1'
-        creationDate: <(new DateTimeImmutable("2021-01-02, 15:10:03"))>
+        creationDate: <(new DateTimeImmutable("2021-01-02 15:10:03"))>
         modificationDate: ~
         careRequest: '@care_request_0'
     comment_3:
         author: '@doctor_1'
-        creationDate: <(new DateTimeImmutable("2021-01-01, 15:10:03"))>
+        creationDate: <(new DateTimeImmutable("2021-01-01 15:10:03"))>
         modificationDate: <(new DateTimeImmutable("2021-01-03 15:10:03"))>
         careRequest: '@care_request_0'
     comment_4:

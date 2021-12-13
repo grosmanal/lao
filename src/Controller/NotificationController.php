@@ -65,6 +65,6 @@ class NotificationController extends AbstractAppController
     ): RedirectResponse
     {
         $notificationRepository->markAllForDoctor($userProfile->getDoctor());
-        return $this->redirectToRoute('notifications_read');
+        return $this->redirectToRoute('notifications');
     }
 }

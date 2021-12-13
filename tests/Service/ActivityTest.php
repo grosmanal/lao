@@ -3,11 +3,9 @@
 namespace App\Tests\Service;
 
 use App\Entity\Office;
-use App\Entity\Patient;
-use App\Entity\CareRequest;
-use App\Entity\Comment;
 use App\Repository\OfficeRepository;
 use App\Service\Activity;
+use DateTimeImmutable;
 
 class ActivityTest extends AbstractServiceTest
 {
@@ -36,24 +34,60 @@ class ActivityTest extends AbstractServiceTest
     {
         return [
             [ '2021-01-04', [
-                Patient::class => [],
-                CareRequest::class => [],
-                Comment::class => [4, 5],
+                'bi-file-person' => [], // Patient
+                'bi-clipboard' => [], // Care request
+                'bi-chat-left-text' => [ // Comment 
+                    new DateTimeImmutable("2021-05-01 15:10:00"), // Comment ID 4
+                    new DateTimeImmutable("2021-05-02 15:10:00"), // Comment ID 5
+                ],
             ] ],
             [ '2021-01-03', [
-                Patient::class => [4],
-                CareRequest::class => [4],
-                Comment::class => [3, 4, 5],
+                'bi-file-person' => [ // Patient
+                    new DateTimeImmutable("2021-01-03 15:00:01"), // Patient ID 4
+                ],
+                'bi-clipboard' => [ // Care request
+                    new DateTimeImmutable("2021-01-03 15:05:02"), // Care request ID 4
+                ],
+                'bi-chat-left-text' => [ // Comment 
+                    new DateTimeImmutable("2021-01-03 15:10:03"), // Comment ID 3
+                    new DateTimeImmutable("2021-05-01 15:10:00"), // Comment ID 4
+                    new DateTimeImmutable("2021-05-02 15:10:00"), // Comment ID 5
+                ],
             ] ],
             [ '2021-01-02', [
-                Patient::class => [3, 4],
-                CareRequest::class => [3, 4],
-                Comment::class => [2, 3, 4, 5],
+                'bi-file-person' => [ // Patient
+                    new DateTimeImmutable("2021-01-02 15:00:01"), // Patient ID 3
+                    new DateTimeImmutable("2021-01-03 15:00:01"), // Patient ID 4
+                ],
+                'bi-clipboard' => [ // Care request
+                    new DateTimeImmutable("2021-01-02 15:05:02"), // Care request ID 3
+                    new DateTimeImmutable("2021-01-03 15:05:02"), // Care request ID 4
+                ],
+                'bi-chat-left-text' => [ // Comment 
+                    new DateTimeImmutable("2021-01-02 15:10:03"), // Comment ID 2
+                    new DateTimeImmutable("2021-01-03 15:10:03"), // Comment ID 3
+                    new DateTimeImmutable("2021-05-01 15:10:00"), // Comment ID 4
+                    new DateTimeImmutable("2021-05-02 15:10:00"), // Comment ID 5
+                ],
             ] ],
             [ '2021-01-01', [
-                Patient::class => [2, 3, 4],
-                CareRequest::class => [2, 3, 4],
-                Comment::class => [1, 2, 3, 4, 5],
+                'bi-file-person' => [ // Patient
+                    new DateTimeImmutable("2021-01-01 15:00:01"), // Patient ID 2
+                    new DateTimeImmutable("2021-01-02 15:00:01"), // Patient ID 3
+                    new DateTimeImmutable("2021-01-01 15:00:01"), // Patient ID 4
+                ],
+                'bi-clipboard' => [ // Care request
+                    new DateTimeImmutable("2021-01-01 15:05:02"), // Care request ID 2
+                    new DateTimeImmutable("2021-01-02 15:05:02"), // Care request ID 3
+                    new DateTimeImmutable("2021-01-01 15:05:02"), // Care request ID 4
+                ],
+                'bi-chat-left-text' => [ // Comment 
+                    new DateTimeImmutable("2021-01-01 15:10:03"), // Comment ID 1
+                    new DateTimeImmutable("2021-01-02 15:10:03"), // Comment ID 2
+                    new DateTimeImmutable("2021-01-01 15:10:03"), // Comment ID 3
+                    new DateTimeImmutable("2021-05-01 15:10:00"), // Comment ID 4
+                    new DateTimeImmutable("2021-05-02 15:10:00"), // Comment ID 5
+                ],
             ] ],
         ];
     }
@@ -69,23 +103,21 @@ class ActivityTest extends AbstractServiceTest
         );
         
         // Classement des entité par classe
-        $entitiesByClass = [
-            Patient::class => [],
-            CareRequest::class => [],
-            Comment::class => [],
+        $entitiesByIcon = [
+            'bi-file-person' => [],
+            'bi-clipboard' => [],
+            'bi-chat-left-text' => [],
         ];
         foreach($entities as $entity) {
-            $entitiesByClass[get_class($entity)][] = $entity->getId();
+            $entitiesByIcon[$entity['icon']][] = $entity['valorisationDate'];
         }
         
-        foreach ($entitiesByClass as $class => $entityIdsOfClass) {
-            array_walk($entityIdsOfClass, function($id) use ($expected, $class) {
-                $this->assertContainsEquals($id, $expected[$class]);
+        foreach ($entitiesByIcon as $icon => $entityIdsOfIcon) {
+            array_walk($entityIdsOfIcon, function($id) use ($expected, $icon) {
+                $this->assertContainsEquals($id, $expected[$icon]);
             });
-            $this->assertCount(count($expected[$class]), $entityIdsOfClass);
+            $this->assertCount(count($expected[$icon]), $entityIdsOfIcon);
         }
-        
-        //$this->assertSame($expected, $entitiesByClass);
     }
     
     
@@ -93,24 +125,24 @@ class ActivityTest extends AbstractServiceTest
     {
         return [
             [Activity::SORT_OLDER_FIRST, [
-                [ Patient::class, 3 ],     // 2021-01-02 15:00:01
-                [ CareRequest::class, 3 ], // 2021-01-02 15:05:02
-                [ Comment::class, 2 ],     // 2021-01-02 15:10:03
-                [ Patient::class, 4 ],     // 2021-01-03 15:00:01
-                [ CareRequest::class, 4 ], // 2021-01-03 15:05:02
-                [ Comment::class, 3 ],     // 2021-01-03 15:10:03
-                [ Comment::class, 4 ],     // 2021-05-01 15:10:00
-                [ Comment::class, 5 ],     // 2021-05-02 15:10:00
+                [ 'bi-file-person', new DateTimeImmutable('2021-01-02 15:00:01') ],     // 3
+                [ 'bi-clipboard', new DateTimeImmutable('2021-01-02 15:05:02') ], // 3
+                [ 'bi-chat-left-text', new DateTimeImmutable('2021-01-02 15:10:03') ],     // 2
+                [ 'bi-file-person', new DateTimeImmutable('2021-01-03 15:00:01') ],     // 4
+                [ 'bi-clipboard', new DateTimeImmutable('2021-01-03 15:05:02') ], // 4
+                [ 'bi-chat-left-text', new DateTimeImmutable('2021-01-03 15:10:03') ],     // 3
+                [ 'bi-chat-left-text', new DateTimeImmutable('2021-05-01 15:10:00') ],     // 4
+                [ 'bi-chat-left-text', new DateTimeImmutable('2021-05-02 15:10:00') ],     // 5
             ]],
             [Activity::SORT_NEWER_FIRST, [
-                [ Comment::class, 5 ],     // 2021-05-02 15:10:00
-                [ Comment::class, 4 ],     // 2021-05-01 15:10:00
-                [ Comment::class, 3 ],     // 2021-01-03 15:10:03
-                [ CareRequest::class, 4 ], // 2021-01-03 15:05:02
-                [ Patient::class, 4 ],     // 2021-01-03 15:00:01
-                [ Comment::class, 2 ],     // 2021-01-02 15:10:03
-                [ CareRequest::class, 3 ], // 2021-01-02 15:05:02
-                [ Patient::class, 3 ],     // 2021-01-02 15:00:01
+                [ 'bi-chat-left-text', new DateTimeImmutable('2021-05-02 15:10:00') ],     // 5
+                [ 'bi-chat-left-text', new DateTimeImmutable('2021-05-01 15:10:00') ],     // 4
+                [ 'bi-chat-left-text', new DateTimeImmutable('2021-01-03 15:10:03') ],     // 3
+                [ 'bi-clipboard', new DateTimeImmutable('2021-01-03 15:05:02') ], // 4
+                [ 'bi-file-person', new DateTimeImmutable('2021-01-03 15:00:01') ],     // 4
+                [ 'bi-chat-left-text', new DateTimeImmutable('2021-01-02 15:10:03') ],     // 2
+                [ 'bi-clipboard', new DateTimeImmutable('2021-01-02 15:05:02') ], // 3
+                [ 'bi-file-person', new DateTimeImmutable('2021-01-02 15:00:01') ],     // 3
             ]],
         ];
     }
@@ -127,9 +159,9 @@ class ActivityTest extends AbstractServiceTest
         );
         
         $entitiesId = array_map(function($entity) {
-            return [get_class($entity), $entity->getId()];
+            return [$entity['icon'], $entity['valorisationDate']];
         }, $entities);
         
-        $this->assertSame($expected, $entitiesId);
+        $this->assertEquals($expected, $entitiesId);
     }
 }
