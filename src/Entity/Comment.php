@@ -34,7 +34,6 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
         'delete' => ['security' => "is_granted('edit', object)"],
     ],
 )]
-// https://manal.xyz/gitea/origami_informatique/lao/issues/171
 class Comment implements DoctorOwnedInterface, OfficeOwnedInterface, ActivityLoggableEntityInterface
 {
     /**
