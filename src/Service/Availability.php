@@ -19,7 +19,6 @@ class Availability
     /**
      * Transforme une liste de jours composés d'Interval en un objet serializable
      * en vue d'écriture en bdd
-     * https://manal.xyz/gitea/origami_informatique/lao/issues/88
      */
     public function intervalsToRaw($intervaledAvailabilities) {
         $rawAvailabilities = [];
@@ -43,7 +42,6 @@ class Availability
     /**
      * Transforme une liste de jours composés d'array [heureDébut, heureFin]
      * en liste d'Interval (heureDébut et heureFin sont des entiers)
-     * https://manal.xyz/gitea/origami_informatique/lao/issues/88
      */
     public function rawToIntervals($rawAvailabilities) {
         $intervaledAvailabilities = [];
@@ -355,7 +353,7 @@ class Availability
                 $rawAvailability[1],
                 false,
                 false
-            ); // https://manal.xyz/gitea/origami_informatique/lao/issues/88
+            );
             
             if ($interval->includes($seekInterval)) {
                 // L'interval recherché est totalement couvert par cette disponibilité

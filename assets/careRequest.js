@@ -82,7 +82,6 @@ function upsertCareRequest(form) {
     };
         
     if (form['care_request[creationDate]'].value != '') {
-        // Voir https://manal.xyz/gitea/origami_informatique/lao/issues/175
         data.creationDate = form['care_request[creationDate]'].value;
     }
 
