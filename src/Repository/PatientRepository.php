@@ -33,6 +33,25 @@ class PatientRepository extends ServiceEntityRepository implements ActivityLogga
             ->getResult()
         ;
     }
+    
+    
+    /**
+     * @return Patient[] Patients without any care request
+     */
+    public function findWithoutCareRequest(Office $office): array
+    {
+        return $this->createQueryBuilder('p')
+            ->select('p')
+            ->leftJoin('p.careRequests', 'cr')
+            ->andWhere('cr.id is null')
+            ->andWhere('p.office = :office')
+            ->setParameter(':office', $office)
+            ->orderBy('p.creationDate', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+    
     // /**
     //  * @return Patient[] Returns an array of Patient objects
     //  */

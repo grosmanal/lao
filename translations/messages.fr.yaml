@@ -222,7 +222,13 @@ notifications:
 home:
     content:
         title: Liste attente Orhto
-
+          
+# Patient anomaly
+patient_anomaly:
+    content:
+        header: Patients en anomalie
+    patient_without_care_request: aucune demande
+        
 # Activity
 activity:
     content:

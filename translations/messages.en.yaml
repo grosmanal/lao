@@ -222,12 +222,18 @@ notifications:
 home:
     content:
         title: Speech therapist waiting list
+
+# Patient anomaly
+patient_anomaly:
+    content:
+        header: Patients with anomaly
+    patient_without_care_request: no care request
           
 # Activity
 activity:
     content:
-        header: Activité depuis %daysSince% jours
-        more_days: Afficher l'activité pour les %days% derniers jours
+        header: Activity since %daysSince% days
+        more_days: Show activity for past %days% days
     patient:
         creation: '<span class="patient">%patientDisplayName%</span> : creation by <span class="doctor">%doctorDisplayName%</span>'
         creation_modification: '<span class="patient">%patientDisplayName%</span> : creation by <span class="doctor">%doctorDisplayName%</span>'

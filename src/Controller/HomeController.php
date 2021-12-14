@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Service\PatientAnomaly;
 use App\Service\Activity;
 use App\Service\UserProfile;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,9 +17,12 @@ class HomeController extends AbstractAppController
     public function index(
         Request $request,
         UserProfile $userProfile,
+        PatientAnomaly $patientAnomaly,
         Activity $activity,
     ): Response
     {
+        $currentOffice = $userProfile->getDoctor()->getOffice();
+
         $daysSince = $request->query->get('daysSince', 7);
         // Calcul du nombre de jours pour le lien «afficher plus de jours»
         if ($daysSince <= 7) {
@@ -32,9 +36,10 @@ class HomeController extends AbstractAppController
         }
         
         $since = (new \DateTime())->sub(new \DateInterval(sprintf('P%dD', $daysSince)));
-        $datedEntities = $activity->getActiveEntities($userProfile->getDoctor()->getOffice(), $since);
+        $datedEntities = $activity->getActiveEntities($currentOffice, $since);
         
         return $this->renderForm('home/home.html.twig', [
+            'patientsAnomalies' => $patientAnomaly->getPatientsAnomaly($currentOffice),
             'daysSince' => $daysSince,
             'touchedEntities' => $datedEntities,
             'moreDays' => $moreDays,

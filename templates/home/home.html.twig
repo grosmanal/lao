@@ -3,6 +3,26 @@
 {% block title %}{{ 'home.content.title'|trans }}{% endblock %}
 
 {% block body %}
+{% if patientsAnomalies|length > 0 %}
+    <section class="card patients-anomaly mb-3">
+        <h2 class="card-header">
+            <i class="bi bi-exclamation-triangle"></i>
+            {{ 'patient_anomaly.content.header'|trans }}
+        </h2>
+        <div class="card-body">
+            <ul class="list-group">
+                {% for anomaly, patientsAnomaly in patientsAnomalies %}
+                    {% for patientAnomaly in patientsAnomaly %}
+                        {% include "home/patient_anomaly_item.html.twig" with {
+                            patient: patientAnomaly,
+                            anomaly: anomaly,
+                        } %}
+                    {% endfor %}
+                {% endfor %}
+            </ul>
+        </div>
+    </section>
+{% endif %}
 
 <section class="card activity">
     <h2 class="card-header">
@@ -27,7 +47,7 @@
 {{ parent() }}
 
 <style>
-.activity .patient {
+span.patient {
     font-weight: bold;
 }
 
