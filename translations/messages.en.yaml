@@ -234,15 +234,16 @@ activity:
     content:
         header: Activity since %daysSince% days
         more_days: Show activity for past %days% days
+    by: by
     patient:
-        creation: '<span class="patient">%patientDisplayName%</span> : creation by <span class="doctor">%doctorDisplayName%</span>'
-        creation_modification: '<span class="patient">%patientDisplayName%</span> : creation by <span class="doctor">%doctorDisplayName%</span>'
-        modification: '<span class="patient">%patientDisplayName%</span> : modification by <span class="doctor">%doctorDisplayName%</span>'
+        creation: creation
+        creation_modification: creation
+        modification: modification
     care_request:
-        creation: '<span class="patient">%patientDisplayName%</span> : care request addition by <span class="doctor">%doctorDisplayName%</span>'
-        creation_modification: '<span class="patient">%patientDisplayName%</span> : care request addition by <span class="doctor">%doctorDisplayName%</span>'
-        modification: '<span class="patient">%patientDisplayName%</span> : care request from %careRequestCreationDate% modification by <span class="doctor">%doctorDisplayName%</span>'
+        creation: care request addition
+        creation_modification: care request addition
+        modification: care request from %careRequestCreationDate% modification
     comment:
-        creation: '<span class="patient">%patientDisplayName%</span> : comment addition about care request from %careRequestCreationDate% by <span class="doctor">%doctorDisplayName%</span>'
-        creation_modification: '<span class="patient">%patientDisplayName%</span> : comment addition about care request from %careRequestCreationDate% by <span class="doctor">%doctorDisplayName%</span>'
-        modification: '<span class="patient">%patientDisplayName%</span> : <span class="doctor">%doctorDisplayName%</span> modified his / her comment about care request from %careRequestCreationDate%'
+        creation: comment addition about care request from %careRequestCreationDate%
+        creation_modification: comment addition about care request from %careRequestCreationDate%
+        modification: comment modification about care request from %careRequestCreationDate%

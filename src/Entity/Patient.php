@@ -366,7 +366,12 @@ class Patient implements OfficeOwnedInterface, ActivityLoggableEntityInterface
     {
         return $this->getOffice();
     }
-
+    
+    public function getActivityObjectName(): string
+    {
+        return $this->getDisplayName();
+    }
+    
     public function getActivityIcon(): string
     {
         return 'bi-file-person';
@@ -382,9 +387,6 @@ class Patient implements OfficeOwnedInterface, ActivityLoggableEntityInterface
     
     public function getActivityMessage(string $action): TranslatableMessage
     {
-        return new TranslatableMessage(sprintf('activity.patient.%s', $action), [
-            '%doctorDisplayName%' => $this->getCreator()->getDisplayName(),
-            '%patientDisplayName%' => $this->getDisplayName(),
-        ]);
+        return new TranslatableMessage(sprintf('activity.patient.%s', $action));
     }
 }

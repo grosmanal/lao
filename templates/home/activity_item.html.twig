@@ -1,7 +1,12 @@
 <li class="list-group-item list-group-item-action">
     <i class="bi {{ entity.icon }}"></i>
     <a href="{{ entity.url }}" class="text-reset text-decoration-none">
-        {{ entity.logMessage|trans|raw }}
+
+        <span class="activity-object">{{ entity.objectName }}</span>
+        {{ entity.logMessage|trans }}
+        {{ 'activity.by'|trans }}
+        <span class="activity-author">{{ entity.authorName }}</span>
+
         <span class="float-end">
             <time
                 title="{{ entity.valorisationDate|format_datetime('medium', 'short') }}"

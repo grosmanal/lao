@@ -253,7 +253,12 @@ class Comment implements DoctorOwnedInterface, OfficeOwnedInterface, ActivityLog
     {
         return $this->getOffice();
     }
-
+    
+    public function getActivityObjectName(): string
+    {
+        return $this->getCareRequest()->getPatient()->getDisplayName();
+    }
+    
     public function getActivityIcon(): string
     {
         return 'bi-chat-left-text';
@@ -273,8 +278,6 @@ class Comment implements DoctorOwnedInterface, OfficeOwnedInterface, ActivityLog
     public function getActivityMessage(string $action): TranslatableMessage
     {
         return new TranslatableMessage(sprintf('activity.comment.%s', $action), [
-            '%doctorDisplayName%' => $this->getCreator()->getDisplayName(),
-            '%patientDisplayName%' => $this->getCareRequest()->getPatient()->getDisplayName(),
             '%careRequestCreationDate%' => $this->getCreationDate()->format('d/m/Y')
         ]);
     }

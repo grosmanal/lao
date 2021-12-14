@@ -234,15 +234,16 @@ activity:
     content:
         header: Activité depuis %daysSince% jours
         more_days: Afficher l'activité pour les %days% derniers jours
+    by: par
     patient:
-        creation: '<span class="patient">%patientDisplayName%</span> : création par <span class="doctor">%doctorDisplayName%</span>'
-        creation_modification: '<span class="patient">%patientDisplayName%</span> : création par <span class="doctor">%doctorDisplayName%</span>'
-        modification: '<span class="patient">%patientDisplayName%</span> : modification par <span class="doctor">%doctorDisplayName%</span>'
+        creation: création
+        creation_modification: création
+        modification: modification
     care_request:
-        creation: '<span class="patient">%patientDisplayName%</span> : ajout d’une demande par <span class="doctor">%doctorDisplayName%</span>'
-        creation_modification: '<span class="patient">%patientDisplayName%</span> : ajout d’une demande par <span class="doctor">%doctorDisplayName%</span>'
-        modification: '<span class="patient">%patientDisplayName%</span> : modification de la demande du %careRequestCreationDate% par <span class="doctor">%doctorDisplayName%</span>'
+        creation: ajout d’une demande
+        creation_modification: ajout d’une demande
+        modification: modification de la demande du %careRequestCreationDate%
     comment:
-        creation: '<span class="patient">%patientDisplayName%</span> : ajout d’un commentaire à propos de la demande du %careRequestCreationDate% par <span class="doctor">%doctorDisplayName%</span>'
-        creation_modification: '<span class="patient">%patientDisplayName%</span> : ajout d’un commentaire à propos de la demande du %careRequestCreationDate% par <span class="doctor">%doctorDisplayName%</span>'
-        modification: '<span class="patient">%patientDisplayName%</span> : <span class="doctor">%doctorDisplayName%</span> a modifié son commentaire à propos de la demande du %careRequestCreationDate%'
+        creation: ajout d’un commentaire à propos de la demande du %careRequestCreationDate%
+        creation_modification: ajout d’un commentaire à propos de la demande du %careRequestCreationDate%
+        modification: modification du commenataire à propos de la demande du %careRequestCreationDate%

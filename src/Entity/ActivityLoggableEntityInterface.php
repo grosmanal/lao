@@ -14,6 +14,7 @@ interface ActivityLoggableEntityInterface
     public function setCreator(?User $user): self;
     public function getModifier(): ?User;
     public function setModifier(?User $user): self;
+    public function getActivityObjectName(): string;
     public function getActivityIcon(): string;
     public function getActivityMessage(string $action): TranslatableMessage;
     public function getActivityRoute(): array;

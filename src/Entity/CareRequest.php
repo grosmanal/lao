@@ -426,7 +426,12 @@ class CareRequest implements OfficeOwnedInterface, ActivityLoggableEntityInterfa
     {
         return $this->getOffice();
     }
-
+    
+    public function getActivityObjectName(): string
+    {
+        return $this->getPatient()->getDisplayName();
+    }
+    
     public function getActivityIcon(): string
     {
         return 'bi-clipboard';
@@ -447,8 +452,6 @@ class CareRequest implements OfficeOwnedInterface, ActivityLoggableEntityInterfa
     public function getActivityMessage(string $action): TranslatableMessage
     {
         return new TranslatableMessage(sprintf('activity.care_request.%s', $action), [
-            '%doctorDisplayName%' => $this->getCreator()->getDisplayName(),
-            '%patientDisplayName%' => $this->getPatient()->getDisplayName(),
             '%careRequestCreationDate%' => $this->getCreationDate()->format('d/m/Y')
         ]);
     }
