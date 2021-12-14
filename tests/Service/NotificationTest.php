@@ -23,8 +23,8 @@ class NotificationTest extends AbstractServiceTest
         $this->commentRepository = $container->get(CommentRepository::class);
         
         $this->setUpTestService([
-            __DIR__ . '/../../fixtures/tests/comment.yaml',
-            __DIR__ . '/../../fixtures/tests/notification.yaml',
+            __DIR__ . '/../../fixtures/tests/notificationService/comment.yaml',
+            __DIR__ . '/../../fixtures/tests/notificationService/notification.yaml',
         ]);
     }
     
@@ -60,9 +60,9 @@ class NotificationTest extends AbstractServiceTest
     
     public function testCommentWithoutMention()
     {
-        $commentId = 1;
+        $commentId = 7;
 
-        // Le commentaire 1 ne contient pas de mention
+        // Le commentaire 7 ne contient pas de mention
         $comment = $this->commentRepository->find($commentId);
         $this->assertEmpty($this->notification->generateNotificationsForComment($comment));
     }
@@ -70,10 +70,10 @@ class NotificationTest extends AbstractServiceTest
     public function dataProviderNotificationGeneration()
     {
         return [
-            [ 7, [ 1 ], ],
-            [ 8, [ 1, 3 ], ],
-            [ 10, [ 1 ], ], // Deux mentions au doctor 1 => une seule notification
-            [ 11, [ 1, 3 ], ], // Mention au doctor 0 (all) => une notification pour 1 et 3
+            [ 1, [ 1 ], ],
+            [ 2, [ 1, 3 ], ],
+            [ 4, [ 1 ], ], // Deux mentions au doctor 1 => une seule notification
+            [ 5, [ 1, 3 ], ], // Mention au doctor 0 (all) => une notification pour 1 et 3
         ];
     }
 
@@ -103,10 +103,12 @@ class NotificationTest extends AbstractServiceTest
      */
     public function testAlreadyExistingNotification()
     {
-        $commentId = 9;
+        $commentId = 3;
 
-        // Le commentaire 9 à déjà été analysé : la notification 1 existe
+        // Le commentaire 3 à déjà été analysé : la notification 1 existe
         $comment = $this->commentRepository->find($commentId);
+        //dd($comment->getNotifications());
+        //dd($this->notification->generateNotificationsForComment($comment));
         $this->assertEmpty($this->notification->generateNotificationsForComment($comment));
     }
     
@@ -117,7 +119,7 @@ class NotificationTest extends AbstractServiceTest
     public function testOtherOfficeNotification()
     {
         // Instanciation du commentaire à analyser
-        $comment = $this->commentRepository->find(12);
+        $comment = $this->commentRepository->find(6);
         
         $this->expectException(DifferentOfficeException::class);
         $notifications = $this->notification->generateNotificationsForComment($comment);

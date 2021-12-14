@@ -1,0 +1,39 @@
+---
+include:
+    - ../care_request.yaml
+App\Entity\Comment:
+    comment_1:
+        author: '@doctor_1'
+        creationDate: <(new DateTimeImmutable("2021-09-27"))>
+        careRequest: '@care_request_1'
+        content: '\<p>Hello <span class="mention" data-mention-doctor-id="1">User1</span>'
+    comment_2:
+        author: '@doctor_1'
+        creationDate: <(new DateTimeImmutable("2021-09-27"))>
+        careRequest: '@care_request_1'
+        content: '\<p>Hello <span class="mention" data-mention-doctor-id="1">User1</span> and <span class="mention" data-mention-doctor-id="3">User3</span>'
+    comment_3:
+        author: '@doctor_1'
+        creationDate: <(new DateTimeImmutable("2021-09-27"))>
+        careRequest: '@care_request_1'
+        content: '\<p>Hello <span class="mention" data-mention-doctor-id="1">User1</span>'
+    comment_4:
+        author: '@doctor_1'
+        creationDate: <(new DateTimeImmutable("2021-09-27"))>
+        careRequest: '@care_request_1'
+        content: '\<p>Hello <span class="mention" data-mention-doctor-id="1">User1</span> and <span class="mention" data-mention-doctor-id="1">User1</span>'
+    comment_5:
+        author: '@doctor_1'
+        creationDate: <(new DateTimeImmutable("2021-09-27"))>
+        careRequest: '@care_request_1'
+        content: '\<p>Hello <span class="mention" data-mention-doctor-id="0">tout le monde</span>'
+    comment_6:
+        author: '@doctor_1'
+        creationDate: <(new DateTimeImmutable("2021-09-27"))>
+        careRequest: '@care_request_1'
+        content: '\<p>Hello <span class="mention" data-mention-doctor-id="2">Doctor from another office</span>'
+    comment_7:
+        author: '@doctor_1'
+        creationDate: <(new DateTimeImmutable("2021-09-27"))>
+        careRequest: '@care_request_1'
+        content: '\<p>lorem ipsum'

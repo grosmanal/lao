@@ -31,7 +31,7 @@ class NotificationApiTest extends AbstractApiTestCase
         $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
         
         $this->assertJsonContains([
-            'comment' => '/api/comments/9',
+            'comment' => '/api/comments/7',
             'doctor' => '/api/doctors/1',
             'creationDate' => '2021-09-28T15:32:00+00:00',
         ]);
@@ -203,7 +203,7 @@ class NotificationApiTest extends AbstractApiTestCase
     public function dataProviderPutUnupdatableFields()
     {
         return [
-            [ 'comment', '/api/comments/1', '/api/comments/9' ], // pas modifiable
+            [ 'comment', '/api/comments/1', '/api/comments/7' ], // pas modifiable
             [ 'doctor', '/api/doctors/3', '/api/doctors/1' ], // pas modifiable
             [ 'creationDate', '2000-01-01T00:00:00+00:00', '2021-09-28T15:32:00+00:00'], // pas modifiable
             [ 'readDate', '2021-10-01T17:30:52+00:00', '2021-10-01T17:30:52+00:00'], // modifiable

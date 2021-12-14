@@ -38,28 +38,3 @@ App\Entity\Comment:
         creationDate: <(new DateTimeImmutable("2021-09-27"))>
         careRequest: '@care_request_1'
         content: '\<p>Hello <span class="mention" data-mention-doctor-id="1">User1</span>'
-    comment_8:
-        author: '@doctor_1'
-        creationDate: <(new DateTimeImmutable("2021-09-27"))>
-        careRequest: '@care_request_1'
-        content: '\<p>Hello <span class="mention" data-mention-doctor-id="1">User1</span> and <span class="mention" data-mention-doctor-id="3">User3</span>'
-    comment_9:
-        author: '@doctor_1'
-        creationDate: <(new DateTimeImmutable("2021-09-27"))>
-        careRequest: '@care_request_1'
-        content: '\<p>Hello <span class="mention" data-mention-doctor-id="1">User1</span>'
-    comment_10:
-        author: '@doctor_1'
-        creationDate: <(new DateTimeImmutable("2021-09-27"))>
-        careRequest: '@care_request_1'
-        content: '\<p>Hello <span class="mention" data-mention-doctor-id="1">User1</span> and <span class="mention" data-mention-doctor-id="1">User1</span>'
-    comment_11:
-        author: '@doctor_1'
-        creationDate: <(new DateTimeImmutable("2021-09-27"))>
-        careRequest: '@care_request_1'
-        content: '\<p>Hello <span class="mention" data-mention-doctor-id="0">tout le monde</span>>'
-    comment_12:
-        author: '@doctor_1'
-        creationDate: <(new DateTimeImmutable("2021-09-27"))>
-        careRequest: '@care_request_1'
-        content: '\<p>Hello <span class="mention" data-mention-doctor-id="2">Doctor from another office</span>>'
