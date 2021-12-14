@@ -54,7 +54,7 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
             $routeName = 'users';
         }
         else {
-            $routeName = 'search';
+            $routeName = 'home';
         }
         return new RedirectResponse($this->urlGenerator->generate($routeName));
     }
