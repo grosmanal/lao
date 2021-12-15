@@ -19,13 +19,23 @@
       name: mysql_server
   - include_role:
       name: yarn
+  - include_role:
+      name: backup
 
-  ## Répertoire de l'application
+  ## Répertoires de l'application
   - name: Lao | Répertoire
-    file:
+    ansible.builtin.file:
         path: "{{ application_path }}"
         state: directory
         owner: localadmin
+          
+  ## Répertoires à conserver entre les releases
+  - name: Lao | Répertoires ansistrano shared
+    ansible.builtin.file:
+        path: "{{ ansistrano_deploy_to }}/shared/lao/public/upload"
+        state: directory
+        owner: "{{ fpm_user }}"
+
 
   ## PHP ##
   - name: PHP | Composants supplémentaires

@@ -7,7 +7,7 @@ application_path: /opt/lao
 
 apache_domain: "{{ inventory_hostname }}"
 apache_site: "{{ application }}"
-symfony_app_path: .
+symfony_app_path: lao
 symfony_app_fullpath: "{{ application_path }}/current/{{ symfony_app_path }}"
 apache_document_root: "{{ symfony_app_fullpath }}/public"
 apache_site_configuration: symfony.conf
@@ -15,3 +15,45 @@ apache_site_configuration: symfony.conf
 mysql_database: lao
 mysql_user: lao
 #mysql_password défini dans host
+mysql_backup_user: backup
+#mysql_backup_password défini dans le host
+
+backup_target_dir: "file:///home/{{ backup_user }}/backup"
+backup_configs:
+    - name: "mysql_{{ application }}"
+      type: mysql
+      database: "{{ mysql_database }}"
+      target_subdir: "mysql_{{ application }}"
+      source_dir: "/tmp/duply_mysql_{{ application }}"
+    - name: upload
+      type: directory
+      target_subdir: upload
+      source_dir: "{{ symfony_app_fullpath }}/public/upload"
+
+forge_deploy_token: !vault |
+    $ANSIBLE_VAULT;1.1;AES256
+    63333363626665326262356464636537363435643439396539373530343264643038323061323337
+    3361623730313666626138346132333334336134356164610a336539366638306536313830323839
+    61626637303533313337306638653834343737353663663133366437623633363364643262616333
+    6331613536363166380a303038336137343431303138666334373737616433306538623062333434
+    31356438313432613633306536626431626530343038373433623237636239333232623036353733
+    3134396534626430323737303831373434646235336639333235
+
+ansistrano_deploy_to: "{{ application_path }}"
+ansistrano_allow_anonymous_stats: false
+ansistrano_deploy_via: download_unarchive
+ansistrano_get_url: "https://manal.xyz/gitea/api/v1/repos/origami_informatique/lao/archive/{{ deploy_version }}.tar.gz"
+ansistrano_download_force_basic_auth: false
+ansistrano_download_headers: 
+    Authorization: "token {{ forge_deploy_token }}"
+
+ansistrano_shared_paths:
+    - "{{ symfony_app_path }}/public/upload"
+
+ansistrano_before_setup_tasks_file: "{{ playbook_dir }}/tasks/before_setup.yml"
+ansistrano_after_update_code_tasks_file: "{{ playbook_dir }}/tasks/after_update_code.yml"
+ansistrano_before_symlink_tasks_file: "{{ playbook_dir }}/tasks/before_symlink.yml"
+ansistrano_after_symlink_tasks_file: "{{ playbook_dir }}/tasks/after_symlink.yml"
+ansistrano_before_cleanup_tasks_file: "{{ playbook_dir }}/tasks/before_cleanup.yml"
+
+ansistrano_keep_releases: 5

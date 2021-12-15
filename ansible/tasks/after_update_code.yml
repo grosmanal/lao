@@ -1,0 +1,47 @@
+---
+- name: Création du .env.local
+  ansible.builtin.template:
+      src: env.local.j2
+      dest: "{{ ansistrano_release_path.stdout }}/{{ symfony_app_path }}/.env.local"
+
+- name: Composer install (installation dépendances php)
+  composer:
+      command: install
+      working_dir: "{{ ansistrano_release_path.stdout }}/{{ symfony_app_path }}"
+      no_dev: "{{ prod_env }}"
+      no_scripts: yes
+      optimize_autoloader: true
+        
+- name: Composer dump-env
+  ansible.builtin.command:
+      chdir: "{{ ansistrano_release_path.stdout }}/{{ symfony_app_path }}"
+      cmd: "composer dump-env {{ symfony_env }}"
+  when: prod_env
+    
+- name: Link bundle assets
+  ansible.builtin.command:
+      chdir: "{{ ansistrano_release_path.stdout }}/{{ symfony_app_path }}"
+      cmd: "bin/console assets:install --symlink"
+        
+- name: Suppression du répertoire var créé par assets:install
+  ansible.builtin.file:
+      path: "{{ ansistrano_release_path.stdout }}/{{ symfony_app_path }}/var"
+      state: absent
+
+- name: Yarn install (installation dépendances javascript)
+  ansible.builtin.command:
+      chdir: "{{ ansistrano_release_path.stdout }}/{{ symfony_app_path }}"
+      cmd: yarn install
+
+- name: Build assets (webpack encore)
+  ansible.builtin.command:
+      chdir: "{{ ansistrano_release_path.stdout }}/{{ symfony_app_path }}"
+      cmd: yarn build
+
+# Création du répertoire avec les droits de fpm_user pour pouvoir faire le clear cache
+- name: Création répertoire cache
+  become: yes
+  ansible.builtin.file:
+      path: "{{ ansistrano_release_path.stdout }}/{{ symfony_app_path }}/var/cache"
+      state: directory
+      owner: "{{ fpm_user }}"

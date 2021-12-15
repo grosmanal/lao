@@ -1,0 +1,16 @@
+---
+- name: Find releases to prune
+  when: ansistrano_keep_releases | int > 0
+  shell: "ls -1dt {{ ansistrano_releases_path }}/* | tail -n +{{ ansistrano_keep_releases | int + 1 }}"
+  register: releases_to_prune
+
+- name: Change owner of releases to prune
+  when: ansistrano_keep_releases | int > 0
+  become: true
+  file:
+      path: "{{ item }}"
+      state: directory
+      owner: localadmin
+      recurse: true
+      follow: false
+  loop: "{{ releases_to_prune.stdout_lines }}"
