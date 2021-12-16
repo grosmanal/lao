@@ -18,6 +18,12 @@ mysql_user: lao
 mysql_backup_user: backup
 #mysql_backup_password défini dans le host
 
+logrotate_configs:
+    - name: "{{ application }}"
+      fullpath: "{{ symfony_app_fullpath }}/var/log/{{ symfony_env }}.log"
+      owner: "{{ fpm_user }}"
+      group: "{{ fpm_user }}"
+
 backup_target_dir: "/home/{{ backup_user }}/backup"
 backup_configs:
     - name: "mysql_{{ application }}"

@@ -20,6 +20,8 @@
   - include_role:
       name: yarn
   - include_role:
+      name: log_rotation
+  - include_role:
       name: backup
 
   ## Répertoires de l'application
