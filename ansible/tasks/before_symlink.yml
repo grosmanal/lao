@@ -1,0 +1,14 @@
+---
+- name: Clear cache
+  become: yes
+  become_user: "{{ fpm_user }}"
+  command:
+      chdir: "{{ ansistrano_release_path.stdout }}/{{ symfony_app_path }}"
+      cmd: "bin/console cache:clear"
+
+- name: Migration doctrine
+  become: yes
+  become_user: "{{ fpm_user }}"
+  command:
+      chdir: "{{ ansistrano_release_path.stdout }}/{{ symfony_app_path }}"
+      cmd: bin/console doctrine:migrations:migrate --no-interaction
