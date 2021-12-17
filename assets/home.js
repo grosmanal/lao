@@ -21,15 +21,16 @@ function markArticleAsRead($, closeButton) {
         const nextArticleItem = articleItem.next();
         const articleSection = articleItem.parents('section');
         
-        removeDomElement(articleItem.get(0), function() {
+       removeDomElement(articleItem.get(0))
+       .then(() => {
             if (nextArticleItem.length > 0) {
                 // Affichage d'un éventuel autre article
                 nextArticleItem.removeClass('d-none');
             } else {
                 // Il n'y a pas d'autre article : on supprime la section
-                console.log(articleSection.remove());
+                articleSection.remove();
             }
-        });
+       });
 
     }).catch(function (error) {
         console.error(error);

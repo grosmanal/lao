@@ -2,25 +2,29 @@
  * Suppression d'un élément du DOM après
  * avoir transformé son opacité
  * @param {Element} domElement 
+ * @returns {Promise}
  */
-export default function(domElement, afterRemoveCallback = null) {
-    // Ajout d'un event listener pour supprimer
-    // l'élément après la transition
-
+export default function(domElement) {
     // Modification de l'effet de transition
     domElement.style.transition = 'all 0.5s linear';
 
-    domElement.addEventListener('transitionend', function(event) {
-        if (event.target !== domElement) {
-            return;
-        }
+    return transitionPromise(domElement, 'opacity', '0')
+    .then(() => {
+        domElement.remove();
+    });
+}
 
-        this.remove();
-        
-        if (afterRemoveCallback) {
-            afterRemoveCallback();
-        }
-    })
+// Inspiré de https://vaggrippino.github.io/blog/transitionend-Promise/
+function transitionPromise(el, property, value) {
+    return new Promise((resolve, reject) => {
+        el.style[property] = value;
     
-    domElement.classList.add('opacity-0');
+        let transitionHandler = function (e) {
+            if (e.propertyName !== property) return;
+            el.removeEventListener('transitionend', transitionHandler);
+            resolve();
+        };
+    
+        el.addEventListener('transitionend', transitionHandler);
+    })
 }

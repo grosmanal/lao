@@ -28,7 +28,8 @@ function submitNotification(event) {
             const notificationItem = $(form).parentsUntil("ul.unread-notifications", "li.notification");
             const notificationsList = notificationItem.parent();
             
-            removeDomElement(notificationItem.get(0), function() {
+            removeDomElement(notificationItem.get(0))
+            .then(() => {
                 if (notificationsList.children('li.notification').length == 0) {
                     // Il n'y a plus de notification : suppression du badge dans la navbar
                     $('#notificationIndicator').hide();
