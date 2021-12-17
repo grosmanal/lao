@@ -1,0 +1,11 @@
+<li class="article-item {{ loop.index != 1 ? 'd-none' }}">
+    <article class="alert alert-{{ article.style ?? 'primary' }} alert-dismissible fade show">
+        {{ article.content|markdown_to_html }}
+        <button
+            type="button"
+            class="btn-close"
+            data-mark-read-url="{{ url('article_mark_read', {id: article.id}) }}"
+            aria-label="Close"
+        ></button>
+    </article>
+</li>

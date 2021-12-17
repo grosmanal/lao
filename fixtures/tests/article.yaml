@@ -1,0 +1,20 @@
+---
+include:
+    - doctor.yaml
+App\Entity\Article:
+    article_1:
+        publishFrom: ~
+        publishTo: ~
+        style: primary
+        content: |-
+            # Article 1
+            lorem ipsum
+    article_2:
+        publishFrom: <(new DateTimeImmutable("2021-12-17"))>
+        publishTo: <(new DateTimeImmutable("2022-01-31"))>
+        style: warning
+        content: |-
+            # Second article
+            lorem ipsum
+        readByDoctors: 
+            - '@doctor_1'

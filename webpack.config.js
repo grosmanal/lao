@@ -28,6 +28,7 @@ Encore
      */
     .addEntry('app', './assets/app.js')
     .addEntry('login', './assets/login.js')
+    .addEntry('home', './assets/home.js')
     .addEntry('patient', './assets/patient.js')
     .addEntry('search', './assets/search.js')
     .addEntry('user', './assets/user.js')

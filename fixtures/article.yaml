@@ -1,0 +1,36 @@
+---
+App\Entity\Article:
+    article_1:
+        publishFrom: ~
+        publishTo: ~
+        style: primary
+        content: |-
+            # Bienvenue
+            Bienvenue dans *lao*. Le logiciel qui va faire décoller votre liste d'attente.
+            ## Mode d'emploi
+            ### Patient
+            lorem ipsum avec du texte **important**. Et d’autre *moins*.
+            ### La recherche
+            \[La page de recherche](/search) permet de trouver les patients en fonction des critères suivant :
+            - nom ou prénom du patient ou de son contact
+            - disponibilité du patient
+            - date et créateur de la demande
+            
+             
+            
+            ## Tarifs
+        
+            | Engagement | Prix mensuel |
+            |:-----------|:------------:|
+            | aucun      | 13 € |
+            | 1 an       | 10 € |
+            | 2 an       | 9 € |
+    article_2:
+        publishFrom: <immutableDateTimeBetween("-6 month", "now")>
+        publishTo: <immutableDateTimeBetween("now", "+6 month")>
+        style: warning
+        content: |-
+            # Second article
+            lorem ipsum
+        readByDoctors: 
+            - '@doctor_laurence'

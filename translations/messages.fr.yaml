@@ -222,6 +222,14 @@ notifications:
 home:
     content:
         title: Liste attente Orhto
+
+# Article
+article:
+    content:
+        header: Dernières nouvelles
+    error:
+        mark_read: Erreur lors du marquage de l'article à lu
+
           
 # Patient anomaly
 patient_anomaly:

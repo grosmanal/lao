@@ -1,0 +1,41 @@
+section.articles {
+    ul.articles-list {
+        padding: 0;
+
+        li {
+            list-style: none;
+            
+            article {
+                li {
+                    list-style: initial;
+                }
+                
+                table {
+                    width: 100%;
+                }
+
+                th {
+                    text-align: center !important;
+                }
+                
+                th, td {
+                    border: 1px solid black;
+                }
+            }
+        }
+    }
+}
+
+section.activity {
+    span.activity-object {
+        font-weight: bold;
+    }
+
+    span.activity-author {
+        background-color: lightgray;
+    }
+
+    span.patient {
+        font-weight: bold;
+    }
+}

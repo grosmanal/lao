@@ -222,6 +222,13 @@ notifications:
 home:
     content:
         title: Speech therapist waiting list
+          
+# Article
+article:
+    content:
+        header: Last news
+    error:
+        mark_read: Error while marking as read
 
 # Patient anomaly
 patient_anomaly:
