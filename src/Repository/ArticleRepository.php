@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Article;
 use App\Entity\Doctor;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -21,16 +22,39 @@ class ArticleRepository extends ServiceEntityRepository
     }
     
     /**
+     * @return QueryBuilder
+     */
+    private function queryBuilderReadByDoctor(string $articleAlias, string $doctorParameter)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        return $qb
+            ->from('App\Entity\Article', $articleAlias)
+            ->innerJoin(sprintf('%s.readByDoctors', $articleAlias), 'd')
+            ->where(sprintf('d = %s', $doctorParameter))
+        ;
+    }
+    
+    /**
+     * @return Article[]
+     */
+    public function findReadByDoctor(Doctor $doctor)
+    {
+        $qb = $this->queryBuilderReadByDoctor('ad', ':doctor');
+        return $qb
+            ->select('ad')
+            ->setParameter(':doctor', $doctor)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+    
+    /**
      * @return Article[]
      */
     public function findPublishableNotReadByDoctor(Doctor $doctor)
     {
-        $subQueryBuilder = $this->getEntityManager()->createQueryBuilder();
-        $subQuery = $subQueryBuilder
+        $subQuery = $this->queryBuilderReadByDoctor('ad', ':doctor')
             ->select('ad.id')
-            ->from('App\Entity\Article', 'ad')
-            ->innerJoin('ad.readByDoctors', 'd')
-            ->where('d = :doctor')
         ;
 
         $qb = $this->createQueryBuilder('a');

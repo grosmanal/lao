@@ -18,12 +18,13 @@ class SearchController extends AbstractAppController
     #[IsGranted("ROLE_DOCTOR")]
     public function index(
         Request $request,
-        Security $security,
         CareRequestFinder $careRequestFinder,
         UserProfile $userProfile,
     ): Response {
         $searchCreteria = new SearchCriteria();
         
+        $currentDoctor = $userProfile->getDoctor();
+
         // Valeurs par défaut du formulaire
         $searchCreteria
             ->setIncludeActiveCareRequest(true)
@@ -32,21 +33,17 @@ class SearchController extends AbstractAppController
         
         $form = $this->createForm(SearchType::class, $searchCreteria, [
             'daysOfWeek' => $this->getParameter('app.availability')['daysOfWeek'],
-            'current_doctor' => $userProfile->getDoctor(),
+            'current_doctor' => $currentDoctor,
             'method' => 'GET',
         ]);
         
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $user = $security->getUser();
-            /** @var App\Entity\Doctor */
-            $doctor = $user;
-            
             // $form->getData() holds the submitted values
             // but, the original `$task` variable has also been updated
             $searchCreteria = $form->getData();
-            
-            $searchResults = $careRequestFinder->find($searchCreteria, $doctor->getOffice());
+
+            $searchResults = $careRequestFinder->find($searchCreteria, $currentDoctor->getOffice());
             
             // Ajout de l'url de la care request pour chaque résultat
             $searchResults = array_map(function($searchResult) {
@@ -59,25 +56,7 @@ class SearchController extends AbstractAppController
                 ]);
             }, $searchResults);
 
-            // Tri par priorité et date de care request
-            usort($searchResults, function($a, $b) {
-                /** @var \App\Entity\CareRequest */
-                $aCR = $a['careRequest'];
-
-                /** @var \App\Entity\CareRequest */
-                $bCR = $b['careRequest'];
-
-                if ($aCR->getPriority() == true && $bCR->getPriority() == false) {
-                    // a est prioritaire alors que b ne l'est pas : la placer avant b
-                    return -1;
-                } elseif ($aCR->getPriority() == false && $bCR->getPriority() == true) {
-                    // b est prioritaire alors que a ne l'est pas : la placer avant a
-                    return 1;
-                } else {
-                    // a et b sont identique en terme de priorité : on les classe par date de création
-                    return $aCR->getCreationDate() <=> $bCR->getCreationDate();
-                }
-            });
+            $careRequestFinder->sortSearchResult($searchResults);
         }
 
         return $this->renderForm('search/search.html.twig', [

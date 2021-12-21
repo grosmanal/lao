@@ -47,3 +47,12 @@
             - php-intl
             - php-gd
         state: present
+          
+  - name: Lao | Composant pour développement
+    apt:
+        update_cache: yes
+        name:
+            - chromium-driver
+            #- TODO geckodriver
+        state: present
+    when: "{{ symfony_env == 'dev' }}"

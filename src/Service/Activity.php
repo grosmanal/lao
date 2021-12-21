@@ -62,11 +62,11 @@ class Activity
                 break;
 
             default:
-                throw new \LogicException(sprintf('Should not be here : unknown action %s', $action));
+                throw new \LogicException(sprintf('Should not be here : unknown action %s', $action)); // @codeCoverageIgnore
         }
         
         if ($author == null) {
-            throw new \LogicException('No activity author found');
+            throw new \LogicException('No activity author found'); // @codeCoverageIgnore
         }
         
         return $author->getDisplayName();

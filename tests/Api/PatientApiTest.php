@@ -34,10 +34,12 @@ class PatientApiTest extends AbstractApiTestCase
                 '/api/patients/1',
                 '/api/patients/2',
                 '/api/patients/3',
+                '/api/patients/4',
             ]],
             ['user1@example.com', [
                 '/api/patients/1',
                 '/api/patients/2',
+                '/api/patients/4',
             ]],
             ['user2@example.com', [
                 '/api/patients/3',

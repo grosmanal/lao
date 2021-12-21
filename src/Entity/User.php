@@ -228,7 +228,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serial
      *
      * @return self
      */
-    public function setUpdatedAt(?\DateTimeImmutable $updatedAt)
+    public function setUpdatedAt(?\DateTimeImmutable $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
 
@@ -248,7 +248,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serial
      *
      * @return self
      */
-    public function setAvatarName(?string $avatarName)
+    public function setAvatarName(?string $avatarName): self 
     {
         $this->avatarName = $avatarName;
 
@@ -263,8 +263,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serial
      * during Doctrine hydration.
      *
      * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile|null $avatarFile
+     * @return self
      */
-    public function setAvatarFile(?File $avatarFile = null): void
+    public function setAvatarFile(?File $avatarFile = null): self
     {
         $this->avatarFile = $avatarFile;
 
@@ -273,6 +274,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serial
             // otherwise the event listeners won't be called and the file is lost
             $this->updatedAt = new \DateTimeImmutable();
         }
+        
+        return $this;
     }
 
     public function getAvatarFile(): ?File

@@ -38,7 +38,7 @@ class OfficeOwnedVoter extends Voter
 
         if (!$user instanceof User) {
             // the user must be logged in; if not, deny access
-            return false;
+            return false; // @codeCoverageIgnore
         }
 
         /** @var OfficeOwnedInterface $ressource */
@@ -51,7 +51,7 @@ class OfficeOwnedVoter extends Voter
                 return $this->canEdit($ressource, $user);
         }
 
-        throw new \LogicException('This code should not be reached!');
+        throw new \LogicException('This code should not be reached!'); // @codeCoverageIgnore
     }
 
     private function canView(OfficeOwnedInterface $ressource, User $user): bool
@@ -70,7 +70,7 @@ class OfficeOwnedVoter extends Voter
             $doctor = $this->doctorRepository->find($user->getId());
             
             if (!$doctor) {
-                throw new \LogicException('Should not be here : every entity Doctor must have the ROLE_DOCTOR');
+                throw new \LogicException('Should not be here : every entity Doctor must have the ROLE_DOCTOR'); // @codeCoverageIgnore
             }
 
             if ($ressource->ownedByOffice() === $doctor->getOffice()) {

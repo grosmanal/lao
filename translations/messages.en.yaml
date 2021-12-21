@@ -240,6 +240,7 @@ patient_anomaly:
 activity:
     content:
         header: Activity since %daysSince% days
+        no_activity: No activity since %daysSince% days
         more_days: Show activity for past %days% days
     by: by
     patient:

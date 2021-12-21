@@ -26,11 +26,11 @@ App\Entity\Patient:
         mobilePhone: patient_2_mobilePhone
         email: patient_2_email
         office: '@office_1'
-        variableSchedule: false
+        variableSchedule: true
         creator: '@doctor_1'
         creationDate: <immutableDateTimeBetween("-6 months", "now")>
         availability:
-            1:
+            2:
                 - [ 1000, 1200 ]
     patient_3:
         firstname: patient_3_firstname
@@ -47,3 +47,10 @@ App\Entity\Patient:
         availability:
             1:
                 - [ 1000, 1200 ]
+    patient_4: # Patient sans care request
+        firstname: patient_4_firstname
+        lastname: patient_3_lastname
+        phone: patient_3_phone
+        office: '@office_1'
+        creator: '@doctor_1'
+        creationDate: <immutableDateTimeBetween("-6 months", "now")>

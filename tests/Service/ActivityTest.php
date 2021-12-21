@@ -89,6 +89,14 @@ class ActivityTest extends AbstractServiceTest
                     new DateTimeImmutable("2021-05-02 15:10:00"), // Comment ID 5
                 ],
             ] ],
+            [ null, [
+                'bi-file-person' => [ // Patient
+                ],
+                'bi-clipboard' => [ // Care request
+                ],
+                'bi-chat-left-text' => [ // Comment 
+                ],
+            ] ],
         ];
     }
 
@@ -99,7 +107,7 @@ class ActivityTest extends AbstractServiceTest
     {
         $entities = $this->activty->getActiveEntities(
             $this->currentOffice,
-            new \DateTimeImmutable($since)
+            $since === null ? null : new \DateTimeImmutable($since)
         );
         
         // Classement des entité par classe

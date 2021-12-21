@@ -70,12 +70,14 @@ class CareRequestApiTest extends AbstractApiTestCase
                 '/api/care_requests/3',
                 '/api/care_requests/4',
                 '/api/care_requests/5',
+                '/api/care_requests/6',
             ]],
             ['user1@example.com', [
                 '/api/care_requests/1',
                 '/api/care_requests/2',
                 '/api/care_requests/3',
                 '/api/care_requests/5',
+                '/api/care_requests/6',
             ]],
             ['user2@example.com', [
                 '/api/care_requests/4',

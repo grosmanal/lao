@@ -8,3 +8,13 @@ App\Entity\Notification:
         doctor: '@doctor_1'
         creationDate: <(new DateTimeImmutable("2021-09-28 15:32:00"))>
         readDate: ~
+    notification_2:
+        comment: '@comment_4'
+        doctor: '@doctor_1'
+        creationDate: <(new DateTimeImmutable("2021-09-25 15:00:00"))>
+        readDate: <(new DateTimeImmutable("2021-09-26 15:00:00"))>
+    notification_3:
+        comment: '@comment_5'
+        doctor: '@doctor_1'
+        creationDate: <(new DateTimeImmutable("2021-09-25 15:00:00"))>
+        readDate: <(new DateTimeImmutable("2021-09-26 15:00:00"))>

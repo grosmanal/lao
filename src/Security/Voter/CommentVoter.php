@@ -35,7 +35,7 @@ class CommentVoter extends Voter
         $user = $token->getUser();
         // if the user is anonymous, do not grant access
         if (!$user instanceof UserInterface) {
-            return false;
+            return false; // @codeCoverageIgnore
         }
 
         /** @var Comment $ressource */
@@ -48,7 +48,7 @@ class CommentVoter extends Voter
                 return $this->canEdit($ressource, $user);
         }
 
-        throw new \LogicException('This code should not be reached!');
+        throw new \LogicException('This code should not be reached!'); // @codeCoverageIgnore
     }
     
     private function canView(Comment $comment, UserInterface $user)

@@ -2,6 +2,7 @@
 
 namespace App\Tests\Controller;
 
+use DateTimeImmutable;
 use Symfony\Component\HttpFoundation\Response;
 
 class CareRequestControllerFormTest extends AbstractControllerTestCase
@@ -13,6 +14,35 @@ class CareRequestControllerFormTest extends AbstractControllerTestCase
             __DIR__ . '/../../fixtures/tests/comment.yaml',
         ]);
     }    
+    
+
+    public function testNewCareRequestForm()
+    {
+        $this->loginUser('user1@example.com');
+        $crawler = $this->client->request('GET', '/patients/1/care_request_forms/new');
+        $this->assertResponseIsSuccessful();
+        $this->assertSelectorTextContains('.accordion-header button', (new DateTimeImmutable())->format('d/m/Y'));
+        $this->assertSelectorExists("form[name='care_request']");
+    }
+
+
+    public function dataProviderNewCareRequestFormPatient()
+    {
+        return [
+            [ 99, Response::HTTP_NOT_FOUND ], // patient inexistant
+            [ 3, Response::HTTP_FORBIDDEN ],  // patient autre cabinet
+        ];
+    }
+    
+    /**
+     * @dataProvider dataProviderNewCareRequestFormPatient
+     */
+    public function testNewCareRequestFormPatient($patientId, $expected)
+    {
+        $this->loginUser('user1@example.com');
+        $crawler = $this->client->request('GET', sprintf('/patients/%d/care_request_forms/new', $patientId));
+        $this->assertResponseStatusCodeSame($expected);
+    }
 
     public function dataProviderGetCareRequest()
     {

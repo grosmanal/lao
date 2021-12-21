@@ -14,10 +14,6 @@ class TypeOptionsFactory
 
     public function createOfficeDoctorOptions(array $options, Office $office, bool $valuesAsApiUri = false)
     {
-        if (!is_array($options)) {
-            $options = [];
-        }
-        
         $options['class'] = Doctor::class;
         $options['choices'] = $office->getDoctors();
         if ($valuesAsApiUri) {

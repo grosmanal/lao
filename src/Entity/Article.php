@@ -149,6 +149,9 @@ class Article
         return $this;
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function removeReadByDoctor(Doctor $readByDoctor): self
     {
         $this->readByDoctors->removeElement($readByDoctor);

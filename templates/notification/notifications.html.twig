@@ -29,7 +29,7 @@
                 </div>
             {% endif %}
         {% else %}
-            <div class="alert alert-warning">{{ 'notifications.content.no_notification'|trans }}</div>
+            <p class="alert alert-warning">{{ 'notifications.content.no_notification'|trans }}</p>
         {% endif %}
     </div>
     <a class="text-center" href="{{ url(geminiRoute) }}">{{ geminiRouteLabel|trans }}</a>

@@ -46,12 +46,12 @@ class DoctorOwnedVoter extends Voter
         $user = $token->getUser();
         if (!$user instanceof User) {
             // the user must be logged in; if not, deny access
-            return false;
+            return false; // @codeCoverageIgnore
         }
 
         $doctor = $this->doctorRepository->find($user->getId());
         if (!$doctor) {
-            throw new \LogicException('Should not be here : every entity Doctor must have the ROLE_DOCTOR');
+            throw new \LogicException('Should not be here : every entity Doctor must have the ROLE_DOCTOR'); // @codeCoverageIgnore
         }
 
         /** @var DoctorOwnedInterface $ressource */
@@ -64,7 +64,7 @@ class DoctorOwnedVoter extends Voter
                 return $this->canEdit($ressource, $doctor);
         }
 
-        throw new \LogicException('This code should not be reached!');
+        throw new \LogicException('This code should not be reached!'); // @codeCoverageIgnore
     }
 
     private function canView(DoctorOwnedInterface $ressource, Doctor $doctor): bool

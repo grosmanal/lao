@@ -241,6 +241,7 @@ patient_anomaly:
 activity:
     content:
         header: Activité depuis %daysSince% jours
+        no_activity: Pas d’activité depuis %daysSince% jours
         more_days: Afficher l'activité pour les %days% derniers jours
     by: par
     patient:

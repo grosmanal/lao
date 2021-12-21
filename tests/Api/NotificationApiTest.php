@@ -43,9 +43,13 @@ class NotificationApiTest extends AbstractApiTestCase
         return [
             ['admin@example.com', [
                 '/api/notifications/1',
+                '/api/notifications/2',
+                '/api/notifications/3',
             ]],
             ['user1@example.com', [
                 '/api/notifications/1',
+                '/api/notifications/2',
+                '/api/notifications/3',
             ]],
             ['user5@example.com', [
             ]],

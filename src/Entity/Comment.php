@@ -231,6 +231,9 @@ class Comment implements DoctorOwnedInterface, OfficeOwnedInterface, ActivityLog
         return $this;
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function removeNotification(Notification $notification): self
     {
         if ($this->notifications->removeElement($notification)) {

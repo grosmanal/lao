@@ -23,14 +23,20 @@ class CareRequestRepository extends ServiceEntityRepository implements ActivityL
         parent::__construct($registry, CareRequest::class);
     }
     
-    public function findBySearchCriteria(SearchCriteria $searchCriteria)
+    public function findBySearchCriteria(SearchCriteria $searchCriteria, Office $office)
     {
         $qb = $this->createQueryBuilder('cr');
+        
+        // Jointure avec le patient pour la sélection de l'office
+        $qb
+            ->join('cr.patient', 'p')
+            ->andWhere('p.office = :office')
+            ->setParameter(':office', $office)
+        ;
 
         if ($searchCriteria->getLabel()) {
             // Jointure avec le patient pour recherche sur son nom / prénom / contact
             $qb
-                ->join('cr.patient', 'p')
                 ->andWhere(
                     $qb->expr()->orX(
                         $qb->expr()->like('p.firstname', ':likeLabel'),
@@ -38,7 +44,7 @@ class CareRequestRepository extends ServiceEntityRepository implements ActivityL
                         $qb->expr()->like('p.contact', ':likeLabel')
                     )
                 )
-                ->setParameter(':likeLabel', '%' . trim(addcslashes(strtolower($searchCriteria->getLabel()), '%_')) . '%')
+                ->setParameter(':likeLabel', '%' . trim(strtolower($searchCriteria->getLabel())) . '%')
             ;
         }
         

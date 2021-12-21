@@ -202,6 +202,9 @@ class Office implements OfficeOwnedInterface
         return $this->doctors;
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function addDoctor(Doctor $doctor): self
     {
         if (!$this->doctors->contains($doctor)) {
@@ -212,6 +215,9 @@ class Office implements OfficeOwnedInterface
         return $this;
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function removeDoctor(Doctor $doctor): self
     {
         if ($this->doctors->removeElement($doctor)) {
@@ -226,12 +232,16 @@ class Office implements OfficeOwnedInterface
 
     /**
      * @return Collection|Patient[]
+     * @codeCoverageIgnore
      */
     public function getPatients(): Collection
     {
         return $this->patients;
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function addPatient(Patient $patient): self
     {
         if (!$this->patients->contains($patient)) {
@@ -242,6 +252,9 @@ class Office implements OfficeOwnedInterface
         return $this;
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function removePatient(Patient $patient): self
     {
         if ($this->patients->removeElement($patient)) {

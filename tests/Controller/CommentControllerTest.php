@@ -67,4 +67,31 @@ class CommentControllerTest extends AbstractControllerTestCase
 
         $this->assertResponseStatusCodeSame($expected);
     }
+    
+    public function testForm()
+    {
+        $this->loginUser('user1@example.com');
+        $crawler = $this->client->request('GET', sprintf('/comment_forms/1'));
+        $this->assertSelectorExists('textarea', 'lorem ipsum comment_1');
+    }
+    
+    
+    public function dataProviderCommentFormWrongCareRequest()
+    {
+        return [
+            [ 1, Response::HTTP_OK ],
+            [ 3, Response::HTTP_FORBIDDEN ],
+            [ 99, Response::HTTP_NOT_FOUND],
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderCommentFormWrongCareRequest
+     */
+    public function testCommentFormWrongCareRequest($commentId, $expected)
+    {
+        $this->loginUser('user1@example.com');
+        $crawler = $this->client->request('GET', sprintf('/comment_forms/%d', $commentId));
+        $this->assertResponseStatusCodeSame($expected);
+    }
 }

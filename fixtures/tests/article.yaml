@@ -10,8 +10,8 @@ App\Entity\Article:
             # Article 1
             lorem ipsum
     article_2:
-        publishFrom: <(new DateTimeImmutable("2021-12-17"))>
-        publishTo: <(new DateTimeImmutable("2022-01-31"))>
+        publishFrom: <immutableDateTimeBetween("-6 month", "now")>
+        publishTo: <immutableDateTimeBetween("now", "+6 month")>
         style: warning
         content: |-
             # Second article

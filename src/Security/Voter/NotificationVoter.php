@@ -30,7 +30,7 @@ class NotificationVoter extends Voter
         $user = $token->getUser();
         // if the user is anonymous, do not grant access
         if (!$user instanceof UserInterface) {
-            return false;
+            return false; // @codeCoverageIgnore
         }
 
         // ... (check conditions and return true to grant permission) ...
@@ -44,7 +44,7 @@ class NotificationVoter extends Voter
                 break;
         }
 
-        return false;
+        throw new \LogicException('This code should not be reached!'); // @codeCoverageIgnore
     }
     
     private function canView(Notification $notification, UserInterface $user)

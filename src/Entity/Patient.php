@@ -340,6 +340,9 @@ class Patient implements OfficeOwnedInterface, ActivityLoggableEntityInterface
         return $this->careRequests;
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function addCareRequest(CareRequest $careRequest): self
     {
         if (!$this->careRequests->contains($careRequest)) {
@@ -350,6 +353,9 @@ class Patient implements OfficeOwnedInterface, ActivityLoggableEntityInterface
         return $this;
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function removeCareRequest(CareRequest $careRequest): self
     {
         if ($this->careRequests->removeElement($careRequest)) {

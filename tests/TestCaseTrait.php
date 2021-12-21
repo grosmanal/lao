@@ -1,6 +1,9 @@
 <?php
 namespace App\Tests;
 
+use App\Entity\User;
+use App\Entity\Doctor;
+use App\Repository\DoctorRepository;
 use App\Repository\UserRepository;
 
 trait TestCaseTrait
@@ -19,9 +22,15 @@ trait TestCaseTrait
         $em->clear();
     }
     
-    protected function getUser(string $userEmail)
+    protected function getUser(string $userEmail): User
     {
         $userRepository = static::getContainer()->get(UserRepository::class);
         return $userRepository->findOneByEmail($userEmail);
+    }
+    
+    protected function getUserAsDoctor(string $userEmail): Doctor
+    {
+        $doctorRepository = static::getContainer()->get(DoctorRepository::class);
+        return $doctorRepository->find($this->getUser($userEmail)->getId());
     }
 }

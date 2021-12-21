@@ -12,6 +12,9 @@ class AgeExtension extends AbstractExtension
     {
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function getFilters(): array
     {
         return [
