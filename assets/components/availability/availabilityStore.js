@@ -126,11 +126,11 @@ export const getters = {
 };
 
 export const actions = {
-    initStoreAvailability: (context, payload) => {
+    initStoreAvailability: async (context, payload) => {
         context.commit('INIT_AVAILABILITY', payload);
     },
     
-    initPrivateValues: (context, {middleOfDay, urlPutPatientAvailability}) => {
+    initPrivateValues: async (context, {middleOfDay, urlPutPatientAvailability}) => {
         // Initialisation d'attributs privés provenant des 
         // propriétés du composant Vue
         Vuex._middleOfDay = middleOfDay;
@@ -161,7 +161,7 @@ export const actions = {
     },
 
 
-    addAvailabilityPeriod: (context, {weekDays, periodStart, periodEnd}) => {
+    addAvailabilityPeriod: async (context, {weekDays, periodStart, periodEnd}) => {
         // Recherche des slots correspondant à periodStart et periodEnd
         const weekDayAvailability = context.getters.weekDayAvailability(weekDays[0]);
         const timeSlotStart = timeSlotFromPeriodEdge(Object.keys(weekDayAvailability), periodStart);
@@ -183,7 +183,7 @@ export const actions = {
         });
     },
 
-    addAvailabilityTimeslot: (context, {weekDay, timeSlot, available}) => {
+    addAvailabilityTimeslot: async (context, {weekDay, timeSlot, available}) => {
         return context.dispatch('updateWeekDaysAvailability', {
             weekDays: [ weekDay ],
             timeSlotStart: timeSlot,
@@ -192,7 +192,7 @@ export const actions = {
         });
     },
 
-    toggleTimeSlot: (context, {weekDay, timeSlot}) => {
+    toggleTimeSlot: async (context, {weekDay, timeSlot}) => {
         const available = ! context.getters.timeSlotAvailability(weekDay, timeSlot)
 
         return context.dispatch('addAvailabilityTimeslot', {
@@ -209,7 +209,7 @@ export const actions = {
         });
     },
     
-    deleteTimeSlotAndNext: (context, {weekDay, timeSlot}) => {
+    deleteTimeSlotAndNext: async (context, {weekDay, timeSlot}) => {
         // Recherche du time slot de fin (le dernier available en partant du time slot en paramètre)
         let startingTimeSlotFound = false;
         let endingTimeSlot = undefined;
@@ -242,7 +242,7 @@ export const actions = {
         });
     },
     
-    addAvailabilityWholeWeekTimeSlot: (context, {weekDays, timeSlot, available}) => {
+    addAvailabilityWholeWeekTimeSlot: async (context, {weekDays, timeSlot, available}) => {
         return context.dispatch('updateWeekDaysAvailability', {
             weekDays: weekDays,
             timeSlotStart: timeSlot,
@@ -251,7 +251,7 @@ export const actions = {
         });
     },
     
-    setOmegaAvailable: (context, {weekDays, available}) => {
+    setOmegaAvailable: async (context, {weekDays, available}) => {
         return context.dispatch('updateWeekDaysAvailability', {
             weekDays: weekDays,
             timeSlotStart: context.getters.startOfDaySlot,
@@ -260,7 +260,7 @@ export const actions = {
         });
     },
     
-    setWholeDayAvailable: (context, {weekDay, available}) => {
+    setWholeDayAvailable: async (context, {weekDay, available}) => {
         return context.dispatch('updateWeekDaysAvailability', {
             weekDays: [ weekDay ],
             timeSlotStart: context.getters.startOfDaySlot,
@@ -269,7 +269,7 @@ export const actions = {
         });
     },
 
-    setMorningAvailable: (context, {weekDay, available}) => {
+    setMorningAvailable: async (context, {weekDay, available}) => {
         return context.dispatch('updateWeekDaysAvailability', {
             weekDays: [ weekDay ],
             timeSlotStart: context.getters.startOfDaySlot,
@@ -278,7 +278,7 @@ export const actions = {
         });
     },
 
-    setAfternoonAvailable: (context, {weekDay, available}) => {
+    setAfternoonAvailable: async (context, {weekDay, available}) => {
         return context.dispatch('updateWeekDaysAvailability', {
             weekDays: [ weekDay ],
             timeSlotStart: context.getters.middleOfDaySlot(false),
@@ -287,11 +287,11 @@ export const actions = {
         });
     },
 
-    resetTimeSlotShowingCloseButton: (context) => {
+    resetTimeSlotShowingCloseButton: async (context) => {
         context.commit('UPDATE_TIME_SLOT_SHOWING_CLOSE_BUTTON', null);
     },
 
-    updateTimeSlotShowingCloseButton: (context, {weekDay, timeSlot}) => {
+    updateTimeSlotShowingCloseButton: async (context, {weekDay, timeSlot}) => {
         // Le timeSlot est-il available ?
         if (context.getters.timeSlotAvailability(weekDay, timeSlot) == false) {
             // Auncun close button ne doit apparaître
