@@ -1,0 +1,72 @@
+---
+include:
+    - patient.yaml
+    - complaint.yaml
+    - abandon_reason.yaml
+App\Entity\CareRequest:
+    care_request_1:
+        patient: '@patient_1'
+        doctorCreator: '@doctor_1'
+        creationDate: <(new DateTimeImmutable("2021-09-27"))>
+        priority: true
+        complaint: '@complaint_1'
+        customComplaint: ~
+        acceptedByDoctor: ~
+        acceptDate: ~
+        abandonDate: ~
+        abandonReason: ~
+    care_request_2:
+        patient: '@patient_1'
+        doctorCreator: '@doctor_1'
+        creationDate: <(new DateTimeImmutable("2021-09-26"))>
+        priority: true
+        complaint: '@complaint_1'
+        customComplaint: ~
+        acceptedByDoctor: '@doctor_1'
+        acceptDate: <(new DateTimeImmutable("2021-09-28"))>
+        abandonDate: ~
+        abandonReason: ~
+    care_request_3:
+        patient: '@patient_1'
+        doctorCreator: '@doctor_1'
+        creationDate: <(new DateTimeImmutable("2021-09-25"))>
+        priority: true
+        complaint: '@complaint_1'
+        customComplaint: ~
+        acceptedByDoctor: ~
+        acceptDate:
+        abandonDate: <(new DateTimeImmutable("2021-09-28"))>
+        abandonReason: '@abandon_reason_1'
+    care_request_4:
+        patient: '@patient_3'
+        doctorCreator: '@doctor_2'
+        creationDate: <(new DateTimeImmutable("2021-09-27"))>
+        priority: true
+        complaint: '@complaint_1'
+        customComplaint: ~
+        acceptedByDoctor: ~
+        acceptDate: ~
+        abandonDate: ~
+        abandonReason: ~
+    care_request_5:
+        patient: '@patient_1'
+        doctorCreator: '@doctor_1'
+        creationDate: <(new DateTimeImmutable("2021-09-25"))>
+        priority: false
+        complaint: '@complaint_1'
+        customComplaint: ~
+        acceptedByDoctor: ~
+        acceptDate: ~
+        abandonDate: ~
+        abandonReason: ~
+    care_request_6:
+        patient: '@patient_2'
+        doctorCreator: '@doctor_1'
+        creationDate: <(new DateTimeImmutable("2021-10-01"))>
+        priority: false
+        complaint: '@complaint_1'
+        customComplaint: ~
+        acceptedByDoctor: ~
+        acceptDate: ~
+        abandonDate: ~
+        abandonReason: ~

@@ -1,0 +1,9 @@
+---
+include:
+    - care_request.yaml
+App\Entity\Comment:
+    comment_1:
+        author: '@doctor_1'
+        creationDate: <(new DateTimeImmutable("2021-09-27"))>
+        careRequest: '@care_request_1'
+        content: '\<p>Hello <span class="mention" data-mention-doctor-id="1">User1</span>'

@@ -137,7 +137,7 @@ export const actions = {
         Vuex._urlPutPatientAvailability = urlPutPatientAvailability;
     },
     
-    updateWeekDaysAvailability: (context, { weekDays, timeSlotStart, timeSlotEnd, available }) => {
+    updateWeekDaysAvailability: async (context, { weekDays, timeSlotStart, timeSlotEnd, available }) => {
         return axios.put(
             context.getters.urlPutPatientAvailability,
             {
@@ -156,7 +156,7 @@ export const actions = {
             });
         })
         .catch((error) => {
-            throw(Translator.trans('availability.error.update'));
+            throw Translator.trans('availability.error.update');
         });
     },
 

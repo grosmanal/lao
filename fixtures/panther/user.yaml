@@ -1,0 +1,14 @@
+---
+App\Entity\User:
+    user_admin: # id : 4
+        email: admin@example.com
+        password: '\$2y\$13\$N1dxqPx7LdFWDvwrZAA1Q.deK2FjoxzkhNHzOOeJTbsuDvMY3GU36'
+        roles: [ ROLE_ADMIN ]
+        firstname: admin_firstname
+        lastname: admin_lastname
+    user_without_doctor: # id : 5
+        email: user3@example.com
+        password: '\$2y\$13\$N1dxqPx7LdFWDvwrZAA1Q.deK2FjoxzkhNHzOOeJTbsuDvMY3GU36'
+        roles: [ ROLE_PATIENT ]
+        firstname: user_firstname
+        lastname: user_lastname

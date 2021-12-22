@@ -221,7 +221,7 @@ notifications:
 # Home
 home:
     content:
-        title: Liste attente Orhto
+        title: Liste attente Ortho
 
 # Article
 article:
@@ -242,7 +242,7 @@ activity:
     content:
         header: Activité depuis %daysSince% jours
         no_activity: Pas d’activité depuis %daysSince% jours
-        more_days: Afficher l'activité pour les %days% derniers jours
+        more_days: Afficher l’activité des %days% derniers jours
     by: par
     patient:
         creation: création

@@ -1,0 +1,20 @@
+---
+include:
+    - doctor.yaml
+    - comment.yaml
+App\Entity\Notification:
+    notification_1:
+        comment: '@comment_1'
+        doctor: '@doctor_1'
+        creationDate: <(new DateTimeImmutable("2021-09-28 15:32:00"))>
+        readDate: ~
+    notification_2:
+        comment: '@comment_1'
+        doctor: '@doctor_3'
+        creationDate: <(new DateTimeImmutable("2021-09-28 15:32:00"))>
+        readDate: ~
+    notification_3:
+        comment: '@comment_1'
+        doctor: '@doctor_3'
+        creationDate: <(new DateTimeImmutable("2021-09-28 15:32:00"))>
+        readDate: ~

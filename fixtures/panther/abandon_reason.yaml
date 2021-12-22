@@ -1,0 +1,6 @@
+---
+App\Entity\AbandonReason:
+    abandon_reason_1:
+        label: Raison d'abandon 1
+    abandon_reason_2:
+        label: Raison d'abandon 2

@@ -1,0 +1,18 @@
+---
+App\Entity\Article:
+    article_1:
+        publishFrom: ~
+        publishTo: ~
+        style: primary
+        content: |-
+            # Premier article
+            lorem ipsum
+    article_2:
+        publishFrom: <immutableDateTimeBetween("-6 month", "now")>
+        publishTo: <immutableDateTimeBetween("now", "+6 month")>
+        style: warning
+        content: |-
+            # Second article
+            lorem ipsum
+        readByDoctors: 
+            - '@doctor_3'

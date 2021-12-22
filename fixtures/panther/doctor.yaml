@@ -1,0 +1,25 @@
+---
+include:
+    - office.yaml
+App\Entity\Doctor:
+    doctor_1: # id : 1
+        email: user1@example.com
+        password: '\$2y\$13\$N1dxqPx7LdFWDvwrZAA1Q.deK2FjoxzkhNHzOOeJTbsuDvMY3GU36'
+        roles: [ ROLE_DOCTOR ]
+        firstname: doctor_1_firstname
+        lastname: doctor_1_lastname
+        office: '@office_1'
+    doctor_2: # id : 2
+        email: user2@example.com
+        password: '\$2y\$13\$N1dxqPx7LdFWDvwrZAA1Q.deK2FjoxzkhNHzOOeJTbsuDvMY3GU36'
+        roles: [ ROLE_DOCTOR ]
+        firstname: doctor_2_firstname
+        lastname: doctor_2_lastname
+        office: '@office_2'
+    doctor_3: # id : 3
+        email: user5@example.com
+        password: '\$2y\$13\$N1dxqPx7LdFWDvwrZAA1Q.deK2FjoxzkhNHzOOeJTbsuDvMY3GU36'
+        roles: [ ROLE_DOCTOR ]
+        firstname: doctor_3_firstname
+        lastname: doctor_3_lastname
+        office: '@office_1'

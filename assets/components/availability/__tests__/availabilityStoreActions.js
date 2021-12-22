@@ -38,38 +38,6 @@ describe('Availability store actions', () => {
         });        
     });
 
-    test('updateWeekDaysAvailability non-existant patient', () => {
-        axios.put.mockImplementation(() => Promise.reject('dummy'));
-        modalOrConsole.mockResolvedValue(null);
-
-        const context = {
-            getters: {
-                urlPutPatientAvailability: '/mockedUrl',
-            }
-        }
-
-        const payload = {
-            weekDays: [ 1 ],
-            timeSlotStart: "0800-0830",
-            timeSlotEnd: "0830-0900",
-            available: true,
-        }
-
-        actions.updateWeekDaysAvailability(context, payload).then(() => {
-            expect(axios.put).toHaveBeenCalledWith(
-                '/mockedUrl', {
-                    weekDays: [ 1 ],
-                    start: "0800",
-                    end: "0900",
-                    available: true,
-                }
-            );
-    
-            expect(modalOrConsole).toHaveBeenCalledWith('availability.error.update', {}, 'modal.title.error');
-        });
-
-    });
-
     test('addAvailabilityPeriod', () => {
         const context = {
             getters: {
