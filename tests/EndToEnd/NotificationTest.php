@@ -19,7 +19,7 @@ class NotificationTest extends AbstractEndToEndTestCase
         $this->loginUser('user1@example.com');
 
         $crawler = $this->client->request('GET', '/notifications');
-        $this->assertPageTitleSame('Notifications');
+        $this->assertPageTitleSame('LAO | Notifications');
          
         $this->assertSelectorExists(self::NOTIFICATION_SELECTOR);
         
@@ -48,7 +48,7 @@ class NotificationTest extends AbstractEndToEndTestCase
         $this->loginUser('user5@example.com');
         
         $crawler = $this->client->request('GET', '/notifications');
-        $this->assertPageTitleSame('Notifications');
+        $this->assertPageTitleSame('LAO | Notifications');
         //
         // Il doit à avoir deux notifications non lues
         $notificationItemsSelector = self::NOTIFICATION_SELECTOR . " ul.notifications > li";

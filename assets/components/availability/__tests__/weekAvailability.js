@@ -30,7 +30,7 @@ describe('weekAvailability vue component', () => {
         });
 
         // Présence du libellé du jour de la semaine
-        expect(wrapper.find('p.week-day-label').text()).toStrictEqual('Monday');
+        expect(wrapper.find('.week-day-label').text()).toStrictEqual('Monday');
 
         // Nombre de jours dans la semaine
         expect(wrapper.findAll('.week-day-availability').length).toBe(2);
@@ -221,7 +221,7 @@ describe('weekAvailability vue component', () => {
         // Mock du put vers l'API
         axios.put.mockResolvedValue({foo: 'bar'});
 
-        const weekDayLabel = wrapper.find('p.week-day-label');
+        const weekDayLabel = wrapper.find('.week-day-label');
 
         // Tous les slots sont standard
         expect(wrapper.findAll('div.slot:not(.slot-available)').length).toBe(4);

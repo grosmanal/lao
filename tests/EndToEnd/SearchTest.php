@@ -17,7 +17,7 @@ class SearchTest extends AbstractEndToEndTestCase
         $this->loginUser('user1@example.com');
 
         $crawler = $this->client->request('GET', '/search');
-        $this->assertPageTitleSame('Recherche de patient');
+        $this->assertPageTitleSame('LAO | Recherche');
          
         $resultsSelector = 'section.search-result';
         $this->assertSelectorNotExists($resultsSelector);
@@ -30,6 +30,6 @@ class SearchTest extends AbstractEndToEndTestCase
         
         // Click sur un résultat ouvre la page du patient
         $crawler = $this->client->clickLink('patient_2_firstname patient_2_lastname');
-        $this->assertPageTitleSame('Patient patient_2_firstname patient_2_lastname');
+        $this->assertPageTitleSame('LAO | patient_2_firstname patient_2_lastname');
     }
 }

@@ -17,7 +17,7 @@ class HomeTest extends AbstractEndToEndTestCase
         $this->loginUser('user1@example.com');
 
         $crawler = $this->client->request('GET', '/home');
-        $this->assertPageTitleContains('Liste attente Ortho');
+        $this->assertPageTitleContains('LAO | Accueil');
         
         // La liste des articles existe
         $this->assertSelectorIsVisible('section.articles ul.articles-list > li:first-child');
@@ -54,7 +54,7 @@ class HomeTest extends AbstractEndToEndTestCase
         $crawler = $this->client->click($crawler->filter($patientAnomalySelector . ':first-child a')->link());
         
         // On doit être sur la page du patient 4
-        $this->assertPageTitleSame('Patient patient_4_firstname patient_4_lastname');
+        $this->assertPageTitleSame('LAO | patient_4_firstname patient_4_lastname');
     }
 
     /**

@@ -17,7 +17,7 @@ class PatientTest extends AbstractEndToEndTestCase
         $this->loginUser('user1@example.com');
 
         $crawler = $this->client->request('GET', '/patients/new');
-        $this->assertPageTitleContains('Nouveau patient');
+        $this->assertPageTitleContains('LAO | Nouveau patient');
          
         $careRequestSectionSelector = 'section.care-request-section';
         $this->assertSelectorNotExists($careRequestSectionSelector);
