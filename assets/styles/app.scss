@@ -1,11 +1,32 @@
 @import './bootstrap';
 
+@font-face {
+    font-family: "Righteous";
+    src: url("../fonts/Righteous-Regular.ttf") format("truetype");
+}
+
 body {
     padding-bottom: 1rem;
 }
 
-
 .navbar {
+    .navbar-brand {
+        font-family: Righteous;
+        font-size: 1.5rem;
+        border: 1px solid white;
+        padding: 6px;
+    }
+
+    .navbar-title {
+        color: rgba(255, 255, 255, 1);
+        font-size: 1.3rem;
+        margin-left: 30px;
+    }
+
+    .nav-item {
+        font-size: 1.1rem;
+    }
+
     .avatar {
         max-width: 50px;
         max-height: 50px;

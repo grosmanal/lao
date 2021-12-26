@@ -23,7 +23,6 @@ class ArticleController extends AbstractController
     ): Response {
         $currentDoctor = $userProfile->getDoctor();
         
-        // TODO vérifier que la notification n'existe pas déjà
         if (!$article->getReadByDoctors()->contains($currentDoctor)) {
             $article->addReadByDoctor($currentDoctor);
 

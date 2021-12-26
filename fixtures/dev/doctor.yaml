@@ -7,7 +7,7 @@ App\Entity\Doctor:
         firstname: Joëlle
         lastname: Terrien
         office: '@office_1'
-        avatarName: 61aa325feeb121.68542657.png
+        avatarName: 61c89177531bf522897662.jpg
     doctor_laurence:
         email: laurence.chaillet@free.fr
         password: '\$2y\$13\$N1dxqPx7LdFWDvwrZAA1Q.deK2FjoxzkhNHzOOeJTbsuDvMY3GU36'

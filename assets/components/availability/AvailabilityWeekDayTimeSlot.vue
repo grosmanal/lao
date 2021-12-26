@@ -84,7 +84,10 @@ export default {
     // ma proposition
     //$slotAvailableBackground: #a7dbfb;
     // proposition de Joëlle : 
-    $slotAvailableBackground: #0dcaf096;
+    //$slotAvailableBackground: #0dcaf096;
+    //$slotAvailableBackground: #c8ffc8da; // vert très clair
+    $slotAvailableBackground: #fffbd9;
+
 
     .slot {
         min-height: 35px;

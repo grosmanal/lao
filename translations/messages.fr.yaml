@@ -1,7 +1,9 @@
 # Navbar
 navbar:
+    brand:
+        title: Accueil
     patient_new: Nouveau patient
-    search: Rechercher
+    search: Recherche
     connected_as: Connecté·e en tant que %displayName%
     profile: Mon profil
     notifications: Notifications
@@ -21,7 +23,7 @@ confirm:
 
 # Patient
 patient:
-    title: Patient %firstname% %lastname%
+    title: '%firstname% %lastname%'
     title_new: Nouveau patient
     info:
         header: Patient
@@ -57,10 +59,18 @@ availability:
         to_label: à
         add_button_label: Ajouter
     week_day:
-        set_morning_button_label: mat.
-        set_afternoon_button_label: ap.-m.
+        week_day_button:
+            title: Disponible le %weekDayLabel%
+        morning_button:
+            label: mat.
+            title: Disponible le %weekDayLabel% matin
+        afternoon_button:
+            label: ap.-m.
+            title: Disponible le %weekDayLabel% après-midi
     week_time_slot_shortcuts:
-        omega_button_label: Tout
+        omega_button:
+            label: Tout
+            title: Disponible tout le temps
         add_button_title: Disponible de %periodBegin% à %periodEnd% tous les jours
     time_slot:
         title: '%weekDayLabel% de %periodBegin% à %periodEnd%'
@@ -133,7 +143,7 @@ Saturday: samedi
 Sunday: dimanche
 
 search:
-    title: Recherche de patient
+    title: Recherche
     criteria_header: critères de recherche
     label:
         label: Patient
@@ -221,7 +231,7 @@ notifications:
 # Home
 home:
     content:
-        title: Liste attente Ortho
+        title: Accueil
 
 # Article
 article:

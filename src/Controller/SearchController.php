@@ -60,6 +60,7 @@ class SearchController extends AbstractAppController
         }
 
         return $this->renderForm('search/search.html.twig', [
+            'navbarTitle' => 'search.title',
             'form' => $form,
             'searchResults' => $searchResults ?? null,
         ]);

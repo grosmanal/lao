@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Translation\TranslatableMessage;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class UserController extends AbstractAppController
@@ -68,6 +69,9 @@ class UserController extends AbstractAppController
         }
 
         return $this->render('user/user.html.twig', [
+            'navbarTitle' => new TranslatableMessage('user.content.title', [
+                '%displayName%' => $doctor->getDisplayName(),
+            ]),
             'doctor' => $doctor,
             'userForm' => $form->createView(),
         ]);

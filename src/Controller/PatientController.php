@@ -48,6 +48,7 @@ class PatientController extends AbstractAppController
         
         // Affichage de la page de saisie d'un nouveau patient
         return $this->render('patient/patient.html.twig', [
+            'navbarTitle' => 'patient.title_new',
             'patient' => $patient,
             'currentDoctorId' => $userProfile->currentUserDoctorId(),
             'content' => [
@@ -130,6 +131,10 @@ class PatientController extends AbstractAppController
         }
         
         return $this->render('patient/patient.html.twig', [
+            'navbarTitle' => new TranslatableMessage('patient.title', [
+                '%firstname%' => $patient->getFirstname(),
+                '%lastname%' => $patient->getLastname(),
+            ]),
             'patient' => $patient,
             'currentDoctorId' => $userProfile->currentUserDoctorId(),
             'content' => [

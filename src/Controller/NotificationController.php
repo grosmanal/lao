@@ -24,6 +24,7 @@ class NotificationController extends AbstractAppController
 
         return $this->render('notification/notifications.html.twig', [
             'markAllReadUrl' => $this->generateUrl('notifications_mark_all'),
+            'navbarTitle' => 'notifications.content.unread_notification_header',
             'headerLabel' => 'notifications.content.unread_notification_header',
             'geminiRoute' => 'notifications_read',
             'geminiRouteLabel' => 'notifications.content.read_notifications',
@@ -48,6 +49,7 @@ class NotificationController extends AbstractAppController
         );
 
         return $this->render('notification/notifications.html.twig', [
+            'navbarTitle' => 'notifications.content.read_notification_header',
             'headerLabel' => 'notifications.content.read_notification_header',
             'geminiRoute' => 'notifications',
             'geminiRouteLabel' => 'notifications.content.notifications',

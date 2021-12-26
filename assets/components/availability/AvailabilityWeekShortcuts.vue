@@ -1,6 +1,13 @@
 <template>
     <div class="week-time-slot-shortcuts">
-        <button type="button" class="btn btn-primary btn-sm omega-btn" @click="addAvailabilityOmega">{{ _omegaButtonLabel }}</button>
+        <button
+            type="button"
+            class="btn btn-primary btn-sm omega-btn"
+            @click="addAvailabilityOmega"
+            v-bind:title="omegaButtonTitle"
+        >
+            {{ omegaButtonLabel }}
+        </button>
         <div class="btn-container"
             v-for="timeSlot in timeSlots"
             v-bind:key="timeSlot"        
@@ -10,7 +17,6 @@
             :title="buttonTitle(timeSlot)"
             >+</button>
         </div>
-        
     </div>
     
 </template>
@@ -23,14 +29,14 @@ import { modalOrConsole } from '../modal';
 
 export default {
     name: 'AvailabilityWeekShortcuts',
-    created: function() {
-        this._omegaButtonLabel = Translator.trans('availability.week_time_slot_shortcuts.omega_button_label');
-    },
     computed: {
         ...Vuex.mapGetters([
             'weekDays',
             'timeSlots'
         ]),
+
+        omegaButtonLabel: () => Translator.trans('availability.week_time_slot_shortcuts.omega_button.label'),
+        omegaButtonTitle: () => Translator.trans('availability.week_time_slot_shortcuts.omega_button.title'),
     },
     methods: {
         buttonTitle: function(timeSlot) {

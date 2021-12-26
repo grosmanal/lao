@@ -42,6 +42,7 @@ class HomeController extends AbstractAppController
         $datedEntities = $activity->getActiveEntities($currentOffice, $since);
 
         return $this->renderForm('home/home.html.twig', [
+            'navbarTitle' => 'home.content.title',
             'patientsAnomalies' => $patientAnomaly->getPatientsAnomaly($currentOffice),
             'articles' => $articles,
             'daysSince' => $daysSince,

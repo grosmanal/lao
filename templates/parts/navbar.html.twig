@@ -1,41 +1,54 @@
-<nav class="navbar {# fixed-top #} navbar-expand-lg navbar-dark bg-primary">
-<div class="container">
-    <a class="navbar-brand" href="{{ url('home') }}">Liste attente ortho</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mb-2 mb-lg-0 w-100 align-items-center">
-            <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{{ url('patient_new') }}">{{ 'navbar.patient_new'|trans }}</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{{ url('search') }}">{{ 'navbar.search'|trans }}</a>
-            </li>
-            {% if app.user %}
-                <li class="nav-item dropdown ms-auto">
-                    <a class="nav-link dropdown-toggle p-0" href="#" id="navbarDropdownUser" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img class="avatar" src="{{ vich_uploader_asset(app.user, 'avatarFile') }}" alt="avatar">
-                        {% if unreadNotifications|length > 0 %}
-                        <span id="notificationIndicator" class="position-absolute top-100 start-0 p-2 bg-danger border border-light rounded-circle" style="transform: translate(-50%, -80%)">
-                            <span class="visually-hidden">Notifications</span>
-                        </span>
-                        {% endif %}
+<nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+        <a class="navbar-brand" href="{{ url('home') }}" title="{{ 'navbar.brand.title'|trans }}">LAO</a>
+
+        <span class="navbar-text navbar-title">{{ (navbarTitle ?? '')|trans }}</span>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mb-2 mb-lg-0 w-100 align-items-center">
+                <li class="nav-item ms-auto">
+                    <a class="nav-link" aria-current="page" href="{{ url('patient_new') }}">
+                        {{ 'navbar.patient_new'|trans }}
                     </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownUser">
-                        <li><a href="#" class="dropdown-item disabled">{{ 'navbar.connected_as'|trans({'%displayName%': app.user.displayName}) }}</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="{{ url('user', {id: app.user.id}) }}">{{ 'navbar.profile'|trans }}</a></li>
-                        <li><a class="dropdown-item" href="{{ url('notifications') }}">{{ 'navbar.notifications'|trans }}</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        {% if is_granted('IS_IMPERSONATOR') %}
-                            <li><a class="dropdown-item" href="{{ impersonation_exit_path(path('users')) }}">{{ 'navbar.exit_impersonation'|trans }}</a></li>
-                        {% endif %}
-                        <li><a class="dropdown-item" href="{{ url('app_logout') }}">{{ 'navbar.logout'|trans }}</a></li>
-                    </ul>
                 </li>
-            {% endif %}
-        </ul>
+                <li class="nav-item me-4">
+                    <a class="nav-link" aria-current="page" href="{{ url('search') }}">
+                        {{ 'navbar.search'|trans }}
+                    </a>
+                </li>
+                {% if app.user %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle p-0" href="#" id="navbarDropdownUser" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img class="avatar" src="{{ vich_uploader_asset(app.user, 'avatarFile') }}" alt="avatar">
+                            {% if unreadNotifications|length > 0 %}
+                            <span id="notificationIndicator" class="position-absolute top-100 start-0 p-2 bg-danger border border-light rounded-circle" style="transform: translate(-50%, -80%)">
+                                <span class="visually-hidden">Notifications</span>
+                            </span>
+                            {% endif %}
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownUser">
+                            <li><a href="#" class="dropdown-item disabled">{{ 'navbar.connected_as'|trans({'%displayName%': app.user.displayName}) }}</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{{ url('user', {id: app.user.id}) }}">{{ 'navbar.profile'|trans }}</a></li>
+                            <li><a class="dropdown-item" href="{{ url('notifications') }}">
+                                {{ 'navbar.notifications'|trans }}
+                                {% if unreadNotifications|length > 0 %}
+                                    <span class="badge bg-primary">{{ unreadNotifications|length }}</span>
+                                {% endif %}
+                            </a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            {% if is_granted('IS_IMPERSONATOR') %}
+                                <li><a class="dropdown-item" href="{{ impersonation_exit_path(path('users')) }}">{{ 'navbar.exit_impersonation'|trans }}</a></li>
+                            {% endif %}
+                            <li><a class="dropdown-item" href="{{ url('app_logout') }}">{{ 'navbar.logout'|trans }}</a></li>
+                        </ul>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
     </div>
-</div>
 </nav>

@@ -1,10 +1,29 @@
 
 <template>
 <li class="week-day-availability">
-    <p class="week-day-label" @click="setWholeDayAvailable"> {{ weekDayLabel }}</p>
+    <div class="w-100 d-flex justify-content-center">
+        <button
+            class="btn btn-primary btn-sm week-day-label" @click="setWholeDayAvailable"
+            v-bind:title="weekDayTitle"
+        >{{ weekDayLabel }}</button>
+    </div>
     <ul class="week-day-buttons">
-        <li><button class="btn btn-primary btn-sm" @click="setMorningAvailable">{{ setMorningButtonLabel }}</button></li>
-        <li><button class="btn btn-primary btn-sm" @click="setAfternoonAvailable">{{ setAfternoonButtonLabel }}</button></li>
+        <li>
+            <button
+                class="btn btn-primary btn-sm" @click="setMorningAvailable"
+                v-bind:title="morningButtonTitle"
+            >
+                {{ morningButtonLabel }}
+            </button>
+        </li>
+        <li>
+            <button
+                class="btn btn-primary btn-sm" @click="setAfternoonAvailable"
+                v-bind:title="afternoonButtonTitle"
+            >
+                {{ afternoonButtonLabel }}
+            </button>
+        </li>
     </ul>
     <ul class="week-day-slots" @mouseleave="hideCloseButton">
         <li
@@ -39,13 +58,31 @@ export default {
             return this.$store.getters.weekDayAvailability(this.weekDay);
         },
         
-        setMorningButtonLabel: () => Translator.trans('availability.week_day.set_morning_button_label'),
-
-        setAfternoonButtonLabel: () => Translator.trans('availability.week_day.set_afternoon_button_label'),
-        
         weekDayLabel: function () {
             return utilsWeekDayLabel(this.weekDay);
         },
+        weekDayTitle: function() {
+            return Translator.trans('availability.week_day.week_day_button.title', {
+                weekDayLabel: utilsWeekDayLabel(this.weekDay)
+            });
+
+        },
+
+        morningButtonLabel: () => Translator.trans('availability.week_day.morning_button.label'),
+        morningButtonTitle: function() {
+            return Translator.trans('availability.week_day.morning_button.title', {
+                weekDayLabel: utilsWeekDayLabel(this.weekDay)
+            });
+        },
+
+        afternoonButtonLabel: () => Translator.trans('availability.week_day.afternoon_button.label'),
+        afternoonButtonTitle: function() {
+            return Translator.trans('availability.week_day.afternoon_button.title', {
+                weekDayLabel: utilsWeekDayLabel(this.weekDay)
+            });
+        }
+        ,
+        
     },
     methods: {
         ...Vuex.mapActions({

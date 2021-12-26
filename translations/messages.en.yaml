@@ -1,5 +1,7 @@
 # Navbar
 navbar:
+    brand:
+        title: Home
     patient_new: New Patient
     search: Search
     connected_as: Connected as %displayName%
@@ -21,7 +23,7 @@ confirm:
 
 # Page patient
 patient:
-    title: Patient %firstname% %lastname%
+    title: '%firstname% %lastname%'
     title_new: New patient
     info:
         header: Patient
@@ -57,10 +59,18 @@ availability:
         to_label: to
         add_button_label: Add
     week_day:
-        set_morning_button_label: am
-        set_afternoon_button_label: pm
+        week_day_button:
+            title: Add availability to %weekDayLabel%
+        morning_button:
+            label: am
+            title: Add availability to %weekDayLabel% morning
+        afternoon_button:
+            label: pm
+            title: Add availability to %weekDayLabel% afternoon
     week_time_slot_shortcuts:
-        omega_button_label: Always
+        omega_button:
+            label: Always
+            title: Set always available
         add_button_title: Add availability from %periodBegin% to %periodEnd% everyday
     time_slot:
         title: '%weekDayLabel% from %periodBegin% to %periodEnd%'
@@ -133,7 +143,7 @@ Saturday: Saturday
 Sunday: Sunday
 
 search:
-    title: Patient searching
+    title: Search
     criteria_header: criteria
     label:
         label: Patient
@@ -221,7 +231,7 @@ notifications:
 # Home
 home:
     content:
-        title: Speech therapist waiting list
+        title: Home
           
 # Article
 article:
