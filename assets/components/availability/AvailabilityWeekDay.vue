@@ -129,7 +129,6 @@ export default {
 .week-day-label {
     text-align: center;
     margin-bottom: 5px;
-    cursor: default;
 }
 
 .week-day-buttons {

@@ -1,5 +1,5 @@
 <template>
-    <form class="add-availability-form" >
+    <form class="add-availability-form">
         <select v-model="weekDay" class="form-select form-select-sm" required>
             <option :value="undefined" disabled selected hidden>{{ _dayWeekLabel }}</option>
             <option
@@ -98,7 +98,7 @@ export default {
 
 <style scoped>
     .add-availability-form {
-        margin-bottom: 25px;
+        margin-bottom: 35px;
         display: flex;
         flex-direction: row;
         justify-content: center;
