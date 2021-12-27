@@ -122,6 +122,7 @@ function reactivateCareRequest(form) {
 function abandonCareRequest(form, button) {
     const data = {
         abandonReason: nullFieldConverter(form['care_request[abandonReason]'].value),
+        abandonedByDoctor: nullFieldConverter(form['care_request[doctorUri]'].value),
         abandonDate: 'now',
     };
 

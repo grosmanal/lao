@@ -118,6 +118,7 @@ care_request:
         both_accepted_abandonned: Une demande ne peut être à la fois acceptée et abandonnée.
         creating_doctor_office: Le docteur créant une demande doit être du même cabinet que le patient.
         accepting_doctor_office: Le docteur acceptant une demande doit être du même cabinet que le patient.
+        abandoned_doctor_office: Le docteur abandonnant une demande doit être du même cabinet que le patient.
     
 # Comment
 comment:

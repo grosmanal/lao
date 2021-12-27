@@ -295,6 +295,8 @@ class CareRequestApiTest extends AbstractApiTestCase
             ['doctorCreator', '/api/doctors/2', Response::HTTP_UNPROCESSABLE_ENTITY],
             ['acceptedByDoctor', '/api/doctors/1', Response::HTTP_OK],
             ['acceptedByDoctor', '/api/doctors/2', Response::HTTP_UNPROCESSABLE_ENTITY],
+            ['abandonedByDoctor', '/api/doctors/1', Response::HTTP_OK],
+            ['abandonedByDoctor', '/api/doctors/2', Response::HTTP_UNPROCESSABLE_ENTITY],
         ];
     }
 

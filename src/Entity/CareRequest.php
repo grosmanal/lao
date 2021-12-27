@@ -120,6 +120,12 @@ class CareRequest implements OfficeOwnedInterface, ActivityLoggableEntityInterfa
     private $abandonReason;
 
     /**
+     * @ORM\ManyToOne(targetEntity=Doctor::class)
+     */
+    #[Groups(['careRequest:read', 'careRequest:put'])]
+    private $abandonedByDoctor;
+
+    /**
      * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="careRequest", orphanRemoval=true, cascade={"remove"})
      * @ORM\OrderBy({"creationDate" = "ASC"})
      */
@@ -160,7 +166,19 @@ class CareRequest implements OfficeOwnedInterface, ActivityLoggableEntityInterfa
                 $context
                     ->buildViolation('care_request.error.accepting_doctor_office')
                     ->setTranslationDomain('messages')
-                    ->atPath('doctorCreator')
+                    ->atPath('acceptedByDoctor')
+                    ->addViolation()
+                    ;
+            }
+        }
+
+        // - le docteur abandonnant
+        if ($this->getAbandonedByDoctor()) {
+            if ($this->getOffice() != $this->getAbandonedByDoctor()->getOffice()) {
+                $context
+                    ->buildViolation('care_request.error.abandoned_doctor_office')
+                    ->setTranslationDomain('messages')
+                    ->atPath('abandonedByDoctor')
                     ->addViolation()
                     ;
             }
@@ -376,6 +394,18 @@ class CareRequest implements OfficeOwnedInterface, ActivityLoggableEntityInterfa
     public function setAbandonReason(?AbandonReason $abandonReason): self
     {
         $this->abandonReason = $abandonReason;
+
+        return $this;
+    }
+
+    public function getAbandonedByDoctor(): ?Doctor
+    {
+        return $this->abandonedByDoctor;
+    }
+
+    public function setAbandonedByDoctor(?Doctor $abandonedByDoctor): self
+    {
+        $this->abandonedByDoctor = $abandonedByDoctor;
 
         return $this;
     }
