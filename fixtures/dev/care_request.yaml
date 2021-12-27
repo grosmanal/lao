@@ -5,7 +5,7 @@ App\Entity\CareRequest:
         doctorCreator: '@doctor_joelle'
         creationDate: <immutableDateTimeBetween("-6 month", "now")>
         priority: true
-        complaint: '@complaint_oralite'
+        complaint: '@complaint_2'
         customComplaint: ~
         acceptedByDoctor: ~
         acceptDate: ~
@@ -16,7 +16,7 @@ App\Entity\CareRequest:
         doctorCreator: '@doctor_joelle'
         creationDate: <immutableDateTimeBetween("-6 month", "now")>
         priority: false
-        complaint: '@complaint_aa'
+        complaint: '@complaint_5'
         customComplaint: ~
         acceptedByDoctor: ~
         acceptDate: ~
@@ -27,7 +27,7 @@ App\Entity\CareRequest:
         doctorCreator: '@doctor_laurence'
         creationDate: <immutableDateTimeBetween("-6 month", "now")>
         priority: false
-        complaint: '@complaint_aa'
+        complaint: '@complaint_7'
         customComplaint: ~
         acceptedByDoctor: ~
         acceptDate: ~
@@ -38,7 +38,7 @@ App\Entity\CareRequest:
         doctorCreator: '@doctor_joelle'
         creationDate: <immutableDateTimeBetween("-6 month", "now")>
         priority: true
-        complaint: '@complaint_aa'
+        complaint: '@complaint_3'
         customComplaint: ~
         acceptedByDoctor: ~
         acceptDate: ~
@@ -60,7 +60,7 @@ App\Entity\CareRequest:
         doctorCreator: '@doctor_joelle'
         creationDate: <immutableDateTimeBetween("-6 month", "-1 month")>
         priority: false
-        complaint: '@complaint_oralite'
+        complaint: '@complaint_14'
         customComplaint: ~
         acceptedByDoctor: '@doctor_joelle'
         acceptDate: <immutableDateTimeBetween("-1 month", "now")>
@@ -71,7 +71,7 @@ App\Entity\CareRequest:
         doctorCreator: '@doctor_joelle'
         creationDate: <immutableDateTimeBetween("-1 year", "-6 month")>
         priority: false
-        complaint: '@complaint_oralite'
+        complaint: '@complaint_4'
         customComplaint: ~
         acceptedByDoctor: ~
         acceptDate: ~
