@@ -36,20 +36,20 @@ class CareRequestType extends AbstractType
         $buttonDisabled = !($careRequest->isActive() && !$careRequest->isNew());
         
         $builder
-            ->add('creationDate', DateType::class, [
+            ->add('contactedAt', DateType::class, [
                 'required' => false,
                 'widget' => 'single_text',
                 'disabled' => $fieldDisabled,
-                'label' => 'care_request.form.creation_date',
+                'label' => 'care_request.form.contacted_at',
             ])
             ->add('priority', CheckboxType::class, [
                 'required' => false,
                 'disabled' => $fieldDisabled,
                 'label' => 'care_request.form.priority',
             ])
-            ->add('doctorCreator', EntityType::class, $this->typeOptionsFactory->createOfficeDoctorOptions([
+            ->add('contactedBy', EntityType::class, $this->typeOptionsFactory->createOfficeDoctorOptions([
                 'disabled' => $fieldDisabled,
-                'label' => 'care_request.form.doctor_creator',
+                'label' => 'care_request.form.contacted_by',
             ], $options['current_doctor']->getOffice(), true))
             ->add('complaint', EntityType::class, [
                 'class' => Complaint::class,
@@ -65,35 +65,35 @@ class CareRequestType extends AbstractType
                 'disabled' => $fieldDisabled,
                 'label' => 'care_request.form.custom_complaint',
             ])
-            ->add('acceptedByDoctor', EntityType::class, $this->typeOptionsFactory->createOfficeDoctorOptions([
+            ->add('acceptedBy', EntityType::class, $this->typeOptionsFactory->createOfficeDoctorOptions([
                 'required' => false,
                 'disabled' => $fieldDisabled,
-                'label' => 'care_request.form.accepted_by_doctor',
+                'label' => 'care_request.form.accepted_by',
             ], $options['current_doctor']->getOffice(), true))
-            ->add('acceptDate', DateType::class, [
+            ->add('acceptedAt', DateType::class, [
                 'widget' => 'single_text',
                 'required' => false,
                 'disabled' => $fieldDisabled,
-                'label' => 'care_request.form.accept_date',
+                'label' => 'care_request.form.accepted_at',
             ])
             ->add('accept', SubmitType::class, [
                 'disabled' => $buttonDisabled,
                 'label' => 'care_request.form.take_charge_action',
             ])
-            ->add('abandonReason', EntityType::class, [
+            ->add('abandonedReason', EntityType::class, [
                 'class' => AbandonReason::class,
                 'required' => false,
                 'choice_value' => function(?AbandonReason $abandonReason) {
                     return $abandonReason ? $this->urlGenerator->generate('api_abandon_reasons_get_item', ['id' => $abandonReason->getId()]) : '';
                 },
                 'disabled' => $fieldDisabled,
-                'label' => 'care_request.form.abandon_reason',
+                'label' => 'care_request.form.abandoned_reason',
             ])
-            ->add('abandonDate', DateType::class, [
+            ->add('abandonedAt', DateType::class, [
                 'widget' => 'single_text',
                 'required' => false,
                 'disabled' => $fieldDisabled,
-                'label' => 'care_request.form.abandon_date',
+                'label' => 'care_request.form.abandoned_at',
             ])
             ->add('abandon', SubmitType::class, [
                 'disabled' => $buttonDisabled,

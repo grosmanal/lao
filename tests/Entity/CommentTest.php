@@ -11,23 +11,20 @@ use App\Entity\CareRequest;
  */
 class CommentTest extends AbstractEntityTestCase
 {
-    private $repository;
-    
     public function setUp(): void
     {
         $this->setUpTestEntity([
             __DIR__ . '/../../fixtures/tests/comment.yaml',
             __DIR__ . '/../../fixtures/tests/care_request.yaml',
         ]);
-        
-        $this->repository = $this->em->getRepository(Comment::class);
     }
     
     public function testSetCreator()
     {
         $doctor = $this->em->getRepository(Doctor::class)->find(1);
         $comment = (new Comment())
-            ->setCreator($doctor)
+            ->setCreatedBy($doctor)
+            ->setCreatedAt(new \DateTimeImmutable())
             ->setCareRequest($this->em->getRepository(CareRequest::class)->find(1))
             ->setContent('lorem')
         ;

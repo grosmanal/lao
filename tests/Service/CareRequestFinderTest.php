@@ -105,7 +105,7 @@ class CareRequestFinderTest extends AbstractServiceTest
     public function testFindByCreationFrom(string $creationFrom, $expected)
     {
         $searchCriteria = (new SearchCriteria())
-            ->setCreationFrom(new \DateTime($creationFrom))
+            ->setContactedFrom(new \DateTime($creationFrom))
             ->setIncludeActiveCareRequest(true)
             ->setIncludeArchivedCareRequest(true)
             ->setIncludeAbandonnedCareRequest(true)
@@ -131,7 +131,7 @@ class CareRequestFinderTest extends AbstractServiceTest
     public function testFindByCreationTo(string $creationTo, $expected)
     {
         $searchCriteria = (new SearchCriteria())
-            ->setCreationTo(new \DateTime($creationTo))
+            ->setContactedTo(new \DateTime($creationTo))
             ->setIncludeActiveCareRequest(true)
             ->setIncludeArchivedCareRequest(true)
             ->setIncludeAbandonnedCareRequest(true)

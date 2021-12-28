@@ -6,68 +6,72 @@ use App\Entity\Doctor;
 use App\Entity\Patient;
 use App\Entity\CareRequest;
 use App\Entity\Comment;
-use App\Tests\Service\AbstractServiceTest;
+use App\Tests\Controller\AbstractControllerTestCase;
 use Doctrine\ORM\EntityManagerInterface;
 
-class ActivitySubscriberTest extends AbstractServiceTest
+class ActivitySubscriberTest extends AbstractControllerTestCase
 {
     private EntityManagerInterface $em;
     private Doctor $currentDoctor;
 
     protected function setUp(): void
     {
-        $container = static::getContainer();
-        
-        $this->em = $container->get(EntityManagerInterface::class);
-
-        $this->setUpTestService([
+        $this->setUpTestController([
             __DIR__ . '/../../fixtures/tests/doctor.yaml',
-        ]
-        );
+        ]);
+
+        $container = static::getContainer();
+        $this->em = $container->get(EntityManagerInterface::class);
 
         $doctorRepository = $this->em->getRepository(Doctor::class);
         $this->currentDoctor = $doctorRepository->find(1);
     }
 
-    public function testEmptyCreationDate()
+    public function testActivityEntityCreationAndModification()
     {
         $user = $this->getUser('user1@example.com');
+        $this->loginUser('user1@example.com');
 
         // Patient création
         $patient = new Patient();
         $patient
             ->setFirstname('test')
-            ->setCreator($user)
+            ->setCreatedBy($user)
             ->setOffice($this->currentDoctor->getOffice())
         ;
         $this->em->persist($patient);
         $this->em->flush();
 
-        $this->assertNotEmpty($patient->getCreationDate());
-        $this->assertEmpty($patient->getModificationDate());
+        $this->assertNotEmpty($patient->getCreatedBy());
+        $this->assertNotEmpty($patient->getCreatedAt());
+        $this->assertEmpty($patient->getModifiedAt());
         
         // Patient modification
         $patient->setLastname('test');
         $this->em->persist($patient);
         $this->em->flush();
-        $this->assertNotEmpty($patient->getModificationDate());
+        $this->assertNotEmpty($patient->getModifiedBy());
+        $this->assertNotEmpty($patient->getModifiedAt());
         
         // CareRequest création
         $careRequest = new CareRequest();
         $careRequest
             ->setPatient($patient)
-            ->setDoctorCreator($this->currentDoctor)
+            ->setContactedBy($this->currentDoctor)
+            ->setContactedAt(new \DateTimeImmutable())
         ;
         $this->em->persist($careRequest);
         $this->em->flush();
-        $this->assertNotEmpty($careRequest->getCreationDate());
-        $this->assertEmpty($careRequest->getModificationDate());
+        $this->assertNotEmpty($careRequest->getCreatedBy());
+        $this->assertNotEmpty($careRequest->getCreatedAt());
+        $this->assertEmpty($careRequest->getModifiedAt());
         
         // CareRequest modification
         $careRequest->setPriority(true);
         $this->em->persist($careRequest);
         $this->em->flush();
-        $this->assertNotEmpty($careRequest->getModificationDate());
+        $this->assertNotEmpty($careRequest->getModifiedBy());
+        $this->assertNotEmpty($careRequest->getModifiedAt());
         
         // Comment création
         $comment = new Comment();
@@ -77,13 +81,15 @@ class ActivitySubscriberTest extends AbstractServiceTest
         ;    
         $this->em->persist($comment);
         $this->em->flush();
-        $this->assertNotEmpty($comment->getCreationDate());
-        $this->assertEmpty($comment->getModificationDate());
+        $this->assertNotEmpty($comment->getCreatedBy());
+        $this->assertNotEmpty($comment->getCreatedAt());
+        $this->assertEmpty($comment->getModifiedAt());
         
         // Comment modification
         $comment->setContent('lorem');
         $this->em->persist($comment);
         $this->em->flush();
-        $this->assertNotEmpty($comment->getModificationDate());
+        $this->assertNotEmpty($comment->getModifiedBy());
+        $this->assertNotEmpty($comment->getModifiedAt());
     }
 }

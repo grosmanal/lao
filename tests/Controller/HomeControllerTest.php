@@ -67,7 +67,10 @@ class HomeControllerTest extends AbstractControllerTestCase
         $careRequest = new CareRequest();
         $careRequest
             ->setPatient($this->patientRepository->find(2))
-            ->setDoctorCreator($this->doctorRepository->find(1))
+            ->setContactedBy($this->doctorRepository->find(1))
+            ->setContactedAt(new \DateTimeImmutable())
+            ->setCreatedBy($this->doctorRepository->find(1))
+            ->setCreatedAt(new \DateTimeImmutable())
         ;
         $this->em->persist($careRequest);
         $this->em->flush();

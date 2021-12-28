@@ -80,7 +80,6 @@ availability:
         period_end_out_of_bound: La fin de la période est hors limite
       
 # Form care request
-Care request from %creationDate%: 
 care_request:
     title: Demande du %creationDate%
     state_badge:
@@ -94,15 +93,15 @@ care_request:
     comment:
         placeholder: Commentaire
     form:
-        creation_date: Date de création
-        doctor_creator: Créateur
+        contacted_at: Reçue le
+        contacted_by: Reçue par
         complaint: Plainte
         custom_complaint: Complément de plainte
-        accepted_by_doctor: Acceptée par
-        accept_date: Acceptée le
+        accepted_by: Acceptée par
+        accepted_at: Acceptée le
         take_charge_action: Prendre en charge
-        abandon_reason: Raison d'abandon
-        abandon_date: Date d'abandon
+        abandoned_reason: Raison d'abandon
+        abandoned_at: Abandonnée le
         priority: Demande prioritaire
         abandon_action: Abandonner
         add_button: Ajouter
@@ -116,7 +115,7 @@ care_request:
         update: Erreur lors de la mise à jour de la demande de soin %errorMessage%
         delete: Erreur lors de la suppression de la demande
         both_accepted_abandonned: Une demande ne peut être à la fois acceptée et abandonnée.
-        creating_doctor_office: Le docteur créant une demande doit être du même cabinet que le patient.
+        contacting_doctor_office: Le docteur contacté doit être du même cabinet que le patient.
         accepting_doctor_office: Le docteur acceptant une demande doit être du même cabinet que le patient.
         abandoned_doctor_office: Le docteur abandonnant une demande doit être du même cabinet que le patient.
     
@@ -149,11 +148,11 @@ search:
     label:
         label: Patient
         placeholder: nom ou prénom du patient
-    creation: Création
-    creator:
-        placeholder: '- créateur -'
-    creation_from: depuis le
-    creation_to: jusqu'au
+    contact: Contact
+    contacted_by:
+        placeholder: '- praticien contacté -'
+    contacted_from: depuis le
+    contacted_to: jusqu'au
     availability: Disponibilité
     week_day:
         label: Jour
@@ -174,7 +173,7 @@ search:
     results:
         patient: patient
         care_request_state: demande
-        care_request_creation_date: date
+        care_request_contacted_at: date
         availabilities: disponibilités
         complaint: plainte
         comments: commentaires 

@@ -7,29 +7,29 @@ App\Entity\Patient:
     patient_0: # ID : 1
         firstname: firstname
         office: '@office_1'
-        creator: '@doctor_1'
-        creationDate: <(new DateTimeImmutable("2020-01-01 15:00:01"))>
-        modificationDate: ~
+        createdBy: '@doctor_1'
+        createdAt: <(new DateTimeImmutable("2020-01-01 15:00:01"))>
+        modifiedAt: ~
         availability: []
     patient_1: # ID : 2
         firstname: firstname
         office: '@office_1'
-        creator: '@doctor_1'
-        creationDate: <(new DateTimeImmutable("2021-01-01 15:00:01"))>
-        modificationDate: ~
+        createdBy: '@doctor_1'
+        createdAt: <(new DateTimeImmutable("2021-01-01 15:00:01"))>
+        modifiedAt: ~
         availability: []
     patient_2: # ID : 3
         firstname: firstname
         office: '@office_1'
-        creator: '@doctor_1'
-        creationDate: <(new DateTimeImmutable("2021-01-02 15:00:01"))>
-        modificationDate: ~
+        createdBy: '@doctor_1'
+        createdAt: <(new DateTimeImmutable("2021-01-02 15:00:01"))>
+        modifiedAt: ~
         availability: []
     patient_3: # ID : 4
         firstname: firstname
         office: '@office_1'
-        creator: '@doctor_1'
-        modifier: '@doctor_1'
-        creationDate: <(new DateTimeImmutable("2021-01-01 15:00:01"))>
-        modificationDate: <(new DateTimeImmutable("2021-01-03 15:00:01"))>
+        createdBy: '@doctor_1'
+        createdAt: <(new DateTimeImmutable("2021-01-01 15:00:01"))>
+        modifiedBy: '@doctor_1'
+        modifiedAt: <(new DateTimeImmutable("2021-01-03 15:00:01"))>
         availability: []

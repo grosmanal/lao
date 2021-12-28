@@ -7,15 +7,15 @@
         <div class="flex-grow-1 ms-3 p-2 comment-body">
             <div class="mb-2">
                 <span class="fw-bold author-name">{{ comment.author.firstname }}</span>
-                <time class="fw-lighter" datetime="{{ comment.creationDate|date('c') }}" title="{{ comment.creationDate|format_datetime('medium', 'short') }}">
-                    {{ comment.getCreationDateNonImmutable|ago() }}
+                <time class="fw-lighter" datetime="{{ comment.createdAt|date('c') }}" title="{{ comment.createdAt|format_datetime('medium', 'short') }}">
+                    {{ comment.createdAtMutable|ago() }}
                 </time>
-                {% if comment.modificationDate %}
+                {% if comment.modifiedAt %}
                 <span class="fw-lighter">
                     &nbsp; (
                     {{ 'comment.modified_label'|trans }}
-                    <time datetime="{{ comment.modificationDate|date('c') }}" title="{{ comment.modificationDate|format_datetime('medium', 'short') }}">
-                        {{ comment.getModificationDateNonImmutable|ago() }}
+                    <time datetime="{{ comment.modifiedAt|date('c') }}" title="{{ comment.modifiedAt|format_datetime('medium', 'short') }}">
+                        {{ comment.modifiedAtMutable|ago() }}
                     </time>
                     )
                 </span>

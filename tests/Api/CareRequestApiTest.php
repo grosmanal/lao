@@ -9,13 +9,13 @@ class CareRequestApiTest extends AbstractApiTestCase
 {
     const CARE_REQUEST_DATA = [
         'patient' => '/api/patients/1',
-        'doctorCreator' => '/api/doctors/1',
-        'creationDate' => '2021-09-29',
+        'contactedBy' => '/api/doctors/1',
+        'contactedAt' => '2021-09-29',
         'priority' => true,
         'complaint' => '/api/complaints/1',
         'customComplaint' => 'custom',
-        'acceptedByDoctor' => null,
-        'acceptDate' => null,
+        'acceptedBy' => null,
+        'acceptedAt' => null,
     ];
 
     public function setUp(): void
@@ -40,13 +40,13 @@ class CareRequestApiTest extends AbstractApiTestCase
                 'firstname' => 'patient_1_firstname',
                 'lastname' => 'patient_1_lastname',
             ],
-            'doctorCreator' => [
+            'contactedBy' => [
                 '@id' => '/api/doctors/1',
                 '@type' => 'Doctor',
                 'firstname' => 'doctor_1_firstname',
                 'lastname' => 'doctor_1_lastname',
             ],
-            'creationDate' => '2021-09-27T00:00:00+00:00',
+            'contactedAt' => '2021-09-27T00:00:00+00:00',
             'priority' => true,
             'state' => 'active',
             'complaint' => [
@@ -140,8 +140,8 @@ class CareRequestApiTest extends AbstractApiTestCase
     {
         return [
             ['patient', Response::HTTP_UNPROCESSABLE_ENTITY],
-            ['doctorCreator', Response::HTTP_UNPROCESSABLE_ENTITY],
-            ['creationDate', Response::HTTP_CREATED],
+            ['contactedBy', Response::HTTP_UNPROCESSABLE_ENTITY],
+            ['contactedAt', Response::HTTP_UNPROCESSABLE_ENTITY],
             ['priority', Response::HTTP_CREATED],
             ['complaint', Response::HTTP_CREATED],
             ['customComplaint', Response::HTTP_CREATED],
@@ -163,32 +163,17 @@ class CareRequestApiTest extends AbstractApiTestCase
     }
     
 
-    public function testPostEmptyCreationDate()
-    {
-        $this->loginUser('admin@example.com');
-
-        $data = array_diff_key(self::CARE_REQUEST_DATA, ['creationDate' => null]);
-        $response = $this->client->request('POST', "/api/care_requests", [
-            'json' => $data,
-        ]);
-        $this->assertResponseStatusCodeSame(Response::HTTP_CREATED);
-        
-        $jsonContent = json_decode($response->getContent(), true);
-        $this->assertNotEmpty($jsonContent['creationDate']);
-    }
-
-
     public function dataProviderAnotherOfficeData()
     {
         return [
             ['user1@example.com', 'patient', '/api/patients/1', Response::HTTP_CREATED],
             ['user1@example.com', 'patient', '/api/patients/3', Response::HTTP_FORBIDDEN],
-            ['user1@example.com', 'doctorCreator', '/api/doctors/1', Response::HTTP_CREATED],
-            ['user1@example.com', 'doctorCreator', '/api/doctors/2', Response::HTTP_UNPROCESSABLE_ENTITY],
-            ['admin@example.com', 'doctorCreator', '/api/doctors/2', Response::HTTP_UNPROCESSABLE_ENTITY],
-            ['user1@example.com', 'acceptedByDoctor', '/api/doctors/1', Response::HTTP_CREATED],
-            ['user1@example.com', 'acceptedByDoctor', '/api/doctors/2', Response::HTTP_UNPROCESSABLE_ENTITY],
-            ['admin@example.com', 'acceptedByDoctor', '/api/doctors/2', Response::HTTP_UNPROCESSABLE_ENTITY],
+            ['user1@example.com', 'contactedBy', '/api/doctors/1', Response::HTTP_CREATED],
+            ['user1@example.com', 'contactedBy', '/api/doctors/2', Response::HTTP_UNPROCESSABLE_ENTITY],
+            ['admin@example.com', 'contactedBy', '/api/doctors/2', Response::HTTP_UNPROCESSABLE_ENTITY],
+            ['user1@example.com', 'acceptedBy', '/api/doctors/1', Response::HTTP_CREATED],
+            ['user1@example.com', 'acceptedBy', '/api/doctors/2', Response::HTTP_UNPROCESSABLE_ENTITY],
+            ['admin@example.com', 'acceptedBy', '/api/doctors/2', Response::HTTP_UNPROCESSABLE_ENTITY],
         ];
     }
 
@@ -238,15 +223,15 @@ class CareRequestApiTest extends AbstractApiTestCase
     /**
      * @dataProvider dataPostInconsistentData
      */
-    public function testPostInconsistentData($acceptDate, $abandonDate, $expected)
+    public function testPostInconsistentData($acceptedAt, $abandonedAt, $expected)
     {
         $this->loginUser('admin@example.com');
 
         // On ne peut pas avoir :
         // - une date accept et une date d'abandon
         $data = array_merge(self::CARE_REQUEST_DATA, [
-            'acceptDate' => $acceptDate,
-            'abandonDate' => $abandonDate,
+            'acceptedAt' => $acceptedAt,
+            'abandonedAt' => $abandonedAt,
         ]);
         $crawler = $this->client->request('POST', "/api/care_requests", [
             'json' => $data,
@@ -291,12 +276,12 @@ class CareRequestApiTest extends AbstractApiTestCase
     public function dataProviderPutUnconsistentData()
     {
         return [
-            ['doctorCreator', '/api/doctors/1', Response::HTTP_OK],
-            ['doctorCreator', '/api/doctors/2', Response::HTTP_UNPROCESSABLE_ENTITY],
-            ['acceptedByDoctor', '/api/doctors/1', Response::HTTP_OK],
-            ['acceptedByDoctor', '/api/doctors/2', Response::HTTP_UNPROCESSABLE_ENTITY],
-            ['abandonedByDoctor', '/api/doctors/1', Response::HTTP_OK],
-            ['abandonedByDoctor', '/api/doctors/2', Response::HTTP_UNPROCESSABLE_ENTITY],
+            ['contactedBy', '/api/doctors/1', Response::HTTP_OK],
+            ['contactedBy', '/api/doctors/2', Response::HTTP_UNPROCESSABLE_ENTITY],
+            ['acceptedBy', '/api/doctors/1', Response::HTTP_OK],
+            ['acceptedBy', '/api/doctors/2', Response::HTTP_UNPROCESSABLE_ENTITY],
+            ['abandonedBy', '/api/doctors/1', Response::HTTP_OK],
+            ['abandonedBy', '/api/doctors/2', Response::HTTP_UNPROCESSABLE_ENTITY],
         ];
     }
 

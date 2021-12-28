@@ -12,7 +12,7 @@
 </td>
 
 <td class="date">
-    <time title="{{ searchResult.careRequest.creationDate|format_datetime('medium', 'short') }}" datetime="{{ searchResult.careRequest.creationDate|date('c') }}">{{ searchResult.careRequest.creationDateNonImmutable|ago }}</time>
+    <time title="{{ searchResult.careRequest.contactedAt|format_datetime('medium', 'short') }}" datetime="{{ searchResult.careRequest.contactedAt|date('c') }}">{{ searchResult.careRequest.contactedAtMutable|ago }}</time>
 </td>
 
 <td class="d-none d-lg-table-cell availabilities">

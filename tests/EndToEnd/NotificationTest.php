@@ -2,6 +2,9 @@
 
 namespace App\Tests\EndToEnd;
 
+/**
+ * @group end2end
+ */
 class NotificationTest extends AbstractEndToEndTestCase
 {
     public function setUp(): void

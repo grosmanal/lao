@@ -46,7 +46,7 @@ class PatientRepository extends ServiceEntityRepository implements ActivityLogga
             ->andWhere('cr.id is null')
             ->andWhere('p.office = :office')
             ->setParameter(':office', $office)
-            ->orderBy('p.creationDate', 'DESC')
+            ->orderBy('p.createdAt', 'DESC')
             ->getQuery()
             ->getResult()
         ;

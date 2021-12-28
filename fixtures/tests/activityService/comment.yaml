@@ -4,26 +4,26 @@ include:
 App\Entity\Comment:
     comment_1:
         author: '@doctor_1'
-        creationDate: <(new DateTimeImmutable("2021-01-01 15:10:03"))>
-        modificationDate: ~
+        createdAt: <(new DateTimeImmutable("2021-01-01 15:10:03"))>
+        modifiedAt: ~
         careRequest: '@care_request_0'
     comment_2:
         author: '@doctor_1'
-        creationDate: <(new DateTimeImmutable("2021-01-02 15:10:03"))>
-        modificationDate: ~
+        createdAt: <(new DateTimeImmutable("2021-01-02 15:10:03"))>
+        modifiedAt: ~
         careRequest: '@care_request_0'
     comment_3:
         author: '@doctor_1'
-        creationDate: <(new DateTimeImmutable("2021-01-01 15:10:03"))>
-        modificationDate: <(new DateTimeImmutable("2021-01-03 15:10:03"))>
+        createdAt: <(new DateTimeImmutable("2021-01-01 15:10:03"))>
+        modifiedAt: <(new DateTimeImmutable("2021-01-03 15:10:03"))>
         careRequest: '@care_request_0'
     comment_4:
         author: '@doctor_1'
-        creationDate: <(new DateTimeImmutable("2021-05-01 15:10:00"))>
-        modificationDate: <(new DateTimeImmutable("2021-05-03 15:10:00"))>
+        createdAt: <(new DateTimeImmutable("2021-05-01 15:10:00"))>
+        modifiedAt: <(new DateTimeImmutable("2021-05-03 15:10:00"))>
         careRequest: '@care_request_0'
     comment_5:
         author: '@doctor_1'
-        creationDate: <(new DateTimeImmutable("2021-05-02 15:10:00"))>
-        modificationDate: ~
+        createdAt: <(new DateTimeImmutable("2021-05-02 15:10:00"))>
+        modifiedAt: ~
         careRequest: '@care_request_0'

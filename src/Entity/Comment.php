@@ -12,7 +12,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Translation\TranslatableMessage;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
-// TODO vérifier s'il faut mettre les date et user de création / modification dans denormalize du post
 /**
  * @ORM\Entity(repositoryClass=CommentRepository::class)
  */
@@ -36,6 +35,8 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 )]
 class Comment implements DoctorOwnedInterface, OfficeOwnedInterface, ActivityLoggableEntityInterface
 {
+    use ActivityLoggableTrait;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -55,14 +56,12 @@ class Comment implements DoctorOwnedInterface, OfficeOwnedInterface, ActivityLog
     /**
      * @ORM\Column(type="datetime_immutable")
      */
-    #[Groups(['comment:read', 'comment:post'])]
-    private $creationDate;
+    private $createdAt;
 
     /**
      * @ORM\Column(type="datetime_immutable", nullable=true)
      */
-    #[Groups(['comment:read'])]
-    private $modificationDate;
+    private $modifiedAt;
 
     /**
      * @ORM\ManyToOne(targetEntity=CareRequest::class, inversedBy="comments")
@@ -123,60 +122,28 @@ class Comment implements DoctorOwnedInterface, OfficeOwnedInterface, ActivityLog
 
         return $this;
     }
-    
-    public function getCreator(): ?User
+
+    public function getCreatedBy(): ?User
     {
-        return $this->getAuthor();
-    }
-    
-    public function setCreator(?User $user): self
-    {
-        return $this->setAuthor($user);
+        return $this->author;
+        
     }
 
-    public function getCreationDate(): ?\DateTimeImmutable
+    public function setCreatedBy(?User $createdBy): self
     {
-        return $this->creationDate;
-    }
-    
-    public function getCreationDateNonImmutable(): ?\DateTime
-    {
-        return \DateTime::createFromImmutable($this->creationDate);
-    }
-
-    public function setCreationDate(\DateTimeImmutable $creationDate): self
-    {
-        $this->creationDate = $creationDate;
+        $this->author = $createdBy;
 
         return $this;
     }
-    
-    public function getModifier(): ?User
+
+    public function getModifiedBy(): ?User
     {
-        // Seul l'auteur d'un commentaire peut le modifier (DoctorOwnedInterface)
-        return $this->getAuthor();
+        return $this->author;
     }
-    
-    public function setModifier(?User $user): self
+
+    public function setModifiedBy(?User $modifiedBy): self
     {
         // Rien à faire : seul l'auteur d'un commentaire peut le modifier (DoctorOwnedInterface)
-        return $this;
-    }
-
-    public function getModificationDate(): ?\DateTimeImmutable
-    {
-        return $this->modificationDate;
-    }
-
-    public function getModificationDateNonImmutable(): ?\DateTime
-    {
-        return \DateTime::createFromImmutable($this->modificationDate);
-    }
-
-    public function setModificationDate(?\DateTimeImmutable $modificationDate): self
-    {
-        $this->modificationDate = $modificationDate;
-
         return $this;
     }
 
@@ -280,7 +247,7 @@ class Comment implements DoctorOwnedInterface, OfficeOwnedInterface, ActivityLog
     public function getActivityMessage(string $action): TranslatableMessage
     {
         return new TranslatableMessage(sprintf('activity.comment.%s', $action), [
-            '%careRequestCreationDate%' => $this->getCreationDate()->format('d/m/Y')
+            '%careRequestCreationDate%' => $this->getCareRequest()->getCreatedAt()->format('d/m/Y')
         ]);
     }
 }

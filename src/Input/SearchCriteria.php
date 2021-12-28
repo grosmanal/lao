@@ -5,18 +5,17 @@ namespace App\Input;
 use App\Entity\Doctor;
 use DateTime;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Constraints\Date;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class SearchCriteria
 {
     private ?string $label = null;
     
-    private ?Doctor $creator = null;
+    private ?Doctor $contactedBy = null;
 
-    private ?DateTime $creationFrom = null;
+    private ?DateTime $contactedFrom = null;
 
-    private ?DateTime $creationTo = null;
+    private ?DateTime $contactedTo = null;
 
     private ?int $weekDay = null;
 
@@ -76,76 +75,76 @@ class SearchCriteria
     }
 
     /**
-     * Get the value of creator
+     * Get the value of contactedBy
      *
      * @return ?Doctor
      */
-    public function getCreator()
+    public function getContactedBy()
     {
-        return $this->creator;
+        return $this->contactedBy;
     }
 
     /**
-     * Set the value of creator
+     * Set the value of contactedBy
      *
-     * @param ?Doctor $creator
+     * @param ?Doctor $contactedBy
      *
      * @return self
      */
-    public function setCreator(?Doctor $creator)
+    public function setCreator(?Doctor $contactedBy)
     {
-        $this->creator = $creator;
+        $this->contactedBy = $contactedBy;
 
         return $this;
     }
 
     /**
-     * Get the value of creationFrom
+     * Get the value of contactedFrom
      *
      * @return ?DateTime
      */
-    public function getCreationFrom()
+    public function getContactedFrom()
     {
-        return $this->creationFrom;
+        return $this->contactedFrom;
     }
 
     /**
-     * Set the value of creationFrom
+     * Set the value of contactedFrom
      *
-     * @param ?DateTime $creationFrom
+     * @param ?DateTime $contactedFrom
      *
      * @return self
      */
-    public function setCreationFrom(?DateTime $creationFrom)
+    public function setContactedFrom(?DateTime $contactedFrom)
     {
-        $this->creationFrom = $creationFrom;
+        $this->contactedFrom = $contactedFrom;
 
         return $this;
     }
 
     /**
-     * Get the value of creationTo
+     * Get the value of contactedTo
      *
      * @return ?DateTime
      */
-    public function getCreationTo()
+    public function getContactedTo()
     {
-        return $this->creationTo;
+        return $this->contactedTo;
     }
 
     /**
-     * Set the value of creationTo
+     * Set the value of contactedTo
      *
-     * @param ?DateTime $creationTo
+     * @param ?DateTime $contactedTo
      *
      * @return self
      */
-    public function setCreationTo(?DateTime $creationTo)
+    public function setContactedTo(?DateTime $contactedTo)
     {
-        if ($creationTo == null) {
-            $this->creationTo = $creationTo;
+        if ($contactedTo == null) {
+            $this->contactedTo = $contactedTo;
         } else {
-            $this->creationTo = $creationTo->setTime(23, 59, 59, 9999);
+            $this->contactedTo = $contactedTo->setTime(23, 59, 59, 9999);
         }
 
         return $this;

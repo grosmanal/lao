@@ -10,22 +10,22 @@
 
 <div class="form-group row creator">
     <div class="col-12 col-lg-2">
-        {{ 'search.creation'|trans }}
+        {{ 'search.contact'|trans }}
     </div>
     <div class="col-12 col-lg-2">
-        {{ form_widget(form.creator) }}
+        {{ form_widget(form.contactedBy) }}
     </div>
     <div class="col-12 col-lg-auto separator-label">
-        {{ 'search.creation_from'|trans }}
+        {{ 'search.contacted_from'|trans }}
     </div>
     <div class="col-12 col-lg-auto">
-        {{ form_widget(form.creationFrom, {'attr': {'class': ''}}) }}
+        {{ form_widget(form.contactedFrom, {'attr': {'class': ''}}) }}
     </div>
     <div class="col-12 col-lg-auto separator-label">
-        {{ 'search.creation_to'|trans }}
+        {{ 'search.contacted_to'|trans }}
     </div>
     <div class="col-12 col-lg-auto">
-        {{ form_widget(form.creationTo, {'attr': {'class': ''}}) }}
+        {{ form_widget(form.contactedTo, {'attr': {'class': ''}}) }}
     </div>
 </div>
 

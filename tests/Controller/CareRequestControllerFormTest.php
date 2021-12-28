@@ -93,7 +93,7 @@ class CareRequestControllerFormTest extends AbstractControllerTestCase
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextSame('h3 button', 'Demande du 27/09/2021 Active Prioritaire');
         $this->assertSelectorExists('form');
-        $this->assertFormValue('form', 'care_request[doctorCreator]', '/api/doctors/1');
+        $this->assertFormValue('form', 'care_request[contactedBy]', '/api/doctors/1');
         $this->assertSelectorExists('form button[name="care_request[accept]"]');
         $this->assertSelectorNotExists('form button[name="care_request[accept]"][disabled]');
         $this->assertSelectorExists('form button[name="care_request[abandon]"]');
@@ -115,7 +115,7 @@ class CareRequestControllerFormTest extends AbstractControllerTestCase
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextSame('h3 button', 'Demande du 25/09/2021 Active');
         $this->assertSelectorExists('form');
-        $this->assertFormValue('form', 'care_request[doctorCreator]', '/api/doctors/1');
+        $this->assertFormValue('form', 'care_request[contactedBy]', '/api/doctors/1');
         $this->assertSelectorExists('form button[name="care_request[accept]"]');
         $this->assertSelectorNotExists('form button[name="care_request[accept]"][disabled]');
         $this->assertSelectorExists('form button[name="care_request[abandon]"]');

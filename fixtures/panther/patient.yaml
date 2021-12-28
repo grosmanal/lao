@@ -12,8 +12,8 @@ App\Entity\Patient:
         email: patient_1_email
         office: '@office_1'
         variableSchedule: false
-        creator: '@doctor_1'
-        creationDate: <immutableDateTimeBetween("-6 months", "now")>
+        createdBy: '@doctor_1'
+        createdAt: <immutableDateTimeBetween("-6 months", "now")>
         availability:
             1:
                 - [ 1000, 1200 ]
@@ -27,8 +27,8 @@ App\Entity\Patient:
         email: patient_2_email
         office: '@office_1'
         variableSchedule: true
-        creator: '@doctor_1'
-        creationDate: <immutableDateTimeBetween("-6 months", "now")>
+        createdBy: '@doctor_1'
+        createdAt: <immutableDateTimeBetween("-6 months", "now")>
         availability:
             2:
                 - [ 1000, 1200 ]
@@ -42,8 +42,8 @@ App\Entity\Patient:
         email: patient_3_email
         office: '@office_2'
         variableSchedule: false
-        creator: '@doctor_2'
-        creationDate: <immutableDateTimeBetween("-6 months", "now")>
+        createdBy: '@doctor_2'
+        createdAt: <immutableDateTimeBetween("-6 months", "now")>
         availability:
             1:
                 - [ 1000, 1200 ]
@@ -52,5 +52,5 @@ App\Entity\Patient:
         lastname: patient_4_lastname
         phone: patient_4_phone
         office: '@office_1'
-        creator: '@doctor_1'
-        creationDate: <immutableDateTimeBetween("-6 months", "now")>
+        createdBy: '@doctor_1'
+        createdAt: <immutableDateTimeBetween("-6 months", "now")>

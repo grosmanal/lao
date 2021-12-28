@@ -33,12 +33,12 @@ class ActivitySubscriber implements EventSubscriberInterface
             return;
         }
 
-        if (empty($entity->getCreator())) {
-            $entity->setCreator($this->security->getUser());
+        if (empty($entity->getCreatedBy())) {
+            $entity->setCreatedBy($this->security->getUser());
         }
 
-        if (empty($entity->getCreationDate())) {
-            $entity->setCreationDate(new \DateTimeImmutable());
+        if (empty($entity->getCreatedAt())) {
+            $entity->setCreatedAt(new \DateTimeImmutable());
         }
     }
     
@@ -53,7 +53,7 @@ class ActivitySubscriber implements EventSubscriberInterface
             return;
         }
 
-        $entity->setModifier($this->security->getUser());
-        $entity->setModificationDate(new \DateTimeImmutable());
+        $entity->setModifiedBy($this->security->getUser());
+        $entity->setModifiedAt(new \DateTimeImmutable());
     }
 }

@@ -2,6 +2,9 @@
 
 namespace App\Tests\EndToEnd;
 
+/**
+ * @group end2end
+ */
 class HomeTest extends AbstractEndToEndTestCase
 {
     public function setUp(): void

@@ -9,7 +9,6 @@ class CommentApiTest extends AbstractApiTestCase
     const COMMENT_DATA = [
         'author' => '/api/doctors/1',
         'careRequest' => '/api/care_requests/1',
-        'creationDate' => '2021-10-29',
         'content' => 'content new comment',
     ];
 
@@ -36,7 +35,6 @@ class CommentApiTest extends AbstractApiTestCase
             ],
             'careRequest' => [
                 '@id' => '/api/care_requests/1',
-                'creationDate' => '2021-09-27T00:00:00+00:00',
                 'patient' => [
                     '@id' => '/api/patients/1',
                     'firstname' => 'patient_1_firstname',
@@ -45,8 +43,6 @@ class CommentApiTest extends AbstractApiTestCase
                 'state' => 'active',
                 
             ],
-            'creationDate' => '2021-09-27T00:00:00+00:00',
-            'modificationDate' => '2021-09-30T00:00:00+00:00',
             'content' => 'lorem ipsum comment_1',
             'relatedUri' => [
                 'getHtmlContent' => '/comments/1'
@@ -153,9 +149,6 @@ class CommentApiTest extends AbstractApiTestCase
             $commentApiId = json_decode($crawler->getContent(), true)['@id'];
             $this->client->request('GET', $commentApiId);
             $this->assertResponseIsSuccessful();
-            
-            // La date de modification doite être vide
-            $this->assertJsonContains(['modificationDate' => null]);
         }
     }
 
@@ -164,8 +157,8 @@ class CommentApiTest extends AbstractApiTestCase
     {
         return [
             ['author', Response::HTTP_UNPROCESSABLE_ENTITY],
-            ['creationDate', Response::HTTP_CREATED],
-            ['modificationDate', Response::HTTP_CREATED],
+            ['createdAt', Response::HTTP_CREATED],
+            ['modifiedAt', Response::HTTP_CREATED],
             ['careRequest', Response::HTTP_UNPROCESSABLE_ENTITY],
             ['content', Response::HTTP_UNPROCESSABLE_ENTITY],
         ];
@@ -330,7 +323,6 @@ class CommentApiTest extends AbstractApiTestCase
         return [
             [ 'author', '/api/doctors/3', [ '@id' => '/api/doctors/1' ] ], // pas modifiable
             [ 'careRequest', '/api/care_requests/2', [ '@id' => '/api/care_requests/1' ] ], // pas modifiable
-            [ 'creationDate', '2021-10-01', '2021-09-27T00:00:00+00:00' ], // pas modifiable
             [ 'content', 'updated content', 'updated content'], // modifiable
         ];
     }

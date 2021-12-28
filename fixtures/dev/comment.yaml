@@ -2,49 +2,49 @@
 App\Entity\Comment:
     comment_1:
         author: '@doctor_joelle'
-        creationDate: <immutableDateTimeBetween("-1 years", "-2 weeks")> 
-        modificationDate: <immutableDateTimeBetween("-2 weeks", "-1 weeks")> 
+        createdAt: <immutableDateTimeBetween("-1 years", "-2 weeks")> 
+        modifiedAt: <immutableDateTimeBetween("-2 weeks", "-1 weeks")> 
         careRequest: '@care_request_1'
         content: '<h1 class="">Titre</h1><p>Texte pouvant être <b>gras</b> ou bien <span style="background-color: rgb(255, 255, 0);">en couleur</span></p><p>À faire :</p><ul><li>truc 1</li><li>truc 2<br></li></ul>'
     comment_2:
         author: '@doctor_laurence'
-        creationDate: <immutableDateTimeBetween("-1 years", "-2 weeks")> 
-        modificationDate: ~
+        createdAt: <immutableDateTimeBetween("-1 years", "-2 weeks")> 
+        modifiedAt: ~
         careRequest: '@care_request_1'
         content: '\<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis bibendum nisl quam, venenatis efficitur erat ultrices sit amet.</p>'
     comment_3:
         author: '@doctor_joelle'
-        creationDate: <immutableDateTimeBetween("-1 years", "-2 weeks")> 
-        modificationDate: ~
+        createdAt: <immutableDateTimeBetween("-1 years", "-2 weeks")> 
+        modifiedAt: ~
         careRequest: '@care_request_4'
         content: '\<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis bibendum nisl quam, venenatis efficitur erat ultrices sit amet.</p>'
     comment_4:
         author: '@doctor_joelle'
-        creationDate: <immutableDateTimeBetween("-1 years", "-2 weeks")> 
-        modificationDate: ~
+        createdAt: <immutableDateTimeBetween("-1 years", "-2 weeks")> 
+        modifiedAt: ~
         careRequest: '@care_request_7'
         content: '\<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis bibendum nisl quam, venenatis efficitur erat ultrices sit amet.</p>'
     comment_5:
         author: '@doctor_joelle'
-        creationDate: <immutableDateTimeBetween("-1 years", "-2 weeks")> 
-        modificationDate: ~
+        createdAt: <immutableDateTimeBetween("-1 years", "-2 weeks")> 
+        modifiedAt: ~
         careRequest: '@care_request_1'
         content: '\<p>Hello <span class="mention" data-mention-doctor-id="2">Laurence</span>'
     comment_6:
         author: '@doctor_joelle'
-        creationDate: <immutableDateTimeBetween("-1 years", "-2 weeks")> 
-        modificationDate: ~
+        createdAt: <immutableDateTimeBetween("-1 years", "-2 weeks")> 
+        modifiedAt: ~
         careRequest: '@care_request_1'
         content: '\<p>Question à <span class="mention" data-mention-doctor-id="2">Laurence</span> lorem ipsum'
     comment_7:
         author: '@doctor_joelle'
-        creationDate: <immutableDateTimeBetween("-1 years", "-2 weeks")> 
-        modificationDate: ~
+        createdAt: <immutableDateTimeBetween("-1 years", "-2 weeks")> 
+        modifiedAt: ~
         careRequest: '@care_request_1'
         content: '\<p>Je pense que <span class="mention" data-mention-doctor-id="2">Laurence</span> a raison.'
     comment_8:
         author: '@doctor_laurence'
-        creationDate: <immutableDateTimeBetween("-1 years", "-2 weeks")> 
-        modificationDate: ~
+        createdAt: <immutableDateTimeBetween("-1 years", "-2 weeks")> 
+        modifiedAt: ~
         careRequest: '@care_request_1'
         content: '\<p>Merci <span class="mention" data-mention-doctor-id="1">Joëlle</span> pour ta confiance.'

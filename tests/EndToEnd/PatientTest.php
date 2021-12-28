@@ -2,6 +2,9 @@
 
 namespace App\Tests\EndToEnd;
 
+/**
+ * @group end2end
+ */
 class PatientTest extends AbstractEndToEndTestCase
 {
     public function setUp(): void
@@ -44,8 +47,8 @@ class PatientTest extends AbstractEndToEndTestCase
         // Soumission du formulaire demande
         $careRequestSubmitButtonSelector = $careRequestFormSelector . " button[name='care_request[upsert]']";
         $crawler->filter($careRequestFormSelector)->form([
-            'care_request[doctorCreator]' => '/api/doctors/1',
-            'care_request[creationDate]' => $this->toFormDate('2021-12-22'),
+            'care_request[contactedBy]' => '/api/doctors/1',
+            'care_request[contactedAt]' => $this->toFormDate('2021-12-22'),
             'care_request[complaint]' => '/api/complaints/1',
             'care_request[priority]' => 1,
         ]);
@@ -64,7 +67,7 @@ class PatientTest extends AbstractEndToEndTestCase
         ]);
         */
         
-        $careRequestDoctorCreatorFieldSelector = $careRequestFormSelector . " select[name='care_request[doctorCreator]']";
+        $careRequestContactedByFieldSelector = $careRequestFormSelector . " select[name='care_request[contactedBy]']";
         $careRequestReactivateButtonSelector = $careRequestFormSelector . " button[name='care_request[reactivate]']";
         $careRequestAcceptButtonSelector = $careRequestFormSelector . " button[name='care_request[accept]']";
         $careRequestAbandonButtonSelector = $careRequestFormSelector . " button[name='care_request[abandon]']";
@@ -73,13 +76,13 @@ class PatientTest extends AbstractEndToEndTestCase
         $javascriptAction = sprintf("document.querySelector('%s').click()", addslashes($careRequestAcceptButtonSelector));
         $this->client->executeScript($javascriptAction);
         $crawler = $this->client->waitForElementToContain($careRequestReactivateButtonSelector, 'Réactiver', 2);
-        $this->assertSelectorIsDisabled($careRequestDoctorCreatorFieldSelector);
+        $this->assertSelectorIsDisabled($careRequestContactedByFieldSelector);
         
         // Réactivaviton de la demande
         $javascriptAction = sprintf("document.querySelector('%s').click()", addslashes($careRequestReactivateButtonSelector));
         $this->client->executeScript($javascriptAction);
         $crawler = $this->client->waitForElementToContain($careRequestSubmitButtonSelector, 'Enregistrer', 2);
-        $this->assertSelectorIsEnabled($careRequestDoctorCreatorFieldSelector);
+        $this->assertSelectorIsEnabled($careRequestContactedByFieldSelector);
         
         // Abandon de la demande
         $careRequestConfirmButtonI = $careRequestFormSelector . " button i.bi-exclamation-diamond";
@@ -89,10 +92,10 @@ class PatientTest extends AbstractEndToEndTestCase
         $this->client->waitForStaleness($careRequestConfirmButtonI);
         //$crawler = $this->client->refreshCrawler();
         $crawler->filter($careRequestFormSelector)->form([
-            'care_request[abandonReason]' => '/api/abandon_reasons/1',
+            'care_request[abandonedReason]' => '/api/abandon_reasons/1',
         ]);
         $this->client->executeScript($javascriptAction);
         $crawler = $this->client->waitForElementToContain($careRequestReactivateButtonSelector, 'Réactiver', 2);
-        $this->assertSelectorIsDisabled($careRequestDoctorCreatorFieldSelector);
+        $this->assertSelectorIsDisabled($careRequestContactedByFieldSelector);
     }
 }

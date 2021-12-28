@@ -3,7 +3,7 @@ App\Entity\Article:
     article_1:
         publishFrom: ~
         publishTo: ~
-        style: primary
+        style: secondary
         content: |-
             # Bienvenue
             Bienvenue dans *lao*. Le logiciel qui va faire décoller votre liste d'attente.

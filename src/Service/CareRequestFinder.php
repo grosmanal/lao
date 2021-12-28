@@ -103,7 +103,7 @@ class CareRequestFinder
                 return 1;
             } else {
                 // a et b sont identique en terme de priorité : on les classe par date de création
-                return $aCR->getCreationDate() <=> $bCR->getCreationDate();
+                return $aCR->getContactedAt() <=> $bCR->getContactedAt();
             }
         });
     }

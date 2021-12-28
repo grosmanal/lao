@@ -6,14 +6,14 @@ use Symfony\Component\Translation\TranslatableMessage;
 
 interface ActivityLoggableEntityInterface
 {
-    public function getCreationDate(): ?\DateTimeImmutable;
-    public function getModificationDate(): ?\DateTimeImmutable;
-    public function setCreationDate(\DateTimeImmutable $modificationDate): self;
-    public function setModificationDate(?\DateTimeImmutable $modificationDate): self;
-    public function getCreator(): ?User;
-    public function setCreator(?User $user): self;
-    public function getModifier(): ?User;
-    public function setModifier(?User $user): self;
+    public function getCreatedBy(): ?User;
+    public function getCreatedAt(): ?\DateTimeImmutable;
+    public function getModifiedBy(): ?User;
+    public function getModifiedAt(): ?\DateTimeImmutable;
+    public function setCreatedBy(?User $user): self;
+    public function setCreatedAt(\DateTimeImmutable $createdAt): self;
+    public function setModifiedBy(?User $user): self;
+    public function setModifiedAt(?\DateTimeImmutable $modifiedAt): self;
     public function getActivityObjectName(): string;
     public function getActivityIcon(): string;
     public function getActivityMessage(string $action): TranslatableMessage;

@@ -2,79 +2,90 @@
 App\Entity\CareRequest:
     care_request_1:
         patient: '@patient_1'
-        doctorCreator: '@doctor_joelle'
-        creationDate: <immutableDateTimeBetween("-6 month", "now")>
+        contactedBy: '@doctor_joelle'
+        contactedAt: <immutableDateTimeBetween("-6 month", "now")>
         priority: true
         complaint: '@complaint_2'
         customComplaint: ~
-        acceptedByDoctor: ~
-        acceptDate: ~
-        abandonDate: ~
-        abandonReason: ~
+        acceptedBy: ~
+        acceptedAt: ~
+        abandonedAt: ~
+        abandonedReason: ~
+        createdBy: '@doctor_joelle'
+        createdAt: <immutableDateTimeBetween("-6 month", "now")>
     care_request_2:
         patient: '@patient_2'
-        doctorCreator: '@doctor_joelle'
-        creationDate: <immutableDateTimeBetween("-6 month", "now")>
+        contactedBy: '@doctor_joelle'
+        contactedAt: <immutableDateTimeBetween("-6 month", "now")>
         priority: false
         complaint: '@complaint_5'
         customComplaint: ~
-        acceptedByDoctor: ~
-        acceptDate: ~
-        abandonDate: ~
-        abandonReason: ~
+        acceptedBy: ~
+        acceptedAt: ~
+        abandonedAt: ~
+        abandonedReason: ~
+        createdBy: '@doctor_joelle'
+        createdAt: <immutableDateTimeBetween("-6 month", "now")>
     care_request_3:
         patient: '@patient_3'
-        doctorCreator: '@doctor_laurence'
-        creationDate: <immutableDateTimeBetween("-6 month", "now")>
+        contactedBy: '@doctor_laurence'
+        contactedAt: <immutableDateTimeBetween("-6 month", "now")>
         priority: false
         complaint: '@complaint_7'
         customComplaint: ~
-        acceptedByDoctor: ~
-        acceptDate: ~
-        abandonDate: ~
-        abandonReason: ~
+        acceptedBy: ~
+        acceptedAt: ~
+        abandonedAt: ~
+        abandonedReason: ~
+        createdBy: '@doctor_joelle'
+        createdAt: <immutableDateTimeBetween("-6 month", "now")>
     care_request_4:
         patient: '@patient_1'
-        doctorCreator: '@doctor_joelle'
-        creationDate: <immutableDateTimeBetween("-6 month", "now")>
+        contactedBy: '@doctor_joelle'
+        contactedAt: <immutableDateTimeBetween("-6 month", "now")>
         priority: true
         complaint: '@complaint_3'
         customComplaint: ~
-        acceptedByDoctor: ~
-        acceptDate: ~
-        acceptDate: <immutableDateTimeBetween("-1 month", "now")>
-        abandonReason: ~
+        acceptedBy: ~
+        acceptedAt: <immutableDateTimeBetween("-1 month", "now")>
+        abandonedReason: ~
+        createdBy: '@doctor_joelle'
+        createdAt: <immutableDateTimeBetween("-6 month", "now")>
     care_request_5:
         patient: '@patient_4'
-        doctorCreator: '@doctor_joelle'
-        creationDate: <immutableDateTimeBetween("-6 month", "now")>
+        contactedBy: '@doctor_joelle'
+        contactedAt: <immutableDateTimeBetween("-6 month", "now")>
         priority: false
         complaint: ~
         customComplaint: 'bave beaucoup'
-        acceptedByDoctor: ~
-        acceptDate: ~
-        abandonDate: ~
-        abandonReason: ~
+        acceptedBy: ~
+        acceptedAt: ~
+        abandonedAt: ~
+        abandonedReason: ~
+        createdBy: '@doctor_joelle'
+        createdAt: <immutableDateTimeBetween("-6 month", "now")>
     care_request_6:
         patient: '@patient_1'
-        doctorCreator: '@doctor_joelle'
-        creationDate: <immutableDateTimeBetween("-6 month", "-1 month")>
+        contactedBy: '@doctor_joelle'
+        contactedAt: <immutableDateTimeBetween("-6 month", "-1 month")>
         priority: false
         complaint: '@complaint_14'
         customComplaint: ~
-        acceptedByDoctor: '@doctor_joelle'
-        acceptDate: <immutableDateTimeBetween("-1 month", "now")>
-        abandonDate: ~
-        abandonReason: ~
+        acceptedBy: '@doctor_joelle'
+        acceptedAt: <immutableDateTimeBetween("-1 month", "now")>
+        abandonedAt: ~
+        abandonedReason: ~
+        createdBy: '@doctor_joelle'
+        createdAt: <immutableDateTimeBetween("-6 month", "now")>
     care_request_7:
         patient: '@patient_1'
-        doctorCreator: '@doctor_joelle'
-        creationDate: <immutableDateTimeBetween("-1 year", "-6 month")>
+        contactedBy: '@doctor_joelle'
+        contactedAt: <immutableDateTimeBetween("-1 year", "-6 month")>
         priority: false
         complaint: '@complaint_4'
         customComplaint: ~
-        acceptedByDoctor: ~
-        acceptDate: ~
-        abandonDate: <immutableDateTimeBetween("-6 month", "-3 month")>
-        abandonReason: '@abandon_reason_ne_repond_pas'
-
+        acceptedBy: ~
+        acceptedAt: <immutableDateTimeBetween("-6 month", "-3 month")>
+        abandonedReason: '@abandon_reason_ne_repond_pas'
+        createdBy: '@doctor_joelle'
+        createdAt: <immutableDateTimeBetween("-6 month", "now")>

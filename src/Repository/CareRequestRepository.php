@@ -48,24 +48,24 @@ class CareRequestRepository extends ServiceEntityRepository implements ActivityL
             ;
         }
         
-        if ($searchCriteria->getCreator()) {
+        if ($searchCriteria->getContactedBy()) {
             $qb
-                ->andWhere('cr.doctorCreator = :doctorCreator')
-                ->setParameter(':doctorCreator', $searchCriteria->getCreator())
+                ->andWhere('cr.contactedBy = :contactedBy')
+                ->setParameter(':contactedBy', $searchCriteria->getContactedBy())
             ;
         }
         
-        if ($searchCriteria->getCreationFrom()) {
+        if ($searchCriteria->getContactedFrom()) {
             $qb
-                ->andWhere('cr.creationDate >= :creationFrom')
-                ->setParameter(':creationFrom', $searchCriteria->getCreationFrom())
+                ->andWhere('cr.contactedAt >= :contactedFrom')
+                ->setParameter(':contactedFrom', $searchCriteria->getContactedFrom())
             ;
         }
         
-        if ($searchCriteria->getCreationTo()) {
+        if ($searchCriteria->getContactedTo()) {
             $qb
-                ->andWhere('cr.creationDate <= :creationTo')
-                ->setParameter(':creationTo', $searchCriteria->getCreationTo())
+                ->andWhere('cr.contactedAt <= :contactedTo')
+                ->setParameter(':contactedTo', $searchCriteria->getContactedTo())
             ;
         }
 

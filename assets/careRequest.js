@@ -71,18 +71,18 @@ function doSubmitCareRequest(form, data, checkFlag = true) {
 function upsertCareRequest(form) {
 
     const data = {
+        contactedBy: nullFieldConverter(form['care_request[contactedBy]'].value),
         priority: nullFieldConverter(form['care_request[priority]'].checked),
-        customComplaint: nullFieldConverter(form['care_request[customComplaint]'].value),
-        acceptDate: nullFieldConverter(form['care_request[acceptDate]'].value),
-        abandonDate: nullFieldConverter(form['care_request[abandonDate]'].value),
-        abandonReason: nullFieldConverter(form['care_request[abandonReason]'].value),
-        doctorCreator: nullFieldConverter(form['care_request[doctorCreator]'].value),
         complaint: nullFieldConverter(form['care_request[complaint]'].value),
-        acceptedByDoctor: nullFieldConverter(form['care_request[acceptedByDoctor]'].value),
+        customComplaint: nullFieldConverter(form['care_request[customComplaint]'].value),
+        acceptedBy: nullFieldConverter(form['care_request[acceptedBy]'].value),
+        acceptedAt: nullFieldConverter(form['care_request[acceptedAt]'].value),
+        abandonedAt: nullFieldConverter(form['care_request[abandonedAt]'].value),
+        abandonedReason: nullFieldConverter(form['care_request[abandonedReason]'].value),
     };
         
-    if (form['care_request[creationDate]'].value != '') {
-        data.creationDate = form['care_request[creationDate]'].value;
+    if (form['care_request[contactedAt]'].value != '') {
+        data.contactedAt = form['care_request[contactedAt]'].value;
     }
 
     let checkFlag = undefined;
@@ -106,10 +106,10 @@ function upsertCareRequest(form) {
  */
 function reactivateCareRequest(form) {
     const data = {
-        acceptDate: null,
-        abandonDate: null,
-        abandonReason: null,
-        acceptedByDoctor: null,
+        acceptedBy: null,
+        acceptedAt: null,
+        abandonedAt: null,
+        abandonedReason: null,
     };
 
     doSubmitCareRequest(form, data, false);
@@ -121,16 +121,16 @@ function reactivateCareRequest(form) {
  */
 function abandonCareRequest(form, button) {
     const data = {
-        abandonReason: nullFieldConverter(form['care_request[abandonReason]'].value),
-        abandonedByDoctor: nullFieldConverter(form['care_request[doctorUri]'].value),
-        abandonDate: 'now',
+        abandonedReason: nullFieldConverter(form['care_request[abandonedReason]'].value),
+        abandonedBy: nullFieldConverter(form['care_request[doctorUri]'].value),
+        abandonedAt: 'now',
     };
 
-    const abandonReason = form['care_request[abandonReason]'];
+    const abandonedReason = form['care_request[abandonedReason]'];
     
-    if (abandonReason.value == '') {
+    if (abandonedReason.value == '') {
         const popoverAttributes = {
-            element: abandonReason,
+            element: abandonedReason,
             title: Translator.trans('care_request.confirm_abandon.title'),
             content: Translator.trans('care_request.confirm_abandon.content'),
             placement: 'top',
@@ -153,8 +153,8 @@ function abandonCareRequest(form, button) {
  */
 function acceptCareRequest(form) {
     const data = {
-        acceptDate: 'now',
-        acceptedByDoctor: nullFieldConverter(form['care_request[doctorUri]'].value),
+        acceptedAt: 'now',
+        acceptedBy: nullFieldConverter(form['care_request[doctorUri]'].value),
     };
 
     doSubmitCareRequest(form, data);

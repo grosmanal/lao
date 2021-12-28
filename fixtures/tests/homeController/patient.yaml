@@ -6,19 +6,19 @@ App\Entity\Patient:
     patient_1:
         firstname: patient_1_firstname
         office: '@office_1'
-        creator: '@doctor_1'
-        creationDate: <immutableDateTimeBetween("-6 months", "-1 month")>
+        createdBy: '@doctor_1'
+        createdAt: <immutableDateTimeBetween("-6 months", "-1 month")>
         availability: []
     patient_2:
         firstname: patient_2_firstname
         office: '@office_1'
-        creator: '@doctor_1'
-        creationDate: <immutableDateTimeBetween("-6 months", "-1 month")>
+        createdBy: '@doctor_1'
+        createdAt: <immutableDateTimeBetween("-6 months", "-1 month")>
         availability: []
     patient_3:
         firstname: patient_3_firstname
         office: '@office_2'
         variableSchedule: false
-        creator: '@doctor_2'
-        creationDate: <immutableDateTimeBetween("-6 months", "-1 month")>
+        createdBy: '@doctor_2'
+        createdAt: <immutableDateTimeBetween("-6 months", "-1 month")>
         availability: []

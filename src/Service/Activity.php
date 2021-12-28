@@ -25,24 +25,24 @@ class Activity
     private function getValorisation(ActivityLoggableEntityInterface $entity, \DateTimeInterface $since)
     {
         // Si la date de modification est nulle : on prend la date de création
-        if (empty($entity->getModificationDate())) {
+        if (empty($entity->getModifiedAt())) {
             return [
                 'action' => self::ACTION_CREATION,
-                'date' => $entity->getCreationDate(),
+                'date' => $entity->getCreatedAt(),
             ];
         }
         
         // Si la date de création est postérieur à la date demandée, c'est elle qui compte
-        if ($entity->getCreationDate() >= $since) {
+        if ($entity->getCreatedAt() >= $since) {
             return [
                 'action' => self::ACTION_CREATION_MODIFICATION,
-                'date' => $entity->getCreationDate(),
+                'date' => $entity->getCreatedAt(),
             ];
         }
 
         return [
             'action' => self::ACTION_MODIFICATION,
-            'date' => $entity->getModificationDate(),
+            'date' => $entity->getModifiedAt(),
         ];
     }
     
@@ -50,15 +50,15 @@ class Activity
     {
         switch ($action) {
             case self::ACTION_CREATION:
-                $author = $entity->getCreator();
+                $author = $entity->getCreatedBy();
                 break;
 
             case self::ACTION_CREATION_MODIFICATION:
-                $author = $entity->getCreator();
+                $author = $entity->getCreatedBy();
                 break;
 
             case self::ACTION_MODIFICATION:
-                $author = $entity->getModifier();
+                $author = $entity->getModifiedBy();
                 break;
 
             default:

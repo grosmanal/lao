@@ -6,26 +6,31 @@ include:
 App\Entity\CareRequest:
     care_request_0: # ID : 1
         patient: '@patient_0'
-        doctorCreator: '@doctor_1'
-        creationDate: <(new DateTimeImmutable("2020-01-01 15:05:02"))>
-        modificationDate: ~
+        contactedBy: '@doctor_1'
+        contactedAt: <(new DateTimeImmutable("2020-01-01 15:05:02"))>
         complaint: '@complaint_1'
+        createdBy: '@doctor_1'
+        createdAt: <(new DateTimeImmutable("2020-01-01 15:05:02"))>
     care_request_1: # ID : 2
         patient: '@patient_0'
-        doctorCreator: '@doctor_1'
-        creationDate: <(new DateTimeImmutable("2021-01-01 15:05:02"))>
-        modificationDate: ~
+        contactedBy: '@doctor_1'
+        contactedAt: <(new DateTimeImmutable("2021-01-01 15:05:02"))>
         complaint: '@complaint_1'
+        createdBy: '@doctor_1'
+        createdAt: <(new DateTimeImmutable("2021-01-01 15:05:02"))>
     care_request_2: # ID : 3
         patient: '@patient_0'
-        doctorCreator: '@doctor_1'
-        creationDate: <(new DateTimeImmutable("2021-01-02 15:05:02"))>
-        modificationDate: ~
+        contactedBy: '@doctor_1'
+        contactedAt: <(new DateTimeImmutable("2021-01-02 15:05:02"))>
         complaint: '@complaint_1'
+        createdBy: '@doctor_1'
+        createdAt: <(new DateTimeImmutable("2021-01-02 15:05:02"))>
     care_request_3: # ID : 4
         patient: '@patient_0'
-        doctorCreator: '@doctor_1'
-        modifier: '@doctor_1'
-        creationDate: <(new DateTimeImmutable("2021-01-01 15:05:02"))>
-        modificationDate: <(new DateTimeImmutable("2021-01-03 15:05:02"))>
+        contactedBy: '@doctor_1'
+        contactedAt: <(new DateTimeImmutable("2021-01-01 15:05:02"))>
         complaint: '@complaint_1'
+        createdBy: '@doctor_1'
+        createdAt: <(new DateTimeImmutable("2021-01-01 15:05:02"))>
+        modifiedBy: '@doctor_1'
+        modifiedAt: <(new DateTimeImmutable("2021-01-03 15:05:02"))>

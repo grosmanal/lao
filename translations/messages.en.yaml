@@ -80,7 +80,6 @@ availability:
         period_end_out_of_bound: The period end is out of bound
 
 # Form care request
-Care request from %creationDate%: 
 care_request:
     title: Care request from %creationDate%
     state_badge:
@@ -94,15 +93,15 @@ care_request:
     comment:
         placeholder: Comment
     form:
-        creation_date: Creation date
-        doctor_creator: Doctor creator
+        contacted_at: Received on
+        contacted_by: Received by
         complaint: Complaint
         custom_complaint: Custom complaint
-        accepted_by_doctor: Accepted by doctor
-        accept_date: Accept date
+        accepted_by: Accepted by
+        accepted_at: Accepted on
         take_charge_action: I take charge
-        abandon_reason: Abandon reason
-        abandon_date: Abandon date
+        abandoned_reason: Abandoned reason
+        abandoned_at: Abandoned on
         abandon_action: Abandon
         priority: Priority care request
         add_button: Add
@@ -116,7 +115,7 @@ care_request:
         update: Error while updating care request %errorMessage%
         delete: Error while deleting patient
         both_accepted_abandonned: Care request cannot be both accepted and abandonned
-        creating_doctor_office: Doctor creating care request must belong to the patient’s office
+        contacting_doctor_office: Contacted doctor must belong to the patient’s office
         accepting_doctor_office: Doctor accepting care request must belong to the patient’s office
         abandoned_doctor_office: Doctor abandoning care request must belong to the patient’s office
       
@@ -149,11 +148,11 @@ search:
     label:
         label: Patient
         placeholder: patient firstname or lastname
-    creation: Creation
-    creator:
+    contact: Contact
+    contacted_by:
         placeholder: '- creator -'
-    creation_from: from
-    creation_to: to
+    contacted_from: from
+    contacted_to: to
     availability: Availability
     week_day:
         label: Week day
@@ -174,7 +173,7 @@ search:
     results:
         patient: patient
         care_request_state: care request
-        care_request_creation_date: date
+        care_request_contacted_at: date
         availabilities: availabilities
         complaint: complaint
         comments: comments 

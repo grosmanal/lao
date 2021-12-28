@@ -33,15 +33,15 @@ class CareRequestTest extends AbstractEntityTestCase
         $this->assertFalse($careRequest->isArchived());
         $this->assertFalse($careRequest->isAbandonned());
         $this->assertTrue($careRequest->isPriority());
-        $this->assertEquals(new \DateTime('2021-09-27'), $careRequest->getCreationDateNonImmutable());
+        $this->assertEquals(new \DateTime('2021-09-27'), $careRequest->getContactedAtMutable());
         
-        $careRequest->setCreator($doctor);
+        $careRequest->setCreatedBy($doctor);
         $this->em->persist($careRequest);
         $this->em->flush();
 
         /** @var CareRequest */
         $careRequest = $this->repository->find(1);
-        $this->assertSame($doctor, $careRequest->getCreator());
+        $this->assertSame($doctor, $careRequest->getCreatedBy());
         
         $comments = $careRequest->getComments();
         $commentsCount = count($comments);

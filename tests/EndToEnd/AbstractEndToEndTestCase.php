@@ -24,7 +24,7 @@ abstract class AbstractEndToEndTestCase extends PantherTestCase
             'password' => $password,
         ]);
         $this->client->submitForm('Connexion');
-        $this->client->waitFor('.navbar', 10);
+        $this->client->waitFor('.navbar', 5);
     }
     
 

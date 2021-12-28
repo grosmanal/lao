@@ -27,7 +27,8 @@ class CareRequestFormFactory
     {
         $careRequest = new CareRequest();
         $careRequest
-            ->setDoctorCreator($doctor)
+            ->setContactedBy($doctor)
+            ->setContactedAt(new \DateTimeImmutable())
             ;
             
         return $this->formFactory->create(CareRequestType::class, $careRequest, [

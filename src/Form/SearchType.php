@@ -34,16 +34,15 @@ class SearchType extends AbstractType
                 ],
                 'required' => false,
             ])
-            ->add('creator', EntityType::class, $this->typeOptionsFactory->createOfficeDoctorOptions([
-                'label' => 'search.creator.label',
+            ->add('contactedBy', EntityType::class, $this->typeOptionsFactory->createOfficeDoctorOptions([
                 'required' => false,
-                'placeholder' => 'search.creator.placeholder'
+                'placeholder' => 'search.contacted_by.placeholder'
             ], $options['current_doctor']->getOffice()))
-            ->add('creationFrom', DateType::class, [
+            ->add('contactedFrom', DateType::class, [
                 'widget' => 'single_text',
                 'required' => false,
             ])
-            ->add('creationTo', DateType::class, [
+            ->add('contactedTo', DateType::class, [
                 'widget' => 'single_text',
                 'required' => false,
             ])

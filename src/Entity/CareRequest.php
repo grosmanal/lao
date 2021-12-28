@@ -13,7 +13,6 @@ use Symfony\Component\Translation\TranslatableMessage;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
-// TODO vérifier s'il faut mettre les date et user de création / modification dans denormalize du post
 /**
  * @ORM\Entity(repositoryClass=CareRequestRepository::class)
  */
@@ -34,6 +33,8 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 )]
 class CareRequest implements OfficeOwnedInterface, ActivityLoggableEntityInterface
 {
+    use ActivityLoggableTrait;
+
     const STATE_NEW = 'new';
     const STATE_ACTIVE = 'active';
     const STATE_ARCHIVED = 'archived';
@@ -59,23 +60,14 @@ class CareRequest implements OfficeOwnedInterface, ActivityLoggableEntityInterfa
      * @Assert\NotBlank
      */
     #[Groups(['careRequest:read', 'careRequest:put'])]
-    private $doctorCreator;
+    private $contactedBy;
 
     /**
      * @ORM\Column(type="datetime_immutable")
+     * @Assert\NotBlank
      */
     #[Groups(['careRequest:read', 'careRequest:put', 'comment:read'])]
-    private $creationDate;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class)
-     */
-    private $modifier;
-
-    /**
-     * @ORM\Column(type="datetime_immutable", nullable=true)
-     */
-    private $modificationDate;
+    private $contactedAt;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
@@ -99,38 +91,59 @@ class CareRequest implements OfficeOwnedInterface, ActivityLoggableEntityInterfa
      * @ORM\ManyToOne(targetEntity=Doctor::class)
      */
     #[Groups(['careRequest:read', 'careRequest:put'])]
-    private $acceptedByDoctor;
+    private $acceptedBy;
 
     /**
      * @ORM\Column(type="date_immutable", nullable=true)
      */
     #[Groups(['careRequest:read', 'careRequest:put'])]
-    private $acceptDate;
-
-    /**
-     * @ORM\Column(type="date_immutable", nullable=true)
-     */
-    #[Groups(['careRequest:read', 'careRequest:put'])]
-    private $abandonDate;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=AbandonReason::class)
-     */
-    #[Groups(['careRequest:read', 'careRequest:put'])]
-    private $abandonReason;
+    private $acceptedAt;
 
     /**
      * @ORM\ManyToOne(targetEntity=Doctor::class)
      */
     #[Groups(['careRequest:read', 'careRequest:put'])]
-    private $abandonedByDoctor;
+    private $abandonedBy;
+
+    /**
+     * @ORM\Column(type="date_immutable", nullable=true)
+     */
+    #[Groups(['careRequest:read', 'careRequest:put'])]
+    private $abandonedAt;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=AbandonReason::class)
+     */
+    #[Groups(['careRequest:read', 'careRequest:put'])]
+    private $abandonedReason;
 
     /**
      * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="careRequest", orphanRemoval=true, cascade={"remove"})
-     * @ORM\OrderBy({"creationDate" = "ASC"})
+     * @ORM\OrderBy({"createdAt" = "ASC"})
      */
     #[ApiSubresource()]
     private $comments;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class)
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $createdBy;
+
+    /**
+     * @ORM\Column(type="datetime_immutable")
+     */
+    private $createdAt;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class)
+     */
+    private $modifiedBy;
+
+    /**
+     * @ORM\Column(type="datetime_immutable", nullable=true)
+     */
+    private $modifiedAt;
 
     /**
      * @Assert\Callback
@@ -138,47 +151,47 @@ class CareRequest implements OfficeOwnedInterface, ActivityLoggableEntityInterfa
     public function validate(ExecutionContextInterface $context, $payload)
     {
         // Une demande ne peut pas être à la fois abandonnée et archivée (acceptée)
-        if ($this->getAcceptDate() != null && $this->getAbandonDate() != null) {
+        if ($this->getAcceptedAt() != null && $this->getAbandonedAt() != null) {
             $context
                 ->buildViolation('care_request.error.both_accepted_abandonned')
                 ->setTranslationDomain('messages')
-                ->atPath('acceptDate')
+                ->atPath('acceptedAt')
                 ->addViolation()
                 ;
         }
         
         // Cohérence office. Le cabinet du patient doit être le même que :
-        // - le docteur créateur
-        if ($this->getDoctorCreator()) {
-            if ($this->getOffice() != $this->getDoctorCreator()->getOffice()) {
+        // - le docteur contacté
+        if ($this->getContactedBy()) {
+            if ($this->getOffice() != $this->getContactedBy()->getOffice()) {
                 $context
-                    ->buildViolation('care_request.error.creating_doctor_office')
+                    ->buildViolation('care_request.error.contacting_doctor_office')
                     ->setTranslationDomain('messages')
-                    ->atPath('doctorCreator')
+                    ->atPath('contactedBy')
                     ->addViolation()
                     ;
             }
         }
 
         // - le docteur prenant en charge
-        if ($this->getAcceptedByDoctor()) {
-            if ($this->getOffice() != $this->getAcceptedByDoctor()->getOffice()) {
+        if ($this->getAcceptedBy()) {
+            if ($this->getOffice() != $this->getAcceptedBy()->getOffice()) {
                 $context
                     ->buildViolation('care_request.error.accepting_doctor_office')
                     ->setTranslationDomain('messages')
-                    ->atPath('acceptedByDoctor')
+                    ->atPath('acceptedBy')
                     ->addViolation()
                     ;
             }
         }
 
         // - le docteur abandonnant
-        if ($this->getAbandonedByDoctor()) {
-            if ($this->getOffice() != $this->getAbandonedByDoctor()->getOffice()) {
+        if ($this->getAbandonedBy()) {
+            if ($this->getOffice() != $this->getAbandonedBy()->getOffice()) {
                 $context
                     ->buildViolation('care_request.error.abandoned_doctor_office')
                     ->setTranslationDomain('messages')
-                    ->atPath('abandonedByDoctor')
+                    ->atPath('abandonedBy')
                     ->addViolation()
                     ;
             }
@@ -203,11 +216,11 @@ class CareRequest implements OfficeOwnedInterface, ActivityLoggableEntityInterfa
             return self::STATE_NEW;
         }
         
-        if (!empty($this->getAbandonDate())) {
+        if (!empty($this->getAbandonedAt())) {
             return self::STATE_ABANDONED;
         }
 
-        if (!empty($this->getAcceptDate())) {
+        if (!empty($this->getAcceptedAt())) {
             return self::STATE_ARCHIVED;
         }
 
@@ -246,67 +259,33 @@ class CareRequest implements OfficeOwnedInterface, ActivityLoggableEntityInterfa
         return $this;
     }
 
-    public function getDoctorCreator(): ?Doctor
+    public function getContactedBy(): ?Doctor
     {
-        return $this->doctorCreator;
+        return $this->contactedBy;
     }
 
-    public function setDoctorCreator(?Doctor $doctorCreator): self
+    public function setContactedBy(?Doctor $contactedBy): self
     {
-        $this->doctorCreator = $doctorCreator;
+        $this->contactedBy = $contactedBy;
 
         return $this;
     }
     
-    public function getCreator(): ?User
+    public function getContactedAt(): ?\DateTimeImmutable
     {
-        return $this->getDoctorCreator(); // TODO faut-il merger ces deux fonctions
-    }
-    
-    public function setCreator(?User $user): self
-    {
-        return $this->setDoctorCreator($user);
+        return $this->contactedAt;
     }
 
-    public function getCreationDate(): ?\DateTimeImmutable
+    public function setContactedAt(?\DateTimeImmutable $contactedAt): self
     {
-        return $this->creationDate;
-    }
-
-    public function setCreationDate(?\DateTimeImmutable $creationDate): self
-    {
-        $this->creationDate = $creationDate;
+        $this->contactedAt = $contactedAt;
 
         return $this;
     }
     
-    public function getCreationDateNonImmutable(): ?\DateTime
+    public function getContactedAtMutable(): ?\DateTime
     {
-        return \DateTime::createFromImmutable($this->creationDate);
-    }
-
-    public function getModifier(): ?User
-    {
-        return $this->modifier;
-    }
-
-    public function setModifier(?User $modifier): self
-    {
-        $this->modifier = $modifier;
-
-        return $this;
-    }
-
-    public function getModificationDate(): ?\DateTimeImmutable
-    {
-        return $this->modificationDate;
-    }
-
-    public function setModificationDate(?\DateTimeImmutable $modificationDate): self
-    {
-        $this->modificationDate = $modificationDate;
-
-        return $this;
+        return \DateTime::createFromImmutable($this->getContactedAt());
     }
 
     public function getPriority(): ?bool
@@ -350,62 +329,62 @@ class CareRequest implements OfficeOwnedInterface, ActivityLoggableEntityInterfa
         return $this;
     }
 
-    public function getAcceptedByDoctor(): ?Doctor
+    public function getAcceptedBy(): ?Doctor
     {
-        return $this->acceptedByDoctor;
+        return $this->acceptedBy;
     }
 
-    public function setAcceptedByDoctor(?Doctor $acceptedByDoctor): self
+    public function setAcceptedBy(?Doctor $acceptedBy): self
     {
-        $this->acceptedByDoctor = $acceptedByDoctor;
+        $this->acceptedBy = $acceptedBy;
 
         return $this;
     }
 
-    public function getAcceptDate(): ?\DateTimeImmutable
+    public function getAcceptedAt(): ?\DateTimeImmutable
     {
-        return $this->acceptDate;
+        return $this->acceptedAt;
     }
 
-    public function setAcceptDate(?\DateTimeImmutable $acceptDate): self
+    public function setAcceptedAt(?\DateTimeImmutable $acceptedAt): self
     {
-        $this->acceptDate = $acceptDate;
+        $this->acceptedAt = $acceptedAt;
 
         return $this;
     }
 
-    public function getAbandonDate(): ?\DateTimeImmutable
+    public function getAbandonedAt(): ?\DateTimeImmutable
     {
-        return $this->abandonDate;
+        return $this->abandonedAt;
     }
 
-    public function setAbandonDate(?\DateTimeImmutable $abandonDate): self
+    public function setAbandonedAt(?\DateTimeImmutable $abandonedAt): self
     {
-        $this->abandonDate = $abandonDate;
+        $this->abandonedAt = $abandonedAt;
 
         return $this;
     }
 
-    public function getAbandonReason(): ?AbandonReason
+    public function getAbandonedReason(): ?AbandonReason
     {
-        return $this->abandonReason;
+        return $this->abandonedReason;
     }
 
-    public function setAbandonReason(?AbandonReason $abandonReason): self
+    public function setAbandonedReason(?AbandonReason $abandonedReason): self
     {
-        $this->abandonReason = $abandonReason;
+        $this->abandonedReason = $abandonedReason;
 
         return $this;
     }
 
-    public function getAbandonedByDoctor(): ?Doctor
+    public function getAbandonedBy(): ?Doctor
     {
-        return $this->abandonedByDoctor;
+        return $this->abandonedBy;
     }
 
-    public function setAbandonedByDoctor(?Doctor $abandonedByDoctor): self
+    public function setAbandonedBy(?Doctor $abandonedBy): self
     {
-        $this->abandonedByDoctor = $abandonedByDoctor;
+        $this->abandonedBy = $abandonedBy;
 
         return $this;
     }
@@ -482,7 +461,7 @@ class CareRequest implements OfficeOwnedInterface, ActivityLoggableEntityInterfa
     public function getActivityMessage(string $action): TranslatableMessage
     {
         return new TranslatableMessage(sprintf('activity.care_request.%s', $action), [
-            '%careRequestCreationDate%' => $this->getCreationDate()->format('d/m/Y')
+            '%careRequestCreationDate%' => $this->getContactedAt()->format('d/m/Y')
         ]);
     }
 }

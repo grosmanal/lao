@@ -10,8 +10,8 @@ App\Entity\Patient:
         email: <email()>
         office: '@office_1'
         variableSchedule: false
-        creator: '@doctor_joelle'
-        creationDate: <immutableDateTimeBetween("-6 months", "now")>
+        createdBy: '@doctor_joelle'
+        createdAt: <immutableDateTimeBetween("-6 months", "now")>
         availability:
             1:
                 - [ 1000, 1200 ]
@@ -37,8 +37,8 @@ App\Entity\Patient:
         email: <email()>
         office: '@office_2'
         variableSchedule: false
-        creator: '@doctor_julie'
-        creationDate: <immutableDateTimeBetween("-6 months", "now")>
+        createdBy: '@doctor_julie'
+        createdAt: <immutableDateTimeBetween("-6 months", "now")>
         availability: 
             1:
                 - [ 1000, 1200 ]

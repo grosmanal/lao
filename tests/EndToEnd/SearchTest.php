@@ -2,6 +2,9 @@
 
 namespace App\Tests\EndToEnd;
 
+/**
+ * @group end2end
+ */
 class SearchTest extends AbstractEndToEndTestCase
 {
     public function setUp(): void
