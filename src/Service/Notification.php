@@ -105,7 +105,7 @@ class Notification
                 $notification
                     ->setDoctor($doctor)
                     ->setComment($comment)
-                    ->setCreationDate(new \DateTimeImmutable('now'))
+                    ->setCreatedAt(new \DateTimeImmutable('now'))
                     ;
                     
                 $notifications[] = $notification;

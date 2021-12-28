@@ -9,7 +9,7 @@ class NotificationApiTest extends AbstractApiTestCase
     const NOTIFICATION_DATA = [
         'comment' => '/api/comments/1',
         'doctor' => '/api/doctors/1',
-        'creationDate' => 'now',
+        'createdAt' => 'now',
     ];
 
     public function setUp(): void
@@ -33,7 +33,7 @@ class NotificationApiTest extends AbstractApiTestCase
         $this->assertJsonContains([
             'comment' => '/api/comments/7',
             'doctor' => '/api/doctors/1',
-            'creationDate' => '2021-09-28T15:32:00+00:00',
+            'createdAt' => '2021-09-28T15:32:00+00:00',
         ]);
     }
 
@@ -187,19 +187,19 @@ class NotificationApiTest extends AbstractApiTestCase
     {
         // On ne peut modifier que ses notifications
         // 
-        $readDate = '2021-12-06T09:24:00+00:00';
+        $readAt = '2021-12-06T09:24:00+00:00';
 
         $this->loginUser($userEmail);
         $crawler = $this->client->request('PUT', "/api/notifications/1", [
             'json' => [
-                'readDate' => $readDate,
+                'readAt' => $readAt,
             ],
         ]);
         $this->assertResponseStatusCodeSame($expected);
 
         if ($expected == Response::HTTP_OK) {
             $crawler = $this->client->request('GET', "/api/notifications/1");
-            $this->assertJsonContains(['readDate' => $readDate]);
+            $this->assertJsonContains(['readAt' => $readAt]);
         }
     }
     
@@ -209,8 +209,8 @@ class NotificationApiTest extends AbstractApiTestCase
         return [
             [ 'comment', '/api/comments/1', '/api/comments/7' ], // pas modifiable
             [ 'doctor', '/api/doctors/3', '/api/doctors/1' ], // pas modifiable
-            [ 'creationDate', '2000-01-01T00:00:00+00:00', '2021-09-28T15:32:00+00:00'], // pas modifiable
-            [ 'readDate', '2021-10-01T17:30:52+00:00', '2021-10-01T17:30:52+00:00'], // modifiable
+            [ 'createdAt', '2000-01-01T00:00:00+00:00', '2021-09-28T15:32:00+00:00'], // pas modifiable
+            [ 'readAt', '2021-10-01T17:30:52+00:00', '2021-10-01T17:30:52+00:00'], // modifiable
         ];
     }
 

@@ -7,7 +7,7 @@ function setNotificationRead(form) {
     const apiUrl = form['apiUrl'].value;
 
     return httpClient.put(apiUrl, {
-        readDate: 'now',
+        readAt: 'now',
     })
     .catch(function(error) {
         console.error(error);

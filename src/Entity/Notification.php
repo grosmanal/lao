@@ -64,13 +64,13 @@ class Notification
      * @ORM\Column(type="datetime_immutable")
      * @Assert\NotBlank
      */
-    private $creationDate;
+    private $createdAt;
 
     /**
      * @ORM\Column(type="datetime_immutable", nullable=true)
      */
     #[Groups(['notification:put'])]
-    private $readDate;
+    private $readAt;
 
     /**
      * @Assert\Callback
@@ -118,26 +118,26 @@ class Notification
         return $this;
     }
 
-    public function getCreationDate(): ?\DateTimeImmutable
+    public function getCreatedAt(): ?\DateTimeImmutable // TODO
     {
-        return $this->creationDate;
+        return $this->createdAt;
     }
 
-    public function setCreationDate(\DateTimeImmutable $creationdate): self
+    public function setCreatedAt(\DateTimeImmutable $createdAt): self
     {
-        $this->creationDate = $creationdate;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
 
-    public function getReadDate(): ?\DateTimeImmutable
+    public function getReadAt(): ?\DateTimeImmutable
     {
-        return $this->readDate;
+        return $this->readAt;
     }
 
-    public function setReadDate(?\DateTimeImmutable $readDate): self
+    public function setReadAt(?\DateTimeImmutable $readAt): self
     {
-        $this->readDate = $readDate;
+        $this->readAt = $readAt;
 
         return $this;
     }

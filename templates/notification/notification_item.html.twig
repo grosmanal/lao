@@ -9,7 +9,7 @@
             <span>
                 {{ 'notifications.item.mention_sentence'|trans({'%notifier%': notification.comment.author.displayName}) }}
                 
-                {% if notification.readDate is null %}
+                {% if notification.readAt is null %}
                     <button type="submit" name="markAndGo" class="btn btn-link border-0 m-0 p-0" style="margin-bottom: 3px !important">{{ 'notifications.item.comment'|trans }}</button>
                 {% else %}
                     <a href="{{ urlComment }}"
@@ -18,14 +18,14 @@
             </span>
             <span class="ms-auto">
                 <time
-                    title="{{ notification.creationDate|format_datetime('medium', 'short') }}"
-                    datetime="{{ notification.creationDate|date('c') }}"
+                    title="{{ notification.createdAt|format_datetime('medium', 'short') }}"
+                    datetime="{{ notification.createdAt|date('c') }}"
                 >
-                    {{ notification.creationDate|ago }}
+                    {{ notification.createdAt|ago }}
                 </time>
             </span>
 
-            {% if notification.readDate is null %}
+            {% if notification.readAt is null %}
                 <button type="submit" name="mark" class="btn btn-sm btn-outline-primary ms-2" title="{{ 'notifications.item.mark_button'|trans }}"><i class="bi bi-check"></i></button>
             {% endif %}
         </div>

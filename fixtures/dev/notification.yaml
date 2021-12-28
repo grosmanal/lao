@@ -6,25 +6,25 @@ App\Entity\Notification:
     notification_1:
         comment: '@comment_5'
         doctor: '@doctor_laurence'
-        creationDate: <(new DateTimeImmutable("2021-05-15 15:30:20"))> 
-        readDate: <(new DateTimeImmutable("2021-05-16 17:13:05"))> 
+        createdAt: <(new DateTimeImmutable("2021-05-15 15:30:20"))> 
+        readAt: <(new DateTimeImmutable("2021-05-16 17:13:05"))> 
     notification_2:
         comment: '@comment_6'
         doctor: '@doctor_laurence'
-        creationDate: <(new DateTimeImmutable("2021-05-16 15:30:20"))> 
-        readDate: ~
+        createdAt: <(new DateTimeImmutable("2021-05-16 15:30:20"))> 
+        readAt: ~
     notification_3:
         comment: '@comment_7'
         doctor: '@doctor_laurence'
-        creationDate: <(new DateTimeImmutable("2021-05-17 15:33:20"))> 
-        readDate: ~
+        createdAt: <(new DateTimeImmutable("2021-05-17 15:33:20"))> 
+        readAt: ~
     notification_4:
         comment: '@comment_8'
         doctor: '@doctor_joelle'
-        creationDate: '<(new DateTimeImmutable("2021-05-18 15:33:20"))>'
-        readDate: ~
+        createdAt: '<(new DateTimeImmutable("2021-05-18 15:33:20"))>'
+        readAt: ~
     notification_{5..16}:
         comment: '@comment_8'
         doctor: '@doctor_joelle'
-        creationDate: '<immutableDateTimeBetween("-1 year", "-1 day")>'
-        readDate: '<immutableDateTimeBetween("-1 year", "-1 day")>'
+        createdAt: '<immutableDateTimeBetween("-1 year", "-1 day")>'
+        readAt: '<immutableDateTimeBetween("-1 year", "-1 day")>'

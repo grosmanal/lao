@@ -27,8 +27,8 @@ class NotificationRepository extends ServiceEntityRepository
         return $qb
             ->andWhere('n.doctor = :doctor')
             ->setParameter(':doctor', $doctor)
-            ->andWhere($read ? $qb->expr()->isNotNull('n.readDate') : $qb->expr()->isNull('n.readDate'))
-            ->orderBy('n.creationDate', 'ASC')
+            ->andWhere($read ? $qb->expr()->isNotNull('n.readAt') : $qb->expr()->isNull('n.readAt'))
+            ->orderBy('n.createdAt', 'ASC')
             ->getQuery()
         ;
     }
@@ -50,11 +50,11 @@ class NotificationRepository extends ServiceEntityRepository
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb
             ->update('\App\Entity\Notification', 'n')
-            ->set('n.readDate', ':now')
+            ->set('n.readAt', ':now')
             ->setParameter(':now', new \DateTimeImmutable())
             ->andWhere('n.doctor = :doctor')
             ->setParameter(':doctor', $doctor)
-            ->andWhere($qb->expr()->isNull('n.readDate'))
+            ->andWhere($qb->expr()->isNull('n.readAt'))
         ;
         $qb->getQuery()->execute();
     }
