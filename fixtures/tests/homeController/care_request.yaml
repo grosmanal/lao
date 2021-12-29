@@ -15,3 +15,9 @@ App\Entity\CareRequest:
         contactedAt: <(new DateTimeImmutable("-10 days"))>
         createdBy: '@doctor_2'
         createdAt: <(new DateTimeImmutable("-10 days"))>
+    care_request_3:
+        patient: '@patient_4'
+        contactedBy: '@doctor_1'
+        contactedAt: <(new DateTimeImmutable("-10 days"))>
+        createdBy: '@doctor_1'
+        createdAt: <(new DateTimeImmutable("-10 days"))>

@@ -27,21 +27,21 @@ class HomeControllerTest extends AbstractControllerTestCase
         $this->doctorRepository = $container->get(DoctorRepository::class);
     }
     
-    public function testPostAsAnonymous()
+    public function testAsAnonymous()
     {
         $crawler = $this->client->request('GET', "/home");
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND); // Redirection vers le login
         $this->assertResponseRedirects('/login');
     }
 
-    public function testPostAsAdmin()
+    public function testAsAdmin()
     {
         $this->loginUser('admin@example.com');
         $crawler = $this->client->request('GET', "/home");
         $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
     }
     
-    public function testGetAsDoctor()
+    public function testAsDoctor()
     {
         $this->loginUser('user1@example.com');
         $crawler = $this->client->request('GET', "/home");
@@ -51,9 +51,9 @@ class HomeControllerTest extends AbstractControllerTestCase
         $this->assertSelectorExists('section.articles');
         $this->assertCount(1, $crawler->filter('section.articles ul > li'));
 
-        // Il doit y avoir un patient en anomalie
+        // Il doit y avoir deux patients en anomalie
         $this->assertSelectorExists('section.patients-anomaly');
-        $this->assertCount(1, $crawler->filter('section.patients-anomaly ul > li'));
+        $this->assertCount(2, $crawler->filter('section.patients-anomaly ul > li'));
         
         // Le nombre de jours d'activité est par défaut de 7
         $this->assertSelectorTextContains('section.activity .card-header', '7');
@@ -63,7 +63,7 @@ class HomeControllerTest extends AbstractControllerTestCase
     
     public function testNoPatientAnomaly()
     {
-        // Création d'une care request pour le patient en anomalie
+        // Création d'une care request pour le patient en anomalie (sans care request)
         $careRequest = new CareRequest();
         $careRequest
             ->setPatient($this->patientRepository->find(2))
@@ -73,6 +73,12 @@ class HomeControllerTest extends AbstractControllerTestCase
             ->setCreatedAt(new \DateTimeImmutable())
         ;
         $this->em->persist($careRequest);
+
+        // Modification du patient sans dispo avec care request
+        $patient = $this->patientRepository->find(4);
+        $patient->setVariableSchedule(true);
+        $this->em->persist($patient);
+
         $this->em->flush();
         
         $this->loginUser('user1@example.com');

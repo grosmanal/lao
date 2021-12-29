@@ -1,5 +1,7 @@
 {% if anomaly == constant('App\\Service\\PatientAnomaly::ANOMALY_NO_CARE_REQUEST') %}
     {% set message = 'patient_anomaly.patient_without_care_request' %}
+{% elseif anomaly == constant('App\\Service\\PatientAnomaly::ANOMALY_NO_AVAILABILITY') %}
+    {% set message = 'patient_anomaly.patient_without_availability' %}
 {% endif %}
 
 <li class="list-group-item list-group-item-action">

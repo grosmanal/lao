@@ -36,6 +36,7 @@ class PatientRepository extends ServiceEntityRepository implements ActivityLogga
     
     
     /**
+     * @param Office $office Current office
      * @return Patient[] Patients without any care request
      */
     public function findWithoutCareRequest(Office $office): array
@@ -46,6 +47,38 @@ class PatientRepository extends ServiceEntityRepository implements ActivityLogga
             ->andWhere('cr.id is null')
             ->andWhere('p.office = :office')
             ->setParameter(':office', $office)
+            ->orderBy('p.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+
+    /**
+     * @param Office $office Current office
+     * @return Patient[] Patients without availability and with active care request
+     */
+    public function findWithoutAvailability(Office $office): array
+    {
+        $subQuery = $this->getEntityManager()->createQueryBuilder();
+        $subQuery
+            ->select('cr_p.id')
+            ->from('App\Entity\CareRequest', 'cr')
+            ->innerJoin('cr.patient', 'cr_p')
+            ->andWhere($subQuery->expr()->isNull('cr.acceptedAt'))
+            ->andWhere($subQuery->expr()->isNull('cr.abandonedAt'))
+        ;
+
+        $qb = $this->createQueryBuilder('p');
+        return $qb
+            ->select('p')
+            ->andWhere('p.availability = :availability')
+            ->setParameter(':availability', json_encode([]))
+            ->andWhere('p.variableSchedule = :variableSchedule')
+            ->setParameter(':variableSchedule', false)
+            ->andWhere('p.office = :office')
+            ->setParameter(':office', $office)
+            ->andWhere($qb->expr()->in('p.id', $subQuery->getDQL()))
             ->orderBy('p.createdAt', 'DESC')
             ->getQuery()
             ->getResult()

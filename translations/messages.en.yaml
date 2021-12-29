@@ -245,6 +245,7 @@ patient_anomaly:
     content:
         header: Patients with anomaly
     patient_without_care_request: no care request
+    patient_without_availability: no availability
           
 # Activity
 activity:

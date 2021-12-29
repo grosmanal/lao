@@ -1,0 +1,32 @@
+---
+include:
+    - patient.yaml
+    - ../doctor.yaml
+App\Entity\CareRequest:
+    care_request_1: # Care request active du patient 1
+        patient: '@patient_1'
+        contactedBy: '@doctor_1'
+        contactedAt: <(new DateTimeImmutable("2021-10-01"))>
+        createdBy: '@doctor_1'
+    care_request_2: # Care request active du patient 4
+        patient: '@patient_4'
+        contactedBy: '@doctor_1'
+        contactedAt: <(new DateTimeImmutable("2021-10-01"))>
+        createdBy: '@doctor_1'
+    care_request_3: # Care request archivée du patient 5
+        patient: '@patient_5'
+        acceptedAt: <(new DateTimeImmutable("2021-11-01"))>
+        contactedBy: '@doctor_1'
+        contactedAt: <(new DateTimeImmutable("2021-10-01"))>
+        createdBy: '@doctor_1'
+    care_request_4: # Care request abandonnée du patient 6
+        patient: '@patient_6'
+        abandonedAt: <(new DateTimeImmutable("2021-11-01"))>
+        contactedBy: '@doctor_1'
+        contactedAt: <(new DateTimeImmutable("2021-10-01"))>
+        createdBy: '@doctor_1'
+    care_request_5: # Care request active du patient 7
+        patient: '@patient_7'
+        contactedBy: '@doctor_1'
+        contactedAt: <(new DateTimeImmutable("2021-10-01"))>
+        createdBy: '@doctor_1'

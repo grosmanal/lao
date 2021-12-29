@@ -8,7 +8,9 @@ App\Entity\Patient:
         office: '@office_1'
         createdBy: '@doctor_1'
         createdAt: <immutableDateTimeBetween("-6 months", "-1 month")>
-        availability: []
+        availability: 
+            1:
+                - [ 1000, 1200 ]
     patient_2:
         firstname: patient_2_firstname
         office: '@office_1'
@@ -20,5 +22,12 @@ App\Entity\Patient:
         office: '@office_2'
         variableSchedule: false
         createdBy: '@doctor_2'
+        createdAt: <immutableDateTimeBetween("-6 months", "-1 month")>
+        availability: []
+    patient_4:
+        firstname: patient_4_firstname
+        office: '@office_1'
+        variableSchedule: false
+        createdBy: '@doctor_1'
         createdAt: <immutableDateTimeBetween("-6 months", "-1 month")>
         availability: []

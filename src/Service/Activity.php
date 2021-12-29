@@ -66,6 +66,7 @@ class Activity
         }
         
         if ($author == null) {
+            return ''; // TODO cas de programmes batch sans log
             throw new \LogicException('No activity author found'); // @codeCoverageIgnore
         }
         

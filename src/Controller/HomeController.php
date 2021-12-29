@@ -43,7 +43,7 @@ class HomeController extends AbstractAppController
 
         return $this->renderForm('home/home.html.twig', [
             'navbarTitle' => 'home.content.title',
-            'patientsAnomalies' => $patientAnomaly->getPatientsAnomaly($currentOffice),
+            'patientsAnomaly' => $patientAnomaly->getPatientsAnomaly($currentOffice),
             'articles' => $articles,
             'daysSince' => $daysSince,
             'touchedEntities' => $datedEntities,

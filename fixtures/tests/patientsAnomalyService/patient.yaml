@@ -1,0 +1,71 @@
+---
+include:
+    - ../office.yaml
+App\Entity\Patient:
+    patient_1: # patient avec careRequest (avec dispo) (cr 1)
+        firstname: patient_1_firstname
+        lastname: patient_1_lastname
+        phone: patient_1_phone
+        office: '@office_1'
+        createdBy: '@doctor_1'
+        createdAt: <(new DateTimeImmutable("2021-12-01"))>
+        variableSchedule: false
+        availability:
+            1:
+                - [ 1000, 1200 ]
+    patient_2: # patient sans careRequest (avec dispo)
+        firstname: patient_2_firstname
+        lastname: patient_2_lastname
+        phone: patient_2_phone
+        office: '@office_1'
+        createdBy: '@doctor_1'
+        createdAt: <(new DateTimeImmutable("2021-12-02"))>
+        variableSchedule: false
+        availability:
+            1:
+                - [ 1000, 1200 ]
+    patient_3: # patient sans dispo sans careRequest
+        firstname: patient_3_firstname
+        lastname: patient_3_lastname
+        phone: patient_3_phone
+        office: '@office_1'
+        createdBy: '@doctor_1'
+        createdAt: <(new DateTimeImmutable("2021-12-03"))>
+        variableSchedule: false
+        availability: []
+    patient_4: # patient sans dispo avec careRequest active (cr 2)
+        firstname: patient_4_firstname
+        lastname: patient_4_lastname
+        phone: patient_4_phone
+        office: '@office_1'
+        createdBy: '@doctor_1'
+        createdAt: <(new DateTimeImmutable("2021-12-04"))>
+        variableSchedule: false
+        availability: []
+    patient_5: # patient sans dispo avec careRequest archivée (cr 3)
+        firstname: patient_5_firstname
+        lastname: patient_5_lastname
+        phone: patient_5_phone
+        office: '@office_1'
+        createdBy: '@doctor_1'
+        createdAt: <(new DateTimeImmutable("2021-12-05"))>
+        variableSchedule: false
+        availability: []
+    patient_6: # patient sans dispo avec careRequest abandonnée (cr 4)
+        firstname: patient_6_firstname
+        lastname: patient_6_lastname
+        phone: patient_6_phone
+        office: '@office_1'
+        createdBy: '@doctor_1'
+        createdAt: <(new DateTimeImmutable("2021-12-06"))>
+        variableSchedule: false
+        availability: []
+    patient_7: # patient sans dispo avec careRequest active mais variableSchedule (cr 5)
+        firstname: patient_7_firstname
+        lastname: patient_7_lastname
+        phone: patient_7_phone
+        office: '@office_1'
+        createdBy: '@doctor_1'
+        createdAt: <(new DateTimeImmutable("2021-12-07"))>
+        variableSchedule: true
+        availability: []

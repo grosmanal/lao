@@ -8,6 +8,7 @@ use App\Repository\PatientRepository;
 class PatientAnomaly
 {
     const ANOMALY_NO_CARE_REQUEST = 'noCareRequest';
+    const ANOMALY_NO_AVAILABILITY = 'noAvailabilty';
 
     public function __construct(
         private PatientRepository $patientRepository,
@@ -17,14 +18,35 @@ class PatientAnomaly
 
     public function getPatientsAnomaly(Office $office): array
     {
-        $patientsAnomalies = [];
+        $patientsAnomaly = [];
 
-        // Patients sans demande
-        $patientsWithoutCareRequest = $this->patientRepository->findWithoutCareRequest($office);
-        if (count($patientsWithoutCareRequest) > 0) {
-            $patientsAnomalies[self::ANOMALY_NO_CARE_REQUEST] = $patientsWithoutCareRequest;
+        // Patients avec demande active sans dispo
+        foreach ($this->patientRepository->findWithoutAvailability($office) as $patient) {
+            $patientsAnomaly[] = [
+                'anomaly' => self::ANOMALY_NO_AVAILABILITY,
+                'patient' => $patient,
+            ];
         }
 
-        return $patientsAnomalies;
+        // Patients sans demande
+        foreach ($this->patientRepository->findWithoutCareRequest($office) as $patient) {
+            $patientsAnomaly[] = [
+                'anomaly' => self::ANOMALY_NO_CARE_REQUEST,
+                'patient' => $patient,
+            ];
+        }
+
+        // Tri des patients en anomalie par date de création
+        usort($patientsAnomaly, function($a, $b) {
+            /** @var Patient */
+            $aPatient = $a['patient'];
+
+            /** @var Patient */
+            $bPatient = $b['patient'];
+
+            return $aPatient->getCreatedAt() <=> $bPatient->getCreatedAt();
+        });
+
+        return $patientsAnomaly;
     }
 }
