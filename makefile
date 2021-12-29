@@ -1,6 +1,6 @@
 PANTHER_ENV=panther
 
-.PHONY: fixtures-dev fixtures-panther test-end2end schema-test test-unit-integration test-javascript test
+.PHONY: fixtures-dev fixtures-panther test-end2end schema-test test-unit-integration test-javascript phpstan test
 
 fixtures-dev:
 	bin/console hautelook:fixtures:load --purge-with-truncate --quiet --env dev
@@ -26,7 +26,10 @@ test-unit-integration: schema-test
 test-javascript:
 	yarn test
 
-test: test-unit-integration test-javascript test-end2end
+phpstan:
+	vendor/bin/phpstan analyse -l 0 src tests
+
+test: phpstan test-unit-integration test-javascript test-end2end
 	@echo "\n---\nAll tests passed 🎉"
 
 

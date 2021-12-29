@@ -22,6 +22,7 @@ class SearchType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $daysOfWeekChoices = [];
         foreach ($options['daysOfWeek'] as $weekDay) {
             $daysOfWeekChoices[jddayofweek($weekDay - 1, 1)] = $weekDay;
         }

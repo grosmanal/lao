@@ -171,7 +171,7 @@ class AvailabilityTest extends TestCase
                     1 => [ new Interval(1000, 1200), ],
                 ]
             ],
-            'Ajout où les intervalles se touchent avec plusieurs intervalles' => [
+            'Ajout où les intervalles se touchent avec plusieurs intervalles (1er interval)' => [
                 // current
                 [
                     1 => [
@@ -189,7 +189,7 @@ class AvailabilityTest extends TestCase
                     ],
                 ]
             ],
-            'Ajout où les intervalles se touchent avec plusieurs intervalles' => [
+            'Ajout où les intervalles se touchent avec plusieurs intervalles (2nd interval)' => [
                 // current
                 [
                     1 => [
