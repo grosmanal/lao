@@ -31,7 +31,7 @@ class CareRequestTest extends AbstractEntityTestCase
         $doctor = $this->doctorRepository->find(3);
 
         $this->assertFalse($careRequest->isArchived());
-        $this->assertFalse($careRequest->isAbandonned());
+        $this->assertFalse($careRequest->isAbandoned());
         $this->assertTrue($careRequest->isPriority());
         $this->assertEquals(new \DateTime('2021-09-27'), $careRequest->getContactedAtMutable());
         

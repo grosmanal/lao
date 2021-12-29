@@ -242,7 +242,7 @@ class CareRequest implements OfficeOwnedInterface, ActivityLoggableEntityInterfa
         return $this->getState() === self::STATE_ARCHIVED;
     }
 
-    public function isAbandonned(): bool
+    public function isAbandoned(): bool
     {
         return $this->getState() === self::STATE_ABANDONED;
     }

@@ -88,6 +88,9 @@ care_request:
         archived: Archivée
         abandoned: Abandonnée
     priority_badge: Prioritaire
+    accepted_summary: Prise en charge par %doctorDisplayName% le %acceptedAt%
+    abandoned_summary: Abandonnée par %doctorDisplayName% le %abandonedAt% 
+    unknown_doctor: praticien inconnu
     new: Nouvelle demande
     delete: '%icon% Supprimer'
     comment:
@@ -97,10 +100,17 @@ care_request:
         contacted_by: Reçue par
         complaint: Plainte
         custom_complaint: Complément de plainte
-        accepted_by: Acceptée par
-        accepted_at: Acceptée le
-        take_charge_action: Prendre en charge
-        abandoned_reason: Raison d'abandon
+        accepted_by:
+            placeholder: '- acceptée par -'
+            label: Acceptée par
+        accepted_at: le
+        accept_action: Je prends en charge
+        accept_action_details: Prendre en charge
+        show_accept_details: plus de détails
+        hide_accept_details: moins de détails
+        abandoned_reason:
+            placeholder: '- motif -'
+            label: Raison d’abondon
         abandoned_at: Abandonnée le
         priority: Demande prioritaire
         abandon_action: Abandonner

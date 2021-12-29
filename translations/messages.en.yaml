@@ -88,6 +88,9 @@ care_request:
         archived: Archived
         abandoned: Abandoned
     priority_badge: Priority
+    accepted_summary: Accepted by %doctorDisplayName% on %acceptedAt%
+    abandoned_summary: Abandoned by %doctorDisplayName% on %abandonedAt% 
+    unknown_doctor: unknown doctor
     new: New care request
     delete: '%icon% Delete'
     comment:
@@ -97,10 +100,17 @@ care_request:
         contacted_by: Received by
         complaint: Complaint
         custom_complaint: Custom complaint
-        accepted_by: Accepted by
-        accepted_at: Accepted on
-        take_charge_action: I take charge
-        abandoned_reason: Abandoned reason
+        accepted_by:
+            placeholder: '- accepted by -'
+            label: Accepted by
+        accepted_at: 'on'
+        accept_action: I accept care request
+        accept_action_details: Accept care request
+        show_accept_details: show more details
+        hide_accept_details: hide details
+        abandoned_reason:
+            placeholder: '- reason -'
+            label: Abandoned reason
         abandoned_at: Abandoned on
         abandon_action: Abandon
         priority: Priority care request

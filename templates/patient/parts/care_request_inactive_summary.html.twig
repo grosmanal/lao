@@ -1,0 +1,12 @@
+{% if careRequest.archived %}
+    {% set label = 'care_request.accepted_summary'|trans({
+        '%doctorDisplayName%': careRequest.acceptedBy ? careRequest.acceptedBy.displayName : 'care_request.unknown_doctor'|trans,
+        '%acceptedAt%': careRequest.acceptedAt|date('d/m/Y'),
+    }) %}
+{% elseif careRequest.abandoned %}
+    {% set label = 'care_request.abandoned_summary'|trans({
+        '%doctorDisplayName%': careRequest.abandonedBy ? careRequest.abandonedBy.displayName : 'care_request.unknown_doctor'|trans,
+        '%abandonedAt%': careRequest.abandonedAt|date('d/m/Y'),
+    }) ~ ( careRequest.abandonedReason ? (' (' ~ careRequest.abandonedReason.label ~ ')') ) %}
+{% endif %}
+<span class="ms-2 fst-italic">{{ label }}</span>

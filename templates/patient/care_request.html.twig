@@ -16,6 +16,9 @@
     >
         {{ 'care_request.title'|trans({'%creationDate%': careRequest.contactedAt|date('d/m/Y')}) }}
         {% include "parts/care_request_badge.html.twig" with {careRequest: careRequest} %}
+        {% if careRequest.archived or careRequest.abandoned %}
+            {% include "patient/parts/care_request_inactive_summary.html.twig" with {careRequest: careRequest} %}
+        {% endif %}
     </button>
 </h3>
 <div
@@ -27,7 +30,7 @@
     <div class="accordion-body">
         {% include "patient/parts/care_request_form.html.twig" %}
         
-        <section class="comments mt-3 w-75 mx-auto">
+        <section class="comments mt-4 w-75 mx-auto">
             <ul class="comments">
             {% for comment in careRequest.comments %}
                 {% include "patient/parts/care_request_comment.html.twig" %}

@@ -23,24 +23,7 @@
 
         <div class="form-group row">
             <div class="col-12 col-lg-4">
-                {{ form_label(careRequestForm.complaint) }}
-            </div>
-            <div class="col-12 col-lg-8">
-                {{ form_widget(careRequestForm.complaint) }}
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <div class="col-12 col-lg-4">
-                {{ form_label(careRequestForm.customComplaint) }}
-            </div>
-            <div class="col-12 col-lg-8">
-                {{ form_widget(careRequestForm.customComplaint) }}
-            </div>
-        </div>
-
-        <div class="form-group row text-start">
-            <div class="col-12 col-lg-4">
+                <label>{{ 'care_request.form.priority'| trans }}</label>
             </div>
             <div class="col-12 col-lg-8">
                 {{ form_widget(careRequestForm.priority) }}
@@ -49,48 +32,20 @@
 
         <div class="form-group row">
             <div class="col-12 col-lg-4">
-                {{ form_label(careRequestForm.acceptedBy) }}
+                {{ form_label(careRequestForm.complaint) }}
             </div>
             <div class="col-12 col-lg-8">
-                {{ form_widget(careRequestForm.acceptedBy) }}
+                {{ form_widget(careRequestForm.complaint) }}
             </div>
         </div>
 
         <div class="form-group row">
-            <div class="col-12 col-lg-4">
-                {{ form_label(careRequestForm.acceptedAt) }}
-            </div>
-            <div class="col-12 col-lg-8 text-start">
-                <span class="d-inline-block" style="max-width: 150px;">
-                    {{ form_widget(careRequestForm.acceptedAt) }}
-                </span>
-                {{ form_widget(careRequestForm.accept) }}
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <div class="col-12 col-lg-4">
-                {{ form_label(careRequestForm.abandonedReason) }}
+            <div class="col-12 col-lg-4 mt-1">
+                {{ form_label(careRequestForm.customComplaint) }}
             </div>
             <div class="col-12 col-lg-8">
-                {{ form_widget(careRequestForm.abandonedReason) }}
+                {{ form_widget(careRequestForm.customComplaint) }}
             </div>
-        </div>
-
-        <div class="form-group row">
-            <div class="col-12 col-lg-4">
-                {{ form_label(careRequestForm.abandonedAt) }}
-            </div>
-            <div class="col-12 col-lg-8 text-start">
-                <span class="d-inline-block" style="max-width: 150px;">
-                    {{ form_widget(careRequestForm.abandonedAt) }}
-                </span>
-                {{ form_widget(careRequestForm.abandon) }}
-            </div>
-        </div>
-
-        <div class="form-group row d-none d-lg-block">
-            &nbsp; {# pour avoir un colonne en face demande prioritaire #}
         </div>
     </div>
 
@@ -112,5 +67,56 @@
             {% endif %}
         </div>
     </div>
+
+
+    {% if careRequestForm.accept is defined %}
+    <div class="row mt-4">
+        <div class="col-12 col-lg-6 text-center border-end mt-0">
+            <div class="mx-auto w-50">
+                <div class="col-12">
+                    {{ form_widget(careRequestForm.accept, {'attr': {
+                        'class': 'btn btn-primary w-100',
+                        'data-details-shown': 0,
+                        'data-label-details-hidden': 'care_request.form.accept_action'|trans,
+                        'data-label-details-shown': 'care_request.form.accept_action_details'|trans,
+                    }, 'id': 'care_request_accept-' ~ careRequest.id,
+                    }) }}
+                </div>
+                <div class="text-end">
+                    <a
+                        class="accept-show-details"
+                        href="#acceptDetails-{{ careRequest.id }}"
+                        data-bs-toggle="collapse"
+                        data-accept-button-id="#care_request_accept-{{ careRequest.id }}"
+                        data-label-details-shown="{{ 'care_request.form.hide_accept_details'|trans }}"
+                        data-label-details-hidden="{{ 'care_request.form.show_accept_details'|trans }}"
+                    >{{ 'care_request.form.show_accept_details'|trans }}
+                    </a>
+                </div>
+                <div class="collapse" id="acceptDetails-{{ careRequest.id }}">
+                    {{ form_widget(careRequestForm.acceptedBy) }}
+
+                    <div class="mt-1 row">
+                        <div class="col-2">{{ form_label(careRequestForm.acceptedAt, null, {'label_attr': {
+                            'class': 'form-label col-form-label'
+                        }}) }}</div>
+                        <div class="col-10">{{ form_widget(careRequestForm.acceptedAt) }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-lg-6">
+            <div class="mx-auto w-50">
+                {{ form_widget(careRequestForm.abandon, {'attr': {
+                    'class': 'btn btn-primary w-100' 
+                }}) }}
+                <div class="mt-1">
+                {{ form_widget(careRequestForm.abandonedReason) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% endif %}
 
 {{ form_end(careRequestForm) }}

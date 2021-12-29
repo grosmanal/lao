@@ -128,10 +128,8 @@ class CareRequestControllerFormTest extends AbstractControllerTestCase
         $this->loginUser('user1@example.com');
         $crawler = $this->client->request('GET', "/care_request_forms/2");
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextSame('h3 button', 'Demande du 26/09/2021 Archivée Prioritaire');
+        $this->assertSelectorTextSame('h3 button', 'Demande du 26/09/2021 Archivée Prioritaire Prise en charge par doctor_1_firstname le 28/09/2021');
         $this->assertSelectorExists('form');
-        $this->assertSelectorExists('form button[name="care_request[accept]"][disabled]');
-        $this->assertSelectorExists('form button[name="care_request[abandon]"][disabled]');
         $this->assertSelectorTextSame('form button[name="care_request[reactivate]"]', 'Réactiver');
         
         // Test de l'existence du commentaire
@@ -147,10 +145,8 @@ class CareRequestControllerFormTest extends AbstractControllerTestCase
         $this->loginUser('user1@example.com');
         $crawler = $this->client->request('GET', "/care_request_forms/3");
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextSame('h3 button', 'Demande du 25/09/2021 Abandonnée Prioritaire');
+        $this->assertSelectorTextSame('h3 button', "Demande du 25/09/2021 Abandonnée Prioritaire Abandonnée par praticien inconnu le 28/09/2021 (Raison d'abandon 1)");
         $this->assertSelectorExists('form');
-        $this->assertSelectorExists('form button[name="care_request[accept]"][disabled]');
-        $this->assertSelectorExists('form button[name="care_request[abandon]"][disabled]');
         $this->assertSelectorTextSame('form button[name="care_request[reactivate]"]', 'Réactiver');
         
         // Test de l'existence du commentaire

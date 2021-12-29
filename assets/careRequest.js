@@ -13,6 +13,12 @@ export {
     insertCareRequestCreationForm,
 };
 
+jQuery(function ($) {
+    $('.accept-show-details').on('click', function () {
+        handleShowAcceptDetails($, this);
+    })
+});
+
 /**
  * Appel ajax de la mise à jour ou création (via API) de la care request
  * puis mise à jour de l'html de la care request avec les nouvelle données
@@ -40,6 +46,11 @@ function doSubmitCareRequest(form, data, checkFlag = true) {
                 if (textarea.length) {
                     transformToSummernote(textarea.get(0));
                 }
+
+                // bind de la fonction de gestion d'affichage des détails de prise en charge
+                $('.accept-show-details').on('click', function () {
+                    handleShowAcceptDetails($, this);
+                })
                 
                 // Affichage d'un check sur le bouton du nouveau formulaire
                 const updateButton = formParent.find('#care_request_upsert');
@@ -72,19 +83,12 @@ function upsertCareRequest(form) {
 
     const data = {
         contactedBy: nullFieldConverter(form['care_request[contactedBy]'].value),
+        contactedAt: nullFieldConverter(form['care_request[contactedAt]'].value),
         priority: nullFieldConverter(form['care_request[priority]'].checked),
         complaint: nullFieldConverter(form['care_request[complaint]'].value),
         customComplaint: nullFieldConverter(form['care_request[customComplaint]'].value),
-        acceptedBy: nullFieldConverter(form['care_request[acceptedBy]'].value),
-        acceptedAt: nullFieldConverter(form['care_request[acceptedAt]'].value),
-        abandonedAt: nullFieldConverter(form['care_request[abandonedAt]'].value),
-        abandonedReason: nullFieldConverter(form['care_request[abandonedReason]'].value),
     };
         
-    if (form['care_request[contactedAt]'].value != '') {
-        data.contactedAt = form['care_request[contactedAt]'].value;
-    }
-
     let checkFlag = undefined;
     if (form['care_request[patientUri]']) {
         // Le formulaire contient le champ (caché) patientUri, il faut l'ajouter
@@ -108,6 +112,7 @@ function reactivateCareRequest(form) {
     const data = {
         acceptedBy: null,
         acceptedAt: null,
+        abandonedBy: null,
         abandonedAt: null,
         abandonedReason: null,
     };
@@ -133,7 +138,7 @@ function abandonCareRequest(form, button) {
             element: abandonedReason,
             title: Translator.trans('care_request.confirm_abandon.title'),
             content: Translator.trans('care_request.confirm_abandon.content'),
-            placement: 'top',
+            placement: 'bottom',
         }
         
         confirm(
@@ -151,11 +156,23 @@ function abandonCareRequest(form, button) {
 /**
  * Acceptation de la demande de prise en charge
  */
-function acceptCareRequest(form) {
-    const data = {
-        acceptedAt: 'now',
-        acceptedBy: nullFieldConverter(form['care_request[doctorUri]'].value),
-    };
+function acceptCareRequest(form, htmlButton) {
+    let data;
+
+    if ($(htmlButton).data('detailsShown') == 1) {
+        // Les détails de la prise en charge sont affichés
+        data = {
+            acceptedBy: nullFieldConverter(form['care_request[acceptedBy]'].value),
+            acceptedAt: nullFieldConverter(form['care_request[acceptedAt]'].value)
+        };
+    } else {
+        // Les détails de la prise en charge sont cachés
+        // La prise en charge se fait par le docteur en cours ce jour
+        data = {
+            acceptedBy: nullFieldConverter(form['care_request[doctorUri]'].value),
+            acceptedAt: 'now',
+        };
+    }
 
     doSubmitCareRequest(form, data);
 }
@@ -196,7 +213,7 @@ function submitCareRequest(event) {
     } else if (event.submitter.name == 'care_request[abandon]') {
         abandonCareRequest(form, event.submitter);
     } else if (event.submitter.name == 'care_request[accept]') {
-        acceptCareRequest(form);
+        acceptCareRequest(form, event.submitter);
     } else if (event.submitter.name == 'care_request[delete]') {
         deleteCareRequest(event.submitter);
     }
@@ -237,4 +254,42 @@ function insertCareRequestCreationForm(event) {
             console.error(error);
             modal('care_request.error.reread');
         });
+}
+
+/**
+ * 
+ * @param {JQueryStatic} $ jQuery
+ * @param {HTMLAnchorElement} el 
+ */
+function handleShowAcceptDetails($, htmlEl) {
+    const el = $(htmlEl);
+    const buttonAccept = $(el.data('acceptButtonId'));
+
+    const detailsFields = $(el.attr('href')).find('[name^="care_request"]');
+
+    if (el.hasClass('collapsed')) {
+        // Label du lien qui collapse
+        el.text(el.data('labelDetailsHidden'));
+
+        // Label du bouton d'acceptation
+        buttonAccept.text(buttonAccept.data('labelDetailsHidden'));
+
+        // Marquage des data du bouton
+        buttonAccept.data('detailsShown', 0);
+
+        // Disable des champs du détail (pour annuler le required)
+        detailsFields.prop('disabled', true);
+    } else {
+        // Label du lien qui collapse
+        el.text(el.data('labelDetailsShown'));
+
+        // Label du bouton d'acceptation
+        buttonAccept.text(buttonAccept.data('labelDetailsShown'));
+
+        // Marquage des data du bouton
+        buttonAccept.data('detailsShown', 1);
+
+        // Enable des champs du détail (pour activer le required)
+        detailsFields.prop('disabled', false);
+    }
 }
