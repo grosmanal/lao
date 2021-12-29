@@ -32,7 +32,7 @@ class CareRequestFinder
             return
                 ($searchResult['careRequest']->isActive() && $searchCriteria->getIncludeActiveCareRequest()) ||
                 ($searchResult['careRequest']->isArchived() && $searchCriteria->getIncludeArchivedCareRequest()) ||
-                ($searchResult['careRequest']->isAbandoned() && $searchCriteria->getIncludeAbandonnedCareRequest());
+                ($searchResult['careRequest']->isAbandoned() && $searchCriteria->getIncludeAbandonedCareRequest());
         });
         
         // Filtre disponibilité du patient

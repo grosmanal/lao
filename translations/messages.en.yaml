@@ -124,7 +124,7 @@ care_request:
         reread: Error while reading care request
         update: Error while updating care request %errorMessage%
         delete: Error while deleting patient
-        both_accepted_abandonned: Care request cannot be both accepted and abandonned
+        both_accepted_abandoned: Care request cannot be both accepted and abandoned
         contacting_doctor_office: Contacted doctor must belong to the patient’s office
         accepting_doctor_office: Doctor accepting care request must belong to the patient’s office
         abandoned_doctor_office: Doctor abandoning care request must belong to the patient’s office
@@ -175,7 +175,7 @@ search:
     care_request_statut_label: Care requests
     active_care_requests: active
     archived_care_requests: archived
-    abandonned_care_requests: abandonned
+    abandoned_care_requests: abandoned
     search_button: Search
     reset_button: Reset
     no_result: No result for your criteria

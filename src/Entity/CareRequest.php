@@ -153,7 +153,7 @@ class CareRequest implements OfficeOwnedInterface, ActivityLoggableEntityInterfa
         // Une demande ne peut pas être à la fois abandonnée et archivée (acceptée)
         if ($this->getAcceptedAt() != null && $this->getAbandonedAt() != null) {
             $context
-                ->buildViolation('care_request.error.both_accepted_abandonned')
+                ->buildViolation('care_request.error.both_accepted_abandoned')
                 ->setTranslationDomain('messages')
                 ->atPath('acceptedAt')
                 ->addViolation()

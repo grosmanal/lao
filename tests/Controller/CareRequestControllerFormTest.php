@@ -140,7 +140,7 @@ class CareRequestControllerFormTest extends AbstractControllerTestCase
         $this->assertEquals(0, $firstComment->filter('form')->count());
     }
 
-    public function testGetCareRequestContentAbandonned()
+    public function testGetCareRequestContentAbandoned()
     {
         $this->loginUser('user1@example.com');
         $crawler = $this->client->request('GET', "/care_request_forms/3");

@@ -124,7 +124,7 @@ care_request:
         reread: Erreur lors du ré-affichage de la demande
         update: Erreur lors de la mise à jour de la demande de soin %errorMessage%
         delete: Erreur lors de la suppression de la demande
-        both_accepted_abandonned: Une demande ne peut être à la fois acceptée et abandonnée.
+        both_accepted_abandoned: Une demande ne peut être à la fois acceptée et abandonnée.
         contacting_doctor_office: Le docteur contacté doit être du même cabinet que le patient.
         accepting_doctor_office: Le docteur acceptant une demande doit être du même cabinet que le patient.
         abandoned_doctor_office: Le docteur abandonnant une demande doit être du même cabinet que le patient.
@@ -175,7 +175,7 @@ search:
     care_request_statut_label: Demandes
     active_care_requests: actives
     archived_care_requests: archivées
-    abandonned_care_requests: abandonnées
+    abandoned_care_requests: abandonnées
     search_button: Rechercher
     reset_button: Réinitialiser
     no_result: Aucun résultat pour ces critères

@@ -74,8 +74,8 @@ class SearchType extends AbstractType
                 'label' => 'search.archived_care_requests',
                 'required' => false,
             ])
-            ->add('includeAbandonnedCareRequest', CheckboxType::class, [
-                'label' => 'search.abandonned_care_requests',
+            ->add('includeAbandonedCareRequest', CheckboxType::class, [
+                'label' => 'search.abandoned_care_requests',
                 'required' => false,
             ])
         ;

@@ -29,7 +29,7 @@ class SearchCriteria
 
     private ?bool $includeArchivedCareRequest = null;
 
-    private ?bool $includeAbandonnedCareRequest = null;
+    private ?bool $includeAbandonedCareRequest = null;
     
     
     /**
@@ -295,25 +295,25 @@ class SearchCriteria
     }
 
     /**
-     * Get the value of includeAbandonnedCareRequest
+     * Get the value of includeAbandonedCareRequest
      *
      * @return bool|null
      */
-    public function getIncludeAbandonnedCareRequest(): ?bool
+    public function getIncludeAbandonedCareRequest(): ?bool
     {
-        return $this->includeAbandonnedCareRequest;
+        return $this->includeAbandonedCareRequest;
     }
 
     /**
-     * Set the value of includeAbandonnedCareRequest
+     * Set the value of includeAbandonedCareRequest
      *
-     * @param bool|null $includeAbandonnedCareRequest
+     * @param bool|null $includeAbandonedCareRequest
      *
      * @return self
      */
-    public function setIncludeAbandonnedCareRequest(?bool $includeAbandonnedCareRequest)
+    public function setIncludeAbandonedCareRequest(?bool $includeAbandonedCareRequest)
     {
-        $this->includeAbandonnedCareRequest = $includeAbandonnedCareRequest;
+        $this->includeAbandonedCareRequest = $includeAbandonedCareRequest;
 
         return $this;
     }
