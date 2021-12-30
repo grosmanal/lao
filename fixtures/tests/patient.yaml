@@ -9,7 +9,7 @@ App\Entity\Patient:
         contact: patient_1_contact
         phone: patient_1_phone
         mobilePhone: patient_1_mobilePhone
-        email: patient_1_email
+        email: patient_1@example.com
         office: '@office_1'
         variableSchedule: false
         createdBy: '@doctor_1'
@@ -24,7 +24,7 @@ App\Entity\Patient:
         contact: patient_2_contact
         phone: patient_2_phone
         mobilePhone: patient_2_mobilePhone
-        email: patient_2_email
+        email: patient_2@example.com
         office: '@office_1'
         variableSchedule: true
         createdBy: '@doctor_1'
@@ -39,7 +39,7 @@ App\Entity\Patient:
         contact: patient_3_contact
         phone: patient_3_phone
         mobilePhone: patient_3_mobilePhone
-        email: patient_3_email
+        email: patient_3@example.com
         office: '@office_2'
         variableSchedule: false
         createdBy: '@doctor_2'

@@ -13,7 +13,7 @@ class PatientApiTest extends AbstractApiTestCase
         'contact' => 'contact',
         'phone' => 'phone',
         'mobile_phone' => 'mobile_phone',
-        'email' => 'email',
+        'email' => 'test@example.com',
         'variable_schedule' => true,
         'availability' => [ 1 => [900, 1000] ],
         'office' => '/api/offices/1',
@@ -122,11 +122,11 @@ class PatientApiTest extends AbstractApiTestCase
     public function dataProviderPostMissingContent()
     {
         return [
-            ['firstname', Response::HTTP_UNPROCESSABLE_ENTITY],
-            ['lastname', Response::HTTP_CREATED],
+            ['firstname', Response::HTTP_CREATED],
+            ['lastname', Response::HTTP_UNPROCESSABLE_ENTITY],
             ['birthdate', Response::HTTP_CREATED],
             ['contact', Response::HTTP_CREATED],
-            ['phone', Response::HTTP_CREATED],
+            ['phone', Response::HTTP_UNPROCESSABLE_ENTITY],
             ['mobile_phone', Response::HTTP_CREATED],
             ['email', Response::HTTP_CREATED],
             ['variable_schedule', Response::HTTP_CREATED],
@@ -201,5 +201,68 @@ class PatientApiTest extends AbstractApiTestCase
             $this->assertResponseIsSuccessful();
             $this->assertJsonContains([ 'firstname' => $newPatientFirstname]);
         }
+    }
+
+
+    public function dataProviderPutInconsistentData()
+    {
+        return [
+            [ 'email', 'test@example.com', Response::HTTP_OK ],
+            [ 'email', 'not_an_email', Response::HTTP_UNPROCESSABLE_ENTITY ],
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderPutInconsistentData
+     */
+    public function testPutInconsistentData($payloadKey, $payloadValue, $expected)
+    {
+        $this->loginUser('admin@example.com');
+        $this->client->request('PUT', '/api/patients/1', [
+            'json' => [
+                $payloadKey => $payloadValue,
+            ],
+        ]);
+        $this->assertResponseStatusCodeSame($expected);
+    }
+
+
+    public function dataProviderPutDataTooLong()
+    {
+        return [
+            [ 'firstname', 255, Response::HTTP_OK ],
+            [ 'firstname', 256, Response::HTTP_UNPROCESSABLE_ENTITY ],
+            [ 'lastname', 255, Response::HTTP_OK ],
+            [ 'lastname', 256, Response::HTTP_UNPROCESSABLE_ENTITY ],
+            [ 'contact', 255, Response::HTTP_OK ],
+            [ 'contact', 256, Response::HTTP_UNPROCESSABLE_ENTITY ],
+            [ 'phone', 255, Response::HTTP_OK ],
+            [ 'phone', 256, Response::HTTP_UNPROCESSABLE_ENTITY ],
+            [ 'mobilePhone', 255, Response::HTTP_OK ],
+            [ 'mobilePhone', 256, Response::HTTP_UNPROCESSABLE_ENTITY ],
+            [ 'email', 255, Response::HTTP_OK ],
+            [ 'email', 256, Response::HTTP_UNPROCESSABLE_ENTITY ],
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderPutDataTooLong
+     */
+    public function testPutDataTooLong($payloadKey, $payloadLength, $expected)
+    {
+        $this->loginUser('admin@example.com');
+
+        $payloadValue = str_repeat('A', $payloadLength);
+        if ($payloadKey == 'email') {
+            // Remplacement de la fin du la chaîne par '@example.com'
+            $payloadValue = substr_replace($payloadValue, '@example.com', -12);
+        }
+
+        $this->client->request('PUT', '/api/patients/1', [
+            'json' => [
+                $payloadKey => $payloadValue,
+            ],
+        ]);
+        $this->assertResponseStatusCodeSame($expected);
     }
 }

@@ -29,7 +29,7 @@ class PatientControllerTest extends AbstractControllerTestCase
         $this->assertSelectorExists("form[name='patient']");
         
         $this->client->submitForm('Ajouter', [
-            'patient[firstname]' => 'new_firstname',
+            'patient[lastname]' => 'new_lastname',
             'patient[phone]' => 'new_phone',
         ]);
         $this->assertCount($previousPatientCount + 1, $this->patientRepository->findAll());

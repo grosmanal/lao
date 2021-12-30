@@ -45,17 +45,17 @@ class Patient implements OfficeOwnedInterface, ActivityLoggableEntityInterface
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
+    #[Assert\Length(max: 255)]
     #[Groups(['patient:read', 'careRequest:read', 'comment:read'])]
     private $firstname;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Assert\Length(max=255)
+     * @ORM\Column(type="string", length=255)
      */
+    #[Assert\NotBlank()]
+    #[Assert\Length(max: 255)]
     #[Groups(['patient:read', 'careRequest:read', 'comment:read'])]
     private $lastname;
 
@@ -67,29 +67,31 @@ class Patient implements OfficeOwnedInterface, ActivityLoggableEntityInterface
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Assert\Length(max=255)
      */
+    #[Assert\Length(max: 255)]
     #[Groups(['patient:read'])]
     private $contact;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Assert\Length(max=255)
      */
+    #[Assert\NotBlank()]
+    #[Assert\Length(max: 255)]
     #[Groups(['patient:read'])]
     private $phone;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Assert\Length(max=255)
      */
+    #[Assert\Length(max: 255)]
     #[Groups(['patient:read'])]
     private $mobilePhone;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Assert\Length(max=255)
      */
+    #[Assert\Length(max: 255)]
+    #[Assert\Email()]
     #[Groups(['patient:read'])]
     private $email;
 

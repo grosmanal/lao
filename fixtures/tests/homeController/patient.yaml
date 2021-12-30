@@ -4,7 +4,7 @@ include:
     - ../doctor.yaml
 App\Entity\Patient:
     patient_1:
-        firstname: patient_1_firstname
+        lastname: patient_1_lastname
         office: '@office_1'
         createdBy: '@doctor_1'
         createdAt: <immutableDateTimeBetween("-6 months", "-1 month")>
@@ -12,20 +12,20 @@ App\Entity\Patient:
             1:
                 - [ 1000, 1200 ]
     patient_2:
-        firstname: patient_2_firstname
+        lastname: patient_2_lastname
         office: '@office_1'
         createdBy: '@doctor_1'
         createdAt: <immutableDateTimeBetween("-6 months", "-1 month")>
         availability: []
     patient_3:
-        firstname: patient_3_firstname
+        lastname: patient_3_lastname
         office: '@office_2'
         variableSchedule: false
         createdBy: '@doctor_2'
         createdAt: <immutableDateTimeBetween("-6 months", "-1 month")>
         availability: []
     patient_4:
-        firstname: patient_4_firstname
+        lastname: patient_4_lastname
         office: '@office_1'
         variableSchedule: false
         createdBy: '@doctor_1'

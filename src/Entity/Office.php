@@ -36,55 +36,55 @@ class Office implements OfficeOwnedInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
      */
+    #[Assert\NotBlank()]
+    #[Assert\Length(max: 255)]
     #[Groups(['office:read'])]
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
      */
+    #[Assert\NotBlank()]
+    #[Assert\Length(max: 255)]
     #[Groups(['office:read'])]
     private $address;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Assert\Length(max=255)
      */
+    #[Assert\Length(max: 255)]
     #[Groups(['office:read'])]
     private $addressComplement1;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Assert\Length(max=255)
      */
+    #[Assert\Length(max: 255)]
     #[Groups(['office:read'])]
     private $addressComplement2;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
      */
+    #[Assert\NotBlank()]
+    #[Assert\Length(max: 255)]
     #[Groups(['office:read'])]
     private $zipCode;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
      */
+    #[Assert\NotBlank()]
+    #[Assert\Length(max: 255)]
     #[Groups(['office:read'])]
     private $city;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
      */
+    #[Assert\NotBlank()]
+    #[Assert\Length(max: 255)]
     #[Groups(['office:read'])]
     private $country;
 

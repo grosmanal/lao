@@ -5,28 +5,28 @@ App\Entity\Patient:
     # Utilisation d'un patient qui n'entrera pas dans les tests pour la jointure avec care_request
     # car celui-ci est retourné en tant que Proxy si sélectionné
     patient_0: # ID : 1
-        firstname: firstname
+        lastname: lastname
         office: '@office_1'
         createdBy: '@doctor_1'
         createdAt: <(new DateTimeImmutable("2020-01-01 15:00:01"))>
         modifiedAt: ~
         availability: []
     patient_1: # ID : 2
-        firstname: firstname
+        lastname: lastname
         office: '@office_1'
         createdBy: '@doctor_1'
         createdAt: <(new DateTimeImmutable("2021-01-01 15:00:01"))>
         modifiedAt: ~
         availability: []
     patient_2: # ID : 3
-        firstname: firstname
+        lastname: lastname
         office: '@office_1'
         createdBy: '@doctor_1'
         createdAt: <(new DateTimeImmutable("2021-01-02 15:00:01"))>
         modifiedAt: ~
         availability: []
     patient_3: # ID : 4
-        firstname: firstname
+        lastname: lastname
         office: '@office_1'
         createdBy: '@doctor_1'
         createdAt: <(new DateTimeImmutable("2021-01-01 15:00:01"))>

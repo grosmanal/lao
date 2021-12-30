@@ -138,4 +138,26 @@ class AbandonReasonApiTest extends AbstractApiTestCase
         ]);
         $this->assertResponseStatusCodeSame($expected);
     }
+
+    public function dataProviderPutDataTooLong()
+    {
+        return [
+            [ 'label', 255, Response::HTTP_OK ],
+            [ 'label', 256, Response::HTTP_UNPROCESSABLE_ENTITY ],
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderPutDataTooLong
+     */
+    public function testPutDataTooLong($payloadKey, $payloadLength, $expected)
+    {
+        $this->loginUser('admin@example.com');
+        $this->client->request('PUT', '/api/abandon_reasons/1', [
+            'json' => [
+                $payloadKey => str_repeat('A', $payloadLength),
+            ],
+        ]);
+        $this->assertResponseStatusCodeSame($expected);
+    }
 }

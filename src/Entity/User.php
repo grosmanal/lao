@@ -38,41 +38,41 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serial
     /**
      * @var string
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Assert\NotBlank
-     * @Assert\Email
      */
+    #[Assert\NotBlank()]
+    #[Assert\Email()]
     #[Groups(['office:read'])]
     private $email;
 
     /**
      * @var array
      * @ORM\Column(type="json")
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank()]
     private $roles = [];
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank()]
     private $password;
 
     /**
      * @var string
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
      */
+    #[Assert\NotBlank()]
+    #[Assert\Length(max: 255)]
     #[Groups(['careRequest:read', 'comment:read', 'office:read'])]
     private $firstname;
 
     /**
      * @var string
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
      */
+    #[Assert\NotBlank()]
+    #[Assert\Length(max: 255)]
     #[Groups(['careRequest:read', 'comment:read', 'office:read'])]
     private $lastname;
     
@@ -91,11 +91,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serial
     /**
      * @var File|null
      * @Vich\UploadableField(mapping="user_avatar", fileNameProperty="avatarName")
-     * @Assert\File(
-     *     maxSize = "512k",
-     *     mimeTypes = {"image/jpeg", "image/png"},
-     * )
      */
+    #[Assert\File(
+        maxSize: '512k',
+        mimeTypes: ['image/jpg', 'image/png'],
+    )]
     private $avatarFile;
 
     public function getId(): ?int

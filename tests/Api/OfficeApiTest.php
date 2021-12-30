@@ -207,4 +207,38 @@ class OfficeApiTest extends AbstractApiTestCase
         ]);
         $this->assertResponseStatusCodeSame($expected);
     }
+
+    public function dataProviderPutDataTooLong()
+    {
+        return [
+            [ 'name', 255, Response::HTTP_OK ],
+            [ 'name', 256, Response::HTTP_UNPROCESSABLE_ENTITY ],
+            [ 'address', 255, Response::HTTP_OK ],
+            [ 'address', 256, Response::HTTP_UNPROCESSABLE_ENTITY ],
+            [ 'addressComplement1', 255, Response::HTTP_OK ],
+            [ 'addressComplement1', 256, Response::HTTP_UNPROCESSABLE_ENTITY ],
+            [ 'addressComplement2', 255, Response::HTTP_OK ],
+            [ 'addressComplement2', 256, Response::HTTP_UNPROCESSABLE_ENTITY ],
+            [ 'zipCode', 255, Response::HTTP_OK ],
+            [ 'zipCode', 256, Response::HTTP_UNPROCESSABLE_ENTITY ],
+            [ 'city', 255, Response::HTTP_OK ],
+            [ 'city', 256, Response::HTTP_UNPROCESSABLE_ENTITY ],
+            [ 'country', 255, Response::HTTP_OK ],
+            [ 'country', 256, Response::HTTP_UNPROCESSABLE_ENTITY ],
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderPutDataTooLong
+     */
+    public function testPutDataTooLong($payloadKey, $payloadLength, $expected)
+    {
+        $this->loginUser('admin@example.com');
+        $this->client->request('PUT', '/api/offices/1', [
+            'json' => [
+                $payloadKey => str_repeat('A', $payloadLength),
+            ],
+        ]);
+        $this->assertResponseStatusCodeSame($expected);
+    }
 }

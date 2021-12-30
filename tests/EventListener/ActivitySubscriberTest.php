@@ -35,7 +35,8 @@ class ActivitySubscriberTest extends AbstractControllerTestCase
         // Patient création
         $patient = new Patient();
         $patient
-            ->setFirstname('test')
+            ->setLastname('test')
+            ->setPhone('test')
             ->setCreatedBy($user)
             ->setOffice($this->currentDoctor->getOffice())
         ;
@@ -47,7 +48,7 @@ class ActivitySubscriberTest extends AbstractControllerTestCase
         $this->assertEmpty($patient->getModifiedAt());
         
         // Patient modification
-        $patient->setLastname('test');
+        $patient->setFirstname('test');
         $this->em->persist($patient);
         $this->em->flush();
         $this->assertNotEmpty($patient->getModifiedBy());
