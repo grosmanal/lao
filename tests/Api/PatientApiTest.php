@@ -238,8 +238,6 @@ class PatientApiTest extends AbstractApiTestCase
             [ 'contact', 256, Response::HTTP_UNPROCESSABLE_ENTITY ],
             [ 'phone', 255, Response::HTTP_OK ],
             [ 'phone', 256, Response::HTTP_UNPROCESSABLE_ENTITY ],
-            [ 'mobilePhone', 255, Response::HTTP_OK ],
-            [ 'mobilePhone', 256, Response::HTTP_UNPROCESSABLE_ENTITY ],
             [ 'email', 255, Response::HTTP_OK ],
             [ 'email', 256, Response::HTTP_UNPROCESSABLE_ENTITY ],
         ];

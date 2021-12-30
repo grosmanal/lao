@@ -6,7 +6,6 @@ App\Entity\Patient:
         birthdate: <immutableDateTimeBetween("-50 years", "-3 years")>
         contact: '<firstname()> <lastname()>'
         phone: <phoneNumber()>
-        mobilePhone: <mobileNumber()>
         email: <email()>
         office: '@office_1'
         variableSchedule: false
@@ -33,7 +32,6 @@ App\Entity\Patient:
         birthdate: <immutableDateTimeBetween("-50 years", "-3 years")>
         contact: '<firstname()> <lastname()>'
         phone: <phoneNumber()>
-        mobilePhone: <mobileNumber()>
         email: <email()>
         office: '@office_2'
         variableSchedule: false

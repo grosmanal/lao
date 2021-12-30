@@ -48,10 +48,6 @@ class PatientType extends AbstractType
             ->add('phone', TelType::class, [
                 'label' => 'patient.info.form.phone',
             ])
-            ->add('mobilePhone', TelType::class, [
-                'label' => 'patient.info.form.mobile_phone',
-                'required' => false,
-            ])
             ->add('email', EmailType::class, [
                 'label' => 'patient.info.form.email',
                 'required' => false,

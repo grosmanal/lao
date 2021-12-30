@@ -32,7 +32,6 @@ class PatientTest extends AbstractEndToEndTestCase
             'patient[birthdate]' => $this->toFormDate('2010-05-01'),
             'patient[contact]' => 'new_patient_contact',
             'patient[phone]' => '01 02 03 04 05',
-            'patient[mobilePhone]' => '06 05 04 03 02',
             'patient[email]' => 'new-patient@example.com',
         ]);
         

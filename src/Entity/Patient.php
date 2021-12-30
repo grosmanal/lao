@@ -84,13 +84,6 @@ class Patient implements OfficeOwnedInterface, ActivityLoggableEntityInterface
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     #[Assert\Length(max: 255)]
-    #[Groups(['patient:read'])]
-    private $mobilePhone;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    #[Assert\Length(max: 255)]
     #[Assert\Email()]
     #[Groups(['patient:read'])]
     private $email;
@@ -218,18 +211,6 @@ class Patient implements OfficeOwnedInterface, ActivityLoggableEntityInterface
     public function setPhone(?string $phone): self
     {
         $this->phone = $phone;
-
-        return $this;
-    }
-
-    public function getMobilePhone(): ?string
-    {
-        return $this->mobilePhone;
-    }
-
-    public function setMobilePhone(?string $mobilePhone): self
-    {
-        $this->mobilePhone = $mobilePhone;
 
         return $this;
     }

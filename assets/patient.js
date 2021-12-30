@@ -59,7 +59,6 @@ function collectPatientData(form) {
         birthdate: nullFieldConverter(form['patient[birthdate]'].value),
         contact: nullFieldConverter(form['patient[contact]'].value),
         phone: nullFieldConverter(form['patient[phone]'].value),
-        mobilePhone: nullFieldConverter(form['patient[mobilePhone]'].value),
         email: nullFieldConverter(form['patient[email]'].value),
     };
 }
