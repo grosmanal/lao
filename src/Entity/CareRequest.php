@@ -82,9 +82,10 @@ class CareRequest implements OfficeOwnedInterface, ActivityLoggableEntityInterfa
     private $complaint;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=5000, nullable=true)
      */
     #[Groups(['careRequest:read', 'careRequest:put'])]
+    #[Assert\Length(max: 5000)]
     private $customComplaint;
 
     /**

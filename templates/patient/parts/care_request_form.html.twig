@@ -23,7 +23,7 @@
 
         <div class="form-group row">
             <div class="col-12 col-lg-4">
-                <label>{{ 'care_request.form.priority'| trans }}</label>
+                <label class="form-label">{{ 'care_request.form.priority'| trans }}</label>
             </div>
             <div class="col-12 col-lg-8">
                 {{ form_widget(careRequestForm.priority) }}
@@ -38,14 +38,17 @@
                 {{ form_widget(careRequestForm.complaint) }}
             </div>
         </div>
+    </div>
 
-        <div class="form-group row">
-            <div class="col-12 col-lg-4 mt-1">
-                {{ form_label(careRequestForm.customComplaint) }}
-            </div>
-            <div class="col-12 col-lg-8">
-                {{ form_widget(careRequestForm.customComplaint) }}
-            </div>
+
+    <div class="form-group row">
+        <div class="col-12 col-lg-2">
+            {{ form_label(careRequestForm.customComplaint) }}
+        </div>
+        <div class="col-12 col-lg-10">
+            {{ form_widget(careRequestForm.customComplaint, {'attr': {
+                'rows': 5,
+            }}) }}
         </div>
     </div>
 

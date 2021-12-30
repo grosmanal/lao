@@ -13,10 +13,12 @@
         }
     }
     
+    /* à virer voir https://manal.xyz/gitea/origami_informatique/lao/issues/229
     div {
         margin-top: auto;
         margin-bottom: auto;
     }
+    */
 
     .form-control, .form-check-input {
         @include media-breakpoint-down(lg) {

@@ -315,4 +315,26 @@ class CareRequestApiTest extends AbstractApiTestCase
             ],
         ]);
     }
+
+    public function dataProviderPutDataTooLong()
+    {
+        return [
+            [ 'customComplaint', 5000, Response::HTTP_OK ],
+            [ 'customComplaint', 5001, Response::HTTP_UNPROCESSABLE_ENTITY ],
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderPutDataTooLong
+     */
+    public function testPutDataTooLong($payloadKey, $payloadLength, $expected)
+    {
+        $this->loginUser('admin@example.com');
+        $this->client->request('PUT', '/api/care_requests/1', [
+            'json' => [
+                $payloadKey => str_repeat('A', $payloadLength),
+            ],
+        ]);
+        $this->assertResponseStatusCodeSame($expected);
+    }
 }
