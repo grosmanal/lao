@@ -81,13 +81,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-    // ma proposition
-    //$slotAvailableBackground: #a7dbfb;
-    // proposition de Joëlle : 
-    //$slotAvailableBackground: #0dcaf096;
-    //$slotAvailableBackground: #c8ffc8da; // vert très clair
-    $slotAvailableBackground: #fffbd9;
-
+    $slotAvailableBackground: #79cc79;
 
     .slot {
         min-height: 35px;
@@ -98,7 +92,7 @@ export default {
         border-bottom: 1px lightgray solid;
         text-align: end;
         transition: background-color 0.3s ease-in;
-        background-color: var(--bs-body-bg)
+        background-color: var(--bs-body-bg);
     }
 
     .delete-availability {
