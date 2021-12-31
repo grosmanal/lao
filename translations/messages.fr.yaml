@@ -164,6 +164,9 @@ search:
     contacted_from: depuis le
     contacted_to: jusqu'au
     availability: Disponibilité
+    complaint:
+        label: Plainte
+        placeholder: '- plainte -'
     week_day:
         label: Jour
         placeholder: '- jour -'

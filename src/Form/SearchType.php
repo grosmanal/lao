@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Complaint;
 use App\Entity\Doctor;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -46,6 +47,12 @@ class SearchType extends AbstractType
             ->add('contactedTo', DateType::class, [
                 'widget' => 'single_text',
                 'required' => false,
+            ])
+            ->add('complaint', EntityType::class, [
+                'class' => Complaint::class,
+                'label' => 'search.complaint.label',
+                'required' => false,
+                'placeholder' => 'search.complaint.placeholder',
             ])
             ->add('weekDay', ChoiceType::class, [
                 'label' => 'search.week_day.label',

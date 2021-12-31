@@ -164,6 +164,9 @@ search:
     contacted_from: from
     contacted_to: to
     availability: Availability
+    complaint:
+        label: Complaint
+        placeholder: '- complaint -'
     week_day:
         label: Week day
         placeholder: '- week day -'

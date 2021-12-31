@@ -1,0 +1,84 @@
+---
+include:
+    - ../patient.yaml
+    - ../complaint.yaml
+    - ../abandon_reason.yaml
+App\Entity\CareRequest:
+    care_request_1:
+        patient: '@patient_1'
+        contactedBy: '@doctor_1'
+        contactedAt: <(new DateTimeImmutable("2021-09-27"))>
+        priority: true
+        complaint: '@complaint_1'
+        customComplaint: ~
+        acceptedBy: ~
+        acceptedAt: ~
+        abandonedAt: ~
+        abandonedReason: ~
+        createdBy: '@doctor_1'
+        createdAt: <(new DateTimeImmutable("2021-09-27 15:00:00"))>
+    care_request_2:
+        patient: '@patient_1'
+        contactedBy: '@doctor_1'
+        contactedAt: <(new DateTimeImmutable("2021-09-26"))>
+        priority: true
+        complaint: '@complaint_1'
+        customComplaint: ~
+        acceptedBy: '@doctor_1'
+        acceptedAt: <(new DateTimeImmutable("2021-09-28"))>
+        abandonedAt: ~
+        abandonedReason: ~
+        createdBy: '@doctor_1'
+        createdAt: <(new DateTimeImmutable("2021-09-26 15:00:00"))>
+    care_request_3:
+        patient: '@patient_1'
+        contactedBy: '@doctor_1'
+        contactedAt: <(new DateTimeImmutable("2021-09-25"))>
+        priority: true
+        complaint: '@complaint_1'
+        customComplaint: ~
+        acceptedBy: ~
+        acceptedAt:
+        abandonedAt: <(new DateTimeImmutable("2021-09-28"))>
+        abandonedReason: '@abandon_reason_1'
+        createdBy: '@doctor_1'
+        createdAt: <(new DateTimeImmutable("2021-09-25 15:00:00"))>
+    care_request_4:
+        patient: '@patient_3'
+        contactedBy: '@doctor_2'
+        contactedAt: <(new DateTimeImmutable("2021-09-27"))>
+        priority: true
+        complaint: '@complaint_1'
+        customComplaint: ~
+        acceptedBy: ~
+        acceptedAt: ~
+        abandonedAt: ~
+        abandonedReason: ~
+        createdBy: '@doctor_2'
+        createdAt: <(new DateTimeImmutable("2021-09-27 15:00:00"))>
+    care_request_5:
+        patient: '@patient_1'
+        contactedBy: '@doctor_1'
+        contactedAt: <(new DateTimeImmutable("2021-09-25"))>
+        priority: false
+        complaint: '@complaint_2'
+        customComplaint: ~
+        acceptedBy: ~
+        acceptedAt: ~
+        abandonedAt: ~
+        abandonedReason: ~
+        createdBy: '@doctor_1'
+        createdAt: <(new DateTimeImmutable("2021-09-25 15:00:00"))>
+    care_request_6:
+        patient: '@patient_2'
+        contactedBy: '@doctor_1'
+        contactedAt: <(new DateTimeImmutable("2021-10-01"))>
+        priority: false
+        complaint: '@complaint_1'
+        customComplaint: ~
+        acceptedBy: ~
+        acceptedAt: ~
+        abandonedAt: ~
+        abandonedReason: ~
+        createdBy: '@doctor_1'
+        createdAt: <(new DateTimeImmutable("2021-10-01 15:00:00"))>

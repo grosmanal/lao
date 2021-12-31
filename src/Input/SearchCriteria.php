@@ -2,6 +2,7 @@
 
 namespace App\Input;
 
+use App\Entity\Complaint;
 use App\Entity\Doctor;
 use DateTime;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -16,6 +17,8 @@ class SearchCriteria
     private ?DateTime $contactedFrom = null;
 
     private ?DateTime $contactedTo = null;
+
+    private ?Complaint $complaint = null;
 
     private ?int $weekDay = null;
 
@@ -146,6 +149,30 @@ class SearchCriteria
         } else {
             $this->contactedTo = $contactedTo->setTime(23, 59, 59, 9999);
         }
+
+        return $this;
+    }
+
+    /**
+     * Get the value of complaint
+     *
+     * @return ?Complaint
+     */
+    public function getComplaint(): ?Complaint
+    {
+        return $this->complaint;
+    }
+
+    /**
+     * Set the value of complaint
+     *
+     * @param ?Complaint $complaint
+     *
+     * @return self
+     */
+    public function setComplaint(?Complaint $complaint)
+    {
+        $this->complaint = $complaint;
 
         return $this;
     }

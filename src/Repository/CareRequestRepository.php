@@ -69,6 +69,13 @@ class CareRequestRepository extends ServiceEntityRepository implements ActivityL
             ;
         }
 
+        if ($searchCriteria->getComplaint()) {
+            $qb
+                ->andWhere('cr.complaint = :complaint')
+                ->setParameter(':complaint', $searchCriteria->getComplaint())
+            ;
+        }
+
         return $qb
             ->getQuery()
             ->getResult()

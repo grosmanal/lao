@@ -5,6 +5,7 @@ namespace App\Tests\Service;
 use App\Entity\Office;
 use App\Input\SearchCriteria;
 use App\Repository\CareRequestRepository;
+use App\Repository\ComplaintRepository;
 use App\Repository\DoctorRepository;
 use App\Repository\OfficeRepository;
 use App\Service\CareRequestFinder;
@@ -14,18 +15,20 @@ class CareRequestFinderTest extends AbstractServiceTest
     private CareRequestFinder $careRequestFinder;
     private Office $currentOffice;
     private DoctorRepository $doctorRepository;
+    private ComplaintRepository $complaintRepository;
     private CareRequestRepository $careRequestRepository;
     
     public function setUp(): void
     {
         $this->setUpTestService([
-            __DIR__ . '/../../fixtures/tests/care_request.yaml',
+            __DIR__ . '/../../fixtures/tests/careRequestFinderService/care_request.yaml',
         ]);
 
         $container = static::getContainer();
         $this->careRequestFinder = $container->get(CareRequestFinder::class);
         $this->currentOffice = $container->get(OfficeRepository::class)->find(1);
         $this->doctorRepository = $container->get(DoctorRepository::class);
+        $this->complaintRepository = $container->get(ComplaintRepository::class);
         $this->careRequestRepository = $container->get(CareRequestRepository::class);
     }
     
@@ -257,6 +260,30 @@ class CareRequestFinderTest extends AbstractServiceTest
             ->setIncludeAbandonedCareRequest($abandoned)
             ->setIncludeActiveCareRequest(true)
             ->setIncludeArchivedCareRequest(true)
+        ;
+
+        $this->assertSame($expected, $this->careRequestIds($this->careRequestFinder->find($searchCriteria, $this->currentOffice)));
+    }
+
+
+    public function datProviderFindByComplaint()
+    {
+        return [
+            [ 1, [ 1, 2, 3, 6] ],
+            [ 2, [ 5 ] ],
+        ];
+    }
+
+    /**
+     * @dataProvider datProviderFindByComplaint
+     */
+    public function testFindByComplaint($complaintId, $expected)
+    {
+        $searchCriteria = (new SearchCriteria())
+            ->setComplaint($this->complaintRepository->find($complaintId))
+            ->setIncludeActiveCareRequest(true)
+            ->setIncludeArchivedCareRequest(true)
+            ->setIncludeAbandonedCareRequest(true)
         ;
 
         $this->assertSame($expected, $this->careRequestIds($this->careRequestFinder->find($searchCriteria, $this->currentOffice)));

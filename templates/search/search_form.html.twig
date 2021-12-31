@@ -8,6 +8,15 @@
     </div>
 </div>
 
+<div class="form-group row complaint">
+    <div class="col-12 col-lg-2">
+        {{ form_label(form.complaint) }}
+    </div>
+    <div class="col-12 col-lg-10">
+        {{ form_widget(form.complaint) }}
+    </div>
+</div>
+
 <div class="form-group row creator">
     <div class="col-12 col-lg-2">
         {{ 'search.contact'|trans }}
@@ -36,10 +45,9 @@
     </div>
 </div>
 
-
 <div class="form-group row availability">
     <div class="col-12 col-lg-2">
-        <label for="search-label" class="form-label">{{ 'search.availability'|trans }}</label>
+        <label for="search_weekDay" class="form-label">{{ 'search.availability'|trans }}</label>
     </div>
     <div class="col-12 col-lg-2">
         {{ form_widget(form.weekDay, {'attr': {'class': 'week-day'}}) }}
@@ -64,7 +72,7 @@
 
 <div class="form-group row state">
     <div class="col-12 col-lg-2">
-        <label class="form-label">{{ 'search.care_request_statut_label'|trans }}</label>
+        <label for="search_includeActiveCareRequest" class="form-label">{{ 'search.care_request_statut_label'|trans }}</label>
     </div>
     <div class="col-12 col-lg-2">
         {{ form_widget(form.includeActiveCareRequest) }}
