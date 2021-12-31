@@ -1,0 +1,8 @@
+---
+App\Entity\User:
+    user_emmanuel:
+        email: emmanuel.averty@free.fr
+        password: '\$2y\$13\$qp6O1v3ZRhuNH/C1yWJOAerkD/8r9q1BFB2GHHNeqRLFeEloVFkdu'
+        roles: [ ROLE_ADMIN ]
+        firstname: Emmanuel
+        lastname: Averty

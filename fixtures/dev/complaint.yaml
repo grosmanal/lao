@@ -44,3 +44,5 @@ App\Entity\Complaint:
         label: 'presbyacousie'
     complaint_22:
         label: 'rééducation tubaire'
+    complaint_23:
+        label: 'autre'

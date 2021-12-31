@@ -1,0 +1,37 @@
+---
+App\Entity\Doctor:
+    doctor_jane:
+        email: jane.demo@example.com
+        password: '\$2y\$13\$FO0KEyowci2qVjDheEEFKeGggMUNhgxa79K3nt8th1Ib24eThObFm'
+        roles: [ ROLE_DOCTOR ]
+        firstname: Jane
+        lastname: Demo
+        office: '@office_demo'
+    doctor_joelle:
+        email: joelle.terrien@free.fr
+        password: '\$2y\$13\$N1dxqPx7LdFWDvwrZAA1Q.deK2FjoxzkhNHzOOeJTbsuDvMY3GU36'
+        roles: [ ROLE_DOCTOR ]
+        firstname: Joëlle
+        lastname: Terrien
+        office: '@office_majalda'
+    doctor_laurence:
+        email: chaillet.laurence@orange.fr
+        password: '\$2y\$13\$N1dxqPx7LdFWDvwrZAA1Q.deK2FjoxzkhNHzOOeJTbsuDvMY3GU36'
+        roles: [ ROLE_DOCTOR ]
+        firstname: Laurence
+        lastname: Chaillet
+        office: '@office_majalda'
+    doctor_delphine:
+        email: delphinegalard@gmail.com
+        password: '\$2y\$13\$N1dxqPx7LdFWDvwrZAA1Q.deK2FjoxzkhNHzOOeJTbsuDvMY3GU36'
+        roles: [ ROLE_DOCTOR ]
+        firstname: Delphine
+        lastname: Galard
+        office: '@office_majalda'
+    doctor_maryline:
+        email: maryline.tessier2@orange.fr
+        password: '\$2y\$13\$N1dxqPx7LdFWDvwrZAA1Q.deK2FjoxzkhNHzOOeJTbsuDvMY3GU36'
+        roles: [ ROLE_DOCTOR ]
+        firstname: Maryline
+        lastname: Tessier
+        office: '@office_majalda'

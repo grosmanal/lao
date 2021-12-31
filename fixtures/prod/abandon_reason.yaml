@@ -1,0 +1,10 @@
+---
+App\Entity\AbandonReason:
+    abandon_reason_ne_repond_pas:
+        label: ne répond pas
+    abandon_reason_pris_en_charge_ailleurs:
+        label: pris en charge ailleurs
+    abandon_reason_plus_en_demande:
+        label: n'est plus en demande
+    abandon_reason_autre:
+        label: autre

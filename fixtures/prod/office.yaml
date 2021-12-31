@@ -1,0 +1,14 @@
+---
+App\Entity\Office:
+    office_demo:
+        name: Cabinet d’orthophonie démonstration
+        address: 5 boulevard des poilus
+        zipCode: 44000
+        city: Nantes
+        country: France
+    office_majalda:
+        name: MAJALDA
+        address: Chemin des buttes
+        zipCode: 44470
+        city: Vallet
+        country: France
