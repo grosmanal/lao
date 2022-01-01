@@ -30,3 +30,8 @@ App\Entity\CareRequest:
         contactedBy: '@doctor_1'
         contactedAt: <(new DateTimeImmutable("2021-10-01"))>
         createdBy: '@doctor_1'
+    care_request_6: # Care request active du patient 8
+        patient: '@patient_8'
+        contactedBy: '@doctor_1'
+        contactedAt: <(new DateTimeImmutable("2021-10-01"))>
+        createdBy: '@doctor_1'

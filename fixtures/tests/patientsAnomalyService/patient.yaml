@@ -69,3 +69,11 @@ App\Entity\Patient:
         createdAt: <(new DateTimeImmutable("2021-12-07"))>
         variableSchedule: true
         availability: []
+    patient_8: # patient sans dispo avec careRequest active (cr 6) (variable schedule null)
+        firstname: patient_8_firstname
+        lastname: patient_8_lastname
+        phone: patient_8_phone
+        office: '@office_1'
+        createdBy: '@doctor_1'
+        createdAt: <(new DateTimeImmutable("2021-12-04"))>
+        availability: []

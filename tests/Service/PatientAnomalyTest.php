@@ -30,6 +30,7 @@ class PatientAnomalyTest extends AbstractServiceTest
                 [ PatientAnomaly::ANOMALY_NO_CARE_REQUEST, 2 ],
                 [ PatientAnomaly::ANOMALY_NO_CARE_REQUEST, 3 ],
                 [ PatientAnomaly::ANOMALY_NO_AVAILABILITY, 4 ],
+                [ PatientAnomaly::ANOMALY_NO_AVAILABILITY, 8 ],
             ],
             array_map(function($patientAnomaly) {
                 return [ $patientAnomaly['anomaly'], $patientAnomaly['patient']->getId() ];

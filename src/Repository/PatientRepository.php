@@ -74,7 +74,7 @@ class PatientRepository extends ServiceEntityRepository implements ActivityLogga
             ->select('p')
             ->andWhere('p.availability = :availability')
             ->setParameter(':availability', json_encode([]))
-            ->andWhere('p.variableSchedule = :variableSchedule')
+            ->andWhere('COALESCE(p.variableSchedule, false) = :variableSchedule')
             ->setParameter(':variableSchedule', false)
             ->andWhere('p.office = :office')
             ->setParameter(':office', $office)
