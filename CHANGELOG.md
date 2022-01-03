@@ -1,11 +1,15 @@
 # Changelog
 
+## 1.0.3 - 2022-01-03
+* BUGFIXES
+  * Fix : patient firstname no longer mandatory (#245)
+
 ## 1.0.2 - 2022-01-01
-* BUXFIXES
+* BUGFIXES
   * Fix: show patients with no availability as anomaly (#243)
 
 ## 1.0.1 - 2021-12-31
-* BUXFIXES
+* BUGFIXES
   * Fix: add comment with mentions (#241)
 
 ## 1.0.0 - 2021-12-31
