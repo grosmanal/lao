@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Service;
 
@@ -7,14 +7,14 @@ use App\Repository\PatientRepository;
 
 class PatientAnomaly
 {
-    const ANOMALY_NO_CARE_REQUEST = 'noCareRequest';
-    const ANOMALY_NO_AVAILABILITY = 'noAvailabilty';
+    public const ANOMALY_NO_CARE_REQUEST = 'noCareRequest';
+    public const ANOMALY_NO_AVAILABILITY = 'noAvailabilty';
 
     public function __construct(
         private PatientRepository $patientRepository,
     ) {
     }
-    
+
 
     public function getPatientsAnomaly(Office $office): array
     {
@@ -37,7 +37,7 @@ class PatientAnomaly
         }
 
         // Tri des patients en anomalie par date de création
-        usort($patientsAnomaly, function($a, $b) {
+        usort($patientsAnomaly, function ($a, $b) {
             /** @var Patient */
             $aPatient = $a['patient'];
 

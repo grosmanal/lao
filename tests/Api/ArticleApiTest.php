@@ -6,22 +6,21 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ArticleApiTest extends AbstractApiTestCase
 {
-
-    const ARTICLE_DATA = [
+    private const ARTICLE_DATA = [
         'publishFrom' => '2021-12-16 10:00:00',
         'publishTo' => '2021-12-31 10:00:00',
         'style' => 'info',
         'content' => '# Bienvenue\nBienvenue dans *lao*. Le logiciel qui va faire décoler votre liste d’attente.'
     ];
-    
-    const BASE_URL = '/api/articles';
+
+    private const BASE_URL = '/api/articles';
 
     public function setUp(): void
     {
         $this->setUpTestController([
             __DIR__ . '/../../fixtures/tests/article.yaml',
         ]);
-    }  
+    }
 
     public function dataProviderGetAs()
     {
@@ -39,9 +38,8 @@ class ArticleApiTest extends AbstractApiTestCase
         $this->loginUser($userEmail);
         $this->client->request('GET', self::BASE_URL . '/1');
         $this->assertResponseStatusCodeSame($expected);
-
     }
-    
+
 
     public function dataProviderPostAs()
     {
@@ -50,7 +48,7 @@ class ArticleApiTest extends AbstractApiTestCase
             [ 'user1@example.com', Response::HTTP_FORBIDDEN ],
         ];
     }
-    
+
     /**
      * @dataProvider dataProviderPostAs
     */
@@ -61,7 +59,7 @@ class ArticleApiTest extends AbstractApiTestCase
             'json' => self::ARTICLE_DATA,
         ]);
         $this->assertResponseStatusCodeSame($expected);
-        
+
         if ($this->client->getResponse()->getStatusCode() == Response::HTTP_CREATED) {
             // Vérification que l'office est bien créé
             $articleApiId = json_decode($this->client->getResponse()->getContent(), true)['@id'];
@@ -69,7 +67,7 @@ class ArticleApiTest extends AbstractApiTestCase
             $this->assertResponseIsSuccessful();
         }
     }
-    
+
 
     public function dataProviderDeleteAs()
     {
@@ -78,7 +76,7 @@ class ArticleApiTest extends AbstractApiTestCase
             [ 'user1@example.com', Response::HTTP_FORBIDDEN ],
         ];
     }
-    
+
     /**
      * @dataProvider dataProviderDeleteAs
      */
@@ -88,7 +86,7 @@ class ArticleApiTest extends AbstractApiTestCase
         $this->client->request('DELETE', self::BASE_URL . '/2');
         $this->assertResponseStatusCodeSame($expected);
     }
-    
+
 
     public function dataProviderPutAs()
     {
@@ -97,7 +95,7 @@ class ArticleApiTest extends AbstractApiTestCase
             [ 'user1@example.com', Response::HTTP_FORBIDDEN ],
         ];
     }
-    
+
     /**
      * @dataProvider dataProviderPutAs
      */
@@ -121,7 +119,7 @@ class ArticleApiTest extends AbstractApiTestCase
             $this->assertJsonContains([ 'content' => $newContent]);
         }
     }
-    
+
 
     public function dataProviderPostMissingContent()
     {
@@ -132,8 +130,8 @@ class ArticleApiTest extends AbstractApiTestCase
             [ 'content', Response::HTTP_UNPROCESSABLE_ENTITY, ],
         ];
     }
-    
-    /** 
+
+    /**
      * @dataProvider dataProviderPostMissingContent
      */
     public function testPostMissingContent($content, $expected)
@@ -146,18 +144,19 @@ class ArticleApiTest extends AbstractApiTestCase
         ]);
         $this->assertResponseStatusCodeSame($expected);
     }
-    
+
 
     public function dataProviderUnconsistentData()
     {
         return [
-            [ 'publishFrom', 'not a date', Response::HTTP_BAD_REQUEST, ], // je n'arrive pas à correctement tester les dates
+            [ 'publishFrom', 'not a date', Response::HTTP_BAD_REQUEST, ],
+                // je n'arrive pas à correctement tester les dates
             [ 'publishTo', 'not a date', Response::HTTP_BAD_REQUEST, ],
             [ 'style', 'unknown style', Response::HTTP_UNPROCESSABLE_ENTITY, ],
         ];
     }
 
-    /** 
+    /**
      * @dataProvider dataProviderUnconsistentData
      */
 
@@ -171,5 +170,4 @@ class ArticleApiTest extends AbstractApiTestCase
         ]);
         $this->assertResponseStatusCodeSame($expected);
     }
-    
 }

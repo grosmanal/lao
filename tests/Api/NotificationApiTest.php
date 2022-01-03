@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class NotificationApiTest extends AbstractApiTestCase
 {
-    const NOTIFICATION_DATA = [
+    private const NOTIFICATION_DATA = [
         'comment' => '/api/comments/1',
         'doctor' => '/api/doctors/1',
         'createdAt' => 'now',
@@ -18,8 +18,8 @@ class NotificationApiTest extends AbstractApiTestCase
             __DIR__ . '/../../fixtures/tests/notification.yaml',
         ]);
     }
-    
-    
+
+
     /**
      * Test du contenu retourné
      */
@@ -29,7 +29,7 @@ class NotificationApiTest extends AbstractApiTestCase
         $this->client->request('GET', "/api/notifications/1");
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
-        
+
         $this->assertJsonContains([
             'comment' => '/api/comments/7',
             'doctor' => '/api/doctors/1',
@@ -91,14 +91,14 @@ class NotificationApiTest extends AbstractApiTestCase
     /**
      * @dataProvider dataProviderGetAs
      */
-    public function testGetAsDoctor ($userEmail, $expected)
+    public function testGetAsDoctor($userEmail, $expected)
     {
         $this->loginUser($userEmail);
         $this->client->request('GET', "/api/notifications/1");
         $this->assertResponseStatusCodeSame($expected);
     }
-    
-    
+
+
     public function dataProviderPost()
     {
         return [
@@ -125,7 +125,7 @@ class NotificationApiTest extends AbstractApiTestCase
             $this->assertResponseIsSuccessful();
         }
     }
-    
+
 
     public function dataProviderAnotherOfficeData()
     {
@@ -147,7 +147,7 @@ class NotificationApiTest extends AbstractApiTestCase
         ]);
         $this->assertResponseStatusCodeSame($expected);
     }
-    
+
 
     public function dataProviderDeleteAs()
     {
@@ -157,7 +157,7 @@ class NotificationApiTest extends AbstractApiTestCase
             ['user2@example.com', Response::HTTP_FORBIDDEN],
         ];
     }
-    
+
     /**
      * @dataProvider dataProviderDeleteAs
      */
@@ -168,7 +168,7 @@ class NotificationApiTest extends AbstractApiTestCase
         $crawler = $this->client->request('DELETE', "/api/notifications/1");
         $this->assertResponseStatusCodeSame($expected);
     }
-    
+
 
     public function dataProviderPutAs()
     {
@@ -179,14 +179,14 @@ class NotificationApiTest extends AbstractApiTestCase
             ['user5@example.com', Response::HTTP_FORBIDDEN],
         ];
     }
-    
+
     /**
      * @dataProvider dataProviderPutAs
      */
     public function testPutAs($userEmail, $expected)
     {
         // On ne peut modifier que ses notifications
-        // 
+        //
         $readAt = '2021-12-06T09:24:00+00:00';
 
         $this->loginUser($userEmail);
@@ -202,8 +202,8 @@ class NotificationApiTest extends AbstractApiTestCase
             $this->assertJsonContains(['readAt' => $readAt]);
         }
     }
-    
-    
+
+
     public function dataProviderPutUnupdatableFields()
     {
         return [
@@ -223,7 +223,7 @@ class NotificationApiTest extends AbstractApiTestCase
         // - le commentaire
         // - le user
         // d'une notification
-        
+
         $this->loginUser('admin@example.com');
         $crawler = $this->client->request('PUT', "/api/notifications/1", [
             'json' => [ $payloadKey => $payloadValue ],

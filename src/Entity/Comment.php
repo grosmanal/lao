@@ -126,7 +126,6 @@ class Comment implements DoctorOwnedInterface, OfficeOwnedInterface, ActivityLog
     public function getCreatedBy(): ?User
     {
         return $this->author;
-        
     }
 
     public function setCreatedBy(?User $createdBy): self
@@ -170,7 +169,7 @@ class Comment implements DoctorOwnedInterface, OfficeOwnedInterface, ActivityLog
 
         return $this;
     }
-    
+
     public function getOffice(): ?Office
     {
         if (!$this->getCareRequest()) {
@@ -212,27 +211,27 @@ class Comment implements DoctorOwnedInterface, OfficeOwnedInterface, ActivityLog
 
         return $this;
     }
-   
+
     public function ownedByDoctor(): ?Doctor
     {
         return $this->getAuthor();
     }
-    
+
     public function ownedByOffice(): ?Office
     {
         return $this->getOffice();
     }
-    
+
     public function getActivityObjectName(): string
     {
         return $this->getCareRequest()->getPatient()->getDisplayName();
     }
-    
+
     public function getActivityIcon(): string
     {
         return 'bi-chat-left-text';
     }
-    
+
     public function getActivityRoute(): array
     {
         return [
@@ -243,7 +242,7 @@ class Comment implements DoctorOwnedInterface, OfficeOwnedInterface, ActivityLog
             ],
         ];
     }
-    
+
     public function getActivityMessage(string $action): TranslatableMessage
     {
         return new TranslatableMessage(sprintf('activity.comment.%s', $action), [

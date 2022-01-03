@@ -12,18 +12,18 @@ use App\Repository\DoctorRepository;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class Notification  
+class Notification
 {
-    const ALL_MENTION = 'tou·te·s';
-    const ALL_ID = 0;
-    
+    public const ALL_MENTION = 'tou·te·s';
+    public const ALL_ID = 0;
+
     public function __construct(
         private DoctorRepository $doctorRepository,
         private NormalizerInterface $normalizer,
         private NotificationRepository $notificationRepository,
     ) {
     }
-    
+
 
     public function hintMentionData(Office $office)
     {
@@ -38,33 +38,35 @@ class Notification
     private function getDoctorsMentioned(Comment $comment)
     {
         $crawler = new Crawler($comment->getContent());
-        
-        $doctorsId = $crawler->filter('span.mention')->each(function(Crawler $node, $i) {
+
+        $doctorsId = $crawler->filter('span.mention')->each(function (Crawler $node, $i) {
             return $node->attr('data-mention-doctor-id');
         });
-        
+
         if (in_array(self::ALL_ID, $doctorsId)) {
             // On a mentionné «tou·te·s» il faut retourner l'ensemble des docteurs du cabinet
             $doctors = iterator_to_array($comment->getOffice()->getDoctors());
         } else {
             $doctorsId = array_unique($doctorsId);
-            
-            $doctors = array_map(function($doctorId) {
+
+            $doctors = array_map(function ($doctorId) {
                 return $this->doctorRepository->find($doctorId);
             }, $doctorsId);
         }
-        
-        
-        // Ce filter sert lors du chargement des fixtures : les doctors ne sont 
+
+
+        // Ce filter sert lors du chargement des fixtures : les doctors ne sont
         // pas encore en bdd (il n'y a pas eu de flush)
-        return array_filter($doctors, function($doctor) { return $doctor !== null; });
+        return array_filter($doctors, function ($doctor) {
+            return $doctor !== null;
+        });
     }
-    
+
     /**
      * Retourne faux si une notification existe déjà pour ce doctor
      * @param Comment
      * @param Doctor
-     * @return bool 
+     * @return bool
      */
     private function notificationAlreadExists(Comment $comment, Doctor $doctor): bool
     {
@@ -91,12 +93,15 @@ class Notification
             // Aucune mention dans le commentaire
             return [];
         }
-        
+
         $notifications = [];
         foreach ($doctors as $doctor) {
             // Vérification que le doctor correspond au même Office que le commentaire
             if ($doctor->getOffice() != $comment->getOffice()) {
-                throw new DifferentOfficeException('care request ' . $comment->getCareRequest()->getId(), 'doctor ' . $doctor->getId());
+                throw new DifferentOfficeException(
+                    'care request ' . $comment->getCareRequest()->getId(),
+                    'doctor ' . $doctor->getId()
+                );
             }
 
             // Recherche d'une notification existante
@@ -107,11 +112,11 @@ class Notification
                     ->setComment($comment)
                     ->setCreatedAt(new \DateTimeImmutable('now'))
                     ;
-                    
+
                 $notifications[] = $notification;
             }
         }
-        
+
         return $notifications;
     }
 }

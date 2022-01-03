@@ -14,6 +14,7 @@ App\Entity\Patient:
     patient_2:
         lastname: patient_2_lastname
         office: '@office_1'
+        variableSchedule: true
         createdBy: '@doctor_1'
         createdAt: <immutableDateTimeBetween("-6 months", "-1 month")>
         availability: []

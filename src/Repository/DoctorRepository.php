@@ -18,7 +18,7 @@ class DoctorRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Doctor::class);
     }
-    
+
     public function findOneByUserIdentifier($userIdentifier)
     {
         return $this->createQueryBuilder('d')

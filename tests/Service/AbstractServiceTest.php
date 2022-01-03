@@ -13,5 +13,4 @@ abstract class AbstractServiceTest extends KernelTestCase
     {
         $this->loadFixtures($fixtureFiles);
     }
-
 }

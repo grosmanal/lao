@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Doctrine;
 
 use Doctrine\ORM\QueryBuilder;
@@ -17,8 +18,8 @@ class NotificationExtension implements QueryCollectionExtensionInterface
         QueryBuilder $queryBuilder,
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,
-        string $operationName = null): void
-    {
+        string $operationName = null
+    ): void {
         // Les admins peuvent tout faire (gnark, gnark, gnark…)
         if ($this->security->isGranted('ROLE_ADMIN')) {
             return;
@@ -28,13 +29,13 @@ class NotificationExtension implements QueryCollectionExtensionInterface
         if ($reflectionClass->getName() != Notification::class) {
             return;
         }
-        
+
         // Recherche de l'utilisateur connecté
         /** @var App\Entity\Doctor $doctor */
         $doctor = $this->security->getUser();
-        
+
         $rootAlias = $queryBuilder->getRootAliases()[0];
-        
+
         $queryBuilder
             ->andWhere(sprintf('%s.doctor = :doctor', $rootAlias))
             ->setParameter(':doctor', $doctor)

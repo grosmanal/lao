@@ -6,8 +6,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class DoctorApiTest extends AbstractApiTestCase
 {
-
-    const DOCTOR_DATA = [
+    private const DOCTOR_DATA = [
         'email' => 'new_doctor@example.com',
         'password' => '\$2y\$13\$N1dxqPx7LdFWDvwrZAA1Q.deK2FjoxzkhNHzOOeJTbsuDvMY3GU36',
         'roles' => [ 'ROLE_DOCTOR' ],
@@ -19,7 +18,7 @@ class DoctorApiTest extends AbstractApiTestCase
     public function setUp(): void
     {
         $this->setUpTestController([]);
-    }  
+    }
 
     public function dataProviderGetAs()
     {
@@ -37,9 +36,8 @@ class DoctorApiTest extends AbstractApiTestCase
         $this->loginUser($userEmail);
         $this->client->request('GET', '/api/doctors/1');
         $this->assertResponseStatusCodeSame($expected);
-
     }
-    
+
 
     public function dataProviderPostAs()
     {
@@ -48,7 +46,7 @@ class DoctorApiTest extends AbstractApiTestCase
             [ 'user1@example.com', Response::HTTP_FORBIDDEN ],
         ];
     }
-    
+
     /**
      * @dataProvider dataProviderPostAs
     */
@@ -59,7 +57,7 @@ class DoctorApiTest extends AbstractApiTestCase
             'json' => self::DOCTOR_DATA,
         ]);
         $this->assertResponseStatusCodeSame($expected);
-        
+
         if ($this->client->getResponse()->getStatusCode() == Response::HTTP_CREATED) {
             // Vérification que le docteur est bien créé
             $doctorApiId = json_decode($this->client->getResponse()->getContent(), true)['@id'];
@@ -67,7 +65,7 @@ class DoctorApiTest extends AbstractApiTestCase
             $this->assertResponseIsSuccessful();
         }
     }
-    
+
 
     public function dataProviderDeleteAs()
     {
@@ -76,7 +74,7 @@ class DoctorApiTest extends AbstractApiTestCase
             [ 'user1@example.com', Response::HTTP_FORBIDDEN ],
         ];
     }
-    
+
     /**
      * @dataProvider dataProviderDeleteAs
      */
@@ -86,7 +84,7 @@ class DoctorApiTest extends AbstractApiTestCase
         $this->client->request('DELETE', '/api/doctors/3');
         $this->assertResponseStatusCodeSame($expected);
     }
-    
+
 
     public function dataProviderPutAs()
     {
@@ -95,7 +93,7 @@ class DoctorApiTest extends AbstractApiTestCase
             [ 'user1@example.com', Response::HTTP_FORBIDDEN ],
         ];
     }
-    
+
     /**
      * @dataProvider dataProviderPutAs
      */
@@ -119,7 +117,7 @@ class DoctorApiTest extends AbstractApiTestCase
             $this->assertJsonContains([ 'firstname' => $newDoctorName]);
         }
     }
-    
+
 
     public function dataProviderPostMissingContent()
     {
@@ -132,8 +130,8 @@ class DoctorApiTest extends AbstractApiTestCase
             [ 'office', Response::HTTP_UNPROCESSABLE_ENTITY, ],
         ];
     }
-    
-    /** 
+
+    /**
      * @dataProvider dataProviderPostMissingContent
      */
     public function testPostMissingContent($content, $expected)

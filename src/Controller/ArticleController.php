@@ -15,21 +15,22 @@ class ArticleController extends AbstractController
 {
     #[Route('/article_mark_read/{id}', name: 'article_mark_read', methods: ['POST'])]
     #[IsGranted('ROLE_DOCTOR')]
-    public function mark_read(
+    public function markRead(
         Article $article,
         UserProfile $userProfile,
         EntityManagerInterface $em,
         LoggerInterface $logger,
     ): Response {
         $currentDoctor = $userProfile->getDoctor();
-        
+
         if (!$article->getReadByDoctors()->contains($currentDoctor)) {
             $article->addReadByDoctor($currentDoctor);
 
             $em->persist($article);
             $em->flush();
         } else {
-            $logger->error(sprintf('Article %d marked as read a second time by doctor %d (%s)', 
+            $logger->error(sprintf(
+                'Article %d marked as read a second time by doctor %d (%s)',
                 $article->getId(),
                 $currentDoctor->getId(),
                 $currentDoctor->getDisplayName(),

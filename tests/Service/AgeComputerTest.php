@@ -7,7 +7,7 @@ use App\Service\AgeComputer;
 use DateInterval;
 use DateTime;
 
-class AgeComputerTest extends AbstractServiceTest 
+class AgeComputerTest extends AbstractServiceTest
 {
     private AgeComputer $ageComputer;
 
@@ -18,8 +18,8 @@ class AgeComputerTest extends AbstractServiceTest
         $container = static::getContainer();
         $this->ageComputer = $container->get(AgeComputer::class);
     }
-    
-    
+
+
     public function dataProviderAgeAsString()
     {
         return [
@@ -42,7 +42,7 @@ class AgeComputerTest extends AbstractServiceTest
             ['P11Y6M', '11 ans'],
         ];
     }
-    
+
     /**
      * @dataProvider dataProviderAgeAsString
      */
@@ -51,6 +51,4 @@ class AgeComputerTest extends AbstractServiceTest
         $birthDate = (new DateTime())->sub(new DateInterval($intervalAge));
         $this->assertSame($expected, $this->ageComputer->getAgeAsString($birthDate));
     }
-
-    
 }

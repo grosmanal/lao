@@ -27,7 +27,7 @@ class UserController extends AbstractAppController
             'offices' => $offices,
         ]);
     }
-    
+
     /**
      * Modification du détail d'un utilisateur
      */
@@ -39,15 +39,13 @@ class UserController extends AbstractAppController
         EntityManagerInterface $entityManager,
         TranslatorInterface $translator,
         InitialAvatarGenerator $initialAvatarGenerator,
-    ): Response
-    {
+    ): Response {
         $this->denyAccessUnlessGranted('edit', $doctor);
 
         $form = $this->createForm(UserType::class, $doctor);
-        
+
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            
             // Alimentation de l'avatar si vide
             if (empty($doctor->getAvatarName()) && empty($doctor->getAvatarFile())) {
                 $doctor->setAvatarName($initialAvatarGenerator->generate($doctor));
@@ -64,7 +62,7 @@ class UserController extends AbstractAppController
 
             $entityManager->persist($doctor);
             $entityManager->flush();
-            
+
             $this->addFlash('success', $translator->trans('user.flash.data_updated'));
         }
 

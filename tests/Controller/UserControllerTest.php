@@ -10,8 +10,8 @@ class UserControllerTest extends AbstractControllerTestCase
     {
         $this->setUpTestController([]);
     }
-    
-    
+
+
     public function dataProviderUrl()
     {
         return [
@@ -29,7 +29,7 @@ class UserControllerTest extends AbstractControllerTestCase
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
         $this->assertResponseRedirects('/login');
     }
-    
+
 
     public function dataProviderGetUsersAs()
     {
@@ -39,7 +39,7 @@ class UserControllerTest extends AbstractControllerTestCase
             [ 'user2@example.com', Response::HTTP_FORBIDDEN ],
         ];
     }
-    
+
     /**
      * @dataProvider dataProviderGetUsersAs
      */
@@ -49,7 +49,7 @@ class UserControllerTest extends AbstractControllerTestCase
         $this->client->request('GET', '/users');
         $this->assertResponseStatusCodeSame($expected);
     }
-    
+
 
     public function testGetUsers()
     {
@@ -57,8 +57,14 @@ class UserControllerTest extends AbstractControllerTestCase
         $crawler = $this->client->request('GET', '/users');
         $this->assertResponseIsSuccessful();
         $this->assertSelectorExists('.body-content > ul');
-        $this->assertCount(3, $crawler->filter('.body-content > ul > li')); // 3 offices
-        $this->assertCount(2, $crawler->filter('.body-content > ul > li')->first()->children('ul > li')); // 2 doctors in first office
+        $this->assertCount(
+            3,
+            $crawler->filter('.body-content > ul > li')
+        ); // 3 offices
+        $this->assertCount(
+            2,
+            $crawler->filter('.body-content > ul > li')->first()->children('ul > li')
+        ); // 2 doctors in first office
     }
 
 
@@ -70,7 +76,7 @@ class UserControllerTest extends AbstractControllerTestCase
             [ 'user2@example.com', Response::HTTP_FORBIDDEN ],
         ];
     }
-    
+
     /**
      * @dataProvider dataProviderGetUserAs
      */
@@ -80,7 +86,7 @@ class UserControllerTest extends AbstractControllerTestCase
         $this->client->request('GET', '/users/1');
         $this->assertResponseStatusCodeSame($expected);
     }
-    
+
 
     public function testGetUser()
     {
@@ -93,7 +99,7 @@ class UserControllerTest extends AbstractControllerTestCase
         $this->assertInputValueSame('user[email]', 'user1@example.com');
         $this->assertInputValueSame('user[plainPassword][first]', '');
         $this->assertInputValueSame('user[plainPassword][second]', '');
-        
+
         $this->client->submitForm('Enregistrer', [
             'user[firstname]' => 'doctor_1_firstname_update',
             'user[lastname]' => 'doctor_1_lastname_update',

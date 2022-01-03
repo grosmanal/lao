@@ -168,15 +168,14 @@ class Patient implements OfficeOwnedInterface, ActivityLoggableEntityInterface
 
         return $this;
     }
-    
+
     public function getDisplayName()
     {
         return
-            $this->getFirstname() . 
+            $this->getFirstname() .
             (!empty($this->getFirstname()) ? ' ' : '') .
             $this->getLastname()
         ;
-
     }
 
     public function getBirthdate(): ?\DateTimeImmutable
@@ -231,7 +230,7 @@ class Patient implements OfficeOwnedInterface, ActivityLoggableEntityInterface
     {
         return $this->variableSchedule;
     }
-    
+
     public function isVariableSchedule(): bool
     {
         return $this->variableSchedule === true;
@@ -303,17 +302,17 @@ class Patient implements OfficeOwnedInterface, ActivityLoggableEntityInterface
 
         return $this;
     }
-    
+
     public function ownedByOffice(): ?Office
     {
         return $this->getOffice();
     }
-    
+
     public function getActivityObjectName(): string
     {
         return $this->getDisplayName();
     }
-    
+
     public function getActivityIcon(): string
     {
         return 'bi-file-person';
@@ -326,7 +325,7 @@ class Patient implements OfficeOwnedInterface, ActivityLoggableEntityInterface
             'parameters' => [ 'id' => $this->getId(), ],
         ];
     }
-    
+
     public function getActivityMessage(string $action): TranslatableMessage
     {
         return new TranslatableMessage(sprintf('activity.patient.%s', $action));

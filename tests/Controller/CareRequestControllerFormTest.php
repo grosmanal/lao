@@ -13,8 +13,8 @@ class CareRequestControllerFormTest extends AbstractControllerTestCase
             __DIR__ . '/../../fixtures/tests/care_request.yaml',
             __DIR__ . '/../../fixtures/tests/comment.yaml',
         ]);
-    }    
-    
+    }
+
 
     public function testNewCareRequestForm()
     {
@@ -33,7 +33,7 @@ class CareRequestControllerFormTest extends AbstractControllerTestCase
             [ 3, Response::HTTP_FORBIDDEN ],  // patient autre cabinet
         ];
     }
-    
+
     /**
      * @dataProvider dataProviderNewCareRequestFormPatient
      */
@@ -99,10 +99,10 @@ class CareRequestControllerFormTest extends AbstractControllerTestCase
         $this->assertSelectorExists('form button[name="care_request[abandon]"]');
         $this->assertSelectorNotExists('form button[name="care_request[abandon]"][disabled]');
         $this->assertSelectorTextSame('form button[name="care_request[upsert]"]', 'Enregistrer');
-        
+
         // Test de l'existence du commentaire
         $this->assertSelectorExists('section.comments ul.comments li');
-        
+
         // Ce commentaire ne doit avoir une form (=> il est modifiable)
         $firstComment = $crawler->filter('section.comments ul.comments li')->first();
         $this->assertEquals(1, $firstComment->filter('form')->count());
@@ -128,13 +128,16 @@ class CareRequestControllerFormTest extends AbstractControllerTestCase
         $this->loginUser('user1@example.com');
         $crawler = $this->client->request('GET', "/care_request_forms/2");
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextSame('h3 button', 'Demande du 26/09/2021 Archivée Prioritaire Prise en charge par doctor_1_firstname le 28/09/2021');
+        $this->assertSelectorTextSame(
+            'h3 button',
+            'Demande du 26/09/2021 Archivée Prioritaire Prise en charge par doctor_1_firstname le 28/09/2021'
+        );
         $this->assertSelectorExists('form');
         $this->assertSelectorTextSame('form button[name="care_request[reactivate]"]', 'Réactiver');
-        
+
         // Test de l'existence du commentaire
         $this->assertSelectorExists('section.comments ul.comments li');
-        
+
         // Ce commentaire ne doit pas avoir de form (=> il n'est pas modifiable)
         $firstComment = $crawler->filter('section.comments ul.comments li')->first();
         $this->assertEquals(0, $firstComment->filter('form')->count());
@@ -145,13 +148,20 @@ class CareRequestControllerFormTest extends AbstractControllerTestCase
         $this->loginUser('user1@example.com');
         $crawler = $this->client->request('GET', "/care_request_forms/3");
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextSame('h3 button', "Demande du 25/09/2021 Abandonnée Prioritaire Abandonnée par praticien inconnu le 28/09/2021 (Raison d'abandon 1)");
+        $this->assertSelectorTextSame(
+            'h3 button',
+            str_replace("\n", "", <<<EOT
+                Demande du 25/09/2021 Abandonnée Prioritaire 
+                Abandonnée par praticien inconnu le 28/09/2021 (Raison d'abandon 1)
+                EOT
+            )
+        );
         $this->assertSelectorExists('form');
         $this->assertSelectorTextSame('form button[name="care_request[reactivate]"]', 'Réactiver');
-        
+
         // Test de l'existence du commentaire
         $this->assertSelectorExists('section.comments ul.comments li');
-        
+
         // Ce commentaire ne doit pas avoir de form (=> il n'est pas modifiable)
         $firstComment = $crawler->filter('section.comments ul.comments li')->first();
         $this->assertEquals(0, $firstComment->filter('form')->count());

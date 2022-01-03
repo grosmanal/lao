@@ -12,7 +12,7 @@ class NotificationVoter extends Voter
 {
     public const VIEW = 'view';
     public const EDIT = 'edit';
-    
+
     public function __construct(private Security $security)
     {
     }
@@ -46,19 +46,19 @@ class NotificationVoter extends Voter
 
         throw new \LogicException('This code should not be reached!'); // @codeCoverageIgnore
     }
-    
+
     private function canView(Notification $notification, UserInterface $user)
     {
         return $this->canEdit($notification, $user);
     }
-    
+
     private function canEdit(Notification $notification, UserInterface $user)
     {
         if ($this->security->isGranted('ROLE_ADMIN')) {
             return true;
         }
-        
-        // On ne peut modifier que les notifications qui sont nous affectés 
+
+        // On ne peut modifier que les notifications qui sont nous affectés
         if ($user !== $notification->getDoctor()) {
             return false;
         }

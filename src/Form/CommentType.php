@@ -13,7 +13,8 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class CommentType extends AbstractType
 {
-    public function __construct(private UrlGeneratorInterface $urlGenerator) {
+    public function __construct(private UrlGeneratorInterface $urlGenerator)
+    {
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -24,11 +25,17 @@ class CommentType extends AbstractType
         $builder
             ->add('content', TextareaType::class)
             ->add('authorApiUri', HiddenType::class, [
-                'data' => $this->urlGenerator->generate('api_doctors_get_item', ['id' => $comment->getAuthor()->getId()]),
+                'data' => $this->urlGenerator->generate(
+                    'api_doctors_get_item',
+                    ['id' => $comment->getAuthor()->getId()]
+                ),
                 'mapped' => false,
             ])
             ->add('careRequestApiUri', HiddenType::class, [
-                'data' => $this->urlGenerator->generate('api_care_requests_get_item', ['id' => $comment->getCareRequest()->getId()]),
+                'data' => $this->urlGenerator->generate(
+                    'api_care_requests_get_item',
+                    ['id' => $comment->getCareRequest()->getId()]
+                ),
                 'mapped' => false,
             ])
             ->add('apiAction', HiddenType::class, [

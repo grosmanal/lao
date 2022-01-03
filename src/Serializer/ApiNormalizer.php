@@ -16,7 +16,12 @@ final class ApiNormalizer implements NormalizerInterface, DenormalizerInterface,
     public function __construct(NormalizerInterface $decorated, RouterInterface $router)
     {
         if (!$decorated instanceof DenormalizerInterface) {
-            throw new \InvalidArgumentException(sprintf('The decorated normalizer must implement the %s.', DenormalizerInterface::class)); // @codeCoverageIgnore
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'The decorated normalizer must implement the %s.',
+                    DenormalizerInterface::class
+                )
+            );// @codeCoverageIgnore
         }
 
         $this->decorated = $decorated;
@@ -70,7 +75,7 @@ final class ApiNormalizer implements NormalizerInterface, DenormalizerInterface,
 
     public function setSerializer(SerializerInterface $serializer)
     {
-        if($this->decorated instanceof SerializerAwareInterface) {
+        if ($this->decorated instanceof SerializerAwareInterface) {
             $this->decorated->setSerializer($serializer);
         }
     }

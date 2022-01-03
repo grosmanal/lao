@@ -14,10 +14,10 @@ class NotificationControllerTest extends AbstractControllerTestCase
         $this->setUpTestController([
             __DIR__ . '/../../fixtures/tests/notification.yaml',
         ]);
-        
+
         $this->notificationRepository = static::getContainer()->get(NotificationRepository::class);
     }
-        
+
     public function dataProviderUrl()
     {
         return [
@@ -25,7 +25,7 @@ class NotificationControllerTest extends AbstractControllerTestCase
             [ '/notifications_read' ],
         ];
     }
-    
+
     /**
      * @dataProvider dataProviderUrl
      */
@@ -45,7 +45,7 @@ class NotificationControllerTest extends AbstractControllerTestCase
         $this->client->request('GET', $url);
         $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
     }
-    
+
     public function testUnread()
     {
         $this->loginUser('user1@example.com');
@@ -54,7 +54,7 @@ class NotificationControllerTest extends AbstractControllerTestCase
         $this->assertSelectorExists('section.notifications');
         $this->assertCount(1, $crawler->filter('section.notifications ul.notifications > li'));
     }
-    
+
     public function testNoUnread()
     {
         $this->loginUser('user5@example.com');
@@ -63,7 +63,7 @@ class NotificationControllerTest extends AbstractControllerTestCase
         $this->assertSelectorExists('section.notifications');
         $this->assertSelectorExists('section.notifications .card-body p.alert-warning');
     }
-    
+
     public function testRead()
     {
         $this->loginUser('user1@example.com');
@@ -72,13 +72,13 @@ class NotificationControllerTest extends AbstractControllerTestCase
         $this->assertSelectorExists('section.notifications');
         $this->assertCount(2, $crawler->filter('section.notifications ul.notifications > li'));
     }
-    
+
     public function testMarkAll()
     {
         $this->loginUser('user1@example.com');
         $this->client->request('GET', '/notifications_mark_all');
         $this->assertResponseRedirects('/notifications');
-        
+
         $doctor = $this->getUserAsDoctor('user1@example.com');
         $this->assertCount(0, $this->notificationRepository->findUnreadForDoctor($doctor));
     }

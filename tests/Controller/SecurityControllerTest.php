@@ -8,7 +8,7 @@ class SecurityControllerTest extends AbstractControllerTestCase
     {
         $this->setUpTestController([]);
     }
-    
+
 
     public function dataProviderLogin()
     {
@@ -17,7 +17,7 @@ class SecurityControllerTest extends AbstractControllerTestCase
             [ 'admin@example.com', '/users' ],
         ];
     }
-    
+
     /**
      * @dataProvider dataProviderLogin
      */
@@ -32,7 +32,7 @@ class SecurityControllerTest extends AbstractControllerTestCase
         ]);
         $this->assertResponseRedirects($redirectionRoute);
     }
-    
+
     public function testWrongPassword()
     {
         $crawler = $this->client->request('GET', '/login');
@@ -43,7 +43,7 @@ class SecurityControllerTest extends AbstractControllerTestCase
         ]);
         $this->assertResponseRedirects('/login');
     }
-    
+
 
     public function testLoginAlreadyLogged()
     {

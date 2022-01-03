@@ -13,7 +13,7 @@ class AgeComputer
     public function getAgeAsString(\DateTimeInterface $birthdate): string
     {
         $difference = (new \DateTime())->diff($birthdate);
-        
+
         if ($difference->y == 0) {
             $age = $this->translator->trans('months', [
                 '%months%' => $difference->m,
@@ -29,7 +29,7 @@ class AgeComputer
                 $age .= ' ' . $this->translator->trans('half', [], 'age_computer');
             }
         }
-        
+
         return $age;
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-interface DoctorOwnedInterface  
+interface DoctorOwnedInterface
 {
     /**
      * Doctor owning entity

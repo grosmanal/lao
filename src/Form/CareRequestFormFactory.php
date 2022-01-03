@@ -30,7 +30,7 @@ class CareRequestFormFactory
             ->setContactedBy($doctor)
             ->setContactedAt(new \DateTimeImmutable())
             ;
-            
+
         return $this->formFactory->create(CareRequestType::class, $careRequest, [
             'api_action' => 'POST',
             'api_url' => $this->urlGenerator->generate('api_care_requests_post_collection'),
@@ -38,7 +38,7 @@ class CareRequestFormFactory
             'current_doctor' => $doctor,
         ]);
     }
-    
+
     /**
      * Retourne le formulaire pour modification d'une demande de soin
      * @param Doctor $doctor
@@ -51,7 +51,10 @@ class CareRequestFormFactory
             'api_action' => 'PUT',
             'api_url' => $this->urlGenerator->generate('api_care_requests_put_item', ['id' => $careRequest->getId()]),
             'current_doctor' => $doctor,
-            'api_delete_url' => $this->urlGenerator->generate('api_care_requests_delete_item', ['id' => $careRequest->getId()]),
+            'api_delete_url' => $this->urlGenerator->generate(
+                'api_care_requests_delete_item',
+                ['id' => $careRequest->getId()]
+            ),
         ]);
     }
 }

@@ -22,11 +22,11 @@ class CareRequestRepository extends ServiceEntityRepository implements ActivityL
     {
         parent::__construct($registry, CareRequest::class);
     }
-    
+
     public function findBySearchCriteria(SearchCriteria $searchCriteria, Office $office)
     {
         $qb = $this->createQueryBuilder('cr');
-        
+
         // Jointure avec le patient pour la sélection de l'office
         $qb
             ->join('cr.patient', 'p')
@@ -47,21 +47,21 @@ class CareRequestRepository extends ServiceEntityRepository implements ActivityL
                 ->setParameter(':likeLabel', '%' . trim(strtolower($searchCriteria->getLabel())) . '%')
             ;
         }
-        
+
         if ($searchCriteria->getContactedBy()) {
             $qb
                 ->andWhere('cr.contactedBy = :contactedBy')
                 ->setParameter(':contactedBy', $searchCriteria->getContactedBy())
             ;
         }
-        
+
         if ($searchCriteria->getContactedFrom()) {
             $qb
                 ->andWhere('cr.contactedAt >= :contactedFrom')
                 ->setParameter(':contactedFrom', $searchCriteria->getContactedFrom())
             ;
         }
-        
+
         if ($searchCriteria->getContactedTo()) {
             $qb
                 ->andWhere('cr.contactedAt <= :contactedTo')
@@ -80,9 +80,8 @@ class CareRequestRepository extends ServiceEntityRepository implements ActivityL
             ->getQuery()
             ->getResult()
         ;
-        
     }
-    
+
     public function findActiveSince(Office $office, \DateTimeInterface $since): array
     {
         $qb = $this->createQueryBuilder('c');
@@ -91,7 +90,7 @@ class CareRequestRepository extends ServiceEntityRepository implements ActivityL
             ->andWhere('p.office = :office')
             ->setParameter(':office', $office)
         ;
-        
+
         return $this->addWhereSince($qb, 'c', $since)
             ->getQuery()
             ->getResult()

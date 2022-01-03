@@ -6,14 +6,14 @@ use Symfony\Component\HttpFoundation\Response;
 
 class PatientPatchAvailabilityTest extends AbstractApiTestCase
 {
-    const AVAILABILITY_PATCH_ONE_DAY = [
+    private const AVAILABILITY_PATCH_ONE_DAY = [
         'weekDays' => [ 1 ],
         'start' => '0900',
         'end' => '0930',
         'available' => true,
     ];
 
-    const AVAILABILITY_PATCH_MULTIPLE_DAYS = [
+    private const AVAILABILITY_PATCH_MULTIPLE_DAYS = [
         'weekDays' => [1, 2, 3],
         'start' => '0900',
         'end' => '0930',
@@ -25,11 +25,15 @@ class PatientPatchAvailabilityTest extends AbstractApiTestCase
         $this->setUpTestController([
             __DIR__ . '/../../fixtures/tests/patient.yaml',
         ]);
-    }    
+    }
 
     public function testPatchAsAnonymous(): void
     {
-        $crawler = $this->client->request('PUT', "/api/patients/1/availability", ['json' => self::AVAILABILITY_PATCH_ONE_DAY]);
+        $crawler = $this->client->request(
+            'PUT',
+            "/api/patients/1/availability",
+            ['json' => self::AVAILABILITY_PATCH_ONE_DAY]
+        );
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND); // Redirection vers le login
         $this->assertResponseRedirects('/login');
     }
@@ -48,7 +52,11 @@ class PatientPatchAvailabilityTest extends AbstractApiTestCase
     public function testPatchPatient($patientId, $expected): void
     {
         $this->loginUser('admin@example.com');
-        $crawler = $this->client->request('PUT', "/api/patients/$patientId/availability", ['json' => self::AVAILABILITY_PATCH_ONE_DAY]);
+        $crawler = $this->client->request(
+            'PUT',
+            "/api/patients/$patientId/availability",
+            ['json' => self::AVAILABILITY_PATCH_ONE_DAY]
+        );
         $this->assertResponseStatusCodeSame($expected);
     }
 
@@ -67,31 +75,35 @@ class PatientPatchAvailabilityTest extends AbstractApiTestCase
     public function testPatchAsDoctor($doctorEmail, $expected)
     {
         $this->loginUser($doctorEmail);
-        $crawler = $this->client->request('PUT', "/api/patients/1/availability", ['json' => self::AVAILABILITY_PATCH_ONE_DAY]);
+        $crawler = $this->client->request(
+            'PUT',
+            "/api/patients/1/availability",
+            ['json' => self::AVAILABILITY_PATCH_ONE_DAY]
+        );
         $this->assertResponseStatusCodeSame($expected);
     }
-    
+
     public function dataProviderTestPatch()
     {
         return [
             [ self::AVAILABILITY_PATCH_ONE_DAY, [
                 '1' => [
-                    [900, 930], 
-                    [1000, 1200], 
+                    [900, 930],
+                    [1000, 1200],
                 ],
             ] ],
             [ self::AVAILABILITY_PATCH_MULTIPLE_DAYS, [
                 '1' => [
-                    [900, 930], 
-                    [1000, 1200], 
+                    [900, 930],
+                    [1000, 1200],
                 ],
                 '2' => [
-                    [900, 930], 
+                    [900, 930],
                 ],
             ] ],
         ];
     }
-    
+
     /**
      * @dataProvider dataProviderTestPatch
      */
@@ -100,7 +112,7 @@ class PatientPatchAvailabilityTest extends AbstractApiTestCase
         $this->loginUser('admin@example.com');
         $crawler = $this->client->request('PUT', "/api/patients/1/availability", ['json' => $data]);
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
-        
+
         // Lecture de la disponibilité du patient pour vérification de la suppression
         $crawler = $this->client->request('GET', "/api/patients/1");
         $this->assertJsonContains([
@@ -142,7 +154,7 @@ class PatientPatchAvailabilityTest extends AbstractApiTestCase
             [ 'end' ],
         ];
     }
-    
+
     /**
      * @dataProvider dataProviderTestMissingContent
      */
@@ -154,7 +166,7 @@ class PatientPatchAvailabilityTest extends AbstractApiTestCase
         $crawler = $this->client->request('PUT', "/api/patients/1/availability", ['json' => $data]);
         $this->assertResponseStatusCodeSame(Response::HTTP_UNPROCESSABLE_ENTITY);
     }
-    
+
 
     public function testDeleteAvailability()
     {
@@ -174,7 +186,7 @@ class PatientPatchAvailabilityTest extends AbstractApiTestCase
         $this->assertJsonContains([
             'availability' => [
                 '1' => [
-                    [1030, 1200], 
+                    [1030, 1200],
                 ],
             ],
         ]);

@@ -28,7 +28,7 @@ class AbstractAppController extends AbstractController
                     $this->notificationRepository->findUnreadForDoctor($this->userProfile->getDoctor()) :
                     null,
         ];
-        
+
         return parent::render($view, array_merge($baseViewParameters, $parameters), $response);
     }
 }

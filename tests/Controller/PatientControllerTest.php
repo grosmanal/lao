@@ -8,17 +8,17 @@ use Symfony\Component\HttpFoundation\Response;
 class PatientControllerTest extends AbstractControllerTestCase
 {
     private PatientRepository $patientRepository;
-    
+
     public function setUp(): void
     {
         $this->setUpTestController([
             __DIR__ . '/../../fixtures/tests/patient.yaml',
             __DIR__ . '/../../fixtures/tests/care_request.yaml',
         ]);
-        
+
         $this->patientRepository = static::getContainer()->get(PatientRepository::class);
-    }    
-    
+    }
+
 
     public function testNew()
     {
@@ -27,14 +27,14 @@ class PatientControllerTest extends AbstractControllerTestCase
         $this->loginUser('user1@example.com');
         $crawler = $this->client->request('GET', '/patients/new');
         $this->assertSelectorExists("form[name='patient']");
-        
+
         $this->client->submitForm('Ajouter', [
             'patient[lastname]' => 'new_lastname',
             'patient[phone]' => 'new_phone',
         ]);
         $this->assertCount($previousPatientCount + 1, $this->patientRepository->findAll());
     }
-    
+
 
     public function testForm()
     {
@@ -43,7 +43,7 @@ class PatientControllerTest extends AbstractControllerTestCase
         $this->assertSelectorExists("form[name='patient']");
         $this->assertInputValueSame('patient[firstname]', 'patient_1_firstname');
     }
-    
+
 
     public function dataProviderAsAnonymous()
     {
@@ -53,7 +53,7 @@ class PatientControllerTest extends AbstractControllerTestCase
             [ '/patient_forms/1' ],
         ];
     }
-    
+
     /**
      * @dataProvider dataProviderAsAnonymous
      */
@@ -72,7 +72,7 @@ class PatientControllerTest extends AbstractControllerTestCase
         ];
     }
 
-    /** 
+    /**
      * @dataProvider dataProviderGetPatient
      */
     public function testGetPatient($patientId, $expected)
@@ -92,7 +92,7 @@ class PatientControllerTest extends AbstractControllerTestCase
         $this->assertCount(4, $crawler->filter('#care-requests-accordion h3')); // Nombre de care requests du patient
     }
 
-    
+
     public function dataProviderGetAsDoctor()
     {
         return [
@@ -121,20 +121,20 @@ class PatientControllerTest extends AbstractControllerTestCase
         $crawler = $this->client->request('GET', "/patient_forms/1");
         $this->assertResponseStatusCodeSame($expected);
     }
-        
-        
+
+
     public function testGetShowCareRequest()
     {
         $this->loginUser('user1@example.com');
         // On demande d'afficher la care request 2 alors qu'elle est archivée
         $crawler = $this->client->request('GET', '/patients/1?careRequest=2');
-        
+
         $this->assertSelectorNotExists('#care-requests-accordion #care-request-body-1.collapse.show');
         $this->assertSelectorExists('#care-requests-accordion #care-request-body-2.collapse.show');
     }
-    
 
-    
+
+
     public function testGetPatientWithoutCareRequest()
     {
         $this->loginUser('user1@example.com');
@@ -143,5 +143,5 @@ class PatientControllerTest extends AbstractControllerTestCase
         $crawler = $this->client->request('GET', '/patients/4');
 
         $this->assertSelectorTextSame("form[name='care_request'] button[name='care_request[upsert]']", 'Ajouter');
-    }    
+    }
 }

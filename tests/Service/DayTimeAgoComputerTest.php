@@ -4,7 +4,7 @@ namespace App\Tests\Service;
 
 use App\Service\DayTimeAgoComputer;
 
-class DayTimeAgoComputerTest extends AbstractServiceTest 
+class DayTimeAgoComputerTest extends AbstractServiceTest
 {
     private DayTimeAgoComputer $dayTimeAgoComputer;
 
@@ -42,5 +42,4 @@ class DayTimeAgoComputerTest extends AbstractServiceTest
             'fr'
         ));
     }
-
 }

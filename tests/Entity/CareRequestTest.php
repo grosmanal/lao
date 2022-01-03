@@ -12,18 +12,18 @@ class CareRequestTest extends AbstractEntityTestCase
 {
     private $repository;
     private $doctorRepository;
-    
+
     public function setUp(): void
     {
         $this->setUpTestEntity([
             __DIR__ . '/../../fixtures/tests/care_request.yaml',
             __DIR__ . '/../../fixtures/tests/comment.yaml',
         ]);
-        
+
         $this->repository = $this->em->getRepository(CareRequest::class);
         $this->doctorRepository = $this->em->getRepository(Doctor::class);
     }
-    
+
     public function testFind()
     {
         /** @var CareRequest */
@@ -34,7 +34,7 @@ class CareRequestTest extends AbstractEntityTestCase
         $this->assertFalse($careRequest->isAbandoned());
         $this->assertTrue($careRequest->isPriority());
         $this->assertEquals(new \DateTime('2021-09-27'), $careRequest->getContactedAtMutable());
-        
+
         $careRequest->setCreatedBy($doctor);
         $this->em->persist($careRequest);
         $this->em->flush();
@@ -42,7 +42,7 @@ class CareRequestTest extends AbstractEntityTestCase
         /** @var CareRequest */
         $careRequest = $this->repository->find(1);
         $this->assertSame($doctor, $careRequest->getCreatedBy());
-        
+
         $comments = $careRequest->getComments();
         $commentsCount = count($comments);
         $firstComment = $comments[0];
@@ -65,6 +65,4 @@ class CareRequestTest extends AbstractEntityTestCase
         $careRequest = $this->repository->find(1);
         $this->assertCount($commentsCount, $careRequest->getComments());
     }
-
-    
 }

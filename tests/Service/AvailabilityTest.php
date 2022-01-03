@@ -45,7 +45,7 @@ class AvailabilityTest extends TestCase
             ]
         ];
     }
-    
+
     /**
      * @dataProvider dataProviderIntervalsToRaw
      */
@@ -643,17 +643,17 @@ class AvailabilityTest extends TestCase
             )
         );
     }
-    
+
 
     private function intToDateTimeImmutable(int $time): \DateTimeImmutable
     {
         $hour = (int) floor($time / 100);
         $minute = $time - ($hour * 100);
-        
+
         return new DateTimeImmutable(sprintf('%02d:%02d', $hour, $minute));
     }
-    
-    
+
+
     public function dataProviderCoverScore()
     {
         return [
@@ -687,7 +687,7 @@ class AvailabilityTest extends TestCase
                 [ 1300, 1800 ],
             ],
         ];
-        
+
         $computedScore = $this->availability->computeCoverScore(
             $rawAvailabilities,
             $weekDay,

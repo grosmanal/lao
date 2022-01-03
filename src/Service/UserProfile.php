@@ -13,16 +13,16 @@ class UserProfile
         private DoctorRepository $doctorRepository
     ) {
     }
-    
+
     private function fetchDoctor(): ?Doctor
     {
         $doctor = $this->doctorRepository->findOneByUserIdentifier(
             $this->security->getUser()->getUserIdentifier()
         );
-        
+
         return $doctor;
     }
-    
+
     public function getDoctor()
     {
         return $this->fetchDoctor();
@@ -32,7 +32,7 @@ class UserProfile
     {
         return !empty($this->fetchDoctor());
     }
-    
+
     public function currentUserDoctorId()
     {
         $doctor = $this->fetchDoctor();

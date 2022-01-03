@@ -77,7 +77,7 @@ class Doctor extends User implements DoctorOwnedInterface
 
         return $this;
     }
-    
+
     public function ownedByDoctor(): ?Doctor
     {
         return $this;

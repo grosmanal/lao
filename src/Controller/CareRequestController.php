@@ -21,7 +21,8 @@ class CareRequestController extends AbstractAppController
     /**
      * Retourne le code HTML du formulaire de création d'une nouvelle demande de soin
      */
-    #[Route('/patients/{id}/care_request_forms/new',
+    #[Route(
+        '/patients/{id}/care_request_forms/new',
         name: 'care_request_creation_form',
         methods: [ 'GET' ],
     )]
@@ -37,7 +38,7 @@ class CareRequestController extends AbstractAppController
         }
 
         $this->denyAccessUnlessGranted('edit', $patient);
-        
+
         $careRequestForm = $careRequestFormFactory->createNew(
             $userProfile->getDoctor(),
             $patient
@@ -54,10 +55,11 @@ class CareRequestController extends AbstractAppController
 
     /**
      * Retourne le code HTML du formulaire demande de soin
-     * ce controller sert lors du réaffichage du formulaire après 
+     * ce controller sert lors du réaffichage du formulaire après
      * son enregistrement en bdd via l'API
      */
-    #[Route('/care_request_forms/{id}',
+    #[Route(
+        '/care_request_forms/{id}',
         name: 'care_request_form',
         methods: [ 'GET' ],
         requirements: ['id' => '\d+'],
@@ -69,13 +71,14 @@ class CareRequestController extends AbstractAppController
         Notification $notification,
         CareRequestFormFactory $careRequestFormFactory,
         CommentFormFactory $commentFormFactory,
-    ): Response
-    {
+    ): Response {
         $this->denyAccessUnlessGranted('edit', $careRequest);
-        
+
         $careRequestForm = $careRequestFormFactory->create($userProfile->getDoctor(), $careRequest);
-        $commentForm = $careRequest->isActive() ? $commentFormFactory->createNew($userProfile->getDoctor(), $careRequest) : null;
-        
+        $commentForm = $careRequest->isActive() ?
+            $commentFormFactory->createNew($userProfile->getDoctor(), $careRequest) :
+            null;
+
         return $this->render('patient/care_request.html.twig', [
             'currentDoctorId' => $userProfile->currentUserDoctorId(),
             'officeDoctors' => $notification->hintMentionData($careRequest->getOffice()),

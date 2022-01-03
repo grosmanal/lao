@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 class SearchCriteria
 {
     private ?string $label = null;
-    
+
     private ?Doctor $contactedBy = null;
 
     private ?DateTime $contactedFrom = null;
@@ -25,7 +25,7 @@ class SearchCriteria
     private ?DateTime $timeStart = null;
 
     private ?DateTime $timeEnd = null;
-    
+
     private ?bool $includeVariableSchedules = null;
 
     private ?bool $includeActiveCareRequest = null;
@@ -33,8 +33,8 @@ class SearchCriteria
     private ?bool $includeArchivedCareRequest = null;
 
     private ?bool $includeAbandonedCareRequest = null;
-    
-    
+
+
     /**
      * @Assert\Callback
      */
@@ -43,17 +43,18 @@ class SearchCriteria
         // Si un critère de disponibilité est renseigné, tous les autres doivent l'être
         if (!empty($this->getWeekDay()) || !empty($this->getTimeStart()) || !empty($this->getTimeEnd())) {
             if (empty($this->getweekDay()) || empty($this->getTimeStart()) || empty($this->getTimeEnd())) {
-            $context->buildViolation('search.error.availability_criteria')
+                $context->buildViolation('search.error.availability_criteria')
                 ->setTranslationDomain('messages')
-                ->atPath('weekDay') // Toutes les erreurs seront reliées au champ weekDay pour l'affichage du message d'erreur
+                // Toutes les erreurs seront reliées au champ weekDay pour l'affichage du message d'erreur
+                ->atPath('weekDay')
                 ->addViolation();
             }
         }
     }
-    
+
     /**
      * Get the value of label
-     * 
+     *
      * @return string|null
      */
     public function getLabel(): ?string

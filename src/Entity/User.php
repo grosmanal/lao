@@ -75,19 +75,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serial
     #[Assert\Length(max: 255)]
     #[Groups(['careRequest:read', 'comment:read', 'office:read'])]
     private $lastname;
-    
+
     /**
      * @var \DateTimeImmutable|null
      * @ORM\Column(type="datetime_immutable", nullable=true)
      */
     private $updatedAt;
-    
+
     /**
      * @var string|null
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $avatarName;
-    
+
     /**
      * @var File|null
      * @Vich\UploadableField(mapping="user_avatar", fileNameProperty="avatarName")
@@ -234,7 +234,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serial
 
         return $this;
     }
-    
+
     /**
      * Get the value of avatarName
      */
@@ -248,13 +248,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serial
      *
      * @return self
      */
-    public function setAvatarName(?string $avatarName): self 
+    public function setAvatarName(?string $avatarName): self
     {
         $this->avatarName = $avatarName;
 
         return $this;
     }
-    
+
     /**
      * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
      * of 'UploadedFile' is injected into this setter to trigger the update. If this
@@ -274,7 +274,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serial
             // otherwise the event listeners won't be called and the file is lost
             $this->updatedAt = new \DateTimeImmutable();
         }
-        
+
         return $this;
     }
 
@@ -290,7 +290,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serial
     {
         return $this->getFirstname();
     }
-    
+
     /**
      * @see \Serializable::serialize()
      */

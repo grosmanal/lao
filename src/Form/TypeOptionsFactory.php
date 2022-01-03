@@ -17,11 +17,11 @@ class TypeOptionsFactory
         $options['class'] = Doctor::class;
         $options['choices'] = $office->getDoctors();
         if ($valuesAsApiUri) {
-            $options['choice_value'] = function(?Doctor $doctor) {
+            $options['choice_value'] = function (?Doctor $doctor) {
                 return $doctor ? $this->urlGenerator->generate('api_doctors_get_item', ['id' => $doctor->getId()]) : '';
             };
         }
-        
+
         return $options;
     }
 }

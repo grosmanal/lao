@@ -1,6 +1,6 @@
 PANTHER_ENV=panther
 
-.PHONY: fixtures-dev fixtures-panther test-end2end schema-test test-unit-integration test-javascript phpstan test
+.PHONY: fixtures-dev fixtures-panther test-end2end schema-test test-unit-integration test-javascript php-parallel-lint php-code-sniffer phpstan test
 
 fixtures-dev:
 	bin/console hautelook:fixtures:load --purge-with-truncate --quiet --env dev
@@ -26,10 +26,16 @@ test-unit-integration: schema-test
 test-javascript:
 	yarn test
 
+php-parallel-lint:
+	vendor/bin/parallel-lint --exclude .git --exclude vendor .
+
+php-code-sniffer:
+	vendor/bin/phpcs --standard=PSR12 -n src tests
+
 phpstan:
 	vendor/bin/phpstan analyse -l 0 src tests
 
-test: phpstan test-unit-integration test-javascript test-end2end
+test: php-parallel-lint php-code-sniffer phpstan test-unit-integration test-javascript test-end2end
 	@echo "\n---\nAll tests passed 🎉"
 
 

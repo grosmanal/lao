@@ -21,7 +21,7 @@ class ActivitySubscriber implements EventSubscriberInterface
             Events::preUpdate,
         ];
     }
-    
+
     /**
      * Alimentation de la date de création
      */
@@ -41,7 +41,7 @@ class ActivitySubscriber implements EventSubscriberInterface
             $entity->setCreatedAt(new \DateTimeImmutable());
         }
     }
-    
+
     /**
      * Alimentation de la date de modification
      */

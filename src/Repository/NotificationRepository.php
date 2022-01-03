@@ -19,7 +19,7 @@ class NotificationRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Notification::class);
     }
-    
+
     public function readUnreadForDoctorQuery(Doctor $doctor, bool $read)
     {
         $qb = $this->createQueryBuilder('n');
@@ -32,7 +32,7 @@ class NotificationRepository extends ServiceEntityRepository
             ->getQuery()
         ;
     }
-    
+
     public function readForDoctorQuery(Doctor $doctor)
     {
         return $this->readUnreadForDoctorQuery($doctor, true);
@@ -44,7 +44,7 @@ class NotificationRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
-    
+
     public function markAllForDoctor(Doctor $doctor): void
     {
         $qb = $this->getEntityManager()->createQueryBuilder();

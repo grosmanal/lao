@@ -20,7 +20,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     itemOperations: [
         'get' => ['security' => "is_granted('view', object)"],
         'put' => [
-            
+
             'security' => "is_granted('edit', object)",
             'denormalization_context' => ['groups' => ['notification:put']],
         ],
@@ -29,11 +29,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 )]
 class Notification
 {
-    const STATE_NEW = 'new';
-    const STATE_VIEWED = 'viewed';
-    const STATE_ARCHIVED = 'archived';
-    
-    const STATES = [
+    public const STATE_NEW = 'new';
+    public const STATE_VIEWED = 'viewed';
+    public const STATE_ARCHIVED = 'archived';
+
+    public const STATES = [
         self::STATE_NEW,
         self::STATE_VIEWED,
         self::STATE_ARCHIVED,

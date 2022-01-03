@@ -18,7 +18,7 @@ class CommentFormFactory
         private Notification $notification,
     ) {
     }
-    
+
     public function createNew(Doctor $author, CareRequest $careRequest)
     {
         $newComment = new Comment();

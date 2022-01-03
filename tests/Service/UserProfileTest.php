@@ -12,14 +12,14 @@ class UserProfileTest extends AbstractServiceTest
     protected function setUp(): void
     {
         $kernel = self::bootKernel();
-        
+
         $this->setUpTestService([]); // load des fixtures user et doctor
     }
-    
+
     protected function setupUserProfile($userEmail): UserProfile
     {
         $container = static::getContainer();
-        
+
         $userRepository = $container->get(UserRepository::class);
         $user = $userRepository->findOneByEmail($userEmail);
 
@@ -28,7 +28,7 @@ class UserProfileTest extends AbstractServiceTest
             ->method('getUser')
             ->willReturn($user)
             ;
-        
+
         //$container->set(Security::class, $security);
         //$this->userProfile = $container->get(UserProfile::class);
 
@@ -36,10 +36,10 @@ class UserProfileTest extends AbstractServiceTest
             $security,
             $container->get(DoctorRepository::class)
         );
-        
+
         return $userProfile;
     }
-    
+
 
     public function dataProviderIsDoctor()
     {
@@ -58,7 +58,7 @@ class UserProfileTest extends AbstractServiceTest
 
         $this->assertSame($userProfile->currentUserIsDoctor(), $expected);
     }
-    
+
 
     public function dataProviderDoctorId()
     {

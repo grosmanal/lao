@@ -16,13 +16,13 @@ use Doctrine\Persistence\ManagerRegistry;
 class PatientRepository extends ServiceEntityRepository implements ActivityLoggableRepositoryInterface
 {
     use ActivityLoggableTrait;
-    
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Patient::class);
     }
 
-    
+
     public function findActiveSince(Office $office, \DateTimeInterface $since): array
     {
         $qb = $this->createQueryBuilder('p');
@@ -33,8 +33,8 @@ class PatientRepository extends ServiceEntityRepository implements ActivityLogga
             ->getResult()
         ;
     }
-    
-    
+
+
     /**
      * @param Office $office Current office
      * @return Patient[] Patients without any care request
@@ -84,7 +84,7 @@ class PatientRepository extends ServiceEntityRepository implements ActivityLogga
             ->getResult()
         ;
     }
-    
+
     // /**
     //  * @return Patient[] Returns an array of Patient objects
     //  */

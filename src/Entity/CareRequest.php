@@ -35,10 +35,10 @@ class CareRequest implements OfficeOwnedInterface, ActivityLoggableEntityInterfa
 {
     use ActivityLoggableTrait;
 
-    const STATE_NEW = 'new';
-    const STATE_ACTIVE = 'active';
-    const STATE_ARCHIVED = 'archived';
-    const STATE_ABANDONED = 'abandoned';
+    public const STATE_NEW = 'new';
+    public const STATE_ACTIVE = 'active';
+    public const STATE_ARCHIVED = 'archived';
+    public const STATE_ABANDONED = 'abandoned';
 
     /**
      * @ORM\Id
@@ -160,7 +160,7 @@ class CareRequest implements OfficeOwnedInterface, ActivityLoggableEntityInterfa
                 ->addViolation()
                 ;
         }
-        
+
         // Cohérence office. Le cabinet du patient doit être le même que :
         // - le docteur contacté
         if ($this->getContactedBy()) {
@@ -204,7 +204,7 @@ class CareRequest implements OfficeOwnedInterface, ActivityLoggableEntityInterfa
     {
         $this->comments = new ArrayCollection();
     }
-    
+
     public function getId(): ?int
     {
         return $this->id;
@@ -216,7 +216,7 @@ class CareRequest implements OfficeOwnedInterface, ActivityLoggableEntityInterfa
         if (empty($this->getId())) {
             return self::STATE_NEW;
         }
-        
+
         if (!empty($this->getAbandonedAt())) {
             return self::STATE_ABANDONED;
         }
@@ -227,7 +227,7 @@ class CareRequest implements OfficeOwnedInterface, ActivityLoggableEntityInterfa
 
         return self::STATE_ACTIVE;
     }
-    
+
     public function isNew(): bool
     {
         return $this->getState() === self::STATE_NEW;
@@ -271,7 +271,7 @@ class CareRequest implements OfficeOwnedInterface, ActivityLoggableEntityInterfa
 
         return $this;
     }
-    
+
     public function getContactedAt(): ?\DateTimeImmutable
     {
         return $this->contactedAt;
@@ -283,7 +283,7 @@ class CareRequest implements OfficeOwnedInterface, ActivityLoggableEntityInterfa
 
         return $this;
     }
-    
+
     public function getContactedAtMutable(): ?\DateTime
     {
         return \DateTime::createFromImmutable($this->getContactedAt());
@@ -428,7 +428,7 @@ class CareRequest implements OfficeOwnedInterface, ActivityLoggableEntityInterfa
 
         return $this;
     }
-    
+
     /**
      * @inheritdoc
      */
@@ -436,17 +436,17 @@ class CareRequest implements OfficeOwnedInterface, ActivityLoggableEntityInterfa
     {
         return $this->getOffice();
     }
-    
+
     public function getActivityObjectName(): string
     {
         return $this->getPatient()->getDisplayName();
     }
-    
+
     public function getActivityIcon(): string
     {
         return 'bi-clipboard';
     }
-    
+
     public function getActivityRoute(): array
     {
         return [
@@ -458,7 +458,7 @@ class CareRequest implements OfficeOwnedInterface, ActivityLoggableEntityInterfa
             ],
         ];
     }
-    
+
     public function getActivityMessage(string $action): TranslatableMessage
     {
         return new TranslatableMessage(sprintf('activity.care_request.%s', $action), [

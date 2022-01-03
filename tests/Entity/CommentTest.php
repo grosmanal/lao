@@ -18,7 +18,7 @@ class CommentTest extends AbstractEntityTestCase
             __DIR__ . '/../../fixtures/tests/care_request.yaml',
         ]);
     }
-    
+
     public function testSetCreator()
     {
         $doctor = $this->em->getRepository(Doctor::class)->find(1);

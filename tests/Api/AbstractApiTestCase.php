@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Tests\Api;
 
 use ApiPlatform\Core\Bridge\Symfony\Bundle\Test\ApiTestCase;

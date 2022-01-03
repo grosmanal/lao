@@ -7,7 +7,6 @@ trait ActivityLoggableTrait
     public function getCreatedBy(): ?User
     {
         return $this->createdBy;
-        
     }
 
     public function setCreatedBy(?User $createdBy): self
@@ -62,5 +61,4 @@ trait ActivityLoggableTrait
     {
         return \DateTime::createFromImmutable($this->getModifiedAt());
     }
-
 }

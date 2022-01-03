@@ -22,7 +22,7 @@ class SearchController extends AbstractAppController
         UserProfile $userProfile,
     ): Response {
         $searchCreteria = new SearchCriteria();
-        
+
         $currentDoctor = $userProfile->getDoctor();
 
         // Valeurs par défaut du formulaire
@@ -30,13 +30,13 @@ class SearchController extends AbstractAppController
             ->setIncludeActiveCareRequest(true)
             ->setWeekDay(0)
         ;
-        
+
         $form = $this->createForm(SearchType::class, $searchCreteria, [
             'daysOfWeek' => $this->getParameter('app.availability')['daysOfWeek'],
             'current_doctor' => $currentDoctor,
             'method' => 'GET',
         ]);
-        
+
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             // $form->getData() holds the submitted values
@@ -44,9 +44,9 @@ class SearchController extends AbstractAppController
             $searchCreteria = $form->getData();
 
             $searchResults = $careRequestFinder->find($searchCreteria, $currentDoctor->getOffice());
-            
+
             // Ajout de l'url de la care request pour chaque résultat
-            $searchResults = array_map(function($searchResult) {
+            $searchResults = array_map(function ($searchResult) {
                 return array_merge($searchResult, [
                     'url' => $this->generateUrl('patient', [
                         'id' => $searchResult['careRequest']->getPatient()->getId(),

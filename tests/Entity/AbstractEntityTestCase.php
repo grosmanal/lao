@@ -2,7 +2,6 @@
 
 namespace App\Tests\Entity;
 
-
 use App\Tests\TestCaseTrait;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;

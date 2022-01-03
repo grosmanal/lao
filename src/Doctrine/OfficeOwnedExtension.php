@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Doctrine;
 
 use Doctrine\ORM\QueryBuilder;
@@ -18,8 +19,8 @@ class OfficeOwnedExtension implements QueryCollectionExtensionInterface
         QueryBuilder $queryBuilder,
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,
-        string $operationName = null): void
-    {
+        string $operationName = null
+    ): void {
 
         // Les admins peuvent tout faire (gnark, gnark, gnark…)
         if ($this->security->isGranted('ROLE_ADMIN')) {
@@ -28,9 +29,9 @@ class OfficeOwnedExtension implements QueryCollectionExtensionInterface
 
         $reflectionClass = new \ReflectionClass($resourceClass);
         if (!$reflectionClass->implementsInterface(OfficeOwnedInterface::class)) {
-           return; // @codeCoverageIgnore
+            return; // @codeCoverageIgnore
         }
-        
+
         // La class App\Entity\Office implémente OfficeOwnedInterface (pour gérer la sécurité du get item)
         // mais ne doit pas être affectée par ce DoctrineExtension car seul le ROLE_ADMIN
         // est autorisé à faire un get collection
@@ -53,12 +54,12 @@ class OfficeOwnedExtension implements QueryCollectionExtensionInterface
             // L'entité possède une propriété office
             // On peut donc directement la sélectionner
             $officeFieldAlias = $rootAlias;
-        } elseif($reflectionClass->hasProperty('patient')) {
+        } elseif ($reflectionClass->hasProperty('patient')) {
             // L'entité possède une propriété patient
             // Il faut ajouter une jointure sur cette table
             $officeFieldAlias = 'officeOwnedExtension_alias_patient';
             $queryBuilder->innerJoin(sprintf('%s.patient', $rootAlias), $officeFieldAlias);
-        } elseif($reflectionClass->hasProperty('careRequest')) {
+        } elseif ($reflectionClass->hasProperty('careRequest')) {
             // L'entité possède une propriété careRequest
             // Il faut ajouter une jointure sur la table care_request
             // puis sur la table patient

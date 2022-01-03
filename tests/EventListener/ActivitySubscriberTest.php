@@ -46,14 +46,14 @@ class ActivitySubscriberTest extends AbstractControllerTestCase
         $this->assertNotEmpty($patient->getCreatedBy());
         $this->assertNotEmpty($patient->getCreatedAt());
         $this->assertEmpty($patient->getModifiedAt());
-        
+
         // Patient modification
         $patient->setFirstname('test');
         $this->em->persist($patient);
         $this->em->flush();
         $this->assertNotEmpty($patient->getModifiedBy());
         $this->assertNotEmpty($patient->getModifiedAt());
-        
+
         // CareRequest création
         $careRequest = new CareRequest();
         $careRequest
@@ -66,26 +66,26 @@ class ActivitySubscriberTest extends AbstractControllerTestCase
         $this->assertNotEmpty($careRequest->getCreatedBy());
         $this->assertNotEmpty($careRequest->getCreatedAt());
         $this->assertEmpty($careRequest->getModifiedAt());
-        
+
         // CareRequest modification
         $careRequest->setPriority(true);
         $this->em->persist($careRequest);
         $this->em->flush();
         $this->assertNotEmpty($careRequest->getModifiedBy());
         $this->assertNotEmpty($careRequest->getModifiedAt());
-        
+
         // Comment création
         $comment = new Comment();
         $comment
             ->setAuthor($this->currentDoctor)
             ->setCareRequest($careRequest)
-        ;    
+        ;
         $this->em->persist($comment);
         $this->em->flush();
         $this->assertNotEmpty($comment->getCreatedBy());
         $this->assertNotEmpty($comment->getCreatedAt());
         $this->assertEmpty($comment->getModifiedAt());
-        
+
         // Comment modification
         $comment->setContent('lorem');
         $this->em->persist($comment);

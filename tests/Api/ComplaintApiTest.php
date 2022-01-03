@@ -6,8 +6,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ComplaintApiTest extends AbstractApiTestCase
 {
-
-    const COMPLAINT_DATA = [
+    private const COMPLAINT_DATA = [
         'label' => 'label',
     ];
 
@@ -16,7 +15,7 @@ class ComplaintApiTest extends AbstractApiTestCase
         $this->setUpTestController([
             __DIR__ . '/../../fixtures/tests/complaint.yaml',
         ]);
-    }  
+    }
 
     public function dataProviderGetAs()
     {
@@ -34,9 +33,8 @@ class ComplaintApiTest extends AbstractApiTestCase
         $this->loginUser($userEmail);
         $this->client->request('GET', '/api/complaints/1');
         $this->assertResponseStatusCodeSame($expected);
-
     }
-    
+
 
     public function dataProviderPostAs()
     {
@@ -45,7 +43,7 @@ class ComplaintApiTest extends AbstractApiTestCase
             [ 'user1@example.com', Response::HTTP_FORBIDDEN ],
         ];
     }
-    
+
     /**
      * @dataProvider dataProviderPostAs
     */
@@ -56,7 +54,7 @@ class ComplaintApiTest extends AbstractApiTestCase
             'json' => self::COMPLAINT_DATA,
         ]);
         $this->assertResponseStatusCodeSame($expected);
-        
+
         if ($this->client->getResponse()->getStatusCode() == Response::HTTP_CREATED) {
             // Vérification que l'office est bien créé
             $complaintApiId = json_decode($this->client->getResponse()->getContent(), true)['@id'];
@@ -64,7 +62,7 @@ class ComplaintApiTest extends AbstractApiTestCase
             $this->assertResponseIsSuccessful();
         }
     }
-    
+
 
     public function dataProviderDeleteAs()
     {
@@ -73,7 +71,7 @@ class ComplaintApiTest extends AbstractApiTestCase
             [ 'user1@example.com', Response::HTTP_FORBIDDEN ],
         ];
     }
-    
+
     /**
      * @dataProvider dataProviderDeleteAs
      */
@@ -83,7 +81,7 @@ class ComplaintApiTest extends AbstractApiTestCase
         $this->client->request('DELETE', '/api/complaints/2');
         $this->assertResponseStatusCodeSame($expected);
     }
-    
+
 
     public function dataProviderPutAs()
     {
@@ -92,7 +90,7 @@ class ComplaintApiTest extends AbstractApiTestCase
             [ 'user1@example.com', Response::HTTP_FORBIDDEN ],
         ];
     }
-    
+
     /**
      * @dataProvider dataProviderPutAs
      */
@@ -116,7 +114,7 @@ class ComplaintApiTest extends AbstractApiTestCase
             $this->assertJsonContains([ 'label' => $newComplaintLabel]);
         }
     }
-    
+
 
     public function dataProviderPostMissingContent()
     {
@@ -124,8 +122,8 @@ class ComplaintApiTest extends AbstractApiTestCase
             [ 'label', Response::HTTP_UNPROCESSABLE_ENTITY, ],
         ];
     }
-    
-    /** 
+
+    /**
      * @dataProvider dataProviderPostMissingContent
      */
     public function testPostMissingContent($content, $expected)

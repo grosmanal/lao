@@ -2,11 +2,8 @@
 
 namespace App\Repository;
 
-use App\Entity\User;
 use App\Entity\Office;
 use Doctrine\Persistence\ManagerRegistry;
-
-use function PHPUnit\Framework\returnSelf;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**

@@ -10,17 +10,18 @@ use Interval\Interval;
 
 class Availability
 {
-    const NO_MATCH = 0;
-    const PARTIAL_COVER = 50;
-    const BOTH_EXACT_EDGE = 100;
-    const ONE_EXACT_EDGE = 110;
-    const FULLY_COVERED = 120;
-    
+    public const NO_MATCH = 0;
+    public const PARTIAL_COVER = 50;
+    public const BOTH_EXACT_EDGE = 100;
+    public const ONE_EXACT_EDGE = 110;
+    public const FULLY_COVERED = 120;
+
     /**
      * Transforme une liste de jours composés d'Interval en un objet serializable
      * en vue d'écriture en bdd
      */
-    public function intervalsToRaw($intervaledAvailabilities) {
+    public function intervalsToRaw($intervaledAvailabilities)
+    {
         $rawAvailabilities = [];
         foreach ($intervaledAvailabilities as $weekDay => $availabilities) {
             $dayAvailabilities = [];
@@ -43,11 +44,12 @@ class Availability
      * Transforme une liste de jours composés d'array [heureDébut, heureFin]
      * en liste d'Interval (heureDébut et heureFin sont des entiers)
      */
-    public function rawToIntervals($rawAvailabilities) {
+    public function rawToIntervals($rawAvailabilities)
+    {
         $intervaledAvailabilities = [];
-        foreach($rawAvailabilities as $weekDay => $availabilities) {
+        foreach ($rawAvailabilities as $weekDay => $availabilities) {
             $dayAvailabilities = [];
-            foreach($availabilities as $availability) {
+            foreach ($availabilities as $availability) {
                 $dayAvailabilities[] = new Interval((int) $availability[0], (int) $availability[1]);
             }
 
@@ -114,7 +116,7 @@ class Availability
         $current[$weekDay] = array_filter($current[$weekDay]);
 
         // tri des intervalles
-        usort($current[$weekDay], function($interval1, $interval2) {
+        usort($current[$weekDay], function ($interval1, $interval2) {
             return $interval1->getStart()->getValue() <=> $interval2->getStart()->getValue();
         });
 
@@ -171,7 +173,7 @@ class Availability
         $current[$weekDay] = array_filter($current[$weekDay]);
 
         // tri des intervalles
-        usort($current[$weekDay], function($interval1, $interval2) {
+        usort($current[$weekDay], function ($interval1, $interval2) {
             return $interval1->getStart()->getValue() <=> $interval2->getStart()->getValue();
         });
 
@@ -180,7 +182,7 @@ class Availability
 
         return $current;
     }
-    
+
 
     /**
      * Ajoute ou supprime une disponibilité à celles déjà existantes
@@ -226,7 +228,7 @@ class Availability
         list($startTimeAsString, $endTimeAsString) = explode('-', $slotKey);
         return new Interval((int) $startTimeAsString, (int) $endTimeAsString);
     }
-    
+
 
     /**
      * Transforme une paire de DateTimeImmutable en Interval
@@ -275,7 +277,7 @@ class Availability
             if (!empty($startTimeAsString)) {
                 $oneDaySlots[$startTimeAsString . '-' . $endTimeAsString] = false;
             }
-            
+
             $startTimeAsString = $endTimeAsString;
         }
 
@@ -310,20 +312,20 @@ class Availability
                 $weekAvailabilities[$dayOfWeek] = $oneDaySlots;
             }
         }
-        
+
         return $weekAvailabilities;
     }
-    
+
 
     private function addCoverMatch(&$matches, $score, $matchInterval)
     {
         if (!isset($matches[$score])) {
             $matches[$score] = [];
         }
-        
+
         $matches[$score][] = $matchInterval;
     }
-    
+
 
     /**
      * Calcul un score de couverture en fonction de la disponibilité pour un jour et une période
@@ -343,18 +345,18 @@ class Availability
                 'score' => self::NO_MATCH,
             ];
         }
-        
+
         $seekInterval = $this->intervalFromDateTimes($startTime, $endTime, true, true);
 
         $matches = [];
-        foreach($rawAvailabilities[$weekDay] as $rawAvailability) {
+        foreach ($rawAvailabilities[$weekDay] as $rawAvailability) {
             $interval = new Interval(
                 $rawAvailability[0],
                 $rawAvailability[1],
                 false,
                 false
             );
-            
+
             if ($interval->includes($seekInterval)) {
                 // L'interval recherché est totalement couvert par cette disponibilité
                 // Teste des bordures
@@ -389,5 +391,4 @@ class Availability
             }, $matches[$score]),
         ];
     }
-
 }

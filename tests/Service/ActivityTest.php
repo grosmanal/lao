@@ -18,7 +18,7 @@ class ActivityTest extends AbstractServiceTest
 
         $container = static::getContainer();
         $this->activty = $container->get(Activity::class);
-        
+
         $this->setUpTestService([
             __DIR__ . '/../../fixtures/tests/activityService/patient.yaml',
             __DIR__ . '/../../fixtures/tests/activityService/care_request.yaml',
@@ -28,15 +28,15 @@ class ActivityTest extends AbstractServiceTest
         // Recherche de l'office 1 pour l'affecté en tant qu'office courant
         $this->currentOffice = $container->get(OfficeRepository::class)->find(1);
     }
-    
-    
-    function dataProviderGetActiveEntities()
+
+
+    public function dataProviderGetActiveEntities()
     {
         return [
             [ '2021-01-04', [
                 'bi-file-person' => [], // Patient
                 'bi-clipboard' => [], // Care request
-                'bi-chat-left-text' => [ // Comment 
+                'bi-chat-left-text' => [ // Comment
                     new DateTimeImmutable("2021-05-01 15:10:00"), // Comment ID 4
                     new DateTimeImmutable("2021-05-02 15:10:00"), // Comment ID 5
                 ],
@@ -48,7 +48,7 @@ class ActivityTest extends AbstractServiceTest
                 'bi-clipboard' => [ // Care request
                     new DateTimeImmutable("2021-01-03 15:05:02"), // Care request ID 4
                 ],
-                'bi-chat-left-text' => [ // Comment 
+                'bi-chat-left-text' => [ // Comment
                     new DateTimeImmutable("2021-01-03 15:10:03"), // Comment ID 3
                     new DateTimeImmutable("2021-05-01 15:10:00"), // Comment ID 4
                     new DateTimeImmutable("2021-05-02 15:10:00"), // Comment ID 5
@@ -63,7 +63,7 @@ class ActivityTest extends AbstractServiceTest
                     new DateTimeImmutable("2021-01-02 15:05:02"), // Care request ID 3
                     new DateTimeImmutable("2021-01-03 15:05:02"), // Care request ID 4
                 ],
-                'bi-chat-left-text' => [ // Comment 
+                'bi-chat-left-text' => [ // Comment
                     new DateTimeImmutable("2021-01-02 15:10:03"), // Comment ID 2
                     new DateTimeImmutable("2021-01-03 15:10:03"), // Comment ID 3
                     new DateTimeImmutable("2021-05-01 15:10:00"), // Comment ID 4
@@ -81,7 +81,7 @@ class ActivityTest extends AbstractServiceTest
                     new DateTimeImmutable("2021-01-02 15:05:02"), // Care request ID 3
                     new DateTimeImmutable("2021-01-01 15:05:02"), // Care request ID 4
                 ],
-                'bi-chat-left-text' => [ // Comment 
+                'bi-chat-left-text' => [ // Comment
                     new DateTimeImmutable("2021-01-01 15:10:03"), // Comment ID 1
                     new DateTimeImmutable("2021-01-02 15:10:03"), // Comment ID 2
                     new DateTimeImmutable("2021-01-01 15:10:03"), // Comment ID 3
@@ -94,7 +94,7 @@ class ActivityTest extends AbstractServiceTest
                 ],
                 'bi-clipboard' => [ // Care request
                 ],
-                'bi-chat-left-text' => [ // Comment 
+                'bi-chat-left-text' => [ // Comment
                 ],
             ] ],
         ];
@@ -109,26 +109,26 @@ class ActivityTest extends AbstractServiceTest
             $this->currentOffice,
             $since === null ? null : new \DateTimeImmutable($since)
         );
-        
+
         // Classement des entité par classe
         $entitiesByIcon = [
             'bi-file-person' => [],
             'bi-clipboard' => [],
             'bi-chat-left-text' => [],
         ];
-        foreach($entities as $entity) {
+        foreach ($entities as $entity) {
             $entitiesByIcon[$entity['icon']][] = $entity['valorisationDate'];
         }
-        
+
         foreach ($entitiesByIcon as $icon => $entityIdsOfIcon) {
-            array_walk($entityIdsOfIcon, function($id) use ($expected, $icon) {
+            array_walk($entityIdsOfIcon, function ($id) use ($expected, $icon) {
                 $this->assertContainsEquals($id, $expected[$icon]);
             });
             $this->assertCount(count($expected[$icon]), $entityIdsOfIcon);
         }
     }
-    
-    
+
+
     public function dataProviderGetActiveEntitiesSorted()
     {
         return [
@@ -154,7 +154,7 @@ class ActivityTest extends AbstractServiceTest
             ]],
         ];
     }
-    
+
     /**
      * @dataProvider dataProviderGetActiveEntitiesSorted
      */
@@ -165,11 +165,11 @@ class ActivityTest extends AbstractServiceTest
             new \DateTimeImmutable('2021-01-02'),
             $sort
         );
-        
-        $entitiesId = array_map(function($entity) {
+
+        $entitiesId = array_map(function ($entity) {
             return [$entity['icon'], $entity['valorisationDate']];
         }, $entities);
-        
+
         $this->assertEquals($expected, $entitiesId);
     }
 }

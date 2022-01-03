@@ -6,8 +6,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class OfficeApiTest extends AbstractApiTestCase
 {
-
-    const OFFICE_DATA = [
+    private const OFFICE_DATA = [
         'name' => 'office',
         'address' => 'address',
         'addressComplement1' => 'addressComplement1',
@@ -22,7 +21,7 @@ class OfficeApiTest extends AbstractApiTestCase
         $this->setUpTestController([
             __DIR__ . '/../../fixtures/tests/office.yaml',
         ]);
-    }  
+    }
 
     public function dataProviderGetAs()
     {
@@ -41,9 +40,8 @@ class OfficeApiTest extends AbstractApiTestCase
         $this->loginUser($userEmail);
         $this->client->request('GET', '/api/offices/1');
         $this->assertResponseStatusCodeSame($expected);
-
     }
-    
+
     public function dataProviderGetAllAs()
     {
         return [
@@ -68,7 +66,7 @@ class OfficeApiTest extends AbstractApiTestCase
             ]);
         }
     }
-    
+
 
     public function testGetContent()
     {
@@ -94,7 +92,7 @@ class OfficeApiTest extends AbstractApiTestCase
                     'firstname' => 'doctor_3_firstname',
                     'lastname' => 'doctor_3_lastname',
                 ],
-                
+
             ],
         ]);
     }
@@ -107,7 +105,7 @@ class OfficeApiTest extends AbstractApiTestCase
             [ 'user1@example.com', Response::HTTP_FORBIDDEN ],
         ];
     }
-    
+
     /**
      * @dataProvider dataProviderPostAs
     */
@@ -118,7 +116,7 @@ class OfficeApiTest extends AbstractApiTestCase
             'json' => self::OFFICE_DATA,
         ]);
         $this->assertResponseStatusCodeSame($expected);
-        
+
         if ($this->client->getResponse()->getStatusCode() == Response::HTTP_CREATED) {
             // Vérification que l'office est bien créé
             $officeApiId = json_decode($this->client->getResponse()->getContent(), true)['@id'];
@@ -126,7 +124,7 @@ class OfficeApiTest extends AbstractApiTestCase
             $this->assertResponseIsSuccessful();
         }
     }
-    
+
 
     public function dataProviderDeleteAs()
     {
@@ -135,7 +133,7 @@ class OfficeApiTest extends AbstractApiTestCase
             [ 'user1@example.com', Response::HTTP_FORBIDDEN ],
         ];
     }
-    
+
     /**
      * @dataProvider dataProviderDeleteAs
      */
@@ -146,7 +144,7 @@ class OfficeApiTest extends AbstractApiTestCase
         $this->client->request('DELETE', '/api/offices/3');
         $this->assertResponseStatusCodeSame($expected);
     }
-    
+
 
     public function dataProviderPutAs()
     {
@@ -155,7 +153,7 @@ class OfficeApiTest extends AbstractApiTestCase
             [ 'user1@example.com', Response::HTTP_FORBIDDEN ],
         ];
     }
-    
+
     /**
      * @dataProvider dataProviderPutAs
      */
@@ -179,7 +177,7 @@ class OfficeApiTest extends AbstractApiTestCase
             $this->assertJsonContains([ 'name' => $newOfficeName]);
         }
     }
-    
+
 
     public function dataProviderPostMissingContent()
     {
@@ -193,8 +191,8 @@ class OfficeApiTest extends AbstractApiTestCase
             [ 'country', Response::HTTP_UNPROCESSABLE_ENTITY, ],
         ];
     }
-    
-    /** 
+
+    /**
      * @dataProvider dataProviderPostMissingContent
      */
     public function testPostMissingContent($content, $expected)

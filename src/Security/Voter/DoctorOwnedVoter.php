@@ -18,16 +18,16 @@ class DoctorOwnedVoter extends Voter
     public function __construct(private DoctorRepository $doctorRepository, private Security $security)
     {
     }
-    
+
     protected function supports(string $attribute, $subject): bool
     {
         if (!in_array($attribute, [self::VIEW, self::EDIT])) {
             return false;
         }
-        
+
         $reflectionClass = new \ReflectionClass($subject);
         if (!$reflectionClass->implementsInterface(DoctorOwnedInterface::class)) {
-           return false;
+            return false;
         }
 
         return true;
@@ -51,7 +51,7 @@ class DoctorOwnedVoter extends Voter
 
         $doctor = $this->doctorRepository->find($user->getId());
         if (!$doctor) {
-            throw new \LogicException('Should not be here : every entity Doctor must have the ROLE_DOCTOR'); // @codeCoverageIgnore
+            throw new \LogicException('Should not be here'); // @codeCoverageIgnore
         }
 
         /** @var DoctorOwnedInterface $ressource */
@@ -73,7 +73,7 @@ class DoctorOwnedVoter extends Voter
         if ($ressource->ownedByDoctor()->getOffice() == $doctor->getOffice()) {
             return true;
         }
-        
+
         return false;
     }
 

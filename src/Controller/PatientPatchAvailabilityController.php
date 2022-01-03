@@ -19,18 +19,20 @@ class PatientPatchAvailabilityController extends AbstractController
         private SerializerInterface $serializer,
         private ValidatorInterface $validator,
         private RequestStack $requestStack,
-    ) {}
-    
+    ) {
+    }
+
     public function __invoke(Patient $data): Patient
     {
         $requestContent = $this->requestStack->getCurrentRequest()->getContent();
-        
+
         /** @var PatientPatchAvailabilityInput */
         $input = $this->serializer->deserialize($requestContent, PatientPatchAvailabilityInput::class, 'json');
         $errors = $this->validator->validate($input);
-        
+
         if (count($errors) > 0) {
-            throw new UnprocessableEntityHttpException(sprintf("%s : %s", 
+            throw new UnprocessableEntityHttpException(sprintf(
+                "%s : %s",
                 $errors->get(0)->getPropertyPath(),
                 $errors->get(0)->getMessage()
             ));

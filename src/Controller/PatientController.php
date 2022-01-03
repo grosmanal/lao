@@ -19,22 +19,21 @@ use Symfony\Component\Translation\TranslatableMessage;
 class PatientController extends AbstractAppController
 {
     /**
-     * 
+     *
      */
     #[Route('/patients/new', name: 'patient_new')]
     public function patientNew(
         Request $request,
         EntityManagerInterface $em,
         UserProfile $userProfile,
-    ): Response
-    {
+    ): Response {
         $patient = new Patient();
         $patient
             ->setOffice($userProfile->getDoctor()->getOffice())
             ;
 
         $patientForm = $this->createForm(PatientType::class, $patient);
-        
+
         $patientForm->handleRequest($request);
         if ($patientForm->isSubmitted() && $patientForm->isValid()) {
             // info : toutes les validations se font côté client
@@ -42,10 +41,10 @@ class PatientController extends AbstractAppController
 
             $em->persist($patient);
             $em->flush();
-            
+
             return $this->redirectToRoute('patient', ['id' => $patient->getId()]);
         }
-        
+
         // Affichage de la page de saisie d'un nouveau patient
         return $this->render('patient/patient.html.twig', [
             'navbarTitle' => 'patient.title_new',
@@ -57,17 +56,16 @@ class PatientController extends AbstractAppController
             'patientForm' => $patientForm->createView(),
         ]);
     }
-    
-    
+
+
     /**
-     * 
+     *
      */
     #[Route('/patient_forms/{id}', name: 'patient_form')]
     public function patientForm(
         Patient $patient,
         PatientFormFactory $patientFormFactory,
-    ): Response
-    {
+    ): Response {
         $this->denyAccessUnlessGranted('edit', $patient);
 
         $patientForm = $patientFormFactory->create($patient);
@@ -80,7 +78,7 @@ class PatientController extends AbstractAppController
 
 
     /**
-     * 
+     *
      */
     #[Route('/patients/{id}', name: 'patient')]
     public function patient(
@@ -91,8 +89,7 @@ class PatientController extends AbstractAppController
         PatientFormFactory $patientFormFactory,
         CareRequestFormFactory $careRequestFormFactory,
         CommentFormFactory $commentFormFactory,
-    ): Response
-    {
+    ): Response {
         $this->denyAccessUnlessGranted('edit', $patient);
 
         $paramsAvailability = $this->getParameter('app.availability');
@@ -101,7 +98,7 @@ class PatientController extends AbstractAppController
         $variableScheduleForm = $this->createForm(VariableScheduleType::class, $patient, [
             'api_put_url' => $this->generateUrl('api_patients_put_item', ['id' => $patient->getId()]),
         ]);
-        
+
         // Demande-t-on une care request en particulier
         $careRequestIdToShow = $request->query->get('careRequest');
 
@@ -110,9 +107,11 @@ class PatientController extends AbstractAppController
             $careRequestData = [
                 'careRequest' => $careRequest,
                 'careRequestForm' => $careRequestFormFactory->create($userProfile->getDoctor(), $careRequest),
-                'commentForm' => $careRequest->isActive() ? $commentFormFactory->createNew($userProfile->getDoctor(), $careRequest) : null,
+                'commentForm' => $careRequest->isActive() ?
+                    $commentFormFactory->createNew($userProfile->getDoctor(), $careRequest) :
+                    null,
             ];
-            
+
             if ($careRequestIdToShow) {
                 // Si on demande l'affichage d'une care request en particulier, on affiche QUE celle-là
                 $careRequestData['showCareRequest'] = ($careRequestIdToShow == $careRequest->getId());
@@ -123,13 +122,13 @@ class PatientController extends AbstractAppController
 
             $careRequestsData[] = $careRequestData;
         }
-        
+
         if (empty($careRequestsData)) {
             // Ce patient n'a aucune care request
             // On affiche le formulaire de création de care request
             $newCareRequestForm = $careRequestFormFactory->createNew($userProfile->getDoctor(), $patient);
         }
-        
+
         return $this->render('patient/patient.html.twig', [
             'navbarTitle' => new TranslatableMessage('patient.title', [
                 '%firstname%' => $patient->getFirstname(),
@@ -153,7 +152,7 @@ class PatientController extends AbstractAppController
                 $paramsAvailability['interval'],
                 $patient->getAvailability()
             ),
-            'careRequestsData' => array_map(function($careRequestData) {
+            'careRequestsData' => array_map(function ($careRequestData) {
                 return [
                     'careRequest' => $careRequestData['careRequest'],
                     'showCareRequest' => $careRequestData['showCareRequest'],

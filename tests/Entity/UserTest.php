@@ -11,15 +11,15 @@ use Symfony\Component\HttpFoundation\File\File;
 class UserTest extends AbstractEntityTestCase
 {
     private $repository;
-    
+
     public function setUp(): void
     {
         $this->setUpTestEntity([
         ]);
-        
+
         //$this->repository = $this->em->getRepository(Comment::class);
     }
-    
+
     public function testSetAvatarFile()
     {
         $file = new File('test.png', false);

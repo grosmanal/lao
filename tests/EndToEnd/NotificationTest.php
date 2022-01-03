@@ -10,10 +10,10 @@ class NotificationTest extends AbstractEndToEndTestCase
     public function setUp(): void
     {
         $this->setUpTestPanther();
-    }    
-    
-    const NOTIFICATION_SELECTOR = 'section.notifications';
-    
+    }
+
+    private const NOTIFICATION_SELECTOR = 'section.notifications';
+
     /**
      * Marquage d'une notification à lue
      */
@@ -23,9 +23,9 @@ class NotificationTest extends AbstractEndToEndTestCase
 
         $crawler = $this->client->request('GET', '/notifications');
         $this->assertPageTitleSame('LAO | Notifications');
-         
+
         $this->assertSelectorExists(self::NOTIFICATION_SELECTOR);
-        
+
         // Il doit à avoir un seul notification non lue
         $notificationItemsSelector = self::NOTIFICATION_SELECTOR . " ul.notifications > li";
         $this->assertCount(1, $crawler->filter($notificationItemsSelector));
@@ -38,27 +38,27 @@ class NotificationTest extends AbstractEndToEndTestCase
         // Il ne doit y avoir plus aucune notification
         $this->client->waitForStaleness($notificationItemsSelector);
         $this->assertSelectorNotExists($notificationItemsSelector);
-        
+
         // Recharchement de la page
         $crawler = $this->client->request('GET', '/notifications');
-        
+
         // On doit voir le warning
         $this->assertSelectorIsVisible(self::NOTIFICATION_SELECTOR . " p.alert-warning");
     }
-    
+
     public function testMarkAll(): void
     {
         $this->loginUser('user5@example.com');
-        
+
         $crawler = $this->client->request('GET', '/notifications');
         $this->assertPageTitleSame('LAO | Notifications');
         //
         // Il doit à avoir deux notifications non lues
         $notificationItemsSelector = self::NOTIFICATION_SELECTOR . " ul.notifications > li";
         $this->assertCount(2, $crawler->filter($notificationItemsSelector));
-        
+
         $crawler = $this->client->click($crawler->filter(self::NOTIFICATION_SELECTOR . " h2 a")->link());
-        
+
         // On doit voir le warning
         $this->assertSelectorIsVisible(self::NOTIFICATION_SELECTOR . " p.alert-warning");
     }

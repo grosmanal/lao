@@ -9,7 +9,7 @@ class CommentControllerTest extends AbstractControllerTestCase
     public function setUp(): void
     {
         $this->setUpTestController([__DIR__ . '/../../fixtures/tests/comment.yaml']);
-    }    
+    }
 
 
     public function dataProviderGet()
@@ -30,7 +30,7 @@ class CommentControllerTest extends AbstractControllerTestCase
 
         $this->assertResponseStatusCodeSame($expected);
     }
-    
+
     public function testContent()
     {
         $this->loginUser('user1@example.com');
@@ -39,7 +39,7 @@ class CommentControllerTest extends AbstractControllerTestCase
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains('article p', 'lorem ipsum comment_1');
     }
-    
+
     public function testGetAsAnonymous(): void
     {
         $crawler = $this->client->request('GET', "/comments/1");
@@ -67,15 +67,15 @@ class CommentControllerTest extends AbstractControllerTestCase
 
         $this->assertResponseStatusCodeSame($expected);
     }
-    
+
     public function testForm()
     {
         $this->loginUser('user1@example.com');
         $crawler = $this->client->request('GET', sprintf('/comment_forms/1'));
         $this->assertSelectorExists('textarea', 'lorem ipsum comment_1');
     }
-    
-    
+
+
     public function dataProviderCommentFormWrongCareRequest()
     {
         return [

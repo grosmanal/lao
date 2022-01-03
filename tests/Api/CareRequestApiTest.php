@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CareRequestApiTest extends AbstractApiTestCase
 {
-    const CARE_REQUEST_DATA = [
+    private const CARE_REQUEST_DATA = [
         'patient' => '/api/patients/1',
         'contactedBy' => '/api/doctors/1',
         'contactedAt' => '2021-09-29',
@@ -24,7 +24,7 @@ class CareRequestApiTest extends AbstractApiTestCase
             __DIR__ . '/../../fixtures/tests/patient.yaml',
             __DIR__ . '/../../fixtures/tests/care_request.yaml',
         ]);
-    }  
+    }
 
 
     public function testGet()
@@ -113,7 +113,7 @@ class CareRequestApiTest extends AbstractApiTestCase
     }
 
     /**
-     * @dataProvider dataProviderGetAsDoctor 
+     * @dataProvider dataProviderGetAsDoctor
      */
     public function testGetAsDoctor($userEmail, $expected)
     {
@@ -121,7 +121,7 @@ class CareRequestApiTest extends AbstractApiTestCase
         $this->client->request('GET', "/api/care_requests/1");
         $this->assertResponseStatusCodeSame($expected);
     }
-    
+
 
     public function testPost()
     {
@@ -161,7 +161,7 @@ class CareRequestApiTest extends AbstractApiTestCase
         ]);
         $this->assertResponseStatusCodeSame($expected);
     }
-    
+
 
     public function dataProviderAnotherOfficeData()
     {
@@ -189,7 +189,7 @@ class CareRequestApiTest extends AbstractApiTestCase
         ]);
         $this->assertResponseStatusCodeSame($expected);
     }
-    
+
     public function dataProviderDeleteAs()
     {
         return [
@@ -198,7 +198,7 @@ class CareRequestApiTest extends AbstractApiTestCase
             [ 'user2@example.com', '/api/care_requests/1', Response::HTTP_FORBIDDEN ],
         ];
     }
-    
+
     /**
      * @dataProvider dataProviderDeleteAs
      */
@@ -208,8 +208,8 @@ class CareRequestApiTest extends AbstractApiTestCase
         $this->client->request('DELETE', $careRequestApiId);
         $this->assertResponseStatusCodeSame($expected);
     }
-    
-    
+
+
     public function dataPostInconsistentData()
     {
         return [
@@ -219,7 +219,7 @@ class CareRequestApiTest extends AbstractApiTestCase
             [ 'now', 'now', Response::HTTP_UNPROCESSABLE_ENTITY ],
         ];
     }
-    
+
     /**
      * @dataProvider dataPostInconsistentData
      */
@@ -248,7 +248,7 @@ class CareRequestApiTest extends AbstractApiTestCase
             [ 'user2@example.com', '/api/care_requests/1', Response::HTTP_FORBIDDEN ],
         ];
     }
-    
+
     /**
      * @dataProvider dataProviderPutAs
      */
@@ -272,7 +272,7 @@ class CareRequestApiTest extends AbstractApiTestCase
             $this->assertJsonContains([ 'customComplaint' => $newCustomComplaint]);
         }
     }
-    
+
     public function dataProviderPutUnconsistentData()
     {
         return [
@@ -298,7 +298,7 @@ class CareRequestApiTest extends AbstractApiTestCase
         ]);
         $this->assertResponseStatusCodeSame($expected);
     }
-    
+
     public function testPutPatient()
     {
         // On ne peut pas modifier le patient d'une care request

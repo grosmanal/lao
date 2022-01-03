@@ -21,7 +21,7 @@ class AgeExtension extends AbstractExtension
             new TwigFilter('age', [$this, 'age']),
         ];
     }
-    
+
 
     public function age(?\DateTimeInterface $birthDate): ?string
     {

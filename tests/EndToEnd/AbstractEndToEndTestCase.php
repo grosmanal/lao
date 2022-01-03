@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Tests\EndToEnd;
 
 use Symfony\Component\Panther\Client;
@@ -26,7 +27,7 @@ abstract class AbstractEndToEndTestCase extends PantherTestCase
         $this->client->submitForm('Connexion');
         $this->client->waitFor('.navbar', 5);
     }
-    
+
 
     /**
      * Transforme une date Y-m-d en date américaine

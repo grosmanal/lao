@@ -20,7 +20,7 @@ class ArticleRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Article::class);
     }
-    
+
     /**
      * @return QueryBuilder
      */
@@ -33,7 +33,7 @@ class ArticleRepository extends ServiceEntityRepository
             ->where(sprintf('d = %s', $doctorParameter))
         ;
     }
-    
+
     /**
      * @return Article[]
      */
@@ -47,7 +47,7 @@ class ArticleRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
-    
+
     /**
      * @return Article[]
      */

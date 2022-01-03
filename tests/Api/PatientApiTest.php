@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class PatientApiTest extends AbstractApiTestCase
 {
-    const PATIENT_DATA = [
+    private const PATIENT_DATA = [
         'firstname' => 'firstname',
         'lastname' => 'lastname',
         'birthdate' => '2011-05-30',
@@ -24,9 +24,9 @@ class PatientApiTest extends AbstractApiTestCase
         $this->setUpTestController([
             __DIR__ . '/../../fixtures/tests/patient.yaml',
         ]);
-    }  
+    }
 
-    
+
     public function dataProviderGetAllAsDoctor()
     {
         return [
@@ -80,7 +80,7 @@ class PatientApiTest extends AbstractApiTestCase
             'lastname' => 'patient_1_lastname',
         ]);
     }
-    
+
 
     public function dataProviderGetAsDoctor()
     {
@@ -94,7 +94,7 @@ class PatientApiTest extends AbstractApiTestCase
             [ 'user2@example.com', '/api/patients/3', Response::HTTP_OK ],
         ];
     }
-    
+
     /**
      * @dataProvider dataProviderGetAsDoctor
      */
@@ -148,7 +148,7 @@ class PatientApiTest extends AbstractApiTestCase
         ]);
         $this->assertResponseStatusCodeSame($expected);
     }
-    
+
 
     public function dataProviderDeleteAs()
     {
@@ -158,7 +158,7 @@ class PatientApiTest extends AbstractApiTestCase
             [ 'user2@example.com', '/api/patients/1', Response::HTTP_FORBIDDEN ],
         ];
     }
-    
+
     /**
      * @dataProvider dataProviderDeleteAs
      */
@@ -168,7 +168,7 @@ class PatientApiTest extends AbstractApiTestCase
         $this->client->request('DELETE', $patientApiId);
         $this->assertResponseStatusCodeSame($expected);
     }
-    
+
 
     public function dataProviderPutAs()
     {
@@ -178,7 +178,7 @@ class PatientApiTest extends AbstractApiTestCase
             [ 'user2@example.com', '/api/patients/1', Response::HTTP_FORBIDDEN ],
         ];
     }
-    
+
     /**
      * @dataProvider dataProviderPutAs
      */

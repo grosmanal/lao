@@ -53,7 +53,7 @@ class PatientType extends AbstractType
                 'required' => false,
             ])
         ;
-        
+
         if ($patient->getId()) {
             // Le patient existe
             $builder

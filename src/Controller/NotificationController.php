@@ -18,8 +18,7 @@ class NotificationController extends AbstractAppController
     public function notifications(
         UserProfile $userProfile,
         NotificationRepository $notificationRepository,
-    ): Response
-    {
+    ): Response {
         $notifications = $notificationRepository->findUnreadForDoctor($userProfile->getDoctor());
 
         return $this->render('notification/notifications.html.twig', [
@@ -32,7 +31,7 @@ class NotificationController extends AbstractAppController
             'notifications' => $notifications,
         ]);
     }
-    
+
 
     #[Route('/notifications_read', name: 'notifications_read')]
     #[IsGranted('ROLE_DOCTOR')]
@@ -41,8 +40,7 @@ class NotificationController extends AbstractAppController
         UserProfile $userProfile,
         NotificationRepository $notificationRepository,
         PaginatorInterface $paginator,
-    ): Response
-    {
+    ): Response {
         $pagination = $paginator->paginate(
             $notificationRepository->readForDoctorQuery($userProfile->getDoctor()),
             $request->query->getInt('page', 1)
@@ -57,15 +55,14 @@ class NotificationController extends AbstractAppController
             'notifications' => null,
         ]);
     }
-    
+
 
     #[Route('/notifications_mark_all', name: 'notifications_mark_all')]
     #[IsGranted('ROLE_DOCTOR')]
     public function markAllNotifications(
         UserProfile $userProfile,
         NotificationRepository $notificationRepository
-    ): RedirectResponse
-    {
+    ): RedirectResponse {
         $notificationRepository->markAllForDoctor($userProfile->getDoctor());
         return $this->redirectToRoute('notifications');
     }

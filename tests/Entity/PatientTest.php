@@ -12,16 +12,16 @@ class PatientTest extends AbstractEntityTestCase
 {
     /** @var PatientRepository */
     private $repository;
-    
+
     public function setUp(): void
     {
         $this->setUpTestEntity([
             __DIR__ . '/../../fixtures/tests/patient.yaml',
         ]);
-        
+
         $this->repository = $this->em->getRepository(Patient::class);
     }
-    
+
 
     public function testFind()
     {

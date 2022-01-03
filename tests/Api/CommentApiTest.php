@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CommentApiTest extends AbstractApiTestCase
 {
-    const COMMENT_DATA = [
+    private const COMMENT_DATA = [
         'author' => '/api/doctors/1',
         'careRequest' => '/api/care_requests/1',
         'content' => 'content new comment',
@@ -18,7 +18,7 @@ class CommentApiTest extends AbstractApiTestCase
             __DIR__ . '/../../fixtures/tests/comment.yaml',
         ]);
     }
-    
+
     // Test du contenu de commentaire retourné
     public function testGet()
     {
@@ -41,7 +41,7 @@ class CommentApiTest extends AbstractApiTestCase
                     'lastname' => 'patient_1_lastname',
                 ],
                 'state' => 'active',
-                
+
             ],
             'content' => 'lorem ipsum comment_1',
             'relatedUri' => [
@@ -102,8 +102,8 @@ class CommentApiTest extends AbstractApiTestCase
         }
         $this->assertSame($expectedCommentApiIds, $commentApiIds);
     }
-    
-    
+
+
     public function dataProviderGetAsDoctor()
     {
         return [
@@ -115,14 +115,14 @@ class CommentApiTest extends AbstractApiTestCase
     /**
      * @dataProvider dataProviderGetAsDoctor
      */
-    public function testGetAsDoctor ($userEmail, $expected)
+    public function testGetAsDoctor($userEmail, $expected)
     {
         $this->loginUser($userEmail);
         $this->client->request('GET', "/api/comments/1");
         $this->assertResponseStatusCodeSame($expected);
     }
-    
-    
+
+
     public function dataProviderPost()
     {
         return [
@@ -131,7 +131,7 @@ class CommentApiTest extends AbstractApiTestCase
             ['/api/care_requests/3', Response::HTTP_FORBIDDEN], // care_request abandonnée
         ];
     }
-    
+
     /**
      * @dataProvider dataProviderPost
      */
@@ -144,7 +144,7 @@ class CommentApiTest extends AbstractApiTestCase
             ])
         ]);
         $this->assertResponseStatusCodeSame($expected);
-        
+
         if ($expected == Response::HTTP_CREATED) {
             $commentApiId = json_decode($crawler->getContent(), true)['@id'];
             $this->client->request('GET', $commentApiId);
@@ -197,7 +197,7 @@ class CommentApiTest extends AbstractApiTestCase
         ]);
         $this->assertResponseStatusCodeSame($expected);
     }
-    
+
 
     public function dataProviderPostAnotherAuthor()
     {
@@ -220,8 +220,8 @@ class CommentApiTest extends AbstractApiTestCase
         ]);
         $this->assertResponseStatusCodeSame($expected);
     }
-    
-    
+
+
     public function dataProviderDeleteAs()
     {
         return [
@@ -231,7 +231,7 @@ class CommentApiTest extends AbstractApiTestCase
             ['user5@example.com', Response::HTTP_FORBIDDEN],
         ];
     }
-    
+
     /**
      * @dataProvider dataProviderDeleteAs
      */
@@ -242,7 +242,7 @@ class CommentApiTest extends AbstractApiTestCase
         $crawler = $this->client->request('DELETE', "/api/comments/1");
         $this->assertResponseStatusCodeSame($expected);
     }
-    
+
 
     public function dataProviderDeleteCareRequestStatus()
     {
@@ -254,7 +254,7 @@ class CommentApiTest extends AbstractApiTestCase
     }
 
     /**
-     * Teste la suppression de commentaire en fonction du 
+     * Teste la suppression de commentaire en fonction du
      * statut de la care request
      * @dataProvider dataProviderDeleteCareRequestStatus
      */
@@ -264,8 +264,8 @@ class CommentApiTest extends AbstractApiTestCase
         $crawler = $this->client->request('DELETE', $commentUri);
         $this->assertResponseStatusCodeSame($expected);
     }
-    
-    
+
+
     public function dataProviderPutAs()
     {
         return [
@@ -275,7 +275,7 @@ class CommentApiTest extends AbstractApiTestCase
             ['user5@example.com', Response::HTTP_FORBIDDEN],
         ];
     }
-    
+
     /**
      * @dataProvider dataProviderPutAs
      */
@@ -290,8 +290,8 @@ class CommentApiTest extends AbstractApiTestCase
         ]);
         $this->assertResponseStatusCodeSame($expected);
     }
-    
-    
+
+
     public function dataProviderPutCareRequestStatus()
     {
         return [
@@ -302,7 +302,7 @@ class CommentApiTest extends AbstractApiTestCase
     }
 
     /**
-     * Teste la modification de commentaire en fonction du 
+     * Teste la modification de commentaire en fonction du
      * statut de la care request
      * @dataProvider dataProviderPutCareRequestStatus
      */
@@ -316,8 +316,8 @@ class CommentApiTest extends AbstractApiTestCase
         ]);
         $this->assertResponseStatusCodeSame($expected);
     }
-    
-    
+
+
     public function dataProviderPutUnupdatableFields()
     {
         return [
@@ -337,7 +337,7 @@ class CommentApiTest extends AbstractApiTestCase
         // - l'auteur
         // - la date de création
         // d'un comment
-        
+
         $this->loginUser('admin@example.com');
         $crawler = $this->client->request('PUT', "/api/comments/1", [
             'json' => [ $payloadKey => $payloadValue ],
@@ -345,8 +345,8 @@ class CommentApiTest extends AbstractApiTestCase
         $this->assertResponseIsSuccessful();
         $this->assertJsonContains([ $payloadKey => $expected ]);
     }
-    
-    
+
+
     private function countNotificationsForDoctor($doctorId)
     {
         $crawler = $this->client->request('GET', sprintf("/api/doctors/%d", $doctorId));
@@ -359,21 +359,26 @@ class CommentApiTest extends AbstractApiTestCase
     public function testNotificationCreation()
     {
         $this->loginUser('admin@example.com');
-        
+
         $notifiedDoctorId = 3;
         // Recherche du nombre de notifications avant création du commentaire
         $initialNotificationCount = $this->countNotificationsForDoctor($notifiedDoctorId);
-        
+
         $commentData = array_merge(
-            self::COMMENT_DATA, [
-                'content' => sprintf('<p>Hello <span class="mention" data-mention-doctor-id="%d">Doctor 3</span></p>', $notifiedDoctorId),
-        ]);
+            self::COMMENT_DATA,
+            [
+                'content' => sprintf(
+                    '<p>Hello <span class="mention" data-mention-doctor-id="%d">Doctor 3</span></p>',
+                    $notifiedDoctorId
+                ),
+            ]
+        );
 
         $crawler = $this->client->request('POST', "/api/comments", [
             'json' => $commentData,
         ]);
         $this->assertResponseIsSuccessful();
-        
+
         // Vérification de la création de la notification
         $this->assertEquals($initialNotificationCount + 1, $this->countNotificationsForDoctor($notifiedDoctorId));
     }
