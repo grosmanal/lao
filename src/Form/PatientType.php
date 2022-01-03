@@ -29,10 +29,10 @@ class PatientType extends AbstractType
             ->add('id', HiddenType::class)
             ->add('firstname', TextType::class, [
                 'label' => 'patient.info.form.firstname',
+                'required' => false,
             ])
             ->add('lastname', TextType::class, [
                 'label' => 'patient.info.form.lastname',
-                'required' => false,
             ])
             ->add('birthdate', BirthdayType::class, [
                 'format' => 'yyyy-MM-dd',
