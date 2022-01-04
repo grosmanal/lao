@@ -1,44 +1,9 @@
 @import '~bootstrap/scss/mixins';
-@import './mixin';
-
-.submit-form-group {
-    @include media-breakpoint-up(lg) {
-        text-align: right;
-    }
-}
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
 
 .patient-content {
-    .identity-section {
-        form {
-            @include form-margin;
-            
-            .form-content {
-                columns: 1;
-                
-                margin-bottom: 0.7rem;
-
-                @include media-breakpoint-up(lg) {
-                    columns: 2;
-                }
-            }
-        }
-    }
-
     .care-request-section {
-        form {
-            @include form-margin;
-            
-            .form-content {
-                columns: 1;
-
-                margin-bottom: 0.7rem;
-
-                @include media-breakpoint-up(lg) {
-                    columns: 2;
-                }
-            }
-        }
-
         ul.comments {
             margin-top: 0.8rem;
             padding: 0;

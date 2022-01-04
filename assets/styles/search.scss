@@ -1,53 +1,19 @@
 @import '~bootstrap/scss/mixins'; 
-@import './mixin';
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
 
 .search-test {
     height: 500px;
 }
 
 .search-criteria {
-    @include form-margin;
-
     div.row.availability-error {
         margin-bottom: 0;
     }
 
     @include media-breakpoint-up(lg) {
-        .availability {
-            .separator-label {
-                padding: 0;
-                text-align: center;
-            }
-        }
-
         input[type="time"] {
             width: 120px;
-        }
-    }
-
-    .buttons {
-        .btn {
-            display: block;
-            width: 100%;
-            margin-left: auto;
-            margin-right: auto;
-            max-width: 12rem;
-        }
-        
-        @include media-breakpoint-down(lg) {
-            div:first-child .btn {
-                margin-bottom: 1rem;
-            }
-        }
-
-        @include media-breakpoint-up(lg) {
-            div:first-child .btn {
-                margin-right: 10%;
-            }
-
-            div:last-child .btn {
-                margin-left: 10%;
-            }
         }
     }
 }

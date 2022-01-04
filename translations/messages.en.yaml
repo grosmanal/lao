@@ -158,29 +158,26 @@ search:
     label:
         label: Patient
         placeholder: patient firstname or lastname
-    contact: Contact
     contacted_by:
+        label: Contact
         placeholder: '- creator -'
     contacted_from: from
     contacted_to: to
-    availability: Availability
     complaint:
         label: Complaint
         placeholder: '- complaint -'
     week_day:
-        label: Week day
+        label: Availability
         placeholder: '- week day -'
-    availability_from: from
-    availability_to: to
-    time_start: Start time
-    time_end: End time
+    time_start: from
+    time_end: to
     include_variables_schedules: Include variable schedules
     care_request_statut_label: Care requests
     active_care_requests: active
     archived_care_requests: archived
     abandoned_care_requests: abandoned
-    search_button: Search
-    reset_button: Reset
+    submit: Search
+    reset: Reset
     no_result: No result for your criteria
     results_header: results
     results:

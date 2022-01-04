@@ -16,66 +16,31 @@
         {% endfor %} 
 
         {{ form_start(userForm, {attr: {novalidate: true}}) }}
-        <div class="form-group row firstname">
-            <div class="col-12 col-lg-2">
-                {{ form_label(userForm.firstname, null, {errors: null}) }}
-            </div>
-            <div class="col-12 col-lg-10">
-                {{ form_errors(userForm.firstname) }}
-                {{ form_widget(userForm.firstname) }}
-            </div>
-        </div>
-        
-        <div class="form-group row lastname">
-            <div class="col-12 col-lg-2">
-                {{ form_label(userForm.lastname, null, {errors: null}) }}
-            </div>
-            <div class="col-12 col-lg-10">
-                {{ form_errors(userForm.lastname) }}
-                {{ form_widget(userForm.lastname) }}
-            </div>
-        </div>
-        
-        <div class="form-group row email">
-            <div class="col-12 col-lg-2">
-                {{ form_label(userForm.email, null, {errors: null}) }}
-            </div>
-            <div class="col-12 col-lg-10">
-                {{ form_errors(userForm.email) }}
-                {{ form_widget(userForm.email) }}
-            </div>
-        </div>
-        
-        <div class="form-group row password">
-            <div class="col-12 col-lg-2">
-                {{ form_label(userForm.plainPassword.first, null, {errors: null}) }}
-            </div>
-            <div class="col-12 col-lg-5">
+        {{ form_row(userForm.firstname) }}
+        {{ form_row(userForm.lastname) }}
+        {{ form_row(userForm.email) }}
+
+        <div class="row">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-10">
                 {{ form_errors(userForm.plainPassword.first) }}
+            </div>
+        </div>
+        <div class="mb-3 row">
+            {{ form_label(userForm.plainPassword.first) }}
+            <div class="col-sm-5">
                 {{ form_widget(userForm.plainPassword.first) }}
             </div>
-            <div class="col-12 col-lg-5">
-                {{ form_errors(userForm.plainPassword.second) }}
+            <div class="col-sm-5">
                 {{ form_widget(userForm.plainPassword.second) }}
             </div>
         </div>
 
-        <div class="form-group row avatar">
-            <div class="col-12 col-lg-2">
-                {{ form_label(userForm.avatarFile, null, {errors: null}) }}
-            </div>
-            <div class="col-12 col-lg-10">
-                {{ form_errors(userForm.avatarFile) }}
-                {{ form_widget(userForm.avatarFile, {'attr': {
-                    'class': 'form-control me-2',
-                    'style': 'height: fit-content;',
-                }}) }}
-            </div>
-        </div>
+        {{ form_row(userForm.avatarFile) }}
 
-        <div class="form-group row update">
-            <div class="col-12 text-center">
-                {{ form_widget(userForm.update) }}
+        <div class="row mb-3 text-center">
+            <div class="col">
+            {{ form_widget(userForm.update) }}
             </div>
         </div>
         {{ form_end(userForm) }}

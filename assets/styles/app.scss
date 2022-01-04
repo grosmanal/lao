@@ -45,3 +45,15 @@ h2 {
         text-transform: capitalize;
     }
 }
+
+input[type="file"] {
+    height: fit-content;
+}
+
+.two-columns {
+    columns: 1;
+    
+    @include media-breakpoint-up(lg) {
+        columns: 2;
+    }
+}

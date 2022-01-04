@@ -46,7 +46,7 @@ class CareRequestType extends AbstractType
             ->add('priority', CheckboxType::class, [
                 'required' => false,
                 'disabled' => $fieldDisabled,
-                'label' => false,
+                'label' => 'care_request.form.priority',
             ])
             ->add('contactedBy', EntityType::class, $this->typeOptionsFactory->createOfficeDoctorOptions([
                 'disabled' => $fieldDisabled,

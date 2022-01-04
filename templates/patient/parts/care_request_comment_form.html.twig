@@ -2,6 +2,7 @@
     class: 'comment-form clearfix',
     onsubmit: 'submitComment(event)',
 }}) }}
+
     {{ form_widget(commentForm.content) }}
     
     {% if commentForm.cancel is defined %}
@@ -13,4 +14,5 @@
     {{ form_widget(commentForm.upsert, {attr: {
         class: 'btn btn-primary btn-sm float-end mt-2'
     }}) }}
+
 {{ form_end(commentForm) }}

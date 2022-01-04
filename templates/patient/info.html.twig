@@ -2,71 +2,35 @@
     {# le patient existe : on utilisera l'API pour les modifications #}
     {% set formVariables = { 'attr': {'onsubmit': 'submitPatient(event);'} } %}
 {% endif %}
+
+{% form_theme patientForm 'lao_2_columns_horizontal_layout.html.twig' %}
+
 {{ form_start(patientForm, formVariables ?? {} ) }}
-    <div class="form-content">
+    <div class="two-columns">
 
-        <div class="form-group row">
-            <div class="col-12 col-lg-4">
-                {{ form_label(patientForm.firstname)}}
-            </div>
-            <div class="col-12 col-lg-8">
-                {{ form_widget(patientForm.firstname) }}
-            </div>
-        </div>
+        {{ form_row(patientForm.firstname )}}
+        {{ form_row(patientForm.lastname )}}
 
-        <div class="form-group row">
-            <div class="col-12 col-lg-4">
-                {{ form_label(patientForm.lastname)}}
-            </div>
-            <div class="col-12 col-lg-8">
-                {{ form_widget(patientForm.lastname) }}
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <div class="col-12 col-lg-4">
-                {{ form_label(patientForm.birthdate)}}
-            </div>
-            <div class="col-12 col-lg-4">
+        <div class="mb-3 row">
+            {{ form_label(patientForm.birthdate, null, {
+                class: 'col-form-label col-sm-4'
+            }) }}
+            <div class="col-sm-4">
                 {{ form_widget(patientForm.birthdate) }}
             </div>
-            <div class="col-12 col-lg-4">
+            <div class="col-sm-4">
                 {{ patient.birthdate|age }}
             </div>
         </div>
 
-        <div class="form-group row">
-            <div class="col-12 col-lg-4">
-                {{ form_label(patientForm.contact)}}
-            </div>
-            <div class="col-12 col-lg-8">
-                {{ form_widget(patientForm.contact) }}
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <div class="col-12 col-lg-4">
-                {{ form_label(patientForm.phone)}}
-            </div>
-            <div class="col-12 col-lg-8">
-                {{ form_widget(patientForm.phone) }}
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <div class="col-12 col-lg-4">
-                {{ form_label(patientForm.email)}}
-            </div>
-            <div class="col-12 col-lg-8">
-                {{ form_widget(patientForm.email) }}
-            </div>
-        </div>
-
+        {{ form_row(patientForm.contact) }}
+        {{ form_row(patientForm.phone) }}
+        {{ form_row(patientForm.email) }}
     </div>
 
-    <div class="form-group row submit-form-group">
-        <div class="col-4"></div>
-        <div class="col-4 text-center">
+    <div class="row mb-3">
+        <div class="col-sm-4"></div>
+        <div class="col-sm-4 text-center">
             {% if patientForm.create is defined %}
                 {{ form_widget(patientForm.create) }}
             {% endif %}
@@ -74,7 +38,7 @@
                 {{ form_widget(patientForm.update) }}
             {% endif %}
         </div>
-        <div class="col-4">
+        <div class="mt-2 text-center col-sm-4 mt-sm-0 text-sm-end">
             {% if patientForm.delete is defined %}
                 {{ form_widget(patientForm.delete, {
                     label_translation_parameters: {'%icon%': '<i class="bi bi-trash"></i>'},

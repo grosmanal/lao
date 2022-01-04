@@ -1,60 +1,43 @@
+{% form_theme careRequestForm 'lao_2_columns_horizontal_layout.html.twig' %}
+
 {{ form_start(careRequestForm, {
     'attr': {'onsubmit': 'submitCareRequest(event)'}
 }) }}
 
-    <div class="form-content">
-        <div class="form-group row">
-            <div class="col-12 col-lg-4">
-                {{ form_label(careRequestForm.contactedBy) }}
-            </div>
-            <div class="col-12 col-lg-8">
-                {{ form_widget(careRequestForm.contactedBy) }}
-            </div>
-        </div>
+    <div class="two-columns">
 
-        <div class="form-group row">
-            <div class="col-12 col-lg-4">
-                {{ form_label(careRequestForm.contactedAt) }}
-            </div>
-            <div class="col-12 col-lg-8">
-                {{ form_widget(careRequestForm.contactedAt) }}
-            </div>
-        </div>
+        {{ form_row(careRequestForm.contactedBy) }}
+        {{ form_row(careRequestForm.contactedAt) }}
 
-        <div class="form-group row">
-            <div class="col-12 col-lg-4">
+        <div class="mb-3 pt-1 row"> {# le padding sert à compenser la petites du checkbox #}
+            <div class="col-sm-4">
                 <label class="form-label">{{ 'care_request.form.priority'| trans }}</label>
             </div>
-            <div class="col-12 col-lg-8">
-                {{ form_widget(careRequestForm.priority) }}
+            <div class="col-sm-8">
+                {{ form_widget(careRequestForm.priority, {
+                    label: false,
+                }) }}
             </div>
         </div>
 
-        <div class="form-group row">
-            <div class="col-12 col-lg-4">
-                {{ form_label(careRequestForm.complaint) }}
-            </div>
-            <div class="col-12 col-lg-8">
-                {{ form_widget(careRequestForm.complaint) }}
-            </div>
-        </div>
+        {{ form_row(careRequestForm.complaint) }}
     </div>
 
-
-    <div class="form-group row">
-        <div class="col-12 col-lg-2">
-            {{ form_label(careRequestForm.customComplaint) }}
-        </div>
-        <div class="col-12 col-lg-10">
-            {{ form_widget(careRequestForm.customComplaint, {'attr': {
-                'rows': 5,
+    <div class="mb-3 row">
+        <label for="care_request_customComplaint" class="col-sm-2 col-form-label">
+            {{ careRequestForm.customComplaint.vars.label|trans }}
+        </label>
+        <div class="col-sm-10">
+            {{ form_widget(careRequestForm.customComplaint, {
+                attr: {
+                    rows: 5,
             }}) }}
         </div>
     </div>
 
-    <div class="form-group row submit-form-group">
-        <div class="col-4"></div>
-        <div class="col-4 text-center">
+    <div class="mb-5 row">
+        <div class="col-sm-4"></div>
+        <div class="col-sm-4 text-center">
             {% if careRequestForm.upsert is defined %}
                 {{ form_widget(careRequestForm.upsert) }}
             {% endif %}
@@ -62,7 +45,7 @@
                 {{ form_widget(careRequestForm.reactivate) }}
             {% endif %}
         </div>
-        <div class="col-4">
+        <div class="mt-2 text-center col-sm-4 mt-sm-0 text-sm-end">
             {% if careRequestForm.delete is defined %}
                 {{ form_widget(careRequestForm.delete, {
                     label_translation_parameters: {'%icon%': '<i class="bi bi-trash"></i>'},
@@ -71,10 +54,9 @@
         </div>
     </div>
 
-
     {% if careRequestForm.accept is defined %}
-    <div class="row mt-4">
-        <div class="col-12 col-lg-6 text-center border-end mt-0">
+    <div class="row mb-5">
+        <div class="col-sm-6 text-center border-end mt-0">
             <div class="mx-auto w-50">
                 <div class="col-12">
                     {{ form_widget(careRequestForm.accept, {'attr': {
@@ -100,7 +82,7 @@
                     {{ form_widget(careRequestForm.acceptedBy) }}
 
                     <div class="mt-1 row">
-                        <div class="col-2">{{ form_label(careRequestForm.acceptedAt, null, {'label_attr': {
+                        <div class="col-2 p-0">{{ form_label(careRequestForm.acceptedAt, null, {'label_attr': {
                             'class': 'form-label col-form-label'
                         }}) }}</div>
                         <div class="col-10">{{ form_widget(careRequestForm.acceptedAt) }}</div>
@@ -108,7 +90,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-12 col-lg-6">
+        <div class="col-sm-6">
             <div class="mx-auto w-50">
                 {{ form_widget(careRequestForm.abandon, {'attr': {
                     'class': 'btn btn-primary w-100' 

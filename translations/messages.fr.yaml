@@ -158,29 +158,26 @@ search:
     label:
         label: Patient
         placeholder: nom ou prénom du patient
-    contact: Contact
     contacted_by:
+        label: Contact
         placeholder: '- praticien contacté -'
     contacted_from: depuis le
     contacted_to: jusqu'au
-    availability: Disponibilité
     complaint:
         label: Plainte
         placeholder: '- plainte -'
     week_day:
-        label: Jour
+        label: Disponibilité
         placeholder: '- jour -'
-    availability_from: de
-    availability_to: à
-    time_start: Heure de début
-    time_end: Heure de fin
+    time_start: de
+    time_end: à
     include_variables_schedules: Inclure les horaires variables
     care_request_statut_label: Demandes
     active_care_requests: actives
     archived_care_requests: archivées
     abandoned_care_requests: abandonnées
-    search_button: Rechercher
-    reset_button: Réinitialiser
+    submit: Rechercher
+    reset: Réinitialiser
     no_result: Aucun résultat pour ces critères
     results_header: résultats
     results:
