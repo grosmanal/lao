@@ -1,0 +1,9 @@
+---
+- name: Création de l'utilisateur admin
+  hosts: all
+  remote_user: root
+  vars_files:
+      - vars.yaml
+  tasks:
+  - include_role:
+      name: server_user

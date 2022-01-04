@@ -1,13 +1,11 @@
 ---
 - name: Installation application
   hosts: all
-  remote_user: localadmin
+  remote_user: "{{ remote_admin_user }}"
   tasks:
       - include_vars:
           dir: roles/server_user/vars/
       - include_vars:
           file: vars.yaml
-      - set_fact:
-          ansible_become_password: "{{ localadmin_password }}"
       - include_role:
           name: ansistrano.deploy

@@ -7,6 +7,8 @@ application_path: /opt/lao
 
 apache_domain: "{{ inventory_hostname }}"
 apache_site: "{{ application }}"
+apache_certificate_local_path: "../../certificate/{{ inventory_hostname}}/"
+
 symfony_app_path: lao
 symfony_app_fullpath: "{{ application_path }}/current/{{ symfony_app_path }}"
 apache_document_root: "{{ symfony_app_fullpath }}/public"

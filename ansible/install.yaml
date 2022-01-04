@@ -1,12 +1,11 @@
 ---
 - name: Installation du serveur
   hosts: all
-  remote_user: root
+  remote_user: "{{ remote_admin_user }}"
+  become: true
   vars_files:
       - vars.yaml
   tasks:
-  - include_role:
-      name: server_user
   - include_role:
       name: tools
   - include_role:
@@ -29,7 +28,7 @@
     ansible.builtin.file:
         path: "{{ application_path }}"
         state: directory
-        owner: localadmin
+        owner: "{{ remote_admin_user }}"
           
   ## Répertoires à conserver entre les releases
   - name: Lao | Répertoires ansistrano shared
@@ -55,4 +54,4 @@
             - chromium-driver
             #- TODO geckodriver
         state: present
-    when: "{{ symfony_env == 'dev' }}"
+    when: symfony_env != 'prod'

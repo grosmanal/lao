@@ -10,7 +10,7 @@
   file:
       path: "{{ item }}"
       state: directory
-      owner: localadmin
+      owner: "{{ remote_admin_user }}"
       recurse: true
       follow: false
   loop: "{{ releases_to_prune.stdout_lines }}"
