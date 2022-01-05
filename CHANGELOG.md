@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.4 - 2022-01-05
+* BUGFIXES
+  * Fix : accept jpeg files as user avatar (#263)
+
 ## 1.0.3 - 2022-01-03
 * BUGFIXES
   * Fix : patient firstname no longer mandatory (#245)

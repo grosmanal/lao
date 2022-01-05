@@ -89,6 +89,6 @@ all:
                   password: oOjBxu1k1qFOV6ESXm27dR7ZTOWmE2k1qZoFJAc_ZbByvQ7_
                   password2: O36nbYy0xzB8Gs0gRjRKVb40fBAIGzCBgv1kMU3LtmM
         symfony_env: prod
-        deploy_version: v1.0.3
+        deploy_version: v1.0.4
     hosts:
         listeattenteortho.fr
