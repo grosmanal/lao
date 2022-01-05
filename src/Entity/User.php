@@ -94,7 +94,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serial
      */
     #[Assert\File(
         maxSize: '512k',
-        mimeTypes: ['image/jpg', 'image/png'],
+        mimeTypes: ['image/jpeg', 'image/png'],
     )]
     private $avatarFile;
 
