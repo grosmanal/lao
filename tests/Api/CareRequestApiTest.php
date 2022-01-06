@@ -140,7 +140,7 @@ class CareRequestApiTest extends AbstractApiTestCase
     {
         return [
             ['patient', Response::HTTP_UNPROCESSABLE_ENTITY],
-            ['contactedBy', Response::HTTP_UNPROCESSABLE_ENTITY],
+            ['contactedBy', Response::HTTP_CREATED],
             ['contactedAt', Response::HTTP_UNPROCESSABLE_ENTITY],
             ['priority', Response::HTTP_CREATED],
             ['complaint', Response::HTTP_CREATED],

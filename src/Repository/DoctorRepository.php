@@ -29,6 +29,18 @@ class DoctorRepository extends ServiceEntityRepository
             ;
     }
 
+    public function findOneByFullname($office, $fullname)
+    {
+        return $this->createQueryBuilder('d')
+            ->andWhere("d.office = :office")
+            ->setParameter(':office', $office)
+            ->andWhere("CONCAT(d.firstname, ' ', d.lastname) = :fullname")
+            ->setParameter(':fullname', $fullname)
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
+
     // /**
     //  * @return Doctor[] Returns an array of Doctor objects
     //  */

@@ -90,8 +90,8 @@ class Patient implements OfficeOwnedInterface, ActivityLoggableEntityInterface
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
-     * @Assert\Type("bool")
      */
+    #[Assert\Type('bool')]
     #[Groups(['patient:read'])]
     private $variableSchedule;
 
@@ -125,8 +125,8 @@ class Patient implements OfficeOwnedInterface, ActivityLoggableEntityInterface
     /**
      * @ORM\ManyToOne(targetEntity=Office::class, inversedBy="patients")
      * @ORM\JoinColumn(nullable=false)
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank()]
     private $office;
 
     /**

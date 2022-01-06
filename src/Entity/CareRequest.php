@@ -50,14 +50,12 @@ class CareRequest implements OfficeOwnedInterface, ActivityLoggableEntityInterfa
     /**
      * @ORM\ManyToOne(targetEntity=Patient::class, inversedBy="careRequests")
      * @ORM\JoinColumn(nullable=false)
-     * @Assert\NotBlank
      */
     #[Groups(['careRequest:read', 'comment:read'])]
     private $patient;
 
     /**
      * @ORM\ManyToOne(targetEntity=Doctor::class)
-     * @Assert\NotBlank
      */
     #[Groups(['careRequest:read', 'careRequest:put'])]
     private $contactedBy;
@@ -73,6 +71,7 @@ class CareRequest implements OfficeOwnedInterface, ActivityLoggableEntityInterfa
      * @ORM\Column(type="boolean", nullable=true)
      */
     #[Groups(['careRequest:read', 'careRequest:put'])]
+    #[Assert\Type('bool')]
     private $priority;
 
     /**
@@ -146,9 +145,7 @@ class CareRequest implements OfficeOwnedInterface, ActivityLoggableEntityInterfa
      */
     private $modifiedAt;
 
-    /**
-     * @Assert\Callback
-     */
+    #[Assert\Callback()]
     public function validate(ExecutionContextInterface $context, $payload)
     {
         // Une demande ne peut pas être à la fois abandonnée et archivée (acceptée)

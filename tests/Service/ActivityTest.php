@@ -25,7 +25,7 @@ class ActivityTest extends AbstractServiceTest
             __DIR__ . '/../../fixtures/tests/activityService/comment.yaml',
         ]);
 
-        // Recherche de l'office 1 pour l'affecté en tant qu'office courant
+        // Recherche de l'office 1 pour l'affecter en tant qu'office courant
         $this->currentOffice = $container->get(OfficeRepository::class)->find(1);
     }
 

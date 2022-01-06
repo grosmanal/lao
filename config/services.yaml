@@ -52,3 +52,16 @@ services:
               
     App\Service\Activity:
         arguments: [!tagged_locator { tag: app.activity_repository }]
+
+    App\Service\Import\EntityFactory:
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@validator'
+
+    App\Service\Import\PatientFactory:
+        parent: App\Service\Import\EntityFactory
+        calls:
+            - setDependencies: [ '@App\Service\Availability' ]
+
+    App\Service\Import\CareRequestFactory:
+        parent: App\Service\Import\EntityFactory

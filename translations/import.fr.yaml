@@ -1,0 +1,5 @@
+---
+error_message: 'Ligne %lineIndex% : %message%'
+errors:
+    unknown_doctor: '«%doctorName%» est inconnu en tant que praticien du cabinet'
+    unknown_complaint: 'la plainte «%complaintLabel%» est inconnue'

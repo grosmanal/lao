@@ -1,0 +1,5 @@
+---
+error_message: 'Line %lineIndex% : %message%'
+errors:
+    unknown_doctor: '«%doctorName%» is unknown as doctor’s office'
+    unknown_complaint: 'unknown complaint «%complaintLabel%»'

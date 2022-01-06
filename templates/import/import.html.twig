@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Importation de données{% endblock %}
+
+{% block body %}
+    {% for flashType in [ 'success', 'danger' ] %}
+        {% for message in app.flashes(flashType) %}
+            <div class="alert alert-{{ flashType }} mb-3">
+                {{ message }}
+            </div>
+        {% endfor %} 
+    {% endfor %}
+
+    {{ form(form) }}
+{% endblock %}
