@@ -45,7 +45,14 @@ class Notification
 
         if (in_array(self::ALL_ID, $doctorsId)) {
             // On a mentionné «tou·te·s» il faut retourner l'ensemble des docteurs du cabinet
-            $doctors = iterator_to_array($comment->getOffice()->getDoctors());
+            // Sauf l'auteur du commentaire
+            $commentAuthor = $comment->getAuthor();
+            $doctors = array_filter(
+                iterator_to_array($comment->getOffice()->getDoctors()),
+                function (Doctor $doctor) use ($commentAuthor) {
+                    return $doctor->getId() != $commentAuthor->getId();
+                }
+            );
         } else {
             $doctorsId = array_unique($doctorsId);
 
@@ -86,8 +93,6 @@ class Notification
     {
         // Recherche de la liste des utilisateurs à notifier
         $doctors = $this->getDoctorsMentioned($comment);
-
-        // https://manal.xyz/gitea/origami_informatique/lao/issues/89
 
         if (empty($doctors)) {
             // Aucune mention dans le commentaire

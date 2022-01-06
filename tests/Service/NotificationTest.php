@@ -73,7 +73,7 @@ class NotificationTest extends AbstractServiceTest
             [ 1, [ 1 ], ],
             [ 2, [ 1, 3 ], ],
             [ 4, [ 1 ], ], // Deux mentions au doctor 1 => une seule notification
-            [ 5, [ 1, 3 ], ], // Mention au doctor 0 (all) => une notification pour 1 et 3
+            [ 5, [ 3 ], ], // Mention au doctor 0 (all) => une notification pour 3 seulement car 1 est l'auteur
         ];
     }
 
