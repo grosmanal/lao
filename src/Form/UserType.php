@@ -47,12 +47,14 @@ class UserType extends AbstractType
                 'first_options' => [
                     'label' => 'user.form.password.label',
                     'attr' => [
+                        'autocomplete' => 'new-password',
                         'placeholder' => 'user.form.password.placeholder',
                     ],
                 ],
                 'second_options' => [
                     'label' => 'user.form.confirm_password.label',
                     'attr' => [
+                        'autocomplete' => 'off',
                         'placeholder' => 'user.form.confirm_password.placeholder',
                     ],
                 ],
