@@ -33,9 +33,12 @@
   ## Répertoires à conserver entre les releases
   - name: Lao | Répertoires ansistrano shared
     ansible.builtin.file:
-        path: "{{ ansistrano_deploy_to }}/shared/lao/public/upload"
+        path: "{{ item }}"
         state: directory
         owner: "{{ fpm_user }}"
+    loop:
+        - "{{ ansistrano_deploy_to }}/shared/lao/public/upload"
+        - "{{ ansistrano_deploy_to }}/shared/lao/public/upload/user_avatar"
 
 
   - name: Lao | Composants supplémentaires
