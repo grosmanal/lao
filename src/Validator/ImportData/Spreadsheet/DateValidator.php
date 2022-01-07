@@ -1,23 +1,18 @@
 <?php
 
-namespace App\Validator\ImportData;
+namespace App\Validator\ImportData\Spreadsheet;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
-class EntityValidator extends ConstraintValidator
+class DateValidator extends ConstraintValidator
 {
-    public function __construct(private EntityManagerInterface $entityManager)
-    {
-    }
-
     public function validate($value, Constraint $constraint)
     {
-        if (!$constraint instanceof Entity) {
-            throw new UnexpectedTypeException($constraint, Entity::class);
+        if (!$constraint instanceof Date) {
+            throw new UnexpectedTypeException($constraint, Date::class); // @codeCoverageIgnore
         }
 
         // custom constraints should ignore null and empty values to allow
@@ -26,21 +21,19 @@ class EntityValidator extends ConstraintValidator
             return;
         }
 
-        if (!is_string($value)) {
+        if (!is_float($value) && !is_int($value)) {
             // throw this exception if your validator cannot handle the passed type so that it can be marked as invalid
-            throw new UnexpectedValueException($value, 'string');
+            throw new UnexpectedValueException($value, 'float|int');
 
             // separate multiple types using pipes
             // throw new UnexpectedValueException($value, 'string|int');
         }
 
-        $repository = $this->entityManager->getRepository($constraint->class);
-        $entity = $repository->{$constraint->repositoryMethod}($value);
-
-        if (empty($entity)) {
+        try {
+            \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($value);
+        } catch (\TypeError $e) {
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ string }}', $value)
-                ->setParameter('{{ class }}', $constraint->class)
                 ->addViolation();
         }
     }

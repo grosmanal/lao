@@ -16,12 +16,14 @@ final class ApiNormalizer implements NormalizerInterface, DenormalizerInterface,
     public function __construct(NormalizerInterface $decorated, RouterInterface $router)
     {
         if (!$decorated instanceof DenormalizerInterface) {
+            // @codeCoverageIgnoreStart
             throw new \InvalidArgumentException(
                 sprintf(
                     'The decorated normalizer must implement the %s.',
                     DenormalizerInterface::class
                 )
-            );// @codeCoverageIgnore
+            );
+            // @codeCoverageIgnoreEnd
         }
 
         $this->decorated = $decorated;

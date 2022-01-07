@@ -37,12 +37,19 @@ class ImportController extends AbstractAppController
                 $dataFile->getRealPath()
             );
 
-            foreach ($results['errors'] as $violation) {
-                $this->addFlash('danger', sprintf("%s : %s", $violation->getPropertyPath(), $violation->getMessage()));
+            foreach ($results['errors'] as $line => $violations) {
+                foreach ($violations as $violation) {
+                    $this->addFlash('danger', sprintf(
+                        "Line %d %s : %s",
+                        $line,
+                        $violation->getPropertyPath(),
+                        $violation->getMessage()
+                    ));
+                }
             }
 
             if ($results['patients']) {
-                $this->addFlash('success', sprintf('%d patients crées', count($results['patients'])));
+                $this->addFlash('success', sprintf('%d patients créés', count($results['patients'])));
             }
         }
 

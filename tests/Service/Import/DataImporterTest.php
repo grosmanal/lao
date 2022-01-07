@@ -8,7 +8,7 @@ use App\Entity\Patient;
 use App\Entity\Doctor;
 use App\Repository\DoctorRepository;
 use App\Repository\PatientRepository;
-use App\Service\Import\ImportData;
+use App\Input\Import\ImportData;
 use App\Tests\Service\AbstractServiceTest;
 
 class DataImporterTest extends AbstractServiceTest
@@ -31,23 +31,23 @@ class DataImporterTest extends AbstractServiceTest
         $this->importData = (new ImportData())
             ->setFirstname('firstname_test')
             ->setLastname('lastname_test')
-            ->setBirthdate(40918.0)
+            ->setBirthdate(new \DateTime('2012-01-10'))
             ->setContact('contact_test')
             ->setPhone('phone_test')
             ->setEmail('test@example.com')
-            ->setVariableSchedule('non')
+            ->setVariableSchedule(false)
             ->setMondayAvailability('1000-1100')
             ->setTuesdayAvailability('1000-1100,1500-1700')
             ->setThursdayAvailability('0800-0900')
             ->setWednesdayAvailability('0800-0900')
             ->setFridayAvailability('0800-0900')
             ->setSaturdayAvailability('0800-0900')
-            ->setContactedBy('doctor_3_firstname doctor_3_lastname')
-            ->setContactedAt(44321.0)
-            ->setPriority('oui')
-            ->setComplaint('Plainte 1')
+            ->setContactedByFullname('doctor_3_firstname doctor_3_lastname')
+            ->setContactedAt(new \DateTime('2021-05-05'))
+            ->setPriority(true)
+            ->setComplaintLabel('Plainte 1')
             ->setCustomComplaint('custompComplaint_test')
-            ->setMetadata(['office' => $this->importerDoctor->getOffice()])
+            ->setLineNumber(1)
         ;
     }
 
@@ -106,30 +106,65 @@ class DataImporterTest extends AbstractServiceTest
         $this->assertEquals('custompComplaint_test', $createdCareRequest->getCustomComplaint());
     }
 
-    public function testWrongContactedBy()
+    public function testInconsistentContactedBy()
     {
-        $this->markTestSkipped(); // https://manal.xyz/gitea/origami_informatique/lao/issues/267
         // Remplacement du nom du docteur contacté
-        $this->importData->setContactedBy('non existant doctor');
+        $this->importData->setContactedByFullname('non existant doctor');
 
         $results = $this->dataImporter->importData($this->importerDoctor, [ $this->importData ]);
-        /*
+        $this->assertCount(1, $results['errors'][1]);
+        $firstViolation = $results['errors'][1]->get(0);
         $this->assertEquals(
-            ['Ligne 1 : «non existant doctor» est inconnu en tant que praticien du cabinet'],
-            $results['errors']
+            '«non existant doctor» n’est pas un praticien connu',
+            $firstViolation->getMessage()
         );
-        */
     }
 
-    public function testWrongComplaint()
+    public function testInconsistentComplaint()
     {
-        $this->markTestSkipped(); // https://manal.xyz/gitea/origami_informatique/lao/issues/267
-
         // Remplacement du nom du docteur créateur
-        $this->importData->setComplaint('non existant complaint');
+        $this->importData->setComplaintLabel('non existant complaint');
 
         $results = $this->dataImporter->importData($this->importerDoctor, [ $this->importData ]);
-        //$this->assertEquals(['Ligne 1 : la plainte «non existant complaint» est inconnue'], $results['errors']);
+        $this->assertCount(1, $results['errors'][1]);
+
+        $firstViolation = $results['errors'][1]->get(0);
+        $this->assertEquals(
+            '«non existant complaint» n’est pas une plainte',
+            $firstViolation->getMessage()
+        );
+    }
+
+    public function dataProviderInconsistentAvailabilities()
+    {
+        return [
+            [ 'aa' ],
+            [ '800' ],
+            [ '800-' ],
+            [ '800-aa' ],
+            [ '800-12345' ],
+            [ '800-900,' ],
+            [ '-' ],
+            [ ',' ],
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderInconsistentAvailabilities
+     */
+    public function testInconsistentAvailabilities(string $availabilities)
+    {
+        // Remplacement du nom du docteur créateur
+        $this->importData->setMondayAvailability($availabilities);
+
+        $results = $this->dataImporter->importData($this->importerDoctor, [ $this->importData ]);
+        $this->assertCount(1, $results['errors'][1]);
+
+        $firstViolation = $results['errors'][1]->get(0);
+        $this->assertEquals(
+            sprintf('%s is not a valid availabilities list', $availabilities),
+            $firstViolation->getMessage()
+        );
     }
 
     public function testNonValidatingPatient()
@@ -139,7 +174,7 @@ class DataImporterTest extends AbstractServiceTest
         $results = $this->dataImporter->importData($this->importerDoctor, [ $this->importData ]);
         $this->assertCount(1, $results['errors']);
 
-        $firstViolation = $results['errors']->get(0);
+        $firstViolation = $results['errors'][1]->get(0);
         $this->assertEquals(
             'Cette chaîne est trop longue. Elle doit avoir au maximum 255 caractères.',
             $firstViolation->getMessage()
@@ -153,7 +188,7 @@ class DataImporterTest extends AbstractServiceTest
         $results = $this->dataImporter->importData($this->importerDoctor, [ $this->importData ]);
         $this->assertCount(1, $results['errors']);
 
-        $firstViolation = $results['errors']->get(0);
+        $firstViolation = $results['errors'][1]->get(0);
         $this->assertEquals(
             'Cette chaîne est trop longue. Elle doit avoir au maximum 5000 caractères.',
             $firstViolation->getMessage()
@@ -188,6 +223,6 @@ class DataImporterTest extends AbstractServiceTest
     public function testInconsistentFile($filePath)
     {
         $results = $this->dataImporter->importFromFile($this->importerDoctor, $filePath);
-        $this->assertCount(1, $results['errors']);
+        $this->assertCount(1, $results['errors'][1]);
     }
 }

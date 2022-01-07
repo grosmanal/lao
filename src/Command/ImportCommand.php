@@ -51,14 +51,20 @@ class ImportCommand extends Command
         }
         $io->note(sprintf('Using identity of doctor : %s', $doctor->getFirstname() . ' ' . $doctor->getLastname()));
 
-        $result = $this->dataImporter->importFromFile($doctor, $filename);
+        $results = $this->dataImporter->importFromFile($doctor, $filename);
 
-        if (count($result['errors']) > 0) {
-            foreach ($result['errors'] as $violation) {
-                $io->warning(sprintf("%s : %s", $violation->getPropertyPath(), $violation->getMessage()));
+        foreach ($results['errors'] as $line => $violations) {
+            foreach ($violations as $violation) {
+                $io->warning(sprintf(
+                    "Line %d %s : %s",
+                    $line,
+                    $violation->getPropertyPath(),
+                    $violation->getMessage()
+                ));
             }
         }
-        $io->success(sprintf('%d patient(s) created', count($result['patients'])));
+
+        $io->success(sprintf('%d patient(s) created', count($results['patients'])));
 
         return Command::SUCCESS;
     }

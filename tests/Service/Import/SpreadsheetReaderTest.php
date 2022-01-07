@@ -4,14 +4,13 @@ namespace App\Tests\Service\Import;
 
 use App\Entity\Doctor;
 use App\Repository\DoctorRepository;
-use App\Service\Import\ImportData;
+use App\Input\Import\ImportData;
 use App\Service\Import\SpreadsheetReader;
 use App\Tests\Service\AbstractServiceTest;
 
 class SpreadsheetReaderTest extends AbstractServiceTest
 {
     private SpreadsheetReader $spreadsheetReader;
-    private Doctor $importerDoctor;
 
     protected function setUp(): void
     {
@@ -22,7 +21,6 @@ class SpreadsheetReaderTest extends AbstractServiceTest
         ]);
 
         $this->spreadsheetReader = static::getContainer()->get(SpreadsheetReader::class);
-        $this->importerDoctor = static::getContainer()->get(DoctorRepository::class)->find(1);
     }
 
     public function dataProviderImport()
@@ -43,47 +41,47 @@ class SpreadsheetReaderTest extends AbstractServiceTest
             (new ImportData())
                 ->setFirstname('firstname_test 1')
                 ->setLastname('lastname_test 1')
-                ->setBirthdate(40918.0)
+                ->setBirthdate(new \DateTime('2012-01-10'))
                 ->setContact('contact_test 1')
                 ->setPhone('01 02 03 04 05')
                 ->setEmail('test1@example.com')
-                ->setVariableSchedule('oui')
+                ->setVariableSchedule(true)
                 ->setMondayAvailability('800-900')
                 ->setTuesdayAvailability('1000-1500,1700-1800')
                 ->setThursdayAvailability(null)
                 ->setWednesdayAvailability(null)
                 ->setFridayAvailability(null)
                 ->setSaturdayAvailability(null)
-                ->setContactedBy('doctor_1_firstname doctor_1_lastname')
-                ->setContactedAt(44317.0)
-                ->setPriority('oui')
-                ->setComplaint('Plainte 1')
+                ->setContactedByFullname('doctor_1_firstname doctor_1_lastname')
+                ->setContactedAt(new \DateTime('2021-05-01'))
+                ->setPriority(true)
+                ->setComplaintLabel('Plainte 1')
                 ->setCustomComplaint('Complément 1')
-                ->setMetadata(['office' => $this->importerDoctor->getOffice()]),
+                ->setLineNumber(1),
 
             (new ImportData())
                 ->setFirstname('firstname_test 2')
                 ->setLastname('lastname_test 2')
-                ->setBirthdate(40918.0)
+                ->setBirthdate(new \DateTime('2012-01-10'))
                 ->setContact('contact_test 2')
                 ->setPhone('01 02 03 04 05')
                 ->setEmail('test2@example.com')
-                ->setVariableSchedule('non')
+                ->setVariableSchedule(false)
                 ->setMondayAvailability('1000-1500')
                 ->setTuesdayAvailability(null)
                 ->setThursdayAvailability(null)
                 ->setWednesdayAvailability(null)
                 ->setFridayAvailability(null)
                 ->setSaturdayAvailability(null)
-                ->setContactedBy('doctor_3_firstname doctor_3_lastname')
-                ->setContactedAt(44321.0)
-                ->setPriority('oui')
-                ->setComplaint('Plainte 2')
+                ->setContactedByFullname('doctor_3_firstname doctor_3_lastname')
+                ->setContactedAt(new \DateTime('2021-05-05'))
+                ->setPriority(true)
+                ->setComplaintLabel('Plainte 2')
                 ->setCustomComplaint('Complément 2')
-                ->setMetadata(['office' => $this->importerDoctor->getOffice()]),
+                ->setLineNumber(2),
         ];
 
-        $results = $this->spreadsheetReader->readFile($this->importerDoctor, $filepath);
+        $results = $this->spreadsheetReader->readFile($filepath);
         $this->assertEquals(
             $expected,
             $results['data'],
@@ -94,7 +92,7 @@ class SpreadsheetReaderTest extends AbstractServiceTest
     {
         $this->expectException(\PhpOffice\PhpSpreadsheet\Reader\Exception::class);
         $this->expectExceptionMessage('File "/tmp/inexistantFile.xlsx" does not exist');
-        $this->spreadsheetReader->readFile($this->importerDoctor, '/tmp/inexistantFile.xlsx');
+        $this->spreadsheetReader->readFile('/tmp/inexistantFile.xlsx');
     }
 
     public function dataProviderInconsistentData()
@@ -124,9 +122,9 @@ class SpreadsheetReaderTest extends AbstractServiceTest
      */
     public function testInconsistentData($filepath, $expectedMessage)
     {
-        $result = $this->spreadsheetReader->readFile($this->importerDoctor, $filepath);
+        $result = $this->spreadsheetReader->readFile($filepath);
 
-        $firstViolation = $result['errors']->get(0);
+        $firstViolation = $result['errors'][1]->get(0);
         $this->assertEquals($expectedMessage, $firstViolation->getMessage());
     }
 }

@@ -47,29 +47,10 @@ class PatientFactoryTest extends AbstractServiceTest
         $this->assertEmpty($createdPatient->getAvailability());
     }
 
-    public function dataProviderInconsistentAvailability()
+    public function testInconsistentAvailability()
     {
-        return [
-            [ 'aa' ],
-            [ '800' ],
-            [ '800-' ],
-            [ '800-aa' ],
-            [ '800-12345' ],
-            [ '800-900,' ],
-            [ '-' ],
-            [ ',' ],
-        ];
-    }
-
-    /**
-     * @dataProvider dataProviderInconsistentAvailability
-     */
-    public function testInconsistentAvailability($mondayAvailability)
-    {
-        $this->markTestSkipped(); // https://manal.xyz/gitea/origami_informatique/lao/issues/267
-
-        //$this->expectException(MalformedDataException::class);
-        $this->patientData['availability'] = [ $mondayAvailability ];
+        $this->expectException(\LogicException::class);
+        $this->patientData['availability'] = [ 'inconsistent-availabilities' ];
         $this->patientFactory->create($this->doctorCreator, $this->patientData);
     }
 
@@ -90,8 +71,6 @@ class PatientFactoryTest extends AbstractServiceTest
      */
     public function testCorrectAvailability($mondayAvailability)
     {
-        $this->markTestSkipped(); // https://manal.xyz/gitea/origami_informatique/lao/issues/267
-
         $this->patientData['availability'] = [ $mondayAvailability ];
         $this->assertInstanceOf(
             Patient::class,

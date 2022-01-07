@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Validator\ImportData;
+namespace App\Validator\ImportData\Spreadsheet;
 
 use Symfony\Component\Validator\Constraint;
 

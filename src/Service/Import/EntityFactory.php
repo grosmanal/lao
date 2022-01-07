@@ -4,6 +4,7 @@ namespace App\Service\Import;
 
 use App\Entity\Doctor;
 use App\Entity\Complaint;
+use App\Exception\Import\UnknownEntityException;
 use App\Exception\Import\UnvalidatedEntityException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -16,19 +17,18 @@ abstract class EntityFactory
     ) {
     }
 
-
-    protected function doctorFromName($office, $doctorName)
+    protected function doctorFromFullname($office, $doctorFullname)
     {
-        if (!$doctorName) {
+        if (!$doctorFullname) {
             return null;
         }
 
         /** @var App\Repository\DoctorRepository */
         $repository = $this->em->getRepository(Doctor::class);
-        $doctor = $repository->findOneByFullname($office, $doctorName);
+        $doctor = $repository->findOneByFullname($office, $doctorFullname);
 
         if (!$doctor) {
-            throw new \LogicException('Did you forget OfficeEntity Assertion ?');
+            throw new UnknownEntityException(sprintf('«%s» n’est pas un praticien connu', $doctorFullname));
         }
 
         return $doctor;
@@ -45,7 +45,7 @@ abstract class EntityFactory
         $complaint = $repository->findOneByLabel($complaintLabel);
 
         if (!$complaint) {
-            throw new \LogicException('Did you forget Entity Assertion ?');
+            throw new UnknownEntityException(sprintf('«%s» n’est pas une plainte', $complaintLabel));
         }
 
         return $complaint;

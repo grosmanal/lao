@@ -1,34 +1,31 @@
 <?php
 
-namespace App\Service\Import;
+namespace App\Input\Import;
 
-use App\Entity\Complaint;
-use App\Entity\Doctor;
 use App\Validator\ImportData as ImportDataAssert;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ImportDataAssert\OfficeEntity(
-    attributes: [
-        [ 'getContactedBy', Doctor::class, 'findOneByFullName' ]
-    ],
-)]
 class ImportData
 {
+    #[Assert\Type('string')]
     private $firstname;
 
+    #[Assert\Type('string')]
     private $lastname;
 
-    #[ImportDataAssert\Date()]
+    #[Assert\Type('\DateTimeInterface')]
     private $birthdate;
 
+    #[Assert\Type('string')]
     private $contact;
 
+    #[Assert\Type('string')]
     private $phone;
 
     #[Assert\Email()]
     private $email;
 
-    #[ImportDataAssert\Boolean()]
+    #[Assert\Type('bool')]
     private $variableSchedule;
 
     #[ImportDataAssert\Availabilities()]
@@ -49,62 +46,24 @@ class ImportData
     #[ImportDataAssert\Availabilities()]
     private $saturdayAvailability;
 
-    private $contactedBy;
+    #[Assert\Type('string')]
+    private $contactedByFullname;
 
-    #[ImportDataAssert\Date()]
+    #[Assert\Type('\DateTimeInterface')]
     private $contactedAt;
 
-    #[ImportDataAssert\Boolean()]
+    #[Assert\Type('bool')]
     private $priority;
 
-    #[ImportDataAssert\Entity(class: Complaint::class, repositoryMethod: 'findOneByLabel')]
-    private $complaint;
+    #[Assert\Type('string')]
+    private $complaintLabel;
 
+    #[Assert\Type('string')]
     private $customComplaint;
 
-    // metadonnés
-    private $metadata;
-
-
-    private function toDateTime($rawDate): ?\DateTime
-    {
-        if (is_null($rawDate)) {
-            return null;
-        }
-
-        return \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($rawDate);
-    }
-
-    /**
-     * Convertie la valeur d'une cellule en booléen
-     * @param mixed $rawBool
-     * @return bool
-     */
-    private function toBool($rawBool): bool
-    {
-        if (empty($rawBool)) {
-            return false;
-        }
-
-        if (is_bool($rawBool)) {
-            return $rawBool;
-        }
-
-        if (is_int($rawBool)) {
-            return (bool) $rawBool;
-        }
-
-        if (is_string($rawBool)) {
-            $rawBool = strtolower(trim($rawBool));
-            if (in_array($rawBool, [ 'oui', 'o', 'yes', 'y', 'vrai', 'true', '1' ])) {
-                return true;
-            } elseif (in_array($rawBool, [ 'non', 'n', 'no', 'faux', 'false', '0' ])) {
-                return false;
-            }
-        }
-
-        throw new \LogicException('Should not be here. You should add \App\Validator\ImportData\Boolean constraint.');
-    }
+    #[Assert\Type('int')]
+    #[Assert\GreaterThan(0)]
+    private $lineNumber;
 
     /**
      * Get the value of firstname
@@ -152,11 +111,6 @@ class ImportData
     public function getBirthdate()
     {
         return $this->birthdate;
-    }
-
-    public function getBirthdateAsDateTime(): \DateTimeInterface
-    {
-        return $this->toDateTime($this->getBirthdate());
     }
 
     /**
@@ -237,11 +191,6 @@ class ImportData
     public function getVariableSchedule()
     {
         return $this->variableSchedule;
-    }
-
-    public function getVariableScheduleAsBool(): bool
-    {
-        return $this->toBool($this->getVariableSchedule());
     }
 
     /**
@@ -377,21 +326,21 @@ class ImportData
     }
 
     /**
-     * Get the value of contactedBy
+     * Get the value of contactedByFullname
      */
-    public function getContactedBy()
+    public function getContactedByFullname()
     {
-        return $this->contactedBy;
+        return $this->contactedByFullname;
     }
 
     /**
-     * Set the value of contactedBy
+     * Set the value of contactedByFullname
      *
      * @return self
      */
-    public function setContactedBy($contactedBy)
+    public function setContactedByFullname($contactedByFullname)
     {
-        $this->contactedBy = $contactedBy;
+        $this->contactedByFullname = $contactedByFullname;
 
         return $this;
     }
@@ -402,11 +351,6 @@ class ImportData
     public function getContactedAt()
     {
         return $this->contactedAt;
-    }
-
-    public function getContactedAsDateTime(): \DateTimeInterface
-    {
-        return $this->toDateTime($this->getContactedAt());
     }
 
     /**
@@ -429,11 +373,6 @@ class ImportData
         return $this->priority;
     }
 
-    public function getPriorityAsBool(): bool
-    {
-        return $this->toBool($this->getPriority());
-    }
-
     /**
      * Set the value of priority
      *
@@ -447,21 +386,21 @@ class ImportData
     }
 
     /**
-     * Get the value of complaint
+     * Get the value of complaintLabel
      */
-    public function getComplaint()
+    public function getComplaintLabel()
     {
-        return $this->complaint;
+        return $this->complaintLabel;
     }
 
     /**
-     * Set the value of complaint
+     * Set the value of complaintLabel
      *
      * @return self
      */
-    public function setComplaint($complaint)
+    public function setComplaintLabel($complaintLabel)
     {
-        $this->complaint = $complaint;
+        $this->complaintLabel = $complaintLabel;
 
         return $this;
     }
@@ -487,21 +426,21 @@ class ImportData
     }
 
     /**
-     * Get the value of metadata
+     * Get the value of lineNumber
      */
-    public function getMetadata()
+    public function getLineNumber()
     {
-        return $this->metadata;
+        return $this->lineNumber;
     }
 
     /**
-     * Set the value of metadata
+     * Set the value of lineNumber
      *
      * @return self
      */
-    public function setMetadata($metadata)
+    public function setLineNumber($lineNumber)
     {
-        $this->metadata = $metadata;
+        $this->lineNumber = $lineNumber;
 
         return $this;
     }
