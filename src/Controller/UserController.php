@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\Doctor;
+use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\OfficeRepository;
 use App\Service\InitialAvatarGenerator;
@@ -33,34 +33,34 @@ class UserController extends AbstractAppController
      */
     #[Route('/users/{id}', name: 'user')]
     public function user(
-        Doctor $doctor,
+        User $user,
         Request $request,
         UserPasswordHasherInterface $userPasswordHasher,
         EntityManagerInterface $entityManager,
         TranslatorInterface $translator,
         InitialAvatarGenerator $initialAvatarGenerator,
     ): Response {
-        $this->denyAccessUnlessGranted('edit', $doctor);
+        $this->denyAccessUnlessGranted('edit', $user);
 
-        $form = $this->createForm(UserType::class, $doctor);
+        $form = $this->createForm(UserType::class, $user);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             // Alimentation de l'avatar si vide
-            if (empty($doctor->getAvatarName()) && empty($doctor->getAvatarFile())) {
-                $doctor->setAvatarName($initialAvatarGenerator->generate($doctor));
+            if (empty($user->getAvatarName()) && empty($user->getAvatarFile())) {
+                $user->setAvatarName($initialAvatarGenerator->generate($user));
             }
 
             // Alimentation du mot de passe hashé avec le plain password
             if (!empty($form->get('plainPassword')->getData())) {
-                $doctor->setPassword($userPasswordHasher->hashPassword(
-                    $doctor,
+                $user->setPassword($userPasswordHasher->hashPassword(
+                    $user,
                     $form->get('plainPassword')->getData()
                 ));
             }
-            $doctor->setUpdatedAt(new \DateTimeImmutable());
+            $user->setUpdatedAt(new \DateTimeImmutable());
 
-            $entityManager->persist($doctor);
+            $entityManager->persist($user);
             $entityManager->flush();
 
             $this->addFlash('success', $translator->trans('user.flash.data_updated'));
@@ -68,9 +68,9 @@ class UserController extends AbstractAppController
 
         return $this->render('user/user.html.twig', [
             'navbarTitle' => new TranslatableMessage('user.content.title', [
-                '%displayName%' => $doctor->getDisplayName(),
+                '%displayName%' => $user->getDisplayName(),
             ]),
-            'doctor' => $doctor,
+            'user' => $user,
             'userForm' => $form->createView(),
         ]);
     }

@@ -86,6 +86,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serial
      * @var string|null
      * @ORM\Column(type="string", length=255, nullable=true)
      */
+    #[Assert\Length(max: 255)]
     private $avatarName;
 
     /**

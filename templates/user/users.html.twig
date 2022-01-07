@@ -10,7 +10,7 @@
                 {{ office.name }}
                 <ul>
                     {% for doctor in office.doctors %}
-                        <li><a href="{{ url('search', { _switch_user: doctor.userIdentifier }) }}">{{ doctor.displayName }}</a></li>
+                        <li><a href="{{ url('home', { _switch_user: doctor.userIdentifier }) }}">{{ doctor.displayName }}</a></li>
                     {% endfor %}
                 </ul>
             </li>
