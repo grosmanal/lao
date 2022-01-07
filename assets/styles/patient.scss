@@ -16,6 +16,12 @@
                 article {
                     margin-top: 0;
                     margin-bottom: 15px;
+
+                    .comment-body {
+                        p {
+                            margin-bottom: 0.25rem;
+                        }
+                    }
                     
                     .author-avatar {
                         background-color: #e6e6e6;
@@ -36,6 +42,14 @@
             
             article {
                 margin: 0.5rem 0;
+            }
+        }
+
+        .comment-form {
+            .note-editing-area .note-editable{
+                p {
+                    margin-bottom: 0.25rem;
+                }
             }
         }
     }
