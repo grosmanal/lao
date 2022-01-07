@@ -10,9 +10,9 @@ class AgeComputer
     {
     }
 
-    public function getAgeAsString(\DateTimeInterface $birthdate): string
+    public function getAgeAsString(\DateTimeInterface $birthdate, ?\DateTimeInterface $from = null): string
     {
-        $difference = (new \DateTime())->diff($birthdate);
+        $difference = ($from ?? new \DateTime())->diff($birthdate);
 
         if ($difference->y == 0) {
             $age = $this->translator->trans('months', [

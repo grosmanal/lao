@@ -23,32 +23,32 @@ class AgeComputerTest extends AbstractServiceTest
     public function dataProviderAgeAsString()
     {
         return [
-            ['P1M', '1 mois'],
-            ['P2M', '2 mois'],
-            ['P6M', '6 mois'],
-            ['P11M', '11 mois'],
-            ['P11M30D', '11 mois'],
-            ['P1Y', '1 an'],
-            ['P1Y3M', '1 an'],
-            ['P1Y6M', '1 an et demi'],
-            ['P1Y7M', '1 an et demi'],
-            ['P1Y11M', '1 an et demi'],
-            ['P1Y11M30D', '1 an et demi'],
-            ['P2Y', '2 ans'],
-            ['P2Y6M', '2 ans et demi'],
-            ['P10Y', '10 ans'],
-            ['P10Y6M', '10 ans et demi'],
-            ['P11Y', '11 ans'],
-            ['P11Y6M', '11 ans'],
+            ['2021-04-01', '1 mois'],
+            ['2021-03-01', '2 mois'],
+            ['2020-11-01', '6 mois'],
+            ['2020-06-01', '11 mois'],
+            ['2020-05-01', '1 an'],
+            ['2020-02-01', '1 an'],
+            ['2019-11-01', '1 an et demi'],
+            ['2019-11-01', '1 an et demi'],
+            ['2019-06-01', '1 an et demi'],
+            ['2019-06-30', '1 an et demi'],
+            ['2019-05-01', '2 ans'],
+            ['2018-11-01', '2 ans et demi'],
+            ['2011-05-01', '10 ans'],
+            ['2010-11-01', '10 ans et demi'],
+            ['2010-05-01', '11 ans'],
+            ['2009-11-01', '11 ans'],
         ];
     }
 
     /**
      * @dataProvider dataProviderAgeAsString
      */
-    public function testAgeAsString(string $intervalAge, string $expected)
+    public function testAgeAsString(string $birthDateAsString, string $expected)
     {
-        $birthDate = (new DateTime())->sub(new DateInterval($intervalAge));
-        $this->assertSame($expected, $this->ageComputer->getAgeAsString($birthDate));
+        $fromDate = new \DateTimeImmutable('2021-05-01 00:00:00');
+        $birthDate = new \DateTimeImmutable($birthDateAsString);
+        $this->assertSame($expected, $this->ageComputer->getAgeAsString($birthDate, $fromDate));
     }
 }
