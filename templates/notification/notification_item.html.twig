@@ -10,10 +10,9 @@
                 {{ 'notifications.item.mention_sentence'|trans({'%notifier%': notification.comment.author.displayName}) }}
                 
                 {% if notification.readAt is null %}
-                    {# #250 impossible d'utiliser stretched-link car cela empèche le bouton mark de fonctionner#}
                     <button type="submit" name="markAndGo" class="btn btn-link border-0 m-0 p-0" style="margin-bottom: 3px !important">{{ 'notifications.item.comment'|trans }}</button>
                 {% else %}
-                    <a href="{{ urlComment }}" class="text-reset text-decoration-none stretched-link"
+                    <a href="{{ urlComment }}"
                     >{{ 'notifications.item.comment'|trans }}</a>
                 {% endif %}
             </span>
