@@ -38,7 +38,7 @@ class CareRequestType extends AbstractType
 
         $builder
             ->add('contactedAt', DateType::class, [
-                'required' => false,
+                'required' => true,
                 'widget' => 'single_text',
                 'disabled' => $fieldDisabled,
                 'label' => 'care_request.form.contacted_at',
@@ -49,6 +49,7 @@ class CareRequestType extends AbstractType
                 'label' => 'care_request.form.priority',
             ])
             ->add('contactedBy', EntityType::class, $this->typeOptionsFactory->createOfficeDoctorOptions([
+                'required' => false,
                 'disabled' => $fieldDisabled,
                 'label' => 'care_request.form.contacted_by',
             ], $options['current_doctor']->getOffice(), true))

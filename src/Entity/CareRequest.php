@@ -62,9 +62,9 @@ class CareRequest implements OfficeOwnedInterface, ActivityLoggableEntityInterfa
 
     /**
      * @ORM\Column(type="datetime_immutable")
-     * @Assert\NotBlank
      */
     #[Groups(['careRequest:read', 'careRequest:put', 'comment:read'])]
+    #[Assert\NotBlank()]
     private $contactedAt;
 
     /**
