@@ -5,7 +5,7 @@
 {% endif %}
 
 <li class="list-group-item list-group-item-action">
-    <a href="{{ url('patient', {id: patient.id}) }}" class="text-reset text-decoration-none">
+    <a href="{{ url('patient', {id: patient.id}) }}" class="text-reset text-decoration-none stretched-link">
         <span class="patient">{{ patient.displayName }}</span> {{ message|trans }}
     </a>
 </li>
