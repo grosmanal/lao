@@ -273,7 +273,7 @@ class CareRequestApiTest extends AbstractApiTestCase
         }
     }
 
-    public function dataProviderPutUnconsistentData()
+    public function dataProviderPutInconsistentData()
     {
         return [
             ['contactedBy', '/api/doctors/1', Response::HTTP_OK],
@@ -286,9 +286,9 @@ class CareRequestApiTest extends AbstractApiTestCase
     }
 
     /**
-     * @dataProvider dataProviderPutUnconsistentData
+     * @dataProvider dataProviderPutInconsistentData
      */
-    public function testPutUnconsistentData($payloadKey, $payloadValue, $expected)
+    public function testPutInconsistentData($payloadKey, $payloadValue, $expected)
     {
         $this->loginUser('admin@example.com');
         $this->client->request('PUT', '/api/care_requests/1', [

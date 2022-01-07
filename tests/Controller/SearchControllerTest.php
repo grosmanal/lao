@@ -42,7 +42,7 @@ class SearchControllerTest extends AbstractControllerTestCase
     }
 
 
-    public function dataProviderUnconsistentInput()
+    public function dataProviderInconsistentInput()
     {
         return [
             [ 1, '08:00', '18:00', true],
@@ -53,9 +53,9 @@ class SearchControllerTest extends AbstractControllerTestCase
     }
 
     /**
-     * @dataProvider dataProviderUnconsistentInput
+     * @dataProvider dataProviderInconsistentInput
      */
-    public function testUnconsistentInput(?int $weekDay, ?string $timeStart, ?string $timeEnd, bool $expectResults)
+    public function testInconsistentInput(?int $weekDay, ?string $timeStart, ?string $timeEnd, bool $expectResults)
     {
         $this->loginUser('user1@example.com');
         $crawler = $this->client->request('GET', '/search');

@@ -157,7 +157,7 @@ class UserApiTest extends AbstractApiTestCase
         $this->assertResponseStatusCodeSame($expected);
     }
 
-    public function dataProviderUnconsistentData()
+    public function dataProviderInconsistentData()
     {
         return [
             [ 'email', 'not a email', Response::HTTP_UNPROCESSABLE_ENTITY, ],
@@ -166,10 +166,10 @@ class UserApiTest extends AbstractApiTestCase
     }
 
     /**
-     * @dataProvider dataProviderUnconsistentData
+     * @dataProvider dataProviderInconsistentData
      */
 
-    public function testUnconsistentData($content, $value, $expected)
+    public function testInconsistentData($content, $value, $expected)
     {
         $this->loginUser('admin@example.com');
 

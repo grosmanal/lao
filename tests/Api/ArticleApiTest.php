@@ -146,7 +146,7 @@ class ArticleApiTest extends AbstractApiTestCase
     }
 
 
-    public function dataProviderUnconsistentData()
+    public function dataProviderInconsistentData()
     {
         return [
             [ 'publishFrom', 'not a date', Response::HTTP_BAD_REQUEST, ],
@@ -157,10 +157,10 @@ class ArticleApiTest extends AbstractApiTestCase
     }
 
     /**
-     * @dataProvider dataProviderUnconsistentData
+     * @dataProvider dataProviderInconsistentData
      */
 
-    public function testUnconsistentData($content, $value, $expected)
+    public function testInconsistentData($content, $value, $expected)
     {
         $this->loginUser('admin@example.com');
 
