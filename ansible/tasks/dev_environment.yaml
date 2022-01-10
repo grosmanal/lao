@@ -1,0 +1,14 @@
+---          
+- name: Lao dev env | browser driver for panther
+  apt:
+      update_cache: yes
+      name:
+          - chromium-driver
+      state: present
+
+- name: Lao dev env | max open file (phpunit)
+  ansible.builtin.lineinfile:
+      path: /etc/security/limits.conf
+      regexp: '^{{ remote_admin_user }}\s+soft\s+nofile'
+      line: '{{ remote_admin_user }}    soft    nofile    4096'
+      state: present

@@ -51,10 +51,5 @@
         state: present
           
   - name: Lao | Composant pour développement
-    apt:
-        update_cache: yes
-        name:
-            - chromium-driver
-            #- TODO geckodriver
-        state: present
+    import_tasks: tasks/dev_environment.yaml
     when: symfony_env != 'prod'
