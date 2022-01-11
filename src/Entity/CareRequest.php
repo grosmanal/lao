@@ -75,6 +75,12 @@ class CareRequest implements OfficeOwnedInterface, ActivityLoggableEntityInterfa
     private $priority;
 
     /**
+     * @ORM\ManyToOne(targetEntity=Doctor::class)
+     */
+    #[Groups(['careRequest:read', 'careRequest:put'])]
+    private $requestedDoctor;
+
+    /**
      * @ORM\ManyToOne(targetEntity=Complaint::class)
      */
     #[Groups(['careRequest:read', 'careRequest:put'])]
@@ -166,6 +172,18 @@ class CareRequest implements OfficeOwnedInterface, ActivityLoggableEntityInterfa
                     ->buildViolation('care_request.error.contacting_doctor_office')
                     ->setTranslationDomain('messages')
                     ->atPath('contactedBy')
+                    ->addViolation()
+                    ;
+            }
+        }
+
+        // - le docteur demandé
+        if ($this->getRequestedDoctor()) {
+            if ($this->getOffice() != $this->getRequestedDoctor()->getOffice()) {
+                $context
+                    ->buildViolation('care_request.error.requested_doctor_office')
+                    ->setTranslationDomain('messages')
+                    ->atPath('requested_doctor')
                     ->addViolation()
                     ;
             }
@@ -299,6 +317,18 @@ class CareRequest implements OfficeOwnedInterface, ActivityLoggableEntityInterfa
     public function setPriority(bool $priority): self
     {
         $this->priority = $priority;
+
+        return $this;
+    }
+
+    public function getRequestedDoctor(): ?Doctor
+    {
+        return $this->requestedDoctor;
+    }
+
+    public function setRequestedDoctor(?Doctor $requestedDoctor): self
+    {
+        $this->requestedDoctor = $requestedDoctor;
 
         return $this;
     }

@@ -39,6 +39,14 @@ class CareRequestFinderTest extends AbstractServiceTest
         }, $careRequestFinderResults));
     }
 
+    private function createSearchCriteria(): SearchCriteria
+    {
+        return (new SearchCriteria())
+            ->setIncludeActiveCareRequest(true)
+            ->setIncludeArchivedCareRequest(true)
+            ->setIncludeAbandonedCareRequest(true)
+        ;
+    }
 
     public function dataProviderFindByLabel()
     {
@@ -55,11 +63,8 @@ class CareRequestFinderTest extends AbstractServiceTest
      */
     public function testFindByLabel($label, $expected)
     {
-        $searchCriteria = (new SearchCriteria())
+        $searchCriteria = ($this->createSearchCriteria())
             ->setLabel($label)
-            ->setIncludeActiveCareRequest(true)
-            ->setIncludeArchivedCareRequest(true)
-            ->setIncludeAbandonedCareRequest(true)
         ;
 
         $this->assertSame(
@@ -68,9 +73,39 @@ class CareRequestFinderTest extends AbstractServiceTest
         );
     }
 
-    public function dataProviderFindByCreator()
+
+    public function dataProviderFindByRequestedDoctor()
     {
         return [
+            [ null, [1, 2, 3, 5, 6] ],
+            [ 1, [1, 2], ],
+            [ 2, [], ],// Pas le même office
+            [ 3, [3] ],
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderFindByRequestedDoctor
+     */
+    public function testFindByRequestedDoctor($doctorId, $expected)
+    {
+        $searchCriteria = $this->createSearchCriteria();
+
+        if ($doctorId) {
+            $doctor = $this->doctorRepository->find($doctorId);
+            $searchCriteria->setRequestedDoctor($doctor);
+        }
+
+        $this->assertSame(
+            $expected,
+            $this->careRequestIds($this->careRequestFinder->find($searchCriteria, $this->currentOffice))
+        );
+    }
+
+    public function dataProviderFindByContactedBy()
+    {
+        return [
+            [ null, [1, 2, 3, 5, 6] ],
             [ 1, [1, 2, 3, 5, 6] ],
             [ 2, [] ], // Pas le même office
             [ 3, [] ],
@@ -78,18 +113,16 @@ class CareRequestFinderTest extends AbstractServiceTest
     }
 
     /**
-     * @dataProvider dataProviderFindByCreator
+     * @dataProvider dataProviderFindByContactedBy
      */
-    public function testFindByCreator($doctorId, $expected)
+    public function testFindByContactedBy($doctorId, $expected)
     {
-        $doctor = $this->doctorRepository->find($doctorId);
+        $searchCriteria = $this->createSearchCriteria();
 
-        $searchCriteria = (new SearchCriteria())
-            ->setCreator($doctor)
-            ->setIncludeActiveCareRequest(true)
-            ->setIncludeArchivedCareRequest(true)
-            ->setIncludeAbandonedCareRequest(true)
-        ;
+        if ($doctorId) {
+            $doctor = $this->doctorRepository->find($doctorId);
+            $searchCriteria->setContactedBy($doctor);
+        }
 
         $this->assertSame(
             $expected,
@@ -113,11 +146,8 @@ class CareRequestFinderTest extends AbstractServiceTest
      */
     public function testFindByCreationFrom(string $creationFrom, $expected)
     {
-        $searchCriteria = (new SearchCriteria())
+        $searchCriteria = ($this->createSearchCriteria())
             ->setContactedFrom(new \DateTime($creationFrom))
-            ->setIncludeActiveCareRequest(true)
-            ->setIncludeArchivedCareRequest(true)
-            ->setIncludeAbandonedCareRequest(true)
         ;
 
         $this->assertSame(
@@ -142,11 +172,8 @@ class CareRequestFinderTest extends AbstractServiceTest
      */
     public function testFindByCreationTo(string $creationTo, $expected)
     {
-        $searchCriteria = (new SearchCriteria())
+        $searchCriteria = ($this->createSearchCriteria())
             ->setContactedTo(new \DateTime($creationTo))
-            ->setIncludeActiveCareRequest(true)
-            ->setIncludeArchivedCareRequest(true)
-            ->setIncludeAbandonedCareRequest(true)
         ;
 
         $this->assertSame(
@@ -169,13 +196,10 @@ class CareRequestFinderTest extends AbstractServiceTest
      */
     public function testFindByAvailability($weekDay, $timeStart, $timeEnd, $expected)
     {
-        $searchCriteria = (new SearchCriteria())
+        $searchCriteria = ($this->createSearchCriteria())
             ->setWeekDay($weekDay)
             ->setTimeStart(new \DateTime($timeStart))
             ->setTimeEnd(new \DateTime($timeEnd))
-            ->setIncludeActiveCareRequest(true)
-            ->setIncludeArchivedCareRequest(true)
-            ->setIncludeAbandonedCareRequest(true)
         ;
 
         $this->assertSame(
@@ -198,14 +222,11 @@ class CareRequestFinderTest extends AbstractServiceTest
      */
     public function testFindByVariableSchedule(bool $variableSchedule, $expected)
     {
-        $searchCriteria = (new SearchCriteria())
+        $searchCriteria = ($this->createSearchCriteria())
             ->setIncludeVariableSchedules($variableSchedule)
             ->setWeekDay(3) // Horaire pour n'obtenir aucun disponibilité
             ->setTimeStart(new \DateTime('08:00'))
             ->setTimeEnd(new \DateTime('08:01'))
-            ->setIncludeActiveCareRequest(true)
-            ->setIncludeArchivedCareRequest(true)
-            ->setIncludeAbandonedCareRequest(true)
         ;
 
         $this->assertSame(
@@ -228,10 +249,8 @@ class CareRequestFinderTest extends AbstractServiceTest
      */
     public function testFindByActive(bool $active, $expected)
     {
-        $searchCriteria = (new SearchCriteria())
+        $searchCriteria = ($this->createSearchCriteria())
             ->setIncludeActiveCareRequest($active)
-            ->setIncludeArchivedCareRequest(true)
-            ->setIncludeAbandonedCareRequest(true)
         ;
 
         $this->assertSame(
@@ -254,10 +273,8 @@ class CareRequestFinderTest extends AbstractServiceTest
      */
     public function testFindByArchived(bool $archived, $expected)
     {
-        $searchCriteria = (new SearchCriteria())
+        $searchCriteria = ($this->createSearchCriteria())
             ->setIncludeArchivedCareRequest($archived)
-            ->setIncludeActiveCareRequest(true)
-            ->setIncludeAbandonedCareRequest(true)
         ;
 
         $this->assertSame(
@@ -280,10 +297,8 @@ class CareRequestFinderTest extends AbstractServiceTest
      */
     public function testFindByAbandoned(bool $abandoned, $expected)
     {
-        $searchCriteria = (new SearchCriteria())
+        $searchCriteria = ($this->createSearchCriteria())
             ->setIncludeAbandonedCareRequest($abandoned)
-            ->setIncludeActiveCareRequest(true)
-            ->setIncludeArchivedCareRequest(true)
         ;
 
         $this->assertSame(
@@ -306,11 +321,8 @@ class CareRequestFinderTest extends AbstractServiceTest
      */
     public function testFindByComplaint($complaintId, $expected)
     {
-        $searchCriteria = (new SearchCriteria())
+        $searchCriteria = ($this->createSearchCriteria())
             ->setComplaint($this->complaintRepository->find($complaintId))
-            ->setIncludeActiveCareRequest(true)
-            ->setIncludeArchivedCareRequest(true)
-            ->setIncludeAbandonedCareRequest(true)
         ;
 
         $this->assertSame(

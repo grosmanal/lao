@@ -6,6 +6,7 @@ include:
 App\Entity\CareRequest:
     care_request_1:
         patient: '@patient_1'
+        requestedDoctor: '@doctor_1'
         contactedBy: '@doctor_1'
         contactedAt: <(new DateTimeImmutable("2021-09-27"))>
         priority: true
@@ -19,6 +20,7 @@ App\Entity\CareRequest:
         createdAt: <(new DateTimeImmutable("2021-09-27 15:00:00"))>
     care_request_2:
         patient: '@patient_1'
+        requestedDoctor: '@doctor_1'
         contactedBy: '@doctor_1'
         contactedAt: <(new DateTimeImmutable("2021-09-26"))>
         priority: true
@@ -32,6 +34,7 @@ App\Entity\CareRequest:
         createdAt: <(new DateTimeImmutable("2021-09-26 15:00:00"))>
     care_request_3:
         patient: '@patient_1'
+        requestedDoctor: '@doctor_3'
         contactedBy: '@doctor_1'
         contactedAt: <(new DateTimeImmutable("2021-09-25"))>
         priority: true
@@ -45,6 +48,7 @@ App\Entity\CareRequest:
         createdAt: <(new DateTimeImmutable("2021-09-25 15:00:00"))>
     care_request_4:
         patient: '@patient_3'
+        requestedDoctor: '@doctor_2'
         contactedBy: '@doctor_2'
         contactedAt: <(new DateTimeImmutable("2021-09-27"))>
         priority: true

@@ -84,6 +84,7 @@ function upsertCareRequest(form) {
     const data = {
         contactedBy: nullFieldConverter(form['care_request[contactedBy]'].value),
         contactedAt: nullFieldConverter(form['care_request[contactedAt]'].value),
+        requestedDoctor: nullFieldConverter(form['care_request[requestedDoctor]'].value),
         priority: nullFieldConverter(form['care_request[priority]'].checked),
         complaint: nullFieldConverter(form['care_request[complaint]'].value),
         customComplaint: nullFieldConverter(form['care_request[customComplaint]'].value),

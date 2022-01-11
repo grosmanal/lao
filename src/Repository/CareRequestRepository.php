@@ -48,6 +48,13 @@ class CareRequestRepository extends ServiceEntityRepository implements ActivityL
             ;
         }
 
+        if ($searchCriteria->getRequestedDoctor()) {
+            $qb
+                ->andWhere('cr.requestedDoctor = :requestedDoctor')
+                ->setParameter(':requestedDoctor', $searchCriteria->getRequestedDoctor())
+            ;
+        }
+
         if ($searchCriteria->getContactedBy()) {
             $qb
                 ->andWhere('cr.contactedBy = :contactedBy')

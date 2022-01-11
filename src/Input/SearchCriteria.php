@@ -18,6 +18,8 @@ class SearchCriteria
 
     private ?DateTime $contactedTo = null;
 
+    private ?Doctor $requestedDoctor = null;
+
     private ?Complaint $complaint = null;
 
     private ?int $weekDay = null;
@@ -95,7 +97,7 @@ class SearchCriteria
      *
      * @return self
      */
-    public function setCreator(?Doctor $contactedBy)
+    public function setContactedBy(?Doctor $contactedBy)
     {
         $this->contactedBy = $contactedBy;
 
@@ -150,6 +152,30 @@ class SearchCriteria
         } else {
             $this->contactedTo = $contactedTo->setTime(23, 59, 59, 9999);
         }
+
+        return $this;
+    }
+
+    /**
+     * Get the value of requestedDoctor
+     *
+     * @return ?Doctor
+     */
+    public function getRequestedDoctor()
+    {
+        return $this->requestedDoctor;
+    }
+
+    /**
+     * Set the value of requestedDoctor
+     *
+     * @param ?Doctor $requestedDoctor
+     *
+     * @return self
+     */
+    public function setRequestedDoctor(?Doctor $requestedDoctor)
+    {
+        $this->requestedDoctor = $requestedDoctor;
 
         return $this;
     }

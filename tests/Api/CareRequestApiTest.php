@@ -13,6 +13,7 @@ class CareRequestApiTest extends AbstractApiTestCase
         'contactedAt' => '2021-09-29',
         'priority' => true,
         'complaint' => '/api/complaints/1',
+        'requestedDoctor' => '/api/doctors/1',
         'customComplaint' => 'custom',
         'acceptedBy' => null,
         'acceptedAt' => null,
@@ -47,6 +48,12 @@ class CareRequestApiTest extends AbstractApiTestCase
                 'lastname' => 'doctor_1_lastname',
             ],
             'contactedAt' => '2021-09-27T00:00:00+00:00',
+            'requestedDoctor' => [
+                '@id' => '/api/doctors/1',
+                '@type' => 'Doctor',
+                'firstname' => 'doctor_1_firstname',
+                'lastname' => 'doctor_1_lastname',
+            ],
             'priority' => true,
             'state' => 'active',
             'complaint' => [
@@ -142,6 +149,7 @@ class CareRequestApiTest extends AbstractApiTestCase
             ['patient', Response::HTTP_UNPROCESSABLE_ENTITY],
             ['contactedBy', Response::HTTP_CREATED],
             ['contactedAt', Response::HTTP_UNPROCESSABLE_ENTITY],
+            ['requestedDoctor', Response::HTTP_CREATED],
             ['priority', Response::HTTP_CREATED],
             ['complaint', Response::HTTP_CREATED],
             ['customComplaint', Response::HTTP_CREATED],
@@ -168,9 +176,15 @@ class CareRequestApiTest extends AbstractApiTestCase
         return [
             ['user1@example.com', 'patient', '/api/patients/1', Response::HTTP_CREATED],
             ['user1@example.com', 'patient', '/api/patients/3', Response::HTTP_FORBIDDEN],
+
             ['user1@example.com', 'contactedBy', '/api/doctors/1', Response::HTTP_CREATED],
             ['user1@example.com', 'contactedBy', '/api/doctors/2', Response::HTTP_UNPROCESSABLE_ENTITY],
             ['admin@example.com', 'contactedBy', '/api/doctors/2', Response::HTTP_UNPROCESSABLE_ENTITY],
+
+            ['user1@example.com', 'requestedDoctor', '/api/doctors/1', Response::HTTP_CREATED],
+            ['user1@example.com', 'requestedDoctor', '/api/doctors/2', Response::HTTP_UNPROCESSABLE_ENTITY],
+            ['admin@example.com', 'requestedDoctor', '/api/doctors/2', Response::HTTP_UNPROCESSABLE_ENTITY],
+
             ['user1@example.com', 'acceptedBy', '/api/doctors/1', Response::HTTP_CREATED],
             ['user1@example.com', 'acceptedBy', '/api/doctors/2', Response::HTTP_UNPROCESSABLE_ENTITY],
             ['admin@example.com', 'acceptedBy', '/api/doctors/2', Response::HTTP_UNPROCESSABLE_ENTITY],
@@ -278,6 +292,8 @@ class CareRequestApiTest extends AbstractApiTestCase
         return [
             ['contactedBy', '/api/doctors/1', Response::HTTP_OK],
             ['contactedBy', '/api/doctors/2', Response::HTTP_UNPROCESSABLE_ENTITY],
+            ['requestedDoctor', '/api/doctors/1', Response::HTTP_OK],
+            ['requestedDoctor', '/api/doctors/2', Response::HTTP_UNPROCESSABLE_ENTITY],
             ['acceptedBy', '/api/doctors/1', Response::HTTP_OK],
             ['acceptedBy', '/api/doctors/2', Response::HTTP_UNPROCESSABLE_ENTITY],
             ['abandonedBy', '/api/doctors/1', Response::HTTP_OK],

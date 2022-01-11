@@ -98,6 +98,7 @@ care_request:
     form:
         contacted_at: Reçue le
         contacted_by: Reçue par
+        requested_doctor: Praticien·ne demandé·e
         complaint: Plainte
         custom_complaint: Complément de plainte
         accepted_by:
@@ -126,6 +127,7 @@ care_request:
         delete: Erreur lors de la suppression de la demande
         both_accepted_abandoned: Une demande ne peut être à la fois acceptée et abandonnée.
         contacting_doctor_office: Le docteur contacté doit être du même cabinet que le patient.
+        requested_doctor_office: Le docteur demandé doit être du même cabinet que le patient.
         accepting_doctor_office: Le docteur acceptant une demande doit être du même cabinet que le patient.
         abandoned_doctor_office: Le docteur abandonnant une demande doit être du même cabinet que le patient.
     
@@ -158,6 +160,9 @@ search:
     label:
         label: Patient
         placeholder: nom ou prénom du patient
+    requested_doctor:
+        label: Praticien demandé
+        placeholder: '- praticen demandé -'
     contacted_by:
         label: Contact
         placeholder: '- praticien contacté -'

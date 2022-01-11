@@ -98,6 +98,7 @@ care_request:
     form:
         contacted_at: Received on
         contacted_by: Received by
+        requested_doctor: Requested doctor
         complaint: Complaint
         custom_complaint: Custom complaint
         accepted_by:
@@ -126,6 +127,7 @@ care_request:
         delete: Error while deleting patient
         both_accepted_abandoned: Care request cannot be both accepted and abandoned
         contacting_doctor_office: Contacted doctor must belong to the patient’s office
+        requested_doctor_office: Requested doctor must belong to the patient’s office
         accepting_doctor_office: Doctor accepting care request must belong to the patient’s office
         abandoned_doctor_office: Doctor abandoning care request must belong to the patient’s office
       
@@ -158,6 +160,9 @@ search:
     label:
         label: Patient
         placeholder: patient firstname or lastname
+    requested_doctor:
+        label: Requested doctor
+        placeholder: '- requested doctor -'
     contacted_by:
         label: Contact
         placeholder: '- creator -'

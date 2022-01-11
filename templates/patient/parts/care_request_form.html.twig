@@ -4,22 +4,23 @@
     'attr': {'onsubmit': 'submitCareRequest(event)'}
 }) }}
 
-    <div class="two-columns">
 
+    {# Demande prioritaire #}
+    <div class="mb-3 pt-1 row"> {# le padding sert à compenser la petites du checkbox #}
+        <div class="col-sm-2">
+            <label class="form-label">{{ 'care_request.form.priority'| trans }}</label>
+        </div>
+        <div class="col-sm-10">
+            {{ form_widget(careRequestForm.priority, {
+                label: false,
+            }) }}
+        </div>
+    </div>
+
+    <div class="two-columns">
         {{ form_row(careRequestForm.contactedBy) }}
         {{ form_row(careRequestForm.contactedAt) }}
-
-        <div class="mb-3 pt-1 row"> {# le padding sert à compenser la petites du checkbox #}
-            <div class="col-sm-4">
-                <label class="form-label">{{ 'care_request.form.priority'| trans }}</label>
-            </div>
-            <div class="col-sm-8">
-                {{ form_widget(careRequestForm.priority, {
-                    label: false,
-                }) }}
-            </div>
-        </div>
-
+        {{ form_row(careRequestForm.requestedDoctor) }}
         {{ form_row(careRequestForm.complaint) }}
     </div>
 

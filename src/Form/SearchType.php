@@ -38,6 +38,17 @@ class SearchType extends AbstractType
                 ],
                 'required' => false,
             ])
+            ->add('requestedDoctor', EntityType::class, $this->typeOptionsFactory->createOfficeDoctorOptions([
+                'required' => false,
+                'label' => 'search.requested_doctor.label',
+                'placeholder' => 'search.requested_doctor.placeholder',
+            ], $options['current_doctor']->getOffice()))
+            ->add('complaint', EntityType::class, [
+                'class' => Complaint::class,
+                'label' => 'search.complaint.label',
+                'required' => false,
+                'placeholder' => 'search.complaint.placeholder',
+            ])
             ->add('contactedBy', EntityType::class, $this->typeOptionsFactory->createOfficeDoctorOptions([
                 'required' => false,
                 'label' => 'search.contacted_by.label',
@@ -52,12 +63,6 @@ class SearchType extends AbstractType
                 'widget' => 'single_text',
                 'required' => false,
                 'label' => 'search.contacted_to',
-            ])
-            ->add('complaint', EntityType::class, [
-                'class' => Complaint::class,
-                'label' => 'search.complaint.label',
-                'required' => false,
-                'placeholder' => 'search.complaint.placeholder',
             ])
             ->add('weekDay', ChoiceType::class, [
                 'label' => 'search.week_day.label',

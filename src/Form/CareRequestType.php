@@ -70,6 +70,11 @@ class CareRequestType extends AbstractType
                 'disabled' => $fieldDisabled,
                 'label' => 'care_request.form.custom_complaint',
             ])
+            ->add('requestedDoctor', EntityType::class, $this->typeOptionsFactory->createOfficeDoctorOptions([
+                'required' => false,
+                'disabled' => $fieldDisabled,
+                'label' => 'care_request.form.requested_doctor',
+            ], $options['current_doctor']->getOffice(), true))
             ->add('apiAction', HiddenType::class, [
                 'data' => $options['api_action'],
                 'mapped' => false,

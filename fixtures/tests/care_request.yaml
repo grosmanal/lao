@@ -11,6 +11,7 @@ App\Entity\CareRequest:
         priority: true
         complaint: '@complaint_1'
         customComplaint: ~
+        requestedDoctor: '@doctor_1'
         acceptedBy: ~
         acceptedAt: ~
         abandonedAt: ~
