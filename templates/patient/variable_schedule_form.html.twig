@@ -1,3 +1,7 @@
-<div id="variable-schedule-form">
-    {{ form(variableScheduleForm) }}
+<div id="variable-schedule-form" class="ps-3">
+    {{ form_start(variableScheduleForm) }}
+    <div class="row">
+        {{ form_widget(variableScheduleForm.variableSchedule) }}
+    </div>
+    {{ form_end(variableScheduleForm) }}
 </div>
