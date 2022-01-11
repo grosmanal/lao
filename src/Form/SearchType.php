@@ -99,9 +99,6 @@ class SearchType extends AbstractType
             ->add('submit', SubmitType::class, [
                 'label' => 'search.submit',
             ])
-            ->add('reset', ResetType::class, [
-                'label' => 'search.reset',
-            ])
         ;
     }
 
