@@ -6,6 +6,7 @@ use App\Form\SearchType;
 use App\Input\SearchCriteria;
 use App\Service\CareRequestFinder;
 use App\Service\UserProfile;
+use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,6 +20,7 @@ class SearchController extends AbstractAppController
     public function index(
         Request $request,
         CareRequestFinder $careRequestFinder,
+        PaginatorInterface $paginator,
         UserProfile $userProfile,
     ): Response {
         $searchCreteria = new SearchCriteria();
@@ -45,9 +47,15 @@ class SearchController extends AbstractAppController
 
             $searchResults = $careRequestFinder->find($searchCreteria, $currentDoctor->getOffice());
 
-            // Ajout de l'url de la care request pour chaque résultat
-            $searchResults = array_map(function ($searchResult) {
+            $careRequestFinder->sortSearchResult($searchResults);
+
+            // Ajout pour chaque résultat :
+            // - de la position du résultat dans la liste
+            // - l'url de la care request
+            $position = 0;
+            $searchResults = array_map(function ($searchResult) use (&$position) {
                 return array_merge($searchResult, [
+                    'position' => ++$position,
                     'url' => $this->generateUrl('patient', [
                         'id' => $searchResult['careRequest']->getPatient()->getId(),
                         'careRequest' => $searchResult['careRequest']->getId(),
@@ -56,13 +64,17 @@ class SearchController extends AbstractAppController
                 ]);
             }, $searchResults);
 
-            $careRequestFinder->sortSearchResult($searchResults);
+            $paginatedSearchResults = $paginator->paginate(
+                $searchResults,
+                $request->query->getInt('page', 1),
+            );
         }
 
         return $this->renderForm('search/search.html.twig', [
             'navbarTitle' => 'search.title',
             'form' => $form,
-            'searchResults' => $searchResults ?? null,
+            'resultCount' => isset($searchResults) ? count($searchResults) : null,
+            'paginatedResults' => $paginatedSearchResults ?? null,
         ]);
     }
 }

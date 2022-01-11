@@ -16,30 +16,35 @@
 
 {% if form.vars.submitted and form.vars.valid %}
 <section class="card search-result">
-    {% if searchResults|length > 0 %}
+    {% if paginatedResults|length > 0 %}
         <div class="card-body">
-        <table class="table table-striped table-hover">
-            <thead>
-                <tr>
-                    <td colspan="2">{{ 'search.results.patient'|trans }}</td>
-                    <td>{{ 'search.results.care_request_contacted_at'|trans }}</td>
-                    <td class="d-none d-lg-table-cell">{{ 'search.results.availabilities'|trans }}</td>
-                    <td>{{ 'search.results.complaint'|trans }}</td>
-                    <td></td>
-                </tr>
-            </thead>
-            <tbody>
-            {% for searchResult in searchResults %}
-                <tr data-patient-url="{{ searchResult.url }}">
-                    {% include "search/care_request_item.html.twig" %}
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+            <p class="alert alert-info">{{ 'search.results_count_label'|trans({'%count%': resultCount}) }}</p>
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <td colspan="2">{{ 'search.results.patient'|trans }}</td>
+                        <td>{{ 'search.results.care_request_contacted_at'|trans }}</td>
+                        <td class="d-none d-lg-table-cell">{{ 'search.results.availabilities'|trans }}</td>
+                        <td>{{ 'search.results.complaint'|trans }}</td>
+                        <td></td>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for searchResult in paginatedResults %}
+                    <tr data-patient-url="{{ searchResult.url }}">
+                        {% include "search/care_request_item.html.twig" %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="navigation d-flex justify-content-center">
+                {{ knp_pagination_render(paginatedResults) }}
+            </div>
+        </div>
     {% else %}
         <div class="alert alert-warning no-result">{{ 'search.no_result'|trans }}</div>
     {% endif %}
-    </div>
 </section>
 {% endif %}
 

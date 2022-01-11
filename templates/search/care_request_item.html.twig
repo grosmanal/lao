@@ -4,7 +4,12 @@
 {% endmacro %}
 
 <td class="patient">
-    <a href="{{ searchResult.url }}">{{ searchResult.careRequest.patient.displayName }}</a>
+    <a href="{{ searchResult.url }}">
+        <span class="fw-normal">
+            {{ searchResult.position }}.
+        </span>
+        {{ searchResult.careRequest.patient.displayName }}
+    </a>
 </td>
 
 <td class="state">

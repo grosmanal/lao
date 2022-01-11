@@ -185,6 +185,7 @@ search:
     reset: Reset
     no_result: No result for your criteria
     results_header: results
+    results_count_label: '{1}%count% patient found|]1,Inf[%count% patients found'
     results:
         patient: patient
         care_request_state: care request
