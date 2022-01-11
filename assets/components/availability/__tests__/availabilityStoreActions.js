@@ -86,6 +86,60 @@ describe('Availability store actions', () => {
         });
     });
 
+    test('addAvailabilityPeriod all from', () => {
+        const context = {
+            getters: {
+                weekDayAvailability: jest.fn().mockReturnValue({
+                    "0900-0930": false,
+                    "0930-1000": false,
+                    "1000-1030": false,
+                    "1030-1100": false,
+                }),
+                startOfDaySlot: "0900-0930",
+                endOfDaySlot: "1030-1100",
+            },
+            dispatch: jest.fn(),
+        };
+
+        expect.assertions(1);
+
+        actions.addAvailabilityPeriod(context, {weekDays: [ 1 ], periodStart: null, periodEnd: "1030"}).then(() => {
+            expect(context.dispatch).toHaveBeenCalledWith('updateWeekDaysAvailability', {
+                weekDays: [ 1 ],
+                timeSlotStart: "0900-0930",
+                timeSlotEnd: "1000-1030",
+                available: true,
+            });
+        });
+    });
+
+    test('addAvailabilityPeriod all to', () => {
+        const context = {
+            getters: {
+                weekDayAvailability: jest.fn().mockReturnValue({
+                    "0900-0930": false,
+                    "0930-1000": false,
+                    "1000-1030": false,
+                    "1030-1100": false,
+                }),
+                startOfDaySlot: "0900-0930",
+                endOfDaySlot: "1030-1100",
+            },
+            dispatch: jest.fn(),
+        };
+
+        expect.assertions(1);
+
+        actions.addAvailabilityPeriod(context, {weekDays: [ 1 ], periodStart: "0930", periodEnd: null}).then(() => {
+            expect(context.dispatch).toHaveBeenCalledWith('updateWeekDaysAvailability', {
+                weekDays: [ 1 ],
+                timeSlotStart: "0930-1000",
+                timeSlotEnd: "1030-1100",
+                available: true,
+            });
+        });
+    });
+
     test('addAvailabilityPeriod out of bound', () => {
         const context = {
             getters: {

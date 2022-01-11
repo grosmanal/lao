@@ -164,8 +164,20 @@ export const actions = {
     addAvailabilityPeriod: async (context, {weekDays, periodStart, periodEnd}) => {
         // Recherche des slots correspondant à periodStart et periodEnd
         const weekDayAvailability = context.getters.weekDayAvailability(weekDays[0]);
-        const timeSlotStart = timeSlotFromPeriodEdge(Object.keys(weekDayAvailability), periodStart);
-        const timeSlotEnd = timeSlotFromPeriodEdge(Object.keys(weekDayAvailability), periodEnd, true);
+
+        let timeSlotStart;
+        if (periodStart == null) {
+            timeSlotStart = context.getters.startOfDaySlot;
+        } else {
+            timeSlotStart = timeSlotFromPeriodEdge(Object.keys(weekDayAvailability), periodStart);
+        }
+
+        let timeSlotEnd;
+        if (periodEnd == null) {
+            timeSlotEnd = context.getters.endOfDaySlot;
+        } else {
+            timeSlotEnd = timeSlotFromPeriodEdge(Object.keys(weekDayAvailability), periodEnd, true);
+        }
         
         if (timeSlotStart == undefined) {
             throw Translator.trans('availability.error.period_start_out_of_bound');

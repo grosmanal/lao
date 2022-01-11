@@ -9,9 +9,9 @@
             >{{ option.label }}</option>
         </select>
         <span class="form-separator">{{ _fromLabel }}</span>
-        <input type="time" v-model="periodStart" class="form-control form-control-sm" required />
+        <input type="time" v-model="periodStart" class="form-control form-control-sm" />
         <span class="form-separator">{{ _toLabel }}</span>
-        <input type="time" v-model="periodEnd" class="form-control form-control-sm" required />
+        <input type="time" v-model="periodEnd" class="form-control form-control-sm" />
         <button class="btn btn-primary btn-sm" @click="addAvailabilityPeriod($event)" type="submit">{{ _addLabel }}</button>
     </form>
 </template>
@@ -58,6 +58,10 @@ export default {
         }),
 
         convertTimeFromPicker(pickedTime) {
+            if (pickedTime == undefined) {
+                return null;
+            }
+
             return pickedTime.replace(':', '');
         },
 
