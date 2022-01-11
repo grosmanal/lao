@@ -267,11 +267,11 @@ activity:
     by: par
     patient:
         creation: création
-        creation_modification: création
+        creation_modification: création et modification
         modification: modification
     care_request:
         creation: ajout d’une demande
-        creation_modification: ajout d’une demande
+        creation_modification: ajout et modification d’une demande
         modification: modification de la demande du %careRequestCreationDate%
     comment:
         creation: ajout d’un commentaire à propos de la demande du %careRequestCreationDate%

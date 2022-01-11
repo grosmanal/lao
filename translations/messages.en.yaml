@@ -266,11 +266,11 @@ activity:
     by: by
     patient:
         creation: creation
-        creation_modification: creation
+        creation_modification: creation and modification
         modification: modification
     care_request:
         creation: care request addition
-        creation_modification: care request addition
+        creation_modification: care request addition and modification
         modification: care request from %careRequestCreationDate% modification
     comment:
         creation: comment addition about care request from %careRequestCreationDate%

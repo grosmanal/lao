@@ -37,7 +37,7 @@ class ActivityTest extends AbstractServiceTest
                 'bi-file-person' => [], // Patient
                 'bi-clipboard' => [], // Care request
                 'bi-chat-left-text' => [ // Comment
-                    new DateTimeImmutable("2021-05-01 15:10:00"), // Comment ID 4
+                    new DateTimeImmutable("2021-05-03 15:10:00"), // Comment ID 4
                     new DateTimeImmutable("2021-05-02 15:10:00"), // Comment ID 5
                 ],
             ] ],
@@ -49,44 +49,44 @@ class ActivityTest extends AbstractServiceTest
                     new DateTimeImmutable("2021-01-03 15:05:02"), // Care request ID 4
                 ],
                 'bi-chat-left-text' => [ // Comment
-                    new DateTimeImmutable("2021-01-03 15:10:03"), // Comment ID 3
-                    new DateTimeImmutable("2021-05-01 15:10:00"), // Comment ID 4
+                    new DateTimeImmutable("2021-05-03 15:10:00"), // Comment ID 4
                     new DateTimeImmutable("2021-05-02 15:10:00"), // Comment ID 5
+                    new DateTimeImmutable("2021-01-03 15:10:03"), // Comment ID 3
                 ],
             ] ],
             [ '2021-01-02', [
                 'bi-file-person' => [ // Patient
-                    new DateTimeImmutable("2021-01-02 15:00:01"), // Patient ID 3
                     new DateTimeImmutable("2021-01-03 15:00:01"), // Patient ID 4
+                    new DateTimeImmutable("2021-01-02 15:00:01"), // Patient ID 3
                 ],
                 'bi-clipboard' => [ // Care request
-                    new DateTimeImmutable("2021-01-02 15:05:02"), // Care request ID 3
                     new DateTimeImmutable("2021-01-03 15:05:02"), // Care request ID 4
+                    new DateTimeImmutable("2021-01-02 15:05:02"), // Care request ID 3
                 ],
                 'bi-chat-left-text' => [ // Comment
-                    new DateTimeImmutable("2021-01-02 15:10:03"), // Comment ID 2
-                    new DateTimeImmutable("2021-01-03 15:10:03"), // Comment ID 3
-                    new DateTimeImmutable("2021-05-01 15:10:00"), // Comment ID 4
+                    new DateTimeImmutable("2021-05-03 15:10:00"), // Comment ID 4
                     new DateTimeImmutable("2021-05-02 15:10:00"), // Comment ID 5
+                    new DateTimeImmutable("2021-01-03 15:10:03"), // Comment ID 3
+                    new DateTimeImmutable("2021-01-02 15:10:03"), // Comment ID 2
                 ],
             ] ],
             [ '2021-01-01', [
                 'bi-file-person' => [ // Patient
-                    new DateTimeImmutable("2021-01-01 15:00:01"), // Patient ID 2
+                    new DateTimeImmutable("2021-01-03 15:00:01"), // Patient ID 4
                     new DateTimeImmutable("2021-01-02 15:00:01"), // Patient ID 3
-                    new DateTimeImmutable("2021-01-01 15:00:01"), // Patient ID 4
+                    new DateTimeImmutable("2021-01-01 15:00:01"), // Patient ID 2
                 ],
                 'bi-clipboard' => [ // Care request
-                    new DateTimeImmutable("2021-01-01 15:05:02"), // Care request ID 2
+                    new DateTimeImmutable("2021-01-03 15:05:02"), // Care request ID 4
                     new DateTimeImmutable("2021-01-02 15:05:02"), // Care request ID 3
-                    new DateTimeImmutable("2021-01-01 15:05:02"), // Care request ID 4
+                    new DateTimeImmutable("2021-01-01 15:05:02"), // Care request ID 2
                 ],
                 'bi-chat-left-text' => [ // Comment
-                    new DateTimeImmutable("2021-01-01 15:10:03"), // Comment ID 1
-                    new DateTimeImmutable("2021-01-02 15:10:03"), // Comment ID 2
-                    new DateTimeImmutable("2021-01-01 15:10:03"), // Comment ID 3
-                    new DateTimeImmutable("2021-05-01 15:10:00"), // Comment ID 4
+                    new DateTimeImmutable("2021-05-03 15:10:00"), // Comment ID 4
                     new DateTimeImmutable("2021-05-02 15:10:00"), // Comment ID 5
+                    new DateTimeImmutable("2021-01-03 15:10:03"), // Comment ID 3
+                    new DateTimeImmutable("2021-01-02 15:10:03"), // Comment ID 2
+                    new DateTimeImmutable("2021-01-01 15:10:03"), // Comment ID 1
                 ],
             ] ],
             [ null, [
@@ -133,24 +133,24 @@ class ActivityTest extends AbstractServiceTest
     {
         return [
             [Activity::SORT_OLDER_FIRST, [
-                [ 'bi-file-person', new DateTimeImmutable('2021-01-02 15:00:01') ],     // 3
-                [ 'bi-clipboard', new DateTimeImmutable('2021-01-02 15:05:02') ], // 3
-                [ 'bi-chat-left-text', new DateTimeImmutable('2021-01-02 15:10:03') ],     // 2
-                [ 'bi-file-person', new DateTimeImmutable('2021-01-03 15:00:01') ],     // 4
-                [ 'bi-clipboard', new DateTimeImmutable('2021-01-03 15:05:02') ], // 4
-                [ 'bi-chat-left-text', new DateTimeImmutable('2021-01-03 15:10:03') ],     // 3
-                [ 'bi-chat-left-text', new DateTimeImmutable('2021-05-01 15:10:00') ],     // 4
-                [ 'bi-chat-left-text', new DateTimeImmutable('2021-05-02 15:10:00') ],     // 5
+                [ 'bi-file-person', new DateTimeImmutable("2021-01-02 15:00:01") ], // Patient ID 3
+                [ 'bi-clipboard', new DateTimeImmutable("2021-01-02 15:05:02") ], // Care request ID 3
+                [ 'bi-chat-left-text', new DateTimeImmutable("2021-01-02 15:10:03") ], // Comment ID 2
+                [ 'bi-file-person', new DateTimeImmutable("2021-01-03 15:00:01") ], // Patient ID 4
+                [ 'bi-clipboard', new DateTimeImmutable("2021-01-03 15:05:02") ], // Care request ID 4
+                [ 'bi-chat-left-text', new DateTimeImmutable("2021-01-03 15:10:03") ], // Comment ID 3
+                [ 'bi-chat-left-text', new DateTimeImmutable("2021-05-02 15:10:00") ], // Comment ID 5
+                [ 'bi-chat-left-text', new DateTimeImmutable("2021-05-03 15:10:00") ], // Comment ID 4
             ]],
             [Activity::SORT_NEWER_FIRST, [
-                [ 'bi-chat-left-text', new DateTimeImmutable('2021-05-02 15:10:00') ],     // 5
-                [ 'bi-chat-left-text', new DateTimeImmutable('2021-05-01 15:10:00') ],     // 4
-                [ 'bi-chat-left-text', new DateTimeImmutable('2021-01-03 15:10:03') ],     // 3
-                [ 'bi-clipboard', new DateTimeImmutable('2021-01-03 15:05:02') ], // 4
-                [ 'bi-file-person', new DateTimeImmutable('2021-01-03 15:00:01') ],     // 4
-                [ 'bi-chat-left-text', new DateTimeImmutable('2021-01-02 15:10:03') ],     // 2
-                [ 'bi-clipboard', new DateTimeImmutable('2021-01-02 15:05:02') ], // 3
-                [ 'bi-file-person', new DateTimeImmutable('2021-01-02 15:00:01') ],     // 3
+                [ 'bi-chat-left-text', new DateTimeImmutable("2021-05-03 15:10:00") ], // Comment ID 4
+                [ 'bi-chat-left-text', new DateTimeImmutable("2021-05-02 15:10:00") ], // Comment ID 5
+                [ 'bi-chat-left-text', new DateTimeImmutable("2021-01-03 15:10:03") ], // Comment ID 3
+                [ 'bi-clipboard', new DateTimeImmutable("2021-01-03 15:05:02") ], // Care request ID 4
+                [ 'bi-file-person', new DateTimeImmutable("2021-01-03 15:00:01") ], // Patient ID 4
+                [ 'bi-chat-left-text', new DateTimeImmutable("2021-01-02 15:10:03") ], // Comment ID 2
+                [ 'bi-clipboard', new DateTimeImmutable("2021-01-02 15:05:02") ], // Care request ID 3
+                [ 'bi-file-person', new DateTimeImmutable("2021-01-02 15:00:01") ], // Patient ID 3
             ]],
         ];
     }

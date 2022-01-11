@@ -32,11 +32,12 @@ class Activity
             ];
         }
 
-        // Si la date de création est postérieur à la date demandée, c'est elle qui compte
-        if ($entity->getCreatedAt() >= $since) {
+        // Si la date de création ET la date de modificotion sont postérieures à la date demandée,
+        // on prend la date de modification mais on affiche que l'entité a été créée ET modifiée
+        if ($entity->getCreatedAt() >= $since && $entity->getModifiedAt() >= $since) {
             return [
                 'action' => self::ACTION_CREATION_MODIFICATION,
-                'date' => $entity->getCreatedAt(),
+                'date' => $entity->getModifiedAt(),
             ];
         }
 
@@ -54,7 +55,7 @@ class Activity
                 break;
 
             case self::ACTION_CREATION_MODIFICATION:
-                $author = $entity->getCreatedBy();
+                $author = $entity->getModifiedBy();
                 break;
 
             case self::ACTION_MODIFICATION:
@@ -62,9 +63,9 @@ class Activity
                 break;
 
             default:
-                throw new \LogicException(
+                throw new \LogicException( // @codeCoverageIgnore
                     sprintf('Should not be here : unknown action %s', $action)
-                ); // @codeCoverageIgnore
+                );
         }
 
         if ($author == null) {
