@@ -32,11 +32,17 @@ class CareRequestFinderTest extends AbstractServiceTest
         $this->careRequestRepository = $container->get(CareRequestRepository::class);
     }
 
-    private function careRequestIds($careRequestFinderResults)
+    private function careRequestIds($careRequestFinderResults, $sortResults = true)
     {
-        return array_values(array_map(function ($result) {
+        $results = array_values(array_map(function ($result) {
             return $result['careRequest']->getId();
         }, $careRequestFinderResults));
+
+        if ($sortResults) {
+            sort($results);
+        }
+
+        return $results;
     }
 
     private function createSearchCriteria(): SearchCriteria
@@ -51,10 +57,10 @@ class CareRequestFinderTest extends AbstractServiceTest
     public function dataProviderFindByLabel()
     {
         return [
-            [ 'patient_1', [1, 2, 3, 5] ],
+            [ 'patient_1', [1, 2, 3, 5, 7] ],
             [ 'patient_2', [6] ],
             [ 'patient_3', [] ], // Pas le même office
-            [ 'ient_1_contact', [1, 2, 3, 5] ],
+            [ 'ient_1_contact', [1, 2, 3, 5, 7] ],
         ];
     }
 
@@ -77,7 +83,7 @@ class CareRequestFinderTest extends AbstractServiceTest
     public function dataProviderFindByRequestedDoctor()
     {
         return [
-            [ null, [1, 2, 3, 5, 6] ],
+            [ null, [1, 2, 3, 5, 6, 7] ],
             [ 1, [1, 2], ],
             [ 2, [], ],// Pas le même office
             [ 3, [3] ],
@@ -105,8 +111,8 @@ class CareRequestFinderTest extends AbstractServiceTest
     public function dataProviderFindByContactedBy()
     {
         return [
-            [ null, [1, 2, 3, 5, 6] ],
-            [ 1, [1, 2, 3, 5, 6] ],
+            [ null, [1, 2, 3, 5, 6, 7] ],
+            [ 1, [1, 2, 3, 5, 6, 7] ],
             [ 2, [] ], // Pas le même office
             [ 3, [] ],
         ];
@@ -134,7 +140,7 @@ class CareRequestFinderTest extends AbstractServiceTest
     public function dataProviderFindByCreationFrom()
     {
         return [
-            [ '2021-09-25', [1, 2, 3, 5, 6] ],
+            [ '2021-09-25', [1, 2, 3, 5, 6, 7] ],
             [ '2021-09-26', [1, 2, 6] ],
             [ '2021-09-27', [1, 6] ],
             [ '2021-09-28', [6] ],
@@ -161,9 +167,9 @@ class CareRequestFinderTest extends AbstractServiceTest
     {
         return [
             [ '2021-09-24 23:59:59', [] ],
-            [ '2021-09-25 23:59:59', [3, 5] ],
-            [ '2021-09-26 23:59:59', [2, 3, 5] ],
-            [ '2021-09-27 23:59:59', [1, 2, 3, 5] ],
+            [ '2021-09-25 23:59:59', [3, 5, 7] ],
+            [ '2021-09-26 23:59:59', [2, 3, 5, 7] ],
+            [ '2021-09-27 23:59:59', [1, 2, 3, 5, 7] ],
         ];
     }
 
@@ -186,7 +192,7 @@ class CareRequestFinderTest extends AbstractServiceTest
     public function dataProviderFindByAvailability()
     {
         return [
-            [1, '10:00', '11:00', [1, 2, 3, 5] ],
+            [1, '10:00', '11:00', [1, 2, 3, 5, 7] ],
             [2, '10:00', '11:00', [6] ],
         ];
     }
@@ -239,8 +245,8 @@ class CareRequestFinderTest extends AbstractServiceTest
     public function dataProviderFindByActive()
     {
         return [
-            [ true, [1, 2, 3, 5, 6] ],
-            [ false, [2, 3] ], // La 1, 5, 6 sont actives
+            [ true, [1, 2, 3, 5, 6, 7] ],
+            [ false, [2, 3] ], // La 1, 5, 6, 7 sont actives
         ];
     }
 
@@ -263,8 +269,8 @@ class CareRequestFinderTest extends AbstractServiceTest
     public function dataProviderFindByArchived()
     {
         return [
-            [ true, [1, 2, 3, 5, 6] ],
-            [ false, [1, 3, 5, 6] ], // La 2 est archivée
+            [ true, [1, 2, 3, 5, 6, 7] ],
+            [ false, [1, 3, 5, 6, 7] ], // La 2 est archivée
         ];
     }
 
@@ -287,8 +293,8 @@ class CareRequestFinderTest extends AbstractServiceTest
     public function dataProviderFindByAbandoned()
     {
         return [
-            [ true, [1, 2, 3, 5, 6] ],
-            [ false, [1, 2, 5, 6] ], // La 3 est abandonné
+            [ true, [1, 2, 3, 5, 6, 7] ],
+            [ false, [1, 2, 5, 6, 7] ], // La 3 est abandonné
         ];
     }
 
@@ -312,7 +318,7 @@ class CareRequestFinderTest extends AbstractServiceTest
     {
         return [
             [ 1, [ 1, 2, 3, 6] ],
-            [ 2, [ 5 ] ],
+            [ 2, [ 5, 7 ] ],
         ];
     }
 
@@ -335,12 +341,14 @@ class CareRequestFinderTest extends AbstractServiceTest
     public function dataProviderSortResults()
     {
         return [
-            [ [1, 2, 5] ],
-            [ [1, 5, 2] ],
-            [ [2, 1, 5] ],
-            [ [2, 5, 1] ],
-            [ [5, 1, 2] ],
-            [ [5, 2, 1] ],
+            [ [1, 2, 5, 7] ],
+            [ [1, 5, 2, 7] ],
+            [ [2, 1, 5, 7] ],
+            [ [2, 5, 1, 7] ],
+            [ [5, 1, 2, 7] ],
+            [ [5, 2, 1, 7] ],
+            [ [5, 7, 2, 1] ],
+            [ [7, 5, 2, 1] ],
         ];
     }
 
@@ -359,6 +367,6 @@ class CareRequestFinderTest extends AbstractServiceTest
         $this->careRequestFinder->sortSearchResult($searchResults);
 
         // $searchResults est désormais trié
-        $this->assertSame([2, 1, 5], $this->careRequestIds($searchResults));
+        $this->assertSame([2, 1, 5, 7], $this->careRequestIds($searchResults, false));
     }
 }

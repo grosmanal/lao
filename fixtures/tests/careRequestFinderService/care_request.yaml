@@ -86,3 +86,16 @@ App\Entity\CareRequest:
         abandonedReason: ~
         createdBy: '@doctor_1'
         createdAt: <(new DateTimeImmutable("2021-10-01 15:00:00"))>
+    care_request_7:
+        patient: '@patient_1'
+        contactedBy: '@doctor_1'
+        contactedAt: <(new DateTimeImmutable("2021-09-25"))>
+        priority: false
+        complaint: '@complaint_2'
+        customComplaint: ~
+        acceptedBy: ~
+        acceptedAt: ~
+        abandonedAt: ~
+        abandonedReason: ~
+        createdBy: '@doctor_1'
+        createdAt: <(new DateTimeImmutable("2021-09-25 18:00:00"))>

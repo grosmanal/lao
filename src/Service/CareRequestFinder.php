@@ -107,9 +107,15 @@ class CareRequestFinder
             } elseif ($aCR->getPriority() == false && $bCR->getPriority() == true) {
                 // b est prioritaire alors que a ne l'est pas : la placer avant a
                 return 1;
-            } else {
-                // a et b sont identique en terme de priorité : on les classe par date de création
+            } elseif ($aCR->getContactedAt() != $bCR->getContactedAt()) {
+                // a et b sont identique en terme de priorité
+                // la date de contact est différente : on les classe sur celle-ci
                 return $aCR->getContactedAt() <=> $bCR->getContactedAt();
+            } else {
+                // a et b sont identique en terme de priorité
+                // la date de contact est identique
+                // on les classe selon la date de création
+                return $aCR->getCreatedAt() <=> $bCR->getCreatedAt();
             }
         });
     }
