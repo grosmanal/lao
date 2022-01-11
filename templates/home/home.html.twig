@@ -46,12 +46,16 @@
             {{ 'activity.content.header'|trans({'%daysSince%': daysSince}) }}
         </h2>
         <div class="card-body">
-            {% if touchedEntities|length > 0 %}
+            {% if activityPagination|length > 0 %}
                 <ul class="list-group">
-                    {% for touchedEntity in touchedEntities %}
-                        {% include "home/activity_item.html.twig" with { entity: touchedEntity } %}
+                    {% for activityEntity in activityPagination %}
+                        {% include "home/activity_item.html.twig" with { entity: activityEntity } %}
                     {% endfor %}
                 </ul>
+
+                <div class="navigation mt-2 d-flex justify-content-center">
+                    {{ knp_pagination_render(activityPagination) }}
+                </div>
             {% else %}
                 <p class="alert alert-warning">{{ 'activity.content.no_activity'|trans({'%daysSince%': daysSince}) }}</p>
             {% endif %}

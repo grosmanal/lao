@@ -6,6 +6,7 @@ use App\Repository\ArticleRepository;
 use App\Service\PatientAnomaly;
 use App\Service\Activity;
 use App\Service\UserProfile;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -20,6 +21,7 @@ class HomeController extends AbstractAppController
         UserProfile $userProfile,
         PatientAnomaly $patientAnomaly,
         ArticleRepository $articleRepository,
+        PaginatorInterface $paginator,
         Activity $activity,
     ): Response {
         $currentOffice = $userProfile->getDoctor()->getOffice();
@@ -39,14 +41,19 @@ class HomeController extends AbstractAppController
         }
 
         $since = (new \DateTime())->sub(new \DateInterval(sprintf('P%dD', $daysSince)));
-        $datedEntities = $activity->getActiveEntities($currentOffice, $since);
+        $activityEntities = $activity->getActiveEntities($currentOffice, $since);
+
+        $activityPagination = $paginator->paginate(
+            $activityEntities,
+            $request->query->getInt('page', 1)
+        );
 
         return $this->renderForm('home/home.html.twig', [
             'navbarTitle' => 'home.content.title',
             'patientsAnomaly' => $patientAnomaly->getPatientsAnomaly($currentOffice),
             'articles' => $articles,
             'daysSince' => $daysSince,
-            'touchedEntities' => $datedEntities,
+            'activityPagination' => $activityPagination,
             'moreDays' => $moreDays,
         ]);
     }
