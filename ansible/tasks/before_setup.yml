@@ -1,4 +1,0 @@
----
-- name: Set facts
-  set_fact:
-      prod_env: "{{ symfony_env == 'prod' }}"

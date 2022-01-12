@@ -69,7 +69,6 @@ ansistrano_download_headers:
 ansistrano_shared_paths:
     - "{{ symfony_app_path }}/public/upload"
 
-ansistrano_before_setup_tasks_file: "{{ playbook_dir }}/tasks/before_setup.yml"
 ansistrano_after_update_code_tasks_file: "{{ playbook_dir }}/tasks/after_update_code.yml"
 ansistrano_before_symlink_tasks_file: "{{ playbook_dir }}/tasks/before_symlink.yml"
 ansistrano_after_symlink_tasks_file: "{{ playbook_dir }}/tasks/after_symlink.yml"

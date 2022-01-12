@@ -8,7 +8,6 @@
   composer:
       command: install
       working_dir: "{{ ansistrano_release_path.stdout }}/{{ symfony_app_path }}"
-      no_dev: "{{ prod_env }}"
       no_scripts: yes
       optimize_autoloader: true
         
@@ -16,7 +15,6 @@
   ansible.builtin.command:
       chdir: "{{ ansistrano_release_path.stdout }}/{{ symfony_app_path }}"
       cmd: "composer dump-env {{ symfony_env }}"
-  when: prod_env
     
 - name: Link bundle assets
   ansible.builtin.command:
@@ -31,7 +29,7 @@
 - name: Yarn install (installation dépendances javascript)
   ansible.builtin.command:
       chdir: "{{ ansistrano_release_path.stdout }}/{{ symfony_app_path }}"
-      cmd: yarn install
+      cmd: yarn install --prod
 
 - name: Build assets (webpack encore)
   ansible.builtin.command:
