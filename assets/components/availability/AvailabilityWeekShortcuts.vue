@@ -12,16 +12,16 @@
             v-for="timeSlot in timeSlots"
             v-bind:key="timeSlot"        
         >
-            <button type="button" class="btn btn-primary btn-sm add-time-slot-btn"
-            @click="addAvailabilityWholeWeekTimeSlot(timeSlot)"
-            :title="buttonTitle(timeSlot)"
-            >+</button>
+            <TimeSlotShortcuts
+                v-bind:time-slot="timeSlot"
+            ></TimeSlotShortcuts>
         </div>
     </div>
     
 </template>
 
 <script>
+import TimeSlotShortcuts from './AvailabilityWeekShortcutsTimeSlot.vue';
 import Vuex from 'vuex';
 import Translator from 'bazinga-translator';
 import { toReadableHour } from './availabilityUtils';
@@ -29,6 +29,7 @@ import { modalOrConsole } from '../modal';
 
 export default {
     name: 'AvailabilityWeekShortcuts',
+    components: { TimeSlotShortcuts },
     computed: {
         ...Vuex.mapGetters([
             'weekDays',
@@ -52,12 +53,6 @@ export default {
             .catch((error) => modalOrConsole(error))
             ;
         },
-
-        addAvailabilityWholeWeekTimeSlot: function(timeSlot) {
-            this.$store.dispatch('addAvailabilityWholeWeekTimeSlot', {weekDays: this.weekDays, timeSlot, available: true})
-            .catch((error) => modalOrConsole(error))
-            ;
-        },
     }
 }
 </script>
@@ -71,18 +66,12 @@ export default {
 }
 
 .omega-btn {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 
 .btn-container {
     min-height: 35px; /* FIXME variable comme timeslot */
     text-align: center;
-}
-
-.add-time-slot-btn {
-    width: 25px;
-    height: 25px;
-    padding: 0;
 }
 
 </style>

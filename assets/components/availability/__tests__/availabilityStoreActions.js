@@ -298,7 +298,7 @@ describe('Availability store actions', () => {
         });
     });
 
-    test('setWholeDayAvailable', () => {
+    test('setWholeDayAvailablility', () => {
         const context = {
             getters: {
                 startOfDaySlot: "0900-0930",
@@ -309,7 +309,7 @@ describe('Availability store actions', () => {
 
         expect.assertions(1);
 
-        actions.setWholeDayAvailable(context, {weekDay: 1, available: true}).then(() => {
+        actions.setWholeDayAvailability(context, {weekDay: 1, available: true}).then(() => {
             expect(context.dispatch).toHaveBeenCalledWith('updateWeekDaysAvailability', {
                 weekDays: [ 1 ],
                 timeSlotStart: "0900-0930",
@@ -319,7 +319,7 @@ describe('Availability store actions', () => {
         });
     });
 
-    test('setMorningAvailable', () => {
+    test('setMorningAvailability', () => {
         const context = {
             getters: {
                 startOfDaySlot: "0900-0930",
@@ -330,7 +330,7 @@ describe('Availability store actions', () => {
 
         expect.assertions(1);
 
-        actions.setMorningAvailable(context, {weekDay: 1, available: true}).then(() => {
+        actions.setMorningAvailability(context, {weekDay: 1, available: true}).then(() => {
             expect(context.dispatch).toHaveBeenCalledWith('updateWeekDaysAvailability', {
                 weekDays: [ 1 ],
                 timeSlotStart: "0900-0930",
@@ -340,7 +340,7 @@ describe('Availability store actions', () => {
         });
     });
 
-    test('setAfternoonAvailable', () => {
+    test('setAfternoonAvailability', () => {
         const context = {
             getters: {
                 middleOfDaySlot: jest.fn().mockReturnValue("1000-1030"),
@@ -351,7 +351,7 @@ describe('Availability store actions', () => {
         
         expect.assertions(1);
 
-        actions.setAfternoonAvailable(context, {weekDay: 1, available: true}).then(() => {
+        actions.setAfternoonAvailability(context, {weekDay: 1, available: true}).then(() => {
             expect(context.dispatch).toHaveBeenCalledWith('updateWeekDaysAvailability', {
                 weekDays: [ 1 ],
                 timeSlotStart: "1000-1030",

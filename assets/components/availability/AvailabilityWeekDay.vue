@@ -3,14 +3,18 @@
 <li class="week-day-availability">
     <div class="w-100 d-flex justify-content-center">
         <button
-            class="btn btn-primary btn-sm week-day-label" @click="setWholeDayAvailable"
+            class="btn btn-sm week-day-label"
+            @click="setWholeDayAvailability"
+            v-bind:class="weekDayButtonClass"
             v-bind:title="weekDayTitle"
         >{{ weekDayLabel }}</button>
     </div>
     <ul class="week-day-buttons">
         <li>
             <button
-                class="btn btn-primary btn-sm" @click="setMorningAvailable"
+                class="btn btn-sm"
+                @click="setMorningAvailability"
+                v-bind:class="morningButtonClass"
                 v-bind:title="morningButtonTitle"
             >
                 {{ morningButtonLabel }}
@@ -18,7 +22,9 @@
         </li>
         <li>
             <button
-                class="btn btn-primary btn-sm" @click="setAfternoonAvailable"
+                class="btn btn-sm"
+                @click="setAfternoonAvailability"
+                v-bind:class="afternoonButtonClass"
                 v-bind:title="afternoonButtonTitle"
             >
                 {{ afternoonButtonLabel }}
@@ -65,17 +71,59 @@ export default {
             return Translator.trans('availability.week_day.week_day_button.title', {
                 weekDayLabel: utilsWeekDayLabel(this.weekDay)
             });
+        },
 
+        weekDayIsFullyAvailable: function() {
+            return Object.values(this.weekDayAvailability).every(function(element) {
+                return element == true;
+            });
+        },
+
+        weekDayButtonClass: function() {
+            return this.weekDayIsFullyAvailable ?
+                'btn-secondary' :
+                'btn-primary'
+            ;
+        },
+
+        morningIsFullyAvailable: function() {
+            return Object.entries(this.weekDayAvailability)
+                .filter(([ timeSlot, available ]) => this.$store.getters.morningSlots.includes(timeSlot))
+                .every(([ timeSlot, available ]) => available == true)
+            ;
+        },
+
+        morningButtonClass: function() {
+            return this.morningIsFullyAvailable ?
+                'btn-secondary' :
+                'btn-primary'
+            ;
         },
 
         morningButtonLabel: () => Translator.trans('availability.week_day.morning_button.label'),
+
         morningButtonTitle: function() {
             return Translator.trans('availability.week_day.morning_button.title', {
                 weekDayLabel: utilsWeekDayLabel(this.weekDay)
             });
         },
 
+        afternoonIsFullyAvailable: function() {
+            return Object.entries(this.weekDayAvailability)
+                .filter(([ timeSlot, available ]) => this.$store.getters.afternoonSlots.includes(timeSlot))
+                .every(([ timeSlot, available ]) => available == true)
+            ;
+        },
+
+        afternoonButtonClass: function() {
+            return this.afternoonIsFullyAvailable ?
+                'btn-secondary' :
+                'btn-primary'
+            ;
+        },
+
         afternoonButtonLabel: () => Translator.trans('availability.week_day.afternoon_button.label'),
+
         afternoonButtonTitle: function() {
             return Translator.trans('availability.week_day.afternoon_button.title', {
                 weekDayLabel: utilsWeekDayLabel(this.weekDay)
@@ -86,29 +134,38 @@ export default {
     },
     methods: {
         ...Vuex.mapActions({
-            storeSetWholeDayAvailable: 'setWholeDayAvailable',
-            storeSetMorningAvailable: 'setMorningAvailable',
-            storeSetAfternoonAvailable: 'setAfternoonAvailable',
+            storeSetWholeDayAvailability: 'setWholeDayAvailability',
+            storeSetMorningAvailability: 'setMorningAvailability',
+            storeSetAfternoonAvailability: 'setAfternoonAvailability',
             resetTimeSlotShowingCloseButton: 'resetTimeSlotShowingCloseButton',
             
         }),
 
-        setWholeDayAvailable: function() {
-            this.storeSetWholeDayAvailable({weekDay: this.weekDay, available: true})
+        setWholeDayAvailability: function() {
+            this.storeSetWholeDayAvailability({
+                weekDay: this.weekDay,
+                available: (! this.weekDayIsFullyAvailable),
+            })
             .catch((error) => {
                 modalOrConsole(error, {}, 'modal.title.error');
             });
         },
         
-        setMorningAvailable: function() {
-            this.storeSetMorningAvailable({weekDay: this.weekDay, available: true})
+        setMorningAvailability: function() {
+            this.storeSetMorningAvailability({
+                weekDay: this.weekDay,
+                available: (! this.morningIsFullyAvailable),
+            })
             .catch((error) => {
                 modalOrConsole(error, {}, 'modal.title.error');
             });
         },
   
-        setAfternoonAvailable: function() {
-            this.storeSetAfternoonAvailable({weekDay: this.weekDay, available: true})
+        setAfternoonAvailability: function() {
+            this.storeSetAfternoonAvailability({
+                weekDay: this.weekDay,
+                available: (! this.afternoonIsFullyAvailable),
+            })
             .catch((error) => {
                 modalOrConsole(error, {}, 'modal.title.error');
             });

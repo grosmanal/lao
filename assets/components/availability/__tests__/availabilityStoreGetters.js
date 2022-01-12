@@ -127,6 +127,70 @@ describe('Availability store getters', () => {
         expect(getterFunction(edgeIsPeriodEnding)).toStrictEqual(expected);
     });
 
+    test.each([
+        [ "0800-0830", "0930-1000", [ "0800-0830", "0830-0900", "0900-0930", "0930-1000", ] ],
+        [ "0830-0900", "0930-1000", [ "0830-0900", "0900-0930", "0930-1000", ] ],
+        [ "0830-0900", "1000-1030", [ "0830-0900", "0900-0930", "0930-1000", "1000-1030" ] ],
+    ])('slotsBetween', (startSlot, endSlot, expected) => {
+        getters.timeSlots = [
+            "0800-0830",
+            "0830-0900",
+            "0900-0930",
+            "0930-1000",
+            "1000-1030",
+        ];
+
+        const getterFunction = getters.slotsBetween({}, getters);
+
+        expect(getterFunction(startSlot, endSlot)).toStrictEqual(expected);
+    });
+
+    test('morningSlots', () => {
+        getters.startOfDaySlot = "0800-0830";
+        getters.middleOfDaySlot = jest.fn().mockReturnValue("0900-0930");
+        getters.slotsBetween = jest.fn();
+
+        getters.morningSlots({}, getters);
+        expect(getters.slotsBetween).toHaveBeenCalledWith("0800-0830", "0900-0930");
+    });
+
+    test('afternoonSlots', () => {
+        getters.middleOfDaySlot = jest.fn().mockReturnValue("0900-0930");
+        getters.endOfDaySlot = "1000-1030";
+        getters.slotsBetween = jest.fn();
+
+        getters.afternoonSlots({}, getters);
+        expect(getters.slotsBetween).toHaveBeenCalledWith("0900-0930", "1000-1030");
+    });
+
+    test.each([
+        [ "0800-0830", false],
+        [ "0830-0900", true],
+        [ "0900-0930", false],
+        [ "0930-1000", false],
+    ])
+    ('timeSlotIsWeeklyAvailable', (timeSlot, expected) => {
+        const state = {
+            availability: {
+                "1": {
+                    "0800-0830": false,
+                    "0830-0900": true,
+                    "0900-0930": false,
+                    "0930-1000": true,   
+                },
+                "2": {
+                    "0800-0830": false,
+                    "0830-0900": true,
+                    "0900-0930": true,
+                    "0930-1000": false,   
+                },
+            }
+        };
+        
+        const getterFunction = getters.timeSlotIsWeeklyAvailable(state);
+        expect(getterFunction(timeSlot)).toStrictEqual(expected);
+    });
+
     test('weekDayAvailability', () => {
         const state = {
             availability: {

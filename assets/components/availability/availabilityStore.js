@@ -84,14 +84,47 @@ export const getters = {
         
         return undefined;
     },
+
+    slotsBetween: (state, getters) => (startSlot, endSlot) => {
+        const timeSlotsBetween = []
         
-    
+        for (const currentTimeSlot of getters.timeSlots.sort()) {
+            if (currentTimeSlot >= startSlot && currentTimeSlot <= endSlot) {
+                timeSlotsBetween.push(currentTimeSlot);
+            } else {
+                if (timeSlotsBetween.length > 0) {
+                    break;
+                }
+            }
+        }
+
+        return timeSlotsBetween;
+    },
+
+    morningSlots: (state, getters) => {
+        return getters.slotsBetween(getters.startOfDaySlot, getters.middleOfDaySlot(true));
+    },
+        
+    afternoonSlots: (state, getters) => {
+        return getters.slotsBetween(getters.middleOfDaySlot(false), getters.endOfDaySlot);
+    },
+        
     weekDayAvailability: (state) => (weekDay) => {
         return state.availability[weekDay];
     },
     
     timeSlotAvailability: (state) => (weekDay, timeSlot) => {
         return state.availability[weekDay][timeSlot];
+    },
+
+    timeSlotIsWeeklyAvailable: (state) => (timeSlot) => {
+        for (const weekDay in state.availability) {
+            if (state.availability[weekDay][timeSlot] == false) {
+                return false;
+            }
+        }
+
+        return true;
     },
     
     headSlots: (state) => {
@@ -272,7 +305,7 @@ export const actions = {
         });
     },
     
-    setWholeDayAvailable: async (context, {weekDay, available}) => {
+    setWholeDayAvailability: async (context, {weekDay, available}) => {
         return context.dispatch('updateWeekDaysAvailability', {
             weekDays: [ weekDay ],
             timeSlotStart: context.getters.startOfDaySlot,
@@ -281,7 +314,7 @@ export const actions = {
         });
     },
 
-    setMorningAvailable: async (context, {weekDay, available}) => {
+    setMorningAvailability: async (context, {weekDay, available}) => {
         return context.dispatch('updateWeekDaysAvailability', {
             weekDays: [ weekDay ],
             timeSlotStart: context.getters.startOfDaySlot,
@@ -290,7 +323,7 @@ export const actions = {
         });
     },
 
-    setAfternoonAvailable: async (context, {weekDay, available}) => {
+    setAfternoonAvailability: async (context, {weekDay, available}) => {
         return context.dispatch('updateWeekDaysAvailability', {
             weekDays: [ weekDay ],
             timeSlotStart: context.getters.middleOfDaySlot(false),
